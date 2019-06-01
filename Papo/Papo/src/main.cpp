@@ -1,3 +1,5 @@
+#include "output.hpp"
+
 int main()
 {
 	
