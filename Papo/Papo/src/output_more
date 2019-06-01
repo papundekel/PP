@@ -1,0 +1,104 @@
+template <typename T>
+char* to_chars(char* begin, char* end, const bim<T>& b)
+{
+	_output(copy_chars, "bim << ");
+	if constexpr (is_same<char, remove_cv<T>>)
+		_output(to_chars, static_cast<int>(*b));
+	else
+		_output(to_chars, *b);
+	return begin;
+}
+
+template <size_t s>
+char* to_chars(char* begin, char* end, const big_int<s>& b)
+{
+	if (begin != end)
+	{
+		if (b != 0)
+		{
+			auto old_end = end;
+
+			*((--end)--) = '\0';
+
+			bool minus;
+			big_int<s> copy;
+
+			if (sign(&b) == 0)
+			{
+				copy = b;
+				minus = false;
+			}
+			else
+			{
+				copy = -b;
+				minus = true;
+			}
+			auto value_to_char = [](char z) -> char
+			{
+				if (z < 10)
+					return '0' + z;
+				else
+					return 'A' + z - 10i8;
+			};
+
+
+			for (; end != begin && copy != 0ui8; --end)
+			{
+				*end = value_to_char(static_cast<char>(copy % 10));
+				copy /= 10;
+			}
+
+			if (minus)
+				* begin = '-';
+
+			memmove(begin + minus, end + 1, old_end - end - 1);
+
+			return begin + minus + (old_end - end - 1);
+		}
+		else
+		{
+			begin[0] = '0';
+			begin[1] = 0;
+
+			return begin + 1;
+		}
+	}
+	return begin;
+}
+
+template <size_t s>
+char* to_chars(char* begin, char* end, Z<s> a)
+{
+	return to_chars(begin, end, a.value);
+}
+
+char* to_chars(char* begin, char* end, const math::complex& c);
+char* to_chars(char* begin, char* end, const Q& q);
+
+char* to_chars(char* begin, char* end, const math::complex& c)
+{
+	if (c.imag == 0)
+		_output(to_chars,c.real);
+	else
+	{
+		if (c.real != 0)
+		{
+			_output(to_chars, c.real);
+			_output(copy_chars, " + ");
+		}
+		if (c.imag != 1)
+			_output(to_chars, c.imag);
+		_output(copy_char, 'i');
+	}
+	return begin;
+}
+char* to_chars(char* begin, char* end, const Q& q)
+{
+	_output(to_chars, q.num);
+	if (q.den != 1)
+	{
+		_output(copy_char, '/');
+		_output(to_chars, q.den);
+	}
+	return begin;
+}

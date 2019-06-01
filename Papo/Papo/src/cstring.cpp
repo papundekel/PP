@@ -1,0 +1,21 @@
+#include "cstring.hpp"
+#include "find.hpp"
+
+char* begin(char*& cstring)
+{
+	return cstring;
+}
+
+char* end(char*& cstring)
+{
+	return find(range(cstring, cstring_end()), 0);
+}
+
+const char* begin(const char*& cstring)
+{
+	return cstring;
+}
+const char* end(const char*& cstring)
+{
+	return end(const_cast<char*&>(cstring));
+}

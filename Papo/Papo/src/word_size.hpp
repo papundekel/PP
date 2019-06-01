@@ -1,0 +1,1 @@
+constexpr auto word_size = sizeof(void*);
