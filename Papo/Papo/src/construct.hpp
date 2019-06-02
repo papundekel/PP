@@ -1,17 +1,12 @@
 #pragma once
 #include "iterator.hpp"
-#include "is_arithmetic.hpp"
-#include "remove_reference.hpp"
 #include "forward.hpp"
 #include "get_address.hpp"
+#include "constructible.hpp"
 
-template <iterator it, typename U>
-void construct(it where, U&& value)
+template <iterator it, typename ...Args>
+requires constructible<base_t<it>, Args...>
+void construct(it where, Args&&... args)
 {
-	using base = base_t<it>;
-
-	if constexpr (is_arithmetic<base>)
-		*where = forward<U>(value);
-	else
-		new (get_address(where)) base(forward<U>(value));
+	new (get_address(where)) base_t<it>(forward<Args>(args)...);
 }

@@ -80,8 +80,6 @@
     <ClInclude Include="src\decay.hpp" />
     <ClInclude Include="src\declval.hpp" />
     <ClInclude Include="src\decrementable.hpp" />
-    <ClInclude Include="src\default_construct.hpp" />
-    <ClInclude Include="src\default_constructible.hpp" />
     <ClInclude Include="src\destroy.hpp" />
     <ClInclude Include="src\destroy_at.hpp" />
     <ClInclude Include="src\destroy_n.hpp" />
@@ -216,7 +214,6 @@
     <ClInclude Include="src\swap_ranges.hpp" />
     <ClInclude Include="src\swap_ranges_n.hpp" />
     <ClInclude Include="src\to_chars.hpp" />
-    <ClInclude Include="src\unique_ptr.hpp" />
     <ClInclude Include="src\u_copy.hpp" />
     <ClInclude Include="src\u_copy_backward.hpp" />
     <ClInclude Include="src\u_copy_backward_n.hpp" />

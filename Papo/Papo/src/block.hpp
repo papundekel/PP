@@ -7,17 +7,7 @@ class block
 {
 	static inline T* allocate(size_t count)
 	{
-		if constexpr (fundamental<T>)
-			return new T[count];
-		else
-			return reinterpret_cast<T*>(malloc(count * sizeof(T)));
-	}
-	static inline void deallocate(T* ptr)
-	{
-		if constexpr (fundamental<T>)
-			delete[] ptr;
-		else
-			free(ptr);
+		return reinterpret_cast<T*>(malloc(count * sizeof(T)));
 	}
 
 	T* ptr;
@@ -39,7 +29,7 @@ public:
 	}
 	~block()
 	{
-		deallocate(ptr);
+		free(ptr);
 	}
 	void operator=(const block&) = delete;
 	template <typename U>
@@ -65,7 +55,7 @@ public:
 	}
 	void reset(size_t count)
 	{
-		deallocate(ptr);
+		free(ptr);
 		ptr = allocate(count);
 		_count = count;
 	}

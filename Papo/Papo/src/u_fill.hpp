@@ -1,12 +1,10 @@
 #pragma once
-#include "enable_if.hpp"
-#include "is_iterator.hpp"
 #include "construct.hpp"
+#include "range.hpp"
 
-template <typename it1, typename T>
-enable_if<is_iterator<it1>,
-void> u_fill(it1 destBegin, it1 destEnd, const T& value)
+template <range_t R, typename ...Args>
+void u_fill(R dest, Args&&... args)
 {
-	for (; destBegin != destEnd; ++destBegin)
-		construct(destBegin, value);
+	for (; dest.begin != dest.end; ++dest.begin)
+		construct(dest.begin, forward<Args>(args)...);
 }

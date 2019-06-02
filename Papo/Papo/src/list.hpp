@@ -10,7 +10,6 @@
 #include "u_move.hpp"
 #include "u_fill.hpp"
 #include "u_generate.hpp"
-#include "default_construct.hpp"
 #include "distance.hpp"
 #include "range.hpp"
 #include "bit.hpp"
@@ -120,13 +119,13 @@ public:
 	{
 		if (count > capacity)
 			m_count = capacity;
-		default_construct<T>(range(*this));
+		construct<T>(range(*this));
 	}
 	list(size_t count, size_t capacity, const T& value)
 		: m_count(count)
 		, buffer(capacity)
 	{
-		u_fill(begin(), end(), value);
+		u_fill(range(*this), value);
 	}
 	list(size_t count, T(&g)())
 		: m_count(count)
