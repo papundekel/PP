@@ -516,6 +516,81 @@ public:
 	size_t size() const;
 	size_t capacity() const;
 };
+template<> class list<char>
+{
+	size_t m_length;
+	block<char> buffer;
+
+	list& _append(const char* buffer, size_t length);
+	list _plus(const char* buffer, size_t length) const;
+public:
+	list();
+	explicit list(size_t length);
+	list(size_t count, char c);
+	list(const char* ptr);
+	list(const char* const ptr, size_t length);
+	/*template <typename it>
+	list(it begin, it end)
+		: m_length(distance(begin, end))
+		, m_capacity(m_length + 1)
+		, m_buffer(new char[m_capacity])
+	{
+		copy(begin, end, m_buffer);
+	}*/
+	list(const list&copy);
+	list(list&& move) noexcept;
+
+	list& operator=(const list& other);
+	list& operator=(list&& other) noexcept;
+
+	using		iterator = iterator_random_access<char>;
+	using const_iterator = iterator_random_access<const char>;
+
+	iterator begin();
+	const_iterator begin() const;
+	iterator end();
+	const_iterator end() const;
+
+	char& operator[](size_t index);
+	const char& operator[](size_t index) const;
+
+	char& front();
+	const char& front() const;
+	char& back();
+	const char& back() const;
+
+	const char* c_str() const;
+	size_t length() const;
+	size_t capacity() const;
+	bool empty() const;
+	void shrink_to_fit();
+
+	void clear();
+	iterator erase(iterator where);
+	iterator erase(iterator begin, iterator end);
+
+	bool operator==(const char* other) const;
+	bool operator==(const list& other) const;
+	bool operator!=(const char* other) const;
+	bool operator!=(const list& other) const;
+
+	void push_back(char c);
+
+	list& append(char c);
+	list& append(const char* const other);
+	list& append(const list& other);
+	list& operator+=(char c);
+	list& operator+=(const char* other);
+	list& operator+=(const list& other);
+
+	list operator+(const char* const right) const;
+	list operator+(const list& right) const;
+	friend list operator+(const char* const left, const list& right);
+
+	static size_t length(const char* cstring);
+};
+
+using string = list<char>;
 
 template <typename it, typename it_end> list(range<it, it_end>)->list<base_type<it>>;
 
@@ -524,4 +599,26 @@ void swap(list<T>& left, list<T>& right)
 {
 	swap(left.m_count, right.m_count);
 	swap(left.buffer, right.buffer);
+}
+
+template <range_t R, callable_r<bool, typename R::base_t> P>
+auto split(R r, P&& p)
+{
+	using T = typename R::base_t;
+
+	list<list<T>> arrays;
+	list<T> arr;
+
+	for (; r.begin != r.end; ++r.begin)
+	{
+		if (!p(*r.begin))
+			arr.push_back(*r.begin);
+		else
+		{
+			arrays.push_back(move(arr));
+			arr = list<T>();
+		}
+	}
+
+	return arrays;
 }

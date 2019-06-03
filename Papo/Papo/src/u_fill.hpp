@@ -1,10 +1,10 @@
 #pragma once
-#include "construct.hpp"
 #include "range.hpp"
+#include "construct.hpp"
 
 template <range_t R, typename ...Args>
-void u_fill(R dest, Args&&... args)
+void u_fill(R r, Args&&... args)
 {
-	for (; dest.begin != dest.end; ++dest.begin)
-		construct(dest.begin, forward<Args>(args)...);
+	for (; r.begin != r.end; ++r.begin)
+		construct(r.begin, forward<Args>(args)...);
 }

@@ -1,6 +1,5 @@
 #pragma once
-#include "int.hpp"
-
+#include <cstddef>
 template <size_t size1, size_t size2>
 constexpr size_t fit_count(size_t count)
 {

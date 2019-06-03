@@ -30,7 +30,6 @@
     <ClCompile Include="src\output.cpp" />
     <ClCompile Include="src\output_basic.cpp" />
     <ClCompile Include="src\Q.cpp" />
-    <ClCompile Include="src\string.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\accumulate.hpp" />
@@ -209,7 +208,6 @@
     <ClInclude Include="src\sentinel.hpp" />
     <ClInclude Include="src\serialize.hpp" />
     <ClInclude Include="src\span.hpp" />
-    <ClInclude Include="src\string.hpp" />
     <ClInclude Include="src\swap.hpp" />
     <ClInclude Include="src\swap_ranges.hpp" />
     <ClInclude Include="src\swap_ranges_n.hpp" />

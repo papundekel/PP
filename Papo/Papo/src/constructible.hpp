@@ -1,6 +1,7 @@
 #pragma once
+#include "forward.hpp"
 template <typename T, typename ...Args>
-concept constructible = requires (Args... args)
+concept constructible = requires (Args&&... args)
 {
-    T(args...);
+    T(forward<Args>(args)...);
 };

@@ -2,16 +2,24 @@
 #include "block.hpp"
 #include "u_fill.hpp"
 #include "list.hpp"
+#include "input.hpp"
+
+bool f(char c)
+{
+	return std::isspace(c);
+}
 
 int main()
 {
-	block<list<int>> b(10);
-	u_fill(range(b), 10, 10, 6);
+	char buffer[100];
+	range r(buffer);
 
-	for (auto x : b)
-	{
-		print(x);
-		print("-------");
-	}
+	r.end = read(buffer, [](char c) {return c == '\n'; });
+	*r.end = 0;
+
+	auto x = split(r, f);
+
+	print(x);
+
 	return 0;
 }

@@ -54,7 +54,6 @@ constexpr char* copy_chars(char* begin, char* end, const char(&s)[size])
 char* to_chars(char* begin, char* end, bool b);
 char* to_chars(char* begin, char* end, float b);
 char* to_chars(char* begin, char* end, double b);
-char* to_chars(char* begin, char* end, long double b);
 
 template <typename T>
 concept printable = requires (char* begin, char* end, T x)

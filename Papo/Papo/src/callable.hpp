@@ -10,5 +10,5 @@ concept callable = requires (F f, Args... args)
 template <typename F, typename ...Args>
 using return_t = decltype(declval<F>()(declval<Args>()...));
 
-template <typename R, typename F, typename ...Args>
+template <typename F, typename R, typename ...Args>
 concept callable_r = callable<F, Args...> && convertible_to<return_t<F, Args...>, R>;

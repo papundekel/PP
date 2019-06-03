@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\string.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Q.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -579,9 +576,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\span.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\string.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\swap.hpp">

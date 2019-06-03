@@ -1,7 +1,9 @@
 #pragma once
 #include <cstdlib>
+#include "mem_cpy.hpp"
 #include "fundamental.hpp"
 #include "fit_count.hpp"
+#include "swap.hpp"
 template <typename T>
 class block
 {
@@ -18,11 +20,18 @@ public:
 		: ptr(allocate(count))
 		, _count(count)
 	{}
+	template <typename U>
+	block(const block<U>& b, size_t c)
+		: ptr(allocate(c))
+		, _count(c)
+	{
+		mem_cpy(ptr, b.begin(), fit_count<sizeof(U), sizeof(T)>(c));
+	}
 	block(const block&) = delete;
 	template <typename U>
 	block(block<U>&& other)
 		: ptr(reinterpret_cast<T*>(other.ptr))
-		, _count(fit_count<sizeof(T), sizeof(U)>(other._count))
+		, _count(fit_count<sizeof(T), sizeof(U)>(other.count()))
 	{
 		other.ptr = nullptr;
 		other._count = 0;
