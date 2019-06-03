@@ -1,25 +1,11 @@
 #include "output.hpp"
-#include "block.hpp"
-#include "u_fill.hpp"
-#include "list.hpp"
 #include "input.hpp"
-
-bool f(char c)
-{
-	return std::isspace(c);
-}
+#include "accumulate.hpp"
 
 int main()
 {
-	char buffer[100];
-	range r(buffer);
-
-	r.end = read(buffer, [](char c) {return c == '\n'; });
-	*r.end = 0;
-
-	auto x = split(r, f);
-
-	print(x);
+	int arr[] = { 1, 4, 5, 65, 1 };
+	print(accumulate(range(arr)));
 
 	return 0;
 }

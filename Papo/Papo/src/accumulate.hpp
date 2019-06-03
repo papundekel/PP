@@ -1,11 +1,11 @@
 #pragma once
 #include "range.hpp"
 #include "remove_cv.hpp"
-#include "base_type.hpp"
-template <typename it, typename it_end, typename T = remove_cv<base_type<it>>>
-T accumulate(range<it, it_end> r, T init_value = T())
+
+template <range_t R, typename T = remove_cv<typename R::base_t>>
+T accumulate(R r, T init = T())
 {
 	for (; r.begin != r.end; ++r.begin)
-		init_value += *r.begin;
-	return init_value;
+		init += *r.begin;
+	return init;
 }
