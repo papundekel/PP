@@ -1,11 +1,9 @@
 #pragma once
 #include "range.hpp"
-#include "is_callable.hpp"
-#include "base_type.hpp"
-template <typename it, typename test>
-it find_if_not(range<it> r, test t)
+#include "callable.hpp"
+template <range_t R, callable_r<bool, typename R::base_t> F>
+auto find_if_not(R r, F f)
 {
-	static_assert(is_callable<bool, test, base_type<it>>, "find_if_not: t must be callable as \"bool(base_type<it>)\"");
-	for (; r.begin != r.end && t(*r.begin); ++r.begin);
+	for (; r.begin != r.end && f(*r.begin); ++r.begin);
 	return r.begin;
 }
