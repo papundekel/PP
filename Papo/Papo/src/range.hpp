@@ -74,8 +74,11 @@ struct range
 	{
 		return *prev(end);
 	}
-
-	bool contains(it i)
+	bool empty() const
+	{
+		return begin == end;
+	}
+	bool contains(it i) const
 	{
 		if constexpr (ra)
 		{
