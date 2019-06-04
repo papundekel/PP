@@ -1,8 +1,7 @@
 #pragma once
 #include "find_if.hpp"
-template <typename it, typename test>
-bool any_of(range<it> r, test t)
+template <range_t R, typename F>
+bool any_of(R r, F f)
 {
-	static_assert(is_callable<bool, test, base_type<it>>, "any_of: t must be callable as \"bool(base_type<it>)\"");
-	return find_if(r.begin, r.end, t) != r.end;
+	return find_if(r.begin, r.end, f) != r.end;
 }

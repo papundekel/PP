@@ -1,11 +1,9 @@
 #pragma once
 #include "range.hpp"
-#include "is_callable.hpp"
-#include "base_type.hpp"
-template <typename it, typename it_end, typename test>
-it find_if(range<it, it_end> r, test t)
+#include "callable.hpp"
+template <range_t R, callable_r<bool, typename R::base_t> test>
+auto find_if(R r, F f)
 {
-	static_assert(is_callable<bool, test, base_type<it>>, "find_if: t must be callable as \"bool(base_type<it>)\"");
-	for (; r.begin != r.end && !t(*r.begin); ++r.begin);
+	for (; r.begin != r.end && !f(*r.begin); ++r.begin);
 	return r.begin;
 }
