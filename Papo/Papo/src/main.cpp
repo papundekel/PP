@@ -1,6 +1,6 @@
 #include "output.hpp"
 #include "input.hpp"
-#include "adjacent_find.hpp"
+#include "list.hpp"
 
 int main()
 {
