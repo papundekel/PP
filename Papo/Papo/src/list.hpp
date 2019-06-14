@@ -23,56 +23,43 @@
 
 template<typename T, size_t count = 0> class list
 {
-	T m_buffer[count];
-
 public:
-	list() = default;
-	template <typename it, typename it_end>
-	list(range<it, it_end> r)
-	{
-		copy(r, range(*this));
-	}
-	list(const std::initializer_list<T>& list)
-	{
-		auto i = copy(range(list), range(*this));
-		fill(range(i, end()));
-	}
-	~list() = default;
+	T buffer[count];
 
 	using		iterator = iterator_random_access<T>;
 	using const_iterator = iterator_random_access<const T>;
 
 	iterator begin()
 	{
-		return m_buffer;
+		return buffer;
 	}
 	const_iterator begin() const
 	{
-		return m_buffer;
+		return buffer;
 	}
 	iterator end()
 	{
-		return m_buffer + count;
+		return buffer + count;
 	}
 	const_iterator end() const
 	{
-		return m_buffer + count;
+		return buffer + count;
 	}
 	operator T*()
 	{
-		return m_buffer;
+		return buffer;
 	}
 	operator const T*() const
 	{
-		return m_buffer;
+		return buffer;
 	}
 	T& operator[](size_t offset)
 	{
-		return m_buffer[offset];
+		return buffer[offset];
 	}
 	const T& operator[](size_t offset) const
 	{
-		return m_buffer[offset];
+		return buffer[offset];
 	}
 	constexpr size_t size() const
 	{
@@ -155,7 +142,6 @@ public:
 		if (buffer)
 			destroy(range(*this));
 	}
-
     using		iterator = iterator_random_access<		T>;
     using const_iterator = iterator_random_access<const T>;
 

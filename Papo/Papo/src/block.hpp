@@ -4,12 +4,13 @@
 #include "fundamental.hpp"
 #include "fit_count.hpp"
 #include "swap.hpp"
+#include "destroy.hpp"
 template <typename T>
 class block
 {
 	static inline T* allocate(size_t count)
 	{
-		return reinterpret_cast<T*>(malloc(count * sizeof(T)));
+		return count != 0 ? reinterpret_cast<T*>(malloc(count * sizeof(T))) : nullptr;
 	}
 
 	T* ptr;

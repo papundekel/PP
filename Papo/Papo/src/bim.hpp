@@ -1,6 +1,7 @@
 #pragma once
 #include "move.hpp"
 #include "swap.hpp"
+#include "output.hpp"
 
 template <typename T = char>
 class bim

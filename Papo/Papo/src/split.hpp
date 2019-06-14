@@ -1,22 +1,37 @@
 #pragma once
 #include "block.hpp"
+#include "u_copy.hpp"
+#include "next.hpp"
+#include "output.hpp"
 
 template <range_t R, callable_r<bool, typename R::base_t> P>
-auto split(R r, P&& p)
+auto split(R r, P p)
 {
 	using T = typename R::base_t;
 
-	list<list<T>> arrays;
-	list<T> arr;
+	size_t x = 1;
 
-	for (; r.begin != r.end; ++r.begin)
+	for (auto i = r.begin; i != r.end; ++i)
 	{
-		if (!p(*r.begin))
-			arr.push_back(*r.begin);
+		if (p(*i))
+			++x;
+	}
+
+	block<block<T>> arrays(x);
+	range s(arrays);
+
+	x = 0;
+
+	for (range t(r.begin, r.begin); t.end != r.end; ++t.end)
+	{
+		if (!p(*t.end))
+			++x;
 		else
 		{
-			arrays.push_back(move(arr));
-			arr = list<T>();
+			construct(s.begin, x);
+			u_copy(t, range(*s.begin));
+			t.begin = next(t.end);
+			x = 0;
 		}
 	}
 

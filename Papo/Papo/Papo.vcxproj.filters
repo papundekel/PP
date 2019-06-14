@@ -638,7 +638,7 @@
     <ClInclude Include="src\Z.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="split.hpp">
+    <ClInclude Include="src\split.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
