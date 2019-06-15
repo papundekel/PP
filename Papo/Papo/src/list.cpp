@@ -1,4 +1,5 @@
 #include "list.hpp"
+#include "list.hpp"
 #include <cstring>
 #include "sentinel.hpp"
 #include "mem_set.hpp"
@@ -123,10 +124,10 @@ list<char>& list<char>::_append(const char* cstring, size_t slength)
 	if (length() + slength > capacity())
 	{
 		block<char> new_buffer(2 * capacity());
-		mem_cpy(new_buffer.begin(), buffer.begin(), length());
+		mem_cpy(buffer.begin(), new_buffer.begin(), length());
 		buffer = move(new_buffer);
 	}
-	mem_cpy(buffer.begin() + length(), cstring, slength);
+	mem_cpy(cstring, buffer.begin() + length(), slength);
 	m_length += slength;
 
 	return *this;
@@ -159,7 +160,7 @@ list<char>::list(const char* ptr, size_t length)
 	: m_length(length)
 	, buffer(m_length)
 {
-	mem_cpy(buffer.begin(), ptr, m_length);
+	mem_cpy(ptr, buffer.begin(), m_length);
 }
 list<char>::list(const char* ptr)
 	: list<char>(ptr, length(ptr))

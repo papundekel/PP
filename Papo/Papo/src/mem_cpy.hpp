@@ -1,13 +1,15 @@
 #pragma once
 #include <cstring>
-template <typename Dest, typename Src>
-inline Dest* mem_cpy(Dest* dest, const Src* src, size_t count)
+#include "min.hpp"
+
+template <typename Src, typename Dest>
+inline Dest* mem_cpy(const Src* src, Dest* dest, size_t count)
 {
 	return reinterpret_cast<Dest*>(memcpy(dest, src, count * sizeof(Src)));
 }
 
-template <typename Dest, typename Src, size_t s>
-inline Dest* mem_cpy(Dest* dest, const Src(&src)[s])
+template <typename Src, size_t src_size, typename Dest>
+inline Dest* mem_cpy(const Src(&src)[src_size], Dest* dest)
 {
-	return mem_copy(dest, src, sizeof(src));
+	return mem_cpy(dest, src, src_size);
 }

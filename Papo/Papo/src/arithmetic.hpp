@@ -10,9 +10,8 @@ concept arithmetic = requires(T x, T y)
     { x - y } -> T;
     { x * y } -> T;
     { x / y } -> T;
-    { -x } -> T;
     { x += y } -> T&;
-    { x -= y } -> T&;
+	{ x -= y } -> T&;
     { x *= y } -> T&;
     { x /= y } -> T&;
 } && equatable<T> && ordered<T> && incrementable<T> && decrementable<T>;

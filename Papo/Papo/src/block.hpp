@@ -26,7 +26,7 @@ public:
 		: ptr(allocate(c))
 		, _count(c)
 	{
-		mem_cpy(ptr, b.begin(), fit_count<sizeof(U), sizeof(T)>(c));
+		mem_cpy(b.begin(), ptr, fit_count<sizeof(U), sizeof(T)>(c));
 	}
 	block(const block&) = delete;
 	template <typename U>

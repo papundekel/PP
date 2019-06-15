@@ -125,7 +125,7 @@
     <ClInclude Include="src\is_assignable.hpp" />
     <ClInclude Include="src\is_callable.hpp" />
     <ClInclude Include="src\is_comparable.hpp" />
-    <ClInclude Include="src\is_const.hpp" />
+    <ClInclude Include="src\const_type.hpp" />
     <ClInclude Include="src\is_constructible.hpp" />
     <ClInclude Include="src\is_container.hpp" />
     <ClInclude Include="src\is_convertible.hpp" />

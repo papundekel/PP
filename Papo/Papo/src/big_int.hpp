@@ -2,42 +2,37 @@
 #include <type_traits>
 #include <algorithm>
 #include <functional>
+#include <cstdint>
 #include "range.hpp"
+#include "integral_unsigned.hpp"
+#include "const_type.hpp"
 
-template <typename T>
-constexpr std::enable_if_t<std::is_integral_v<T>,
-uint8_t> sign(const T* value)
+template <integral T>
+constexpr uint8_t sign(const T* value)
 {
-	if constexpr (!std::is_signed_v<T>)
+	if constexpr (integral_unsigned<T>)
 		return 0;
 	else
-		return reinterpret_cast<const uint8_t*>(value)[sizeof(T) - 1] >> 7 == 1 ? 0b11111111ui8 : 0;
+		return reinterpret_cast<const uint8_t*>(value)[sizeof(T) - 1] >> 7 == 1 ? 255 : 0;
 }
 
 template <typename T>
 constexpr auto lower_byte(T& x)
 {
-	if constexpr (std::is_const_v<T>)
+	if constexpr (const_type<T>)
 		return reinterpret_cast<const uint8_t*>(&x);
 	else
 		return reinterpret_cast<	  uint8_t*>(&x);
 }
 
 template <typename T>
-uint8_t get_byte(T& x, size_t index)
+auto get_byte(T& x, size_t index)
 {
 	return lower_byte(x)[index];
 }
 
-template <size_t _size>
+template <size_t size>
 class big_int;
-namespace std
-{
-	template <size_t s>
-	constexpr bool is_integral_v<big_int<s>> = true;
-	template <size_t s>
-	constexpr bool is_signed_v  <big_int<s>> = true;
-}
 
 template <size_t _size>
 class big_int
@@ -49,11 +44,11 @@ class big_int
 		{
 			memcpy(dest, source, sizeof(source_t));
 
-			uint8_t s = 0;
+			uint8_t value = 0;
 			if constexpr (std::is_signed_v<source_t> && std::is_signed_v<dest_t>)
-				s = sign(source);
+				value = sign(source);
 
-			memset(reinterpret_cast<uint8_t*>(dest) + sizeof(source_t), s,	sizeof(dest_t) - sizeof(source_t));
+			memset(reinterpret_cast<uint8_t*>(dest) + sizeof(source_t), value, sizeof(dest_t) - sizeof(source_t));
 		}
 		else
 			memcpy(dest, source, sizeof(dest_t));
