@@ -1,4 +1,5 @@
 #include "output_basic.hpp"
+
 static constexpr char* find_end(char* begin)
 {
 	for (; *begin != 0; ++begin);
@@ -7,7 +8,7 @@ static constexpr char* find_end(char* begin)
 
 char* copy_char(char* begin, char* end, char c)
 {
-	if (end - begin >= sizeof(c))
+	if (end - begin > 0)
 	{
 		*begin = c;
 		return ++begin;
@@ -15,14 +16,12 @@ char* copy_char(char* begin, char* end, char c)
 	else
 		throw output_error();
 }
+
 char to_char(unsigned char digit)
 {
-	return digit < 10 ? '0' + digit : 'A' - 10 + digit;
+	return (digit < 10 ? '0' : 'A' - 10) + digit;
 }
-char* to_chars(char* begin, char* end, bool b)
-{
-	return b ? copy_chars(begin, end, "true") : copy_chars(begin, end, "false");
-}
+
 char* to_chars(char* begin, char* end, float f)
 {
 	snprintf(begin, end - begin, "%f", f);

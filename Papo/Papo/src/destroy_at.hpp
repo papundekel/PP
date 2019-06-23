@@ -1,15 +1,13 @@
 #pragma once
-#include "enable_if.hpp"
-#include "is_iterator.hpp"
-#include "is_arithmetic.hpp"
-#include "base_type.hpp"
+#include "iterator.hpp"
+#include "arithmetic.hpp"
+#include "pointer.hpp"
 
-template <typename it>
-enable_if<is_iterator<it>,
-void> destroy_at(it where)
+template <iterator I>
+void destroy_at(I i)
 {
-	using base = base_type<it>;
+	using base = base_t<I>;
 
-	if constexpr (!is_arithmetic<base> && !is_pointer<base>)
-		where->~base();
+	if constexpr (!arithmetic<base> && !pointer<base>)
+		i->~base();
 }

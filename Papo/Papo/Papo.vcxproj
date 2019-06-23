@@ -32,6 +32,9 @@
     <ClCompile Include="src\Q.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="reference.hpp" />
+    <ClInclude Include="reference_lvalue.hpp" />
+    <ClInclude Include="reference_rvalue.hpp" />
     <ClInclude Include="src\accumulate.hpp" />
     <ClInclude Include="src\add_const.hpp" />
     <ClInclude Include="src\add_cv.hpp" />
@@ -137,7 +140,6 @@
     <ClInclude Include="src\matrix.hpp" />
     <ClInclude Include="src\max.hpp" />
     <ClInclude Include="src\max_element.hpp" />
-    <ClInclude Include="src\memcopy.hpp" />
     <ClInclude Include="src\memzero.hpp" />
     <ClInclude Include="src\min.hpp" />
     <ClInclude Include="src\min_element.hpp" />
@@ -275,6 +277,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -286,6 +290,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -299,6 +305,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -314,6 +322,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

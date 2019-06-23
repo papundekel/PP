@@ -12,7 +12,7 @@ struct range
 	using begin_t = it;
 	using end_t = it_end;
 	using base_t = ::base_t<begin_t>;
-	static constexpr bool ra = iterator_ra<it> && iterator_ra<it_end>;
+	static constexpr bool random_access = iterator_ra<it> && iterator_ra<it_end>;
 	static constexpr bool finite = !same<infinity, it_end>;
 
 	it begin;
@@ -41,9 +41,26 @@ struct range
 		, end(other.end)
 	{}
 
+	range& operator++()
+	{
+
+	}
+	range& operator++(int)
+	{
+
+	}
+	range& operator--()
+	{
+
+	}
+	range& operator--(int)
+	{
+
+	}
+
 	range operator+(size_t shift) const
 	{
-		if constexpr (ra)
+		if constexpr (random_access)
 			return range(::min(begin + shift, end), end);
 		else 
 		{
@@ -55,7 +72,7 @@ struct range
 
 	range operator-(size_t shift) const requires iterator_bi<it_end>
 	{
-		if constexpr (ra)
+		if constexpr (random_access)
 			return range(begin, ::max(begin, end - shift));
 		else 
 		{
@@ -69,7 +86,6 @@ struct range
 	{
 		return *begin;
 	}
-
 	decltype(auto) last() const
 	{
 		return *prev(end);
@@ -80,10 +96,8 @@ struct range
 	}
 	bool contains(it i) const
 	{
-		if constexpr (ra)
-		{
+		if constexpr (random_access)
 			return !(i < begin) && i < end;
-		}
 		else
 		{
 			auto j = begin;

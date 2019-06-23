@@ -578,7 +578,7 @@ public:
 
 using string = list<char>;
 
-template <typename it, typename it_end> list(range<it, it_end>)->list<base_type<it>>;
+template <range_t R> list(R)->list<typename R::base_t>;
 
 template <typename T>
 void swap(list<T>& left, list<T>& right)

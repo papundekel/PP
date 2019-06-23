@@ -1,9 +1,9 @@
 #include "output.hpp"
-#include "arithmetic_signed.hpp"
+#include "block.hpp"
 
 int main()
 {
-	print(arithmetic_signed<int>);
+	
 
 	return 0;
 }

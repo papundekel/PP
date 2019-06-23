@@ -362,9 +362,6 @@
     <ClInclude Include="src\max_element.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\memcopy.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\memzero.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -555,6 +552,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\const_type.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="reference.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="reference_lvalue.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="reference_rvalue.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

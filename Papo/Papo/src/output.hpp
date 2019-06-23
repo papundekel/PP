@@ -4,7 +4,7 @@
 
 template <size_t s>
 void print(const char(&buffer)[s])
-{	std::puts(buffer);}
+{std::puts(buffer);}
 
 void print(char c);
 void print(const char* cstring);
@@ -22,8 +22,9 @@ void print(const T& x)
 		print(buffer);
 	}
 }
-template <typename it, typename it_end>
-auto print(range<it, it_end> r)
+
+template <range_t R>
+auto print(R r)
 {
 	for (; r.begin != r.end; ++r.begin)
 		print(*r.begin);
