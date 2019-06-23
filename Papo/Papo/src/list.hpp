@@ -1,7 +1,6 @@
 #pragma once
 #include <initializer_list>
 #include <functional>
-#include <fstream>
 #include "destroy.hpp"
 #include "iterator_random_access.hpp"
 #include "copy.hpp"
@@ -73,55 +72,36 @@ template<typename T> class list<T>
 
 	class index_out_of_range{};
 
-	static size_t file_count(const char* filename)
-	{
-		size_t result;
-		std::ifstream file(filename);
-		file.read(reinterpret_cast<char*>(&result), sizeof(size_t));
-		file.close();
-		return result;
-	}
-
 public:
 	list()
 		: m_count(0)
 		, buffer(16)
 	{}
-	explicit list(const char* filename)
-		: m_count(file_count(filename))
-		, buffer(m_count)
-	{
-		std::ifstream file(filename);
-
-		file.read(reinterpret_cast<char*>(buffer(0)), m_count * sizeof(T));
-		file.close();
-	}
-	explicit list(size_t capacity)
+	explicit list(size_t cap)
 		: m_count(0)
-		, buffer(capacity)
+		, buffer(cap)
 	{}
-	list(size_t count, size_t capacity)
-		: m_count(count)
-		, buffer(capacity)
+	list(size_t cnt, size_t cap)
+		: m_count(cnt)
+		, buffer(cap)
 	{
-		if (count > capacity)
-			m_count = capacity;
-		construct<T>(range(*this));
+		construct(range(*this));
 	}
-	list(size_t count, size_t capacity, const T& value)
-		: m_count(count)
-		, buffer(capacity)
+	list(size_t cnt, size_t cap, const T& value)
+		: m_count(cnt)
+		, buffer(cap)
 	{
 		u_fill(range(*this), value);
 	}
-	list(size_t count, T(&g)())
-		: m_count(count)
-		, buffer(m_count)
+	template <typename G>
+	list(size_t cnt, size_t cap, G g)
+		: m_count(cnt)
+		, buffer(cap)
 	{
 		u_generate(range(*this), g);
 	}
-	template <typename it, typename it_end>
-	list(range<it, it_end> r)
+	template <range_t R>
+	list(R r)
 		: m_count(distance(r))
 		, buffer(m_count)
 	{
@@ -142,30 +122,28 @@ public:
 		if (buffer)
 			destroy(range(*this));
 	}
-    using		iterator = iterator_random_access<		T>;
-    using const_iterator = iterator_random_access<const T>;
 
-	iterator begin()
+	T* begin()
 	{
 		return buffer(0);
 	}
-	const_iterator begin() const
+	const T* begin() const
 	{
 		return buffer(0);
 	}
-	iterator end()
+	T* end()
 	{
 		return buffer(m_count);
 	}
-	const_iterator end() const
+	const T* end() const
 	{
 		return buffer(m_count);
 	}
-	iterator operator()(size_t index)
+	T* operator()(size_t index)
 	{
 		return buffer(index);
 	}
-	const_iterator operator()(size_t index) const
+	const T* operator()(size_t index) const
 	{
 		return buffer(index);
 	}
@@ -278,7 +256,7 @@ public:
 		return !(*this == other);
 	}
 	template <typename U>
-	void insert(iterator where, U&& value)
+	void insert(T* where, U&& value)
 	{
 		if (m_count != buffer.count())
 		{			
@@ -305,7 +283,7 @@ public:
 		++m_count;
 	}
 	template <typename it, typename it_end>
-	void insert(iterator where, range<it, it_end> what)
+	void insert(T* where, range<it, it_end> what)
 	{
 		auto size = distance(what);
 
@@ -372,7 +350,7 @@ public:
 		--m_count;
 	}
 
-	iterator erase(iterator where)
+	T* erase(T* where)
 	{
 		destroy_at(where);
 		range r(where, end());
@@ -380,11 +358,9 @@ public:
 		--m_count;
 		return next(where);
 	}
-	template <typename it, typename it_end>
-	iterator erase(range<it, it_end> r)
+	T* erase(range<T*> r)
 	{
-		for (; r.begin != r.end; ++r.begin)
-			destroy_at(r.begin);
+		destroy(r);
 		m_count -= distance(r);
 		return r.begin;
 	}

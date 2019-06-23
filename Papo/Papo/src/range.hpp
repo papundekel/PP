@@ -6,6 +6,8 @@
 #include "min.hpp"
 #include "iterator_ra.hpp"
 #include "prev.hpp"
+#include "distance.hpp"
+
 template <iterator it, sentinel<it> it_end = it>
 struct range
 {
@@ -43,19 +45,23 @@ struct range
 
 	range& operator++()
 	{
-
+		++begin;
+		return *this;
 	}
 	range& operator++(int)
 	{
-
+		++end;
+		return *this;
 	}
 	range& operator--()
 	{
-
+		--begin;
+		return *this;
 	}
 	range& operator--(int)
 	{
-
+		--end;
+		return *this;
 	}
 
 	range operator+(size_t shift) const
@@ -65,7 +71,7 @@ struct range
 		else 
 		{
 			auto result = *this;
-			for (size_t i = 0; i != shift && result.begin != end; ++result.begin, ++i);
+			for (size_t i = 0; i != shift && result.begin != end; ++result, ++i);
 			return result;
 		}
 	}
@@ -77,7 +83,7 @@ struct range
 		else 
 		{
 			auto result = *this;
-			for (size_t i = 0; i != shift && result.end != begin; --result.end, ++i);
+			for (size_t i = 0; i != shift && result.end != begin; result--, ++i);
 			return result;
 		}
 	}
@@ -94,10 +100,21 @@ struct range
 	{
 		return begin == end;
 	}
+	size_t count() const
+	{
+		if constexpr (random_access)
+			return r.end - r.begin;
+		else
+		{
+			size_t hops = 0;
+			for (; !r.empty(); ++hops, ++r);
+			return hops;
+		}
+	}
 	bool contains(it i) const
 	{
 		if constexpr (random_access)
-			return !(i < begin) && i < end;
+			return i >= begin && i < end;
 		else
 		{
 			auto j = begin;
@@ -110,9 +127,13 @@ struct range
 template <container C> range(C&)->range<begin_t<C>, end_t<C>>;
 template <typename T> range(const std::initializer_list<T>)->range<const T*>;
 
-template<typename T>
-constexpr bool is_range = false;
-template<typename T, typename U>
-constexpr bool is_range<range<T, U>> = true;
+namespace detail
+{
+	template<typename T>
+	constexpr bool range_t = false;
+	template<typename T, typename U>
+	constexpr bool range_t<range<T, U>> = true;
+}
+
 template <typename T>
-concept range_t = is_range<T>;
+concept range_t = detail::range_t<T>;

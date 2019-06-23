@@ -563,5 +563,8 @@
     <ClInclude Include="reference_rvalue.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="exchange.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

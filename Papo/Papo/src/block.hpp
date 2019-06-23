@@ -5,6 +5,7 @@
 #include "fit_count.hpp"
 #include "swap.hpp"
 #include "destroy.hpp"
+
 template <typename T>
 class block
 {
@@ -14,17 +15,16 @@ class block
 	}
 
 	T* ptr;
-	size_t _count;
+	size_t cnt;
 
 public:
-	block(size_t count)
+	explicit block(size_t count)
 		: ptr(allocate(count))
-		, _count(count)
+		, cnt(count)
 	{}
 	template <typename U>
 	block(const block<U>& b, size_t c)
-		: ptr(allocate(c))
-		, _count(c)
+		: block(c)
 	{
 		mem_cpy(b.begin(), ptr, fit_count<sizeof(U), sizeof(T)>(c));
 	}
@@ -35,7 +35,7 @@ public:
 		, _count(fit_count<sizeof(T), sizeof(U)>(other.count()))
 	{
 		other.ptr = nullptr;
-		other._count = 0;
+		other.cnt = 0;
 	}
 	~block()
 	{
@@ -55,7 +55,7 @@ public:
 	}
 	size_t count() const
 	{
-		return _count;
+		return cnt;
 	}
 	void release()
 	{

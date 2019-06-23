@@ -7,70 +7,41 @@ template <typename T = char>
 class bim
 {
 public:
-	T* handle;
+	T data;
 
 	bim()
-		: handle(new T)
+		: data()
 	{
 		print("bim def ctor");
 	}
 	bim(const bim& bim)
-		: handle(new T(*bim.handle))
+		: data(bim.data)
 	{
 		print("bim copy ctor");
 	}
 	bim(bim&& bim) noexcept
-		: handle(bim.handle)
+		: data(move(bim.data))
 	{
-		bim.handle = nullptr;
 		print("bim move ctor");
-	}
-	bim(const T& value)
-		: handle(new T(value))
-	{
-		print("bim value copy ctor");
-	}
-	bim(T&& value)
-		: handle(new T(move(value)))
-	{
-		print("bim value move ctor");
 	}
 	bim& operator=(const bim& right)
 	{
-		*handle = *right.handle;
+		data = right.data;
 		print("bim copy assignment");
 		return *this;
 	}
 	bim& operator=(bim&& right)
 	{
-		swap(handle, right.handle);
-
+		data = move(right.data);
 		print("bim move assignment");
 		return *this;
 	}
 	~bim()
 	{
-		if (handle)
-			print("bim dtor");
-		else
-			print("bim null dtor");
-
-		delete handle;
+		print("bim dtor");
 	}
-	T& operator*() &
+	operator T()
 	{
-		return *handle;
-	}
-	const T& operator*() const&
-	{
-		return *handle;
-	}
-	T&& operator*() &&
-	{
-		return move(*handle);
-	}
-	const T&& operator*() const&&
-	{
-		return move(*handle);
+		return data;
 	}
 };

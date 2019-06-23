@@ -5,6 +5,6 @@
 template <range_t R>
 void destroy(R r)
 {
-	for (; r.begin != r.end; ++r.begin)
+	for (; !r.empty(); ++r)
 		destroy_at(r.begin);
 }

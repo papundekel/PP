@@ -32,6 +32,7 @@
     <ClCompile Include="src\Q.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="exchange.hpp" />
     <ClInclude Include="reference.hpp" />
     <ClInclude Include="reference_lvalue.hpp" />
     <ClInclude Include="reference_rvalue.hpp" />
