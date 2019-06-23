@@ -6,7 +6,6 @@
 #include "min.hpp"
 #include "iterator_ra.hpp"
 #include "prev.hpp"
-#include "distance.hpp"
 
 template <iterator it, sentinel<it> it_end = it>
 struct range
@@ -67,7 +66,7 @@ struct range
 	range operator+(size_t shift) const
 	{
 		if constexpr (random_access)
-			return range(::min(begin + shift, end), end);
+			return range(min(begin + shift, end), end);
 		else 
 		{
 			auto result = *this;
@@ -76,10 +75,11 @@ struct range
 		}
 	}
 
-	range operator-(size_t shift) const requires iterator_bi<it_end>
+	range operator-(size_t shift) const
+	requires iterator_bi<it_end>
 	{
 		if constexpr (random_access)
-			return range(begin, ::max(begin, end - shift));
+			return range(begin, max(begin, end - shift));
 		else 
 		{
 			auto result = *this;
@@ -103,11 +103,11 @@ struct range
 	size_t count() const
 	{
 		if constexpr (random_access)
-			return r.end - r.begin;
+			return end - begin;
 		else
 		{
 			size_t hops = 0;
-			for (; !r.empty(); ++hops, ++r);
+			for (; !empty(); ++hops, ++begin);
 			return hops;
 		}
 	}

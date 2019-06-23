@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdio>
+#include "range.hpp"
 #include "integral.hpp"
-#include "distance.hpp"
 #include "mem_mov.hpp"
 #include "mem_cpy.hpp"
 
@@ -77,5 +77,5 @@ template <size_t max_size = 256, typename T>
 size_t output_length(const T& x)
 {
 	char buffer[max_size];
-	return distance(range(buffer, to_chars(buffer, x)));
+	return range(buffer, to_chars(buffer, x)).count();
 }

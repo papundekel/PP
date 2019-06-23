@@ -9,7 +9,6 @@
 #include "u_move.hpp"
 #include "u_fill.hpp"
 #include "u_generate.hpp"
-#include "distance.hpp"
 #include "range.hpp"
 #include "bit.hpp"
 #include "swap.hpp"
@@ -67,54 +66,49 @@ public:
 };
 template<typename T> class list<T>
 {
-	size_t m_count;
+	size_t cnt;
 	block<T> buffer;
 
-	class index_out_of_range{};
+	class index_out_of_range {};
 
 public:
 	list()
-		: m_count(0)
+		: cnt(0)
 		, buffer(16)
 	{}
 	explicit list(size_t cap)
-		: m_count(0)
+		: cnt(0)
 		, buffer(cap)
 	{}
-	list(size_t cnt, size_t cap)
-		: m_count(cnt)
+	template <typename ...Args>
+	list(size_t cnt, size_t cap, Args&&... args)
+		: cnt(cnt)
 		, buffer(cap)
 	{
-		construct(range(*this));
+		u_fill(range(*this), forward<Args>(args)...);
 	}
-	list(size_t cnt, size_t cap, const T& value)
-		: m_count(cnt)
-		, buffer(cap)
-	{
-		u_fill(range(*this), value);
-	}
-	template <typename G>
+	template <callable<> G>
 	list(size_t cnt, size_t cap, G g)
-		: m_count(cnt)
+		: cnt(cnt)
 		, buffer(cap)
 	{
 		u_generate(range(*this), g);
 	}
 	template <range_t R>
 	list(R r)
-		: m_count(distance(r))
-		, buffer(m_count)
+		: cnt(r.count())
+		, buffer(cnt)
 	{
 		u_copy(r, range(*this));
 	}
 	list(const list<T>& copy)
-		: m_count(copy.count())
-		, buffer(m_count)
+		: cnt(copy.count())
+		, buffer(cnt)
 	{
 		u_copy(range(copy), range(*this));
 	}
 	list(list<T>&& other) noexcept
-		: m_count(other.count())
+		: cnt(other.count())
 		, buffer(move(other.buffer))
 	{}
 	~list()
@@ -133,11 +127,11 @@ public:
 	}
 	T* end()
 	{
-		return buffer(m_count);
+		return buffer(cnt);
 	}
 	const T* end() const
 	{
-		return buffer(m_count);
+		return buffer(cnt);
 	}
 	T* operator()(size_t index)
 	{
@@ -157,23 +151,23 @@ public:
 	}
 	T& back()
 	{
-		return buffer[m_count - 1];
+		return buffer[cnt - 1];
 	}
 	const T& back() const
 	{
-		return buffer[m_count - 1];
+		return buffer[cnt - 1];
 	}
 	bool empty() const
 	{
-		return m_count == 0;
+		return cnt == 0;
 	}
 	size_t count() const
 	{
-		return m_count;
+		return cnt;
 	}
 	size_t size() const
 	{
-		return m_count * sizeof(T) + sizeof(list<T>);
+		return cnt * sizeof(T) + sizeof(list<T>);
 	}
 	size_t capacity() const
 	{
@@ -190,14 +184,14 @@ public:
 	void clear(size_t capacity = 16)
 	{
 		destroy(range(*this));
-		m_count = 0;
+		cnt = 0;
 		buffer.reset(capacity);
 	}
 	void shrink_to_fit()
 	{
-		if (buffer.count() != m_count)
+		if (buffer.count() != cnt)
 		{
-			block<T> new_buffer(m_count);
+			block<T> new_buffer(cnt);
 			u_move(range(*this), range(new_buffer));
 			destroy(range(*this));
 			buffer = move(new_buffer);
@@ -209,7 +203,7 @@ public:
 		{
 			destroy(range(*this));
 
-			m_count = right.count();
+			cnt = right.count();
 			buffer = move(right.buffer);
 
 			u_copy(range(right), range(*this));
@@ -235,14 +229,14 @@ public:
 
 	T& at(size_t index)
 	{
-		if (index < m_count)
+		if (index < cnt)
 			return buffer[index];
 		else
 			throw index_out_of_range();
 	}
 	const T& at(size_t index) const
 	{
-		if (index < m_count)
+		if (index < cnt)
 			return buffer[index];
 		else
 			throw index_out_of_range();
@@ -258,9 +252,9 @@ public:
 	template <typename U>
 	void insert(T* where, U&& value)
 	{
-		if (m_count != buffer.count())
+		if (cnt != buffer.count())
 		{			
-			if (m_count != 0)
+			if (cnt != 0)
 			{
 				construct(end(), move(back()));
 				move_backward(range(where, end() - 1), range(*this));
@@ -280,14 +274,14 @@ public:
 			destroy(range(*this));
 			buffer = move(new_buffer);
 		}
-		++m_count;
+		++cnt;
 	}
 	template <typename it, typename it_end>
 	void insert(T* where, range<it, it_end> what)
 	{
 		auto size = distance(what);
 
-		if (m_count + size <= buffer.count())
+		if (cnt + size <= buffer.count())
 		{
 			size_t dist = distance({ where, end() });
 			if (size <= dist)
@@ -315,7 +309,7 @@ public:
 			destroy(range(*this));
 			buffer = move(new_buffer);
 		}
-		m_count += size;
+		cnt += size;
 	}
 	template <typename U>
 	void insert(size_t index, U&& value)
@@ -342,12 +336,12 @@ public:
 
 			buffer = move(new_buffer);
 		}
-		++m_count;
+		++cnt;
 	}
 	void pop_back()
 	{
 		destroy_at(end());
-		--m_count;
+		--cnt;
 	}
 
 	T* erase(T* where)
@@ -355,13 +349,13 @@ public:
 		destroy_at(where);
 		range r(where, end());
 		move(r + 1, r);
-		--m_count;
+		--cnt;
 		return next(where);
 	}
 	T* erase(range<T*> r)
 	{
 		destroy(r);
-		m_count -= distance(r);
+		cnt -= distance(r);
 		return r.begin;
 	}
 
@@ -434,12 +428,12 @@ public:
 };
 template<> class list<bool>
 {
-	size_t m_count;
+	size_t cnt;
 	block<unsigned char> m_block;
 
 	constexpr size_t fit_count()
 	{
-		return ::fit_count<byte_size, sizeof(unsigned char)>(m_count);
+		return ::fit_count<byte_size, sizeof(unsigned char)>(cnt);
 	}
 
 	bit_ptr bit(size_t index) const;
@@ -449,7 +443,7 @@ public:
 	list(size_t count, bool value);
 	template <typename it, typename it_end>
 	list(range<it, it_end> r)
-		: m_count(distance(r))
+		: cnt(distance(r))
 		, m_block(fit_count())
 	{
 		copy(r, range(*this));
@@ -491,15 +485,7 @@ public:
 	list(size_t count, char c);
 	list(const char* ptr);
 	list(const char* const ptr, size_t length);
-	/*template <typename it>
-	list(it begin, it end)
-		: m_length(distance(begin, end))
-		, m_capacity(m_length + 1)
-		, m_buffer(new char[m_capacity])
-	{
-		copy(begin, end, m_buffer);
-	}*/
-	list(const list&copy);
+	list(const list& copy);
 	list(list&& move) noexcept;
 
 	list& operator=(const list& other);
@@ -559,6 +545,6 @@ template <range_t R> list(R)->list<typename R::base_t>;
 template <typename T>
 void swap(list<T>& left, list<T>& right)
 {
-	swap(left.m_count, right.m_count);
+	swap(left.cnt, right.cnt);
 	swap(left.buffer, right.buffer);
 }

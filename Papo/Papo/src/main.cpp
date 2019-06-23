@@ -2,13 +2,9 @@
 #include "list.hpp"
 #include "bim.hpp"
 
-#include <iostream>
-
 int main()
 {
-	block<int> b(10);
-
+	list<int> l = range({ 1, 4, 7 });
 	print(l);
-
 	return 0;
 }

@@ -5,6 +5,6 @@
 template <range_t R, typename ...Args>
 void u_fill(R r, Args&&... args)
 {
-	for (; r.begin != r.end; ++r.begin)
+	for (; !r.empty(); ++r)
 		construct(r.begin, forward<Args>(args)...);
 }

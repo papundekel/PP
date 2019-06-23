@@ -1,13 +1,12 @@
 #pragma once
 #include "iterator.hpp"
-#include "arithmetic.hpp"
-#include "pointer.hpp"
+#include "fundamental.hpp"
 
 template <iterator I>
 void destroy_at(I i)
 {
 	using base = base_t<I>;
 
-	if constexpr (!arithmetic<base> && !pointer<base>)
+	if constexpr (!fundamental<base>)
 		i->~base();
 }

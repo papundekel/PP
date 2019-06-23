@@ -1,6 +1,5 @@
 #pragma once
 #include "same.hpp"
-#include "remove_cv.hpp"
 
 namespace detail
 {
@@ -9,4 +8,4 @@ namespace detail
 }
 
 template <typename T>
-concept floating = detail::floating<remove_cv<T>>;
+concept floating = detail::floating<T>;

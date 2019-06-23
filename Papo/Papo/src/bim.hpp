@@ -1,7 +1,9 @@
 #pragma once
 #include "move.hpp"
+#include "forward.hpp"
 #include "swap.hpp"
 #include "output.hpp"
+#include "convertible.hpp"
 
 template <typename T = char>
 class bim
@@ -23,6 +25,12 @@ public:
 		: data(move(bim.data))
 	{
 		print("bim move ctor");
+	}
+	template <convertible_to<T> U>
+	bim(U&& data)
+		: data(forward<U>(data))
+	{
+		print("bim value ctor");
 	}
 	bim& operator=(const bim& right)
 	{

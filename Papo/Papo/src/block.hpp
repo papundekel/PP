@@ -4,6 +4,7 @@
 #include "fundamental.hpp"
 #include "fit_count.hpp"
 #include "swap.hpp"
+#include "exchange.hpp"
 #include "destroy.hpp"
 
 template <typename T>
@@ -18,25 +19,26 @@ class block
 	size_t cnt;
 
 public:
+	block()
+		: ptr(nullptr)
+		, cnt(0)
+	{}
 	explicit block(size_t count)
 		: ptr(allocate(count))
 		, cnt(count)
 	{}
 	template <typename U>
-	block(const block<U>& b, size_t c)
-		: block(c)
+	block(const block<U>& b, size_t cnt)
+		: block(cnt)
 	{
-		mem_cpy(b.begin(), ptr, fit_count<sizeof(U), sizeof(T)>(c));
+		mem_cpy(b.begin(), ptr, fit_count<U, T>(count()));
 	}
 	block(const block&) = delete;
 	template <typename U>
 	block(block<U>&& other)
-		: ptr(reinterpret_cast<T*>(other.ptr))
-		, _count(fit_count<sizeof(T), sizeof(U)>(other.count()))
-	{
-		other.ptr = nullptr;
-		other.cnt = 0;
-	}
+		: ptr(reinterpret_cast<T*>(exchange(other.ptr, nullptr)))
+		, cnt(fit_count<T, U>(exchange(other.cnt, 0)))
+	{}
 	~block()
 	{
 		free(ptr);
@@ -46,7 +48,7 @@ public:
 	block& operator=(block<U>&& other)
 	{
 		swap(ptr, other.ptr);
-		swap(_count, other._count);
+		swap(cnt, other.cnt);
 		return *this;
 	}
 	operator bool() const
@@ -59,15 +61,13 @@ public:
 	}
 	void release()
 	{
-		deallocate(ptr);
-		ptr = nullptr;
-		_count = 0;
+		~block();
+		new (this) block();
 	}
 	void reset(size_t count)
 	{
-		free(ptr);
-		ptr = allocate(count);
-		_count = count;
+		~block();
+		new (this) block(count);
 	}
 	T* begin()
 	{
@@ -79,11 +79,11 @@ public:
 	}
 	T* end()
 	{
-		return ptr + _count;
+		return ptr + cnt;
 	}
 	const T* end() const
 	{
-		return ptr + _count;
+		return ptr + cnt;
 	}
 	T* operator()(size_t index)
 	{

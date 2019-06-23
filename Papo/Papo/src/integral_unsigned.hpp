@@ -1,6 +1,5 @@
 #pragma once
 #include "same.hpp"
-#include "remove_cv.hpp"
 
 namespace detail
 {
@@ -9,4 +8,4 @@ namespace detail
 }
 
 template <typename T>
-concept integral_unsigned = detail::integral_unsigned<remove_cv<T>>;
+concept integral_unsigned = detail::integral_unsigned<T>;

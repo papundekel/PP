@@ -9,4 +9,4 @@ namespace detail
 }
 
 template <typename T>
-concept integral_signed = detail::integral_signed<remove_cv<T>>;
+concept integral_signed = detail::integral_signed<T>;
