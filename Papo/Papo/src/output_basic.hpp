@@ -4,8 +4,10 @@
 #include "integral.hpp"
 #include "mem_mov.hpp"
 #include "mem_cpy.hpp"
+#include "callable.hpp"
 
-#define _output(function, value) begin = (function)(begin, end, (value))
+#define _output(function, value) (begin = (function)(begin, end, (value)))
+
 class output_error{};
 
 char* copy_char(char* begin, char* end, char c);

@@ -227,28 +227,11 @@ public:
 		return buffer[index];
 	}
 
-	T& at(size_t index)
-	{
-		if (index < cnt)
-			return buffer[index];
-		else
-			throw index_out_of_range();
-	}
-	const T& at(size_t index) const
-	{
-		if (index < cnt)
-			return buffer[index];
-		else
-			throw index_out_of_range();
-	}
 	bool operator==(const list& other) const
 	{
 		return buffer == other.buffer || equal(range(*this), range(other));
 	}
-	bool operator!=(const list& other) const
-	{
-		return !(*this == other);
-	}
+
 	template <typename U>
 	void insert(T* where, U&& value)
 	{
@@ -276,8 +259,8 @@ public:
 		}
 		++cnt;
 	}
-	template <typename it, typename it_end>
-	void insert(T* where, range<it, it_end> what)
+	template <range_t R>
+	void insert(T* where, R what)
 	{
 		auto size = distance(what);
 
@@ -316,8 +299,8 @@ public:
 	{
 		insert(buffer(index), forward<U>(value));
 	}
-	template <typename it, typename it_end>
-	void insert(size_t index, range<it, it_end> what)
+	template <range_t R>
+	void insert(size_t index, R what)
 	{
 		insert(buffer(index), what);
 	}
@@ -374,22 +357,18 @@ template<size_t count> class list<bool, count>
 public:
 
 	list()
-		: buffer()
 	{}
 	list(bool value)
-		: buffer()
 	{
 		int t = value ? 1 : 0;
 		memset(buffer, t, byte_count);
 	}
 	list(const list& other)
-		: buffer()
 	{
 		copy(range(other), range(*this));
 	}
-	template <typename it, typename it_end>
-	list(range<it, it_end> r)
-		: buffer()
+	template <range_t R>
+	list(R r)
 	{
 		copy(r, range(*this));
 	}
@@ -420,7 +399,6 @@ public:
 	{
 		return bit(offset);
 	}
-
 	constexpr size_t size() const
 	{
 		return byte_count;

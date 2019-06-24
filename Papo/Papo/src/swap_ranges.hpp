@@ -1,7 +1,9 @@
 #pragma once
-template <typename it1, typename it2>
-void swap_ranges(it1 firstBegin, it1 firstEnd, it2 secondBegin)
+#include "it_swap.hpp"
+
+template <range_t First, range_t Second>
+void swap_ranges(First first, Second second)
 {
-	for (; firstBegin != firstEnd; ++firstBegin, ++secondBegin)
-		it_swap(firstBegin, secondBegin);
+	for (; !first.empty() && !second.empty(); ++first, ++second)
+		it_swap(first.begin, second.begin);
 }
