@@ -5,6 +5,6 @@
 template <range_t R, equatable_with<base_type<R>> T>
 auto find(R r, const T& value)
 {
-	for (; r.begin != r.end && *r.begin != value; ++r.begin);
+	for (; !r.empty() && *r.begin != value; ++r);
 	return r.begin;
 }

@@ -47,16 +47,19 @@ struct range
 		return *this;
 	}
 	range& operator++(int)
+	requires iterator<it_end>
 	{
 		++end;
 		return *this;
 	}
 	range& operator--()
+	requires iterator_bi<it>
 	{
 		--begin;
 		return *this;
 	}
 	range& operator--(int)
+	requires iterator_bi<it_end>
 	{
 		--end;
 		return *this;
@@ -75,7 +78,6 @@ struct range
 	}
 
 	range operator-(size_t shift) const
-	requires iterator_bi<it_end>
 	{
 		if constexpr (random_access)
 			return range(begin, max(begin, end - shift));
@@ -128,17 +130,15 @@ template <typename T> range(const std::initializer_list<T>) -> range<const T*>;
 
 namespace detail
 {
-	template<typename T>
+	template <typename T>
 	constexpr bool range_t = false;
-	template<typename T, typename U>
-	constexpr bool range_t<range<T, U>> = true;
+
+	template <typename it, typename it_end>
+	constexpr bool range_t<range<it, it_end>> = true;
 }
 
 template <typename T>
 concept range_t = detail::range_t<T>;
 
-namespace detail
-{
-	template <range_t R>
-	constexpr auto base_type() -> ::base_type<typename R::begin_t>;
-}
+template <typename R> requires range_t<R>
+using base_type<R> = base_type<typename R::begin_t>;

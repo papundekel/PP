@@ -54,8 +54,5 @@ using end_t = decltype(::end(declval<C&>()));
 template <typename C>
 concept container = detail::has_begin<C> && detail::has_end<C> && sentinel<end_t<C>, begin_t<C>>;
 
-namespace detail
-{
-	template <container C>
-	constexpr auto base_type() -> ::base_type<begin_t<C>>;
-}
+template <container C>
+using base_type<C> = base_type<begin_t<C>>;

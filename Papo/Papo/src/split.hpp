@@ -4,10 +4,10 @@
 #include "next.hpp"
 #include "output.hpp"
 
-template <range_t R, callable_r<bool, typename R::base_t> P>
+template <range_t R, callable_r<bool, base_type<R>> P>
 auto split(R r, P p)
 {
-	using T = typename R::base_t;
+	using T = base_type<R>;
 
 	size_t x = 1;
 

@@ -31,11 +31,5 @@ concept iterator_strict = requires(I i)
 	{ *i } -> almost<T>;
 };
 
-namespace detail
-{
-	template <iterator I>
-	constexpr auto base_type() -> remove_reference<decltype(*declval<I>())>;
-}
-
-template <typename T>
-using base_type = decltype(detail::base_type<T>());
+template <iterator I>
+using base_type = remove_reference<decltype(*declval<I>())>;
