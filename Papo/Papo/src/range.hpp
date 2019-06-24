@@ -12,7 +12,6 @@ struct range
 {
 	using begin_t = it;
 	using end_t = it_end;
-	using base_t = ::base_t<begin_t>;
 	static constexpr bool random_access = iterator_ra<it> && iterator_ra<it_end>;
 	static constexpr bool finite = !same<infinity, it_end>;
 
@@ -124,8 +123,8 @@ struct range
 	}
 };
 
-template <container C> range(C&)->range<begin_t<C>, end_t<C>>;
-template <typename T> range(const std::initializer_list<T>)->range<const T*>;
+template <container C> range(C&) -> range<begin_t<C>, end_t<C>>;
+template <typename T> range(const std::initializer_list<T>) -> range<const T*>;
 
 namespace detail
 {
@@ -137,3 +136,9 @@ namespace detail
 
 template <typename T>
 concept range_t = detail::range_t<T>;
+
+namespace detail
+{
+	template <range_t R>
+	constexpr auto base_type() -> ::base_type<typename R::begin_t>;
+}
