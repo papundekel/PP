@@ -32,4 +32,4 @@ concept iterator_strict = requires(I i)
 };
 
 template <iterator I>
-using base_type = remove_reference<decltype(*declval<I>())>;
+using base = remove_reference<decltype(*declval<I>())>;

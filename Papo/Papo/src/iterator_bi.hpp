@@ -2,5 +2,5 @@
 #include "iterator.hpp"
 #include "decrementable.hpp"
 
-template <typename T>
-concept iterator_bi = iterator<T> && decrementable<T>;
+template <iterator T>
+concept iterator_bi = decrementable<T>;

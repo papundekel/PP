@@ -5,7 +5,7 @@
 template <iterator I>
 void destroy_at(I i)
 {
-	using base = base_type<I>;
+	using base = base<I>;
 
 	if constexpr (!fundamental<base>)
 		i->~base();

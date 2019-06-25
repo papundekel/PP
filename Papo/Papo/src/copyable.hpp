@@ -1,4 +1,4 @@
 #pragma once
-#include "convertible.hpp"
+#include "constructible.hpp"
 template <typename T>
-concept copyable = convertible_to<T, T>;
+concept copyable = constructible<T, T>;

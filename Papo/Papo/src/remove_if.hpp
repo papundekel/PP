@@ -10,7 +10,7 @@
 template <typename it, typename it_end, typename F>
 it remove_if(range<it, it_end> r, F f)
 {
-	static_assert(is_callable<bool, F, base_type<it>>);
+	static_assert(is_callable<bool, F, base<it>>);
 
 	auto i = find_if(r, f);
 	if (i != r.end)

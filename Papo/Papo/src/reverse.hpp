@@ -3,10 +3,9 @@
 #include "is_iterator.hpp"
 #include "it_swap.hpp"
 
-template <typename it>
-enable_if<is_iterator<it>,
-void> reverse(it begin, it end)
+template <range_t R>
+void> reverse(R r)
 {
-	for (; begin != end && begin != --end; ++begin)
-		it_swap(begin, end);
+	for (; r && r.begin != --r.end; ++r)
+		it_swap(r.begin, r.end);
 }

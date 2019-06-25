@@ -1,10 +1,9 @@
 #pragma once
-#include "enable_if.hpp"
 #include "int.hpp"
 #include "is_iterator_bi.hpp"
 #include "is_iterator_ra.hpp"
 
-template <typename it, typename = enable_if<is_iterator_bi<it>>>
+template <iterator_bi it>
 class reverse_iterator
 {
 	it i;
@@ -21,8 +20,8 @@ public:
 		return *i;
 	}
 	decltype(auto) operator[](diff_t offset) const
+	requires iterator_ra<it>
 	{
-		static_assert(is_iterator_ra<it>);
 		return i[-offset];
 	}
 	reverse_iterator& operator++()
@@ -48,18 +47,18 @@ public:
 		return temp;
 	}
 	reverse_iterator operator+(diff_t other) const
+	requires iterator_ra<it>
 	{
-		static_assert(is_iterator_ra<it>);
 		return i - other;
 	}
 	reverse_iterator operator-(diff_t other) const
+	requires iterator_ra<it>
 	{
-		static_assert(is_iterator_ra<it>);
 		return i + other;
 	}
 	diff_t operator-(reverse_iterator other) const
+	requires iterator_ra<it>
 	{
-		static_assert(is_iterator_ra<it>);
 		return i - other.i;
 	}
 	template <typename it2>

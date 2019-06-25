@@ -41,6 +41,15 @@ struct range
 		, end(other.end)
 	{}
 
+	decltype(auto) operator*()
+	{
+		return *begin;
+	}
+	decltype(auto) operator&()
+	requires iterator<it_end>
+	{
+		return *end;
+	}
 	range& operator++()
 	{
 		++begin;
@@ -64,7 +73,6 @@ struct range
 		--end;
 		return *this;
 	}
-
 	range operator+(size_t shift) const
 	{
 		if constexpr (random_access)
@@ -100,6 +108,10 @@ struct range
 	bool empty() const
 	{
 		return begin == end;
+	}
+	operator bool()
+	{
+		return !empty();
 	}
 	size_t count() const
 	{
@@ -140,5 +152,8 @@ namespace detail
 template <typename T>
 concept range_t = detail::range_t<T>;
 
-template <typename R> requires range_t<R>
-using base_type<R> = base_type<typename R::begin_t>;
+template <range_t R>
+concept finite_range_t = R::finite;
+
+template <range_t R>
+using range_base = base<typename R::begin_t>;

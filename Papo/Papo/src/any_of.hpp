@@ -3,5 +3,5 @@
 template <range_t R, typename F>
 bool any_of(R r, F f)
 {
-	return find_if(r.begin, r.end, f) != r.end;
+	return find_if(r, f) != r.end;
 }
