@@ -1,5 +1,5 @@
 #pragma once
-#include "integral.hpp"
+#include "integer_unsigned.hpp"
 #include "int.hpp"
 #include <cmath>
 
@@ -35,13 +35,13 @@ public:
 	static constexpr uintmax float_precision = 100000;
 };
 
-template <integral I>
+template <integer I>
 Q pow(const Q& q, I exp)
 {
 	Q::intmax num_pow = pow(q.num, abs(exp));
 	Q::uintmax den_pow = pow(q.den, abs(exp));
 
-	if constexpr (integral_unsigned<I>)
+	if constexpr (integer_unsigned<I>)
 		return { num_pow, den_pow };
 	else
 	{

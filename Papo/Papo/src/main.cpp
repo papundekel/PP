@@ -6,13 +6,13 @@
 #include "find.hpp"
 #include "copyable.hpp"
 #include "convertible.hpp"
+#include "integer.hpp"
 
 int main()
 {
-	int arr[] = { 1, 5, 4, 54, 12, 1, 4 };
-	int rra[7];
-	copy(range(arr), range(rra));
-	print(rra);
+	print(number_signed<int>);
+	print(number_signed<float>);
+	print(number_signed<unsigned int>);
 
 	return 0;
 }

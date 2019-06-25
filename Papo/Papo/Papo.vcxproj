@@ -118,9 +118,9 @@
     <ClInclude Include="src\incrementable.hpp" />
     <ClInclude Include="src\input.hpp" />
     <ClInclude Include="src\int.hpp" />
-    <ClInclude Include="src\integral.hpp" />
-    <ClInclude Include="src\integral_signed.hpp" />
-    <ClInclude Include="src\integral_unsigned.hpp" />
+    <ClInclude Include="src\integer.hpp" />
+    <ClInclude Include="src\integer_signed.hpp" />
+    <ClInclude Include="src\integer_unsigned.hpp" />
     <ClInclude Include="src\in_bounds.hpp" />
     <ClInclude Include="src\iota.hpp" />
     <ClInclude Include="src\iota_n.hpp" />

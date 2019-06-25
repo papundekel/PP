@@ -1,5 +1,5 @@
-#include "floating.hpp"
-#include "integral_signed.hpp"
+#pragma once
+#include "ordered.hpp"
 
-template <typename T>
-concept number_signed = integral_signed<T> || floating<T>;
+template <ordered T>
+concept number_signed = -static_cast<T>(1) < static_cast<T>(0);

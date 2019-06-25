@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdio>
 #include "range.hpp"
-#include "integral.hpp"
+#include "integer.hpp"
 #include "mem_mov.hpp"
 #include "mem_cpy.hpp"
 #include "callable.hpp"
@@ -23,7 +23,7 @@ constexpr char* copy_chars(char* begin, char* end, const char(&s)[size])
 
 char to_char(unsigned char digit);
 
-template <integral I>
+template <integer I>
 char* to_chars(char* begin, char* end, I value)
 {
 	auto old_end = end;

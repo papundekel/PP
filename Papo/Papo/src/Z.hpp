@@ -1,5 +1,5 @@
 #pragma once
-#include "integral.hpp"
+#include "integer.hpp"
 #include "output_basic.hpp"
 
 template <size_t s>
@@ -10,7 +10,7 @@ class Z
 public:
 	size_t value;
 
-	template <integral I>
+	template <integer I>
 	Z(I value)
 		: value(value % s)
 	{}

@@ -2,7 +2,7 @@
 #include "conditional.hpp"
 
 template <typename T>
-struct _make_unsigned_integral
+struct _make_unsigned_integer
 {
 	using type = conditional<sizeof(T) == 1, unsigned char,
 				 conditional<sizeof(T) == 2, unsigned short,
@@ -10,7 +10,7 @@ struct _make_unsigned_integral
 											 unsigned long long>>>;
 };
 template <typename T>
-struct _make_unsigned_integral<const T>
+struct _make_unsigned_integer<const T>
 {
 	using type = conditional<sizeof(T) == 1, const unsigned char,
 				 conditional<sizeof(T) == 2, const unsigned short,
@@ -18,7 +18,7 @@ struct _make_unsigned_integral<const T>
 											 const unsigned long long>>>;
 };
 template <typename T>
-struct _make_unsigned_integral<volatile T>
+struct _make_unsigned_integer<volatile T>
 {
 	using type = conditional<sizeof(T) == 1, volatile unsigned char,
 				 conditional<sizeof(T) == 2, volatile unsigned short,
@@ -26,7 +26,7 @@ struct _make_unsigned_integral<volatile T>
 											 volatile unsigned long long>>>;
 };
 template <typename T>
-struct _make_unsigned_integral<const volatile T>
+struct _make_unsigned_integer<const volatile T>
 {
 	using type = conditional<sizeof(T) == 1, const volatile unsigned char,
 				 conditional<sizeof(T) == 2, const volatile unsigned short,
@@ -34,4 +34,4 @@ struct _make_unsigned_integral<const volatile T>
 											 const volatile unsigned long long>>>;
 };
 template <typename T>
-using make_unsigned_integral = typename _make_unsigned_integral<T>::type;
+using make_unsigned_integer = typename _make_unsigned_integer<T>::type;

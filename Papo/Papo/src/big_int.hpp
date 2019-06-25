@@ -4,13 +4,13 @@
 #include <functional>
 #include <cstdint>
 #include "range.hpp"
-#include "integral_unsigned.hpp"
+#include "integer_unsigned.hpp"
 #include "const_type.hpp"
 
-template <integral T>
+template <integer T>
 constexpr uint8_t sign(const T* value)
 {
-	if constexpr (integral_unsigned<T>)
+	if constexpr (integer_unsigned<T>)
 		return 0;
 	else
 		return reinterpret_cast<const uint8_t*>(value)[sizeof(T) - 1] >> 7 == 1 ? 255 : 0;
@@ -63,7 +63,7 @@ public:
 	big_int()
 	{}
 	template <typename T, typename =
-	std::enable_if_t<std::is_integral_v<T>>>
+	std::enable_if_t<std::is_integer_v<T>>>
 	big_int(const T& value)
 	{
 		copy(this, &value);
@@ -113,7 +113,7 @@ public:
 	{}
 	
 	template <typename T, typename =
-	std::enable_if_t<std::is_integral_v<T>>>
+	std::enable_if_t<std::is_integer_v<T>>>
 	explicit operator T() const
 	{
 		T result;
@@ -135,7 +135,7 @@ public:
 		return bytes[index];
 	}
 	template <typename T>
-	std::enable_if_t<std::is_integral_v<T>,
+	std::enable_if_t<std::is_integer_v<T>,
 	big_int&> operator=(const T& rhs)
 	{
 		copy(this, &rhs);
@@ -249,7 +249,7 @@ std::istream& operator>>(std::istream& cin, big_int<size>& value)
 }
 
 template <typename T, typename U>
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>,
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>,
 T&> operator+=(T& lhs, const U& rhs)
 {
 	if constexpr (sizeof(T) > sizeof(U))
@@ -274,7 +274,7 @@ T&> operator+=(T& lhs, const U& rhs)
 	}	
 }
 template <typename T, typename U, typename =
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>>>
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>>>
 auto operator+(const T& lhs, const U& rhs)
 {
 	if constexpr (sizeof(T) > sizeof(U))
@@ -288,20 +288,20 @@ auto operator+(const T& lhs, const U& rhs)
 	}
 }
 template <typename T, typename U, typename =
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>>>
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>>>
 auto operator-(const T& lhs, const U& rhs)
 {
 	return lhs + -rhs;
 }
 template <typename T, typename U>
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>,
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>,
 T&> operator-=(T& lhs, const U& rhs)
 {
 	lhs += -rhs;
 	return lhs;
 }
 template <typename T, typename U, typename =
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>>>
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>>>
 auto operator*(T lhs, U rhs)
 {
 	if constexpr (sizeof(T) > sizeof(U))
@@ -339,7 +339,7 @@ auto operator*(T lhs, U rhs)
 	}	
 }
 template <typename T, typename U>
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>,
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>,
 T&> operator*=(T& lhs, const U& rhs)
 {
 	lhs = lhs * static_cast<T>(rhs);
@@ -382,7 +382,7 @@ static std::pair<T, T> _div_helper(T lhs, T rhs)
 	}
 }
 template <typename T, typename U, typename =
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>>>
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>>>
 auto operator/(const T& lhs, const U& rhs)
 {
 	if (rhs != 0ui8)
@@ -398,14 +398,14 @@ auto operator/(const T& lhs, const U& rhs)
 		throw big_int<69>::zero_division();
 }
 template <typename T, typename U>
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>,
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>,
 T&> operator/=(T& lhs, const U& rhs)
 {
 	lhs = lhs / static_cast<T>(rhs);
 	return lhs;
 }
 template <typename T, typename U, typename =
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>>>
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>>>
 auto operator%(const T& lhs, const U& rhs)
 {
 	if (rhs != 0ui8)
@@ -421,14 +421,14 @@ auto operator%(const T& lhs, const U& rhs)
 		throw big_int<69>::zero_division();
 }
 template <typename T, typename U>
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>,
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>,
 T&> operator%=(T& lhs, const U& rhs)
 {
 	lhs = lhs % static_cast<T>(rhs);
 	return lhs;
 }
 template <typename T, typename U, typename =
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>>>
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>>>
 bool operator==(const T& lhs, const U& rhs)
 {
 	if constexpr (sizeof(T) > sizeof(U))
@@ -443,13 +443,13 @@ bool operator==(const T& lhs, const U& rhs)
 	}
 }
 template <typename T, typename U, typename =
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>>>
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>>>
 bool operator!=(const T& lhs, const U& rhs)
 {
 	return !(lhs == rhs);
 }
 template <typename T, typename U, typename = 
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>>>
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>>>
 bool operator<(const T& lhs, const U& rhs)
 {
 	if constexpr (sizeof(T) > sizeof(U))
@@ -473,19 +473,19 @@ bool operator<(const T& lhs, const U& rhs)
 	}
 }
 template <typename T, typename U, typename =
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>>>
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>>>
 bool operator>(const T& lhs, const U& rhs)
 {
 	return rhs < lhs;
 }
 template <typename T, typename U, typename =
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>>>
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>>>
 bool operator<=(const T& lhs, const U& rhs)
 {
 	return !(lhs > rhs);
 }
 template <typename T, typename U, typename =
-std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>>>
+std::enable_if_t<std::is_integer_v<T> && std::is_integer_v<U>>>
 bool operator>=(const T& lhs, const U& rhs)
 {
 	return !(lhs < rhs);
