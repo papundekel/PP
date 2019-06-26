@@ -1,11 +1,5 @@
 #pragma once
-#include "same.hpp"
-
-namespace detail
-{
-    template <typename T>
-    concept floating = same<float, T> || same<double, T> || same<long double, T>;
-}
+#include "one_of.hpp"
 
 template <typename T>
-concept floating = detail::floating<T>;
+concept floating = one_of<T, float, double, long double>;

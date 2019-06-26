@@ -3,9 +3,9 @@
 #include "remove_cv.hpp"
 
 template <range_t R, typename T = remove_cv<range_base<R>>>
-T accumulate(R r, T init = T())
+auto accumulate(R r, T init = T())
 {
-	for (; !r.empty(); ++r)
+	for (; r; ++r)
 		init += *r;
 	return init;
 }

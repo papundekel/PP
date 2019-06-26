@@ -5,6 +5,8 @@
 #include "mem_mov.hpp"
 #include "mem_cpy.hpp"
 #include "callable.hpp"
+#include "cstring.hpp"
+#include "floating.hpp"
 
 #define _output(function, value) (begin = (function)(begin, end, (value)))
 
@@ -60,8 +62,12 @@ char* to_chars(char* begin, char* end, B b)
 	return b ? _output(copy_chars, "true") : _output(copy_chars, "false");
 }
 
-char* to_chars(char* begin, char* end, float f);
-char* to_chars(char* begin, char* end, double d);
+template <floating F>
+char* to_chars(char* begin, char* end, F f)
+{
+	snprintf(begin, end - begin, "%f", f);
+	return ::end(begin);
+}
 
 template <size_t size, typename T>
 char* to_chars(char(&buffer)[size], const T& x)

@@ -6,5 +6,5 @@ template <range_t R, callable_r<bool, range_base<R>> P>
 auto find(R r, P p)
 {
 	for (; r && !p(*r); ++r);
-	return r.begin;
+	return r;
 }

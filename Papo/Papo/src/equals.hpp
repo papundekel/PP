@@ -1,5 +1,6 @@
 #pragma once
 #include "forward.hpp"
+#include "remove_reference.hpp"
 
 template <typename T>
 struct equals
@@ -17,3 +18,6 @@ struct equals
 		return object == forward<U>(other);
 	}
 };
+
+template <typename U>
+equals(U&&) -> equals<remove_reference<U>>;
