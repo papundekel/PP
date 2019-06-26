@@ -1,10 +1,10 @@
 #pragma once
-#include "equatable.hpp"
 #include "range.hpp"
+#include "callable.hpp"
 
-template <range_t R, equatable_with<range_base<R>> T>
-auto find(R r, const T& value)
+template <range_t R, callable_r<bool, range_base<R>> P>
+auto find(R r, P p)
 {
-	for (; r && *r != value; ++r);
+	for (; r && !p(*r); ++r);
 	return r.begin;
 }

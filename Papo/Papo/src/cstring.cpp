@@ -1,14 +1,14 @@
 #include "cstring.hpp"
 #include "find.hpp"
+#include "equals.hpp"
 
 char* begin(char*& cstring)
 {
 	return cstring;
 }
-
 char* end(char*& cstring)
 {
-	return find(range(cstring, cstring_end()), 0);
+	return find(range(cstring, cstring_end()), equals<char>(0));
 }
 
 const char* begin(const char*& cstring)

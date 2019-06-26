@@ -8,10 +8,12 @@
 #include "convertible.hpp"
 #include "integer.hpp"
 #include "one_of.hpp"
+#include "equal.hpp"
+#include "cstring.hpp"
 
 int main()
 {
-	print(fundamental<char8_t>);
 	
+
 	return 0;
 }

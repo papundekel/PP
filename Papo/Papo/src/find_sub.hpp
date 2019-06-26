@@ -3,9 +3,9 @@
 #include "range.hpp"
 #include "equal.hpp"
 
-template <typename it1, typename it2>
-it1 find_sub(range<it1> r, range<it2> r_sub)
+template <range_t R, range_t R_sub>
+auto find_sub(R r, R_sub r_sub)
 {
-	for (; r.begin != r.end && !equal(r_sub.begin, r_sub.end, r.begin); ++r.begin);
+	for (; r && !equal(r_sub, r); ++r);
 	return r.begin;
 }

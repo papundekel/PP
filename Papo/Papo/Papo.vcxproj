@@ -77,7 +77,6 @@
     <ClInclude Include="src\copy_if.hpp" />
     <ClInclude Include="src\copy_n.hpp" />
     <ClInclude Include="src\copy_n_if.hpp" />
-    <ClInclude Include="src\count.hpp" />
     <ClInclude Include="src\count_if.hpp" />
     <ClInclude Include="src\cstring.hpp" />
     <ClInclude Include="src\decay.hpp" />
@@ -86,7 +85,6 @@
     <ClInclude Include="src\destroy.hpp" />
     <ClInclude Include="src\destroy_at.hpp" />
     <ClInclude Include="src\destroy_n.hpp" />
-    <ClInclude Include="src\distance.hpp" />
     <ClInclude Include="src\enable_if.hpp" />
     <ClInclude Include="src\endian.hpp" />
     <ClInclude Include="src\equal.hpp" />
