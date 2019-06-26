@@ -14,3 +14,6 @@ namespace detail
 
 template <typename T, typename U, typename ...V>
 concept same = detail::same<T, U, V...>;
+
+template <typename T, typename U, typename ...V>
+concept other_than = !same<T, U, V...>;

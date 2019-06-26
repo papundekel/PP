@@ -1,4 +1,6 @@
 #pragma once
+#include "same.hpp"
+
 template <typename T, typename U>
 concept equatable_with = requires(T t, U u)
 {
@@ -11,7 +13,7 @@ concept equatable_with = requires(T t, U u)
 template <typename T>
 concept equatable = equatable_with<T, T>;
 
-template <typename T, typename U>
+template <typename T, other_than<T> U>
 constexpr bool operator==(const T& t, const U& u)
 {
     return u == t;

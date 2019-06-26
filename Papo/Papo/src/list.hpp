@@ -1,6 +1,6 @@
 #pragma once
+#include "int.hpp"
 #include <initializer_list>
-#include <functional>
 #include "destroy.hpp"
 #include "iterator_random_access.hpp"
 #include "copy.hpp"
@@ -18,29 +18,26 @@
 #include "next.hpp"
 #include "equal.hpp"
 
-template<typename T, size_t count = 0> class list
+template<typename T, size_t cnt = 0> class list
 {
 public:
-	T buffer[count];
+	T buffer[cnt];
 
-	using		iterator = iterator_random_access<T>;
-	using const_iterator = iterator_random_access<const T>;
-
-	iterator begin()
+	T* begin()
 	{
 		return buffer;
 	}
-	const_iterator begin() const
+	const T* begin() const
 	{
 		return buffer;
 	}
-	iterator end()
+	T* end()
 	{
-		return buffer + count;
+		return buffer + cnt;
 	}
-	const_iterator end() const
+	const T* end() const
 	{
-		return buffer + count;
+		return buffer + cnt;
 	}
 	operator T*()
 	{
@@ -58,17 +55,16 @@ public:
 	{
 		return buffer[offset];
 	}
-	constexpr size_t size() const
+	constexpr auto count() const
 	{
-		return count;
+		return cnt;
 	}
 };
+
 template<typename T> class list<T>
 {
 	size_t cnt;
 	block<T> buffer;
-
-	class index_out_of_range {};
 
 public:
 	list()
@@ -86,7 +82,7 @@ public:
 	{
 		u_fill(range(*this), forward<Args>(args)...);
 	}
-	template <callable<> G>
+	template <typename G>
 	list(size_t cnt, size_t cap, G g)
 		: cnt(cnt)
 		, buffer(cap)
@@ -101,11 +97,8 @@ public:
 		u_copy(r, range(*this));
 	}
 	list(const list<T>& copy)
-		: cnt(copy.count())
-		, buffer(cnt)
-	{
-		u_copy(range(copy), range(*this));
-	}
+		: list(range(copy))
+	{}
 	list(list<T>&& other) noexcept
 		: cnt(other.count())
 		, buffer(move(other.buffer))
@@ -517,7 +510,8 @@ public:
 
 using string = list<char>;
 
-template <range_t R> list(R)->list<typename R::base_t>;
+template <range_t R>
+list(R) -> list<typename R::base_t>;
 
 template <typename T>
 void swap(list<T>& left, list<T>& right)
