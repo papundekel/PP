@@ -1,10 +1,13 @@
 #pragma once
-template <typename it, typename test>
-size_t count_if(it begin, it end, test t)
+#include "range.hpp"
+#include "callable.hpp"
+
+template <range_t R, callable_r<bool, range_base<R>> P>
+size_t count_if(R r, P p)
 {
-	size_t result = 0;
-	for (; begin != end; ++begin)
-		if (t(*begin))
-			++result;
-	return result;
+	size_t cnt = 0;
+	for (; r; ++r)
+		if (p(*r))
+			++cnt;
+	return cnt;
 }

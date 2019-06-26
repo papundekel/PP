@@ -33,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exchange.hpp" />
+    <ClInclude Include="one_of.hpp" />
     <ClInclude Include="reference.hpp" />
     <ClInclude Include="reference_lvalue.hpp" />
     <ClInclude Include="reference_rvalue.hpp" />
@@ -48,7 +49,6 @@
     <ClInclude Include="src\array.hpp" />
     <ClInclude Include="src\ary_tree.hpp" />
     <ClInclude Include="src\assignable.hpp" />
-    <ClInclude Include="src\base_type.hpp" />
     <ClInclude Include="src\begin_end.hpp" />
     <ClInclude Include="src\big_int.hpp" />
     <ClInclude Include="src\bim.hpp" />
