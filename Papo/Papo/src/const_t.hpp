@@ -2,8 +2,11 @@
 
 namespace detail
 {
-	template <typename T> constexpr bool const_t = false;
-	template <typename T> constexpr bool const_t<const T> = true;
+	template <typename T>
+	constexpr bool const_t = false;
+
+	template <typename T>
+	constexpr bool const_t<const T> = true;
 }
 
 template <typename T>

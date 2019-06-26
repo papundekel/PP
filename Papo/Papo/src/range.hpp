@@ -80,7 +80,7 @@ struct range
 		else 
 		{
 			auto result = *this;
-			for (size_t i = 0; i != shift && result.begin != end; ++result, ++i);
+			for (size_t i = 0; i != shift && result; ++result, ++i);
 			return result;
 		}
 	}
@@ -92,7 +92,7 @@ struct range
 		else 
 		{
 			auto result = *this;
-			for (size_t i = 0; i != shift && result.end != begin; result--, ++i);
+			for (size_t i = 0; i != shift && result; result--, ++i);
 			return result;
 		}
 	}
@@ -137,8 +137,123 @@ struct range
 	}
 };
 
-template <container C> range(C&) -> range<begin_t<C>, end_t<C>>;
-template <typename T> range(const std::initializer_list<T>) -> range<const T*>;
+template <container C> range(C&)->range<begin_t<C>, end_t<C>>;
+template <typename T> range(const std::initializer_list<T>&)->range<const T*>;
+
+template <iterator it>
+struct range_n
+{
+	using begin_t = it;
+	using end_t = it;
+	static constexpr bool random_access = iterator_ra<it>;
+	static constexpr bool finite = true;
+
+	it begin;
+	size_t cnt;
+
+	template <container C>
+	explicit range_n(C& c)
+		: begin(::begin(c))
+		, cnt(range_n(c).count())
+	{}
+	template <typename T>
+	range_n(const std::initializer_list<T>& list)
+		: begin(::begin(list))
+		, cnt(range_n(list).count())
+	{}
+	range_n(it begin, size_t cnt)
+		: begin(begin)
+		, cnt(cnt)
+	{}
+	/*range_n(range_n other, size_t cnt)
+		: begin()
+		, cnt(0)
+	{}
+	range_n(it begin, range_n other)
+		: begin()
+		, cnt(0)
+	{}*/
+
+	decltype(auto) operator*()
+	{
+		return *begin;
+	}
+	decltype(auto) operator&()
+	{
+		return *(begin + cnt);
+	}
+	range_n& operator++()
+	{
+		++begin;
+		--cnt;
+		return *this;
+	}
+	range_n& operator++(int)
+	{
+		++cnt;
+		return *this;
+	}
+	range_n& operator--()
+	requires iterator_bi<it>
+	{
+		--begin;
+		++cnt;
+		return *this;
+	}
+	range_n& operator--(int)
+	{
+		--cnt;
+		return *this;
+	}
+	range_n operator+(size_t shift)
+	{
+		begin += shift;
+		cnt -= shift;
+	}
+
+	range_n operator-(size_t shift)
+	{
+		cnt -= shift;
+	}
+
+	decltype(auto) first()
+	{
+		return *begin;
+	}
+	decltype(auto) last()
+	{
+		return *(begin + (cnt - 1));
+	}
+	bool empty() const
+	{
+		return cnt == 0;
+	}
+	operator bool()
+	{
+		return !empty();
+	}
+	size_t count() const
+	{
+		return cnt;
+	}
+	bool contains(it i) const
+	{
+		if constexpr (random_access)
+			return i >= begin && i < begin + cnt;
+		else
+		{
+			auto j = begin;
+			size_t k = 0;
+			for (; k != cnt && j != i; ++j, ++k);
+			return k != cnt;
+		}
+	}
+};
+
+template <container C>
+range_n(C&) -> range_n<begin_t<C>>;
+template <typename T>
+range_n(const std::initializer_list<T>&) -> range_n<const T*>;
 
 namespace detail
 {
@@ -147,6 +262,9 @@ namespace detail
 
 	template <typename it, typename it_end>
 	constexpr bool range_t<range<it, it_end>> = true;
+
+	template <typename it>
+	constexpr bool range_t<range_n<it>> = true;
 }
 
 template <typename T>

@@ -9,7 +9,7 @@ void print(const char(&buffer)[s])
 void print(char c);
 void print(const char* cstring);
 
-template <size_t buffer_size = 256, typename T>
+template <typename T, size_t buffer_size = 256>
 void print(const T& x)
 {
 	if constexpr (container<T> && !printable<T>)
@@ -24,9 +24,8 @@ void print(const T& x)
 }
 
 template <range_t R>
-auto print(R r)
+void print(R r)
 {
-	for (; r.begin != r.end; ++r.begin)
-		print(*r.begin);
-	return r.begin;
+	for (; r; ++r)
+		print(*r);
 }

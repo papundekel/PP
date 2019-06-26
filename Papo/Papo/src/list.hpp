@@ -510,7 +510,7 @@ public:
 using string = list<char>;
 
 template <range_t R>
-list(R) -> list<typename R::base_t>;
+list(R) -> list<remove_cv<range_base<R>>>;
 
 template <typename T>
 void swap(list<T>& left, list<T>& right)
