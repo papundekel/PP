@@ -1,5 +1,13 @@
 #pragma once
 
-template <bool test, typename T1, typename T2> struct _conditional				  { using type = T1; };
-template <			 typename T1, typename T2> struct _conditional<false, T1, T2> { using type = T2; };
-template <bool test, typename T1, typename T2>  using  conditional = typename _conditional<test, T1, T2>::type;
+namespace detail
+{
+	template <bool test, typename T, typename U>
+	struct conditional { using type = T; };
+
+	template <typename T, typename U>
+	struct conditional<false, T, U> { using type = U; };
+}
+
+template <bool test, typename T, typename U>
+using conditional = typename detail::conditional<test, T, U>::type;

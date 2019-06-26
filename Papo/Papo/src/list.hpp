@@ -100,13 +100,12 @@ public:
 		: list(range(copy))
 	{}
 	list(list<T>&& other) noexcept
-		: cnt(other.count())
+		: cnt(exchange(other.cnt, 0))
 		, buffer(move(other.buffer))
 	{}
 	~list()
 	{
-		if (buffer)
-			destroy(range(*this));
+		destroy(range(*this));
 	}
 
 	T* begin()

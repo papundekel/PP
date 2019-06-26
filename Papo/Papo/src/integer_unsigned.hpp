@@ -1,6 +1,6 @@
 #pragma once
 #include "integer.hpp"
-#include "number_signed.hpp"
+#include "signed_t.hpp"
 
 template <integer I>
-concept integer_unsigned = !number_signed<I>;
+concept integer_unsigned = !signed_t<I>;
