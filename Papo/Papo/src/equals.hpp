@@ -15,7 +15,7 @@ struct equals
 	template <typename U>
 	constexpr bool operator()(U&& other)
 	{
-		return object == forward<U>(other);
+		return forward<U>(other) == object;
 	}
 };
 
