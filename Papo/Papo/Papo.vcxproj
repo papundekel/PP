@@ -97,8 +97,6 @@
     <ClInclude Include="src\fill_n.hpp" />
     <ClInclude Include="src\find.hpp" />
     <ClInclude Include="src\find_first_of.hpp" />
-    <ClInclude Include="src\find_if.hpp" />
-    <ClInclude Include="src\find_if_not.hpp" />
     <ClInclude Include="src\find_sub.hpp" />
     <ClInclude Include="src\fit_count.hpp" />
     <ClInclude Include="src\floating.hpp" />

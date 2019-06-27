@@ -7,6 +7,6 @@ requires assignable_to<range_base<Src>, range_base<Dest>> && (Src::finite || Des
 auto copy(Src src, Dest dest)
 {
 	for (; src && dest; ++dest, ++src)
-		*dest.begin = *src.begin;
+		*dest = *src;
 	return dest.begin;
 }

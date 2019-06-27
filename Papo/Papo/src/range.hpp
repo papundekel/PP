@@ -137,8 +137,10 @@ struct range
 	}
 };
 
-template <container C> range(C&)->range<begin_t<C>, end_t<C>>;
-template <typename T> range(const std::initializer_list<T>&)->range<const T*>;
+template <container C>
+range(C&) -> range<begin_t<C>, end_t<C>>;
+template <typename T>
+range(const std::initializer_list<T>&) -> range<const T*>;
 
 template <iterator it>
 struct range_n

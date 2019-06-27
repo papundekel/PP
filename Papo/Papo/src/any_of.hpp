@@ -1,7 +1,9 @@
 #pragma once
-#include "find_if.hpp"
-template <range_t R, typename F>
-bool any_of(R r, F f)
+#include "find.hpp"
+#include "move_.hpp"
+
+template <range_t R>
+inline bool any_of(R r, auto&& p)
 {
-	return find_if(r, f) != r.end;
+	return !find(r, move(p)).empty();
 }

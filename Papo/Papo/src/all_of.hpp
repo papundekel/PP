@@ -1,7 +1,10 @@
 #pragma once
-#include "find_if_not.hpp"
-template <range_t R, typename F>
-bool all_of(R r, F f)
+#include "find.hpp"
+#include "move_.hpp"
+#include "forward.hpp"
+
+template <range_t R>
+bool all_of(R r, auto f)
 {
-	return find_if_not(r, f) == r.end;
+	return false;//!find(r, [f=move(f)]<typename ...Args>(Args && ... args) { return !f(forward<Args>(args)...); }).empty();
 }
