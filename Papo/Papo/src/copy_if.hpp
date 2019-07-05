@@ -20,6 +20,6 @@ it2 copy_if(range<it1, it2> src, range<it2, it2_end> dest, test t)
 
 	for (; src.begin != src.end; ++dest.begin, ++src.begin)
 		if (t(*src.begin))
-			* dest.begin = *src.begin;
+			*dest.begin = *src.begin;
 	return dest.begin;
 }

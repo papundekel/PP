@@ -8,5 +8,5 @@ auto copy(Src src, Dest dest)
 {
 	for (; src && dest; ++dest, ++src)
 		*dest = *src;
-	return dest.begin;
+	return dest;
 }

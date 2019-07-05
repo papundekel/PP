@@ -1,10 +1,11 @@
 #pragma once
-#include "enable_if.hpp"
+#include "movable.hpp"
+#include "assignable.hpp"
 #include "const_t.hpp"
 #include "move.hpp"
 
-template <typename T>
-requires !const_t<T>
+template <movable T>
+requires !const_t<T> && assignable_to<T&&, T>
 void swap(T& first, T& second)
 {
 	T temp = move(first);

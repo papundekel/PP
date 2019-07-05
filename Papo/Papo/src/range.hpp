@@ -41,6 +41,14 @@ struct range
 		, end(other.end)
 	{}
 
+	auto operator+()
+	{
+		return begin;
+	}
+	auto operator-()
+	{
+		return end;
+	}
 	decltype(auto) operator*()
 	{
 		return *begin;

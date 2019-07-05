@@ -8,7 +8,7 @@ char* begin(char*& cstring)
 }
 char* end(char*& cstring)
 {
-	return find(range(cstring, cstring_end()), equals(0)).begin;
+	return find(range(cstring, cstring_end()), 0).begin;
 }
 
 const char* begin(const char*& cstring)

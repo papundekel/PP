@@ -4,9 +4,11 @@
 #include "integer.hpp"
 #include "mem_mov.hpp"
 #include "mem_cpy.hpp"
+#include "mem_set.hpp"
 #include "callable.hpp"
 #include "cstring.hpp"
 #include "floating.hpp"
+#include "almost.hpp"
 
 #define _output(function, value) (begin = (function)(begin, end, (value)))
 
@@ -25,52 +27,51 @@ constexpr char* copy_chars(char* begin, char* end, const char(&s)[size])
 
 char to_char(unsigned char digit);
 
-template <integer I>
-char* to_chars(char* begin, char* end, I value)
+template <typename T>
+char* to_chars(char* begin, char* end, T value)
 {
-	auto old_end = end;
-	--end;
-	if (value == 0 && end >= begin)
-		*end = '0';
-	else
+	if constexpr (bool(integer<T>))
 	{
-		bool minus = false;
-		if (value < 0)
-		{
-			minus = true;
-			value = -value;
-		}
-		for (; end >= begin && value != 0; --end)
-		{
-			*end = to_char(value % 10);
-			value /= 10;
-		}
-		if (end >= begin && minus)
-			*end = '-';
+		auto old_end = end;
+		--end;
+		if (value == 0 && end >= begin)
+			*end = '0';
 		else
-			++end;
+		{
+			bool minus = false;
+			if (value < 0)
+			{
+				minus = true;
+				value = -value;
+			}
+			for (; end >= begin && value != 0; --end)
+			{
+				*end = to_char(value % 10);
+				value /= 10;
+			}
+			if (end >= begin && minus)
+				*end = '-';
+			else
+				++end;
+		}
+
+		auto count = old_end - end;
+		mem_mov(end, begin, count);
+		return begin + count;
+	}
+	else if constexpr (bool(almost<T, bool>))
+		return value ? _output(copy_chars, "true") : _output(copy_chars, "false");
+	else if constexpr (bool(floating<remove_cvref<T>>))
+	{
+		snprintf(begin, end - begin, "%f", value);
+		return ::end(begin);
 	}
 
-	auto count = old_end - end;
-	mem_mov(end, begin, count);
-	return begin + count;
+	return nullptr;
 }
 
-template <almost<bool> B>
-char* to_chars(char* begin, char* end, B b)
-{
-	return b ? _output(copy_chars, "true") : _output(copy_chars, "false");
-}
-
-template <floating F>
-char* to_chars(char* begin, char* end, F f)
-{
-	snprintf(begin, end - begin, "%f", f);
-	return ::end(begin);
-}
-
-template <size_t size, typename T>
-char* to_chars(char(&buffer)[size], const T& x)
+template <size_t size>
+char* to_chars(char(&buffer)[size], const auto& x)
 {
 	return to_chars(buffer, buffer + size, x);
 }
@@ -81,8 +82,8 @@ concept printable = requires(char (&buffer)[], T x)
 	{ to_chars(buffer, x) } -> char*;
 };
 
-template <size_t max_size = 256, typename T>
-size_t output_length(const T& x)
+template <size_t max_size = 256>
+size_t output_length(const auto& x)
 {
 	char buffer[max_size];
 	return range(buffer, to_chars(buffer, x)).count();

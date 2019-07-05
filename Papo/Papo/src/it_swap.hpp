@@ -5,8 +5,8 @@
 #include "base_type.hpp"
 #include "swap.hpp"
 
-template <iterator I1, iterator I2>
-void> it_swap(it1 first, it2 second)
+template <iterator First, iterator Second>
+void> it_swap(First first, Second second)
 {
 	swap(*first, *second);
 }

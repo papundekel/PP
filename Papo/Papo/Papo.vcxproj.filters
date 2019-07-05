@@ -74,9 +74,6 @@
     <ClInclude Include="src\any_of.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\arithmetic.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\array.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -245,9 +242,6 @@
     <ClInclude Include="src\for_each.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\for_each_n.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\forward.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -266,9 +260,6 @@
     <ClInclude Include="src\get_address.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\get_iterator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\graph.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -285,9 +276,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\iota.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\iota_n.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\it_swap.hpp">

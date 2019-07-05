@@ -45,7 +45,6 @@
     <ClInclude Include="src\all_of.hpp" />
     <ClInclude Include="src\almost.hpp" />
     <ClInclude Include="src\any_of.hpp" />
-    <ClInclude Include="src\arithmetic.hpp" />
     <ClInclude Include="src\array.hpp" />
     <ClInclude Include="src\ary_tree.hpp" />
     <ClInclude Include="src\assignable.hpp" />
@@ -104,12 +103,10 @@
     <ClInclude Include="src\forward.hpp" />
     <ClInclude Include="src\forward_list.hpp" />
     <ClInclude Include="src\for_each.hpp" />
-    <ClInclude Include="src\for_each_n.hpp" />
     <ClInclude Include="src\fundamental.hpp" />
     <ClInclude Include="src\generate.hpp" />
     <ClInclude Include="src\generate_n.hpp" />
     <ClInclude Include="src\get_address.hpp" />
-    <ClInclude Include="src\get_iterator.hpp" />
     <ClInclude Include="src\graph.hpp" />
     <ClInclude Include="src\incrementable.hpp" />
     <ClInclude Include="src\input.hpp" />
@@ -119,7 +116,6 @@
     <ClInclude Include="src\integer_unsigned.hpp" />
     <ClInclude Include="src\in_bounds.hpp" />
     <ClInclude Include="src\iota.hpp" />
-    <ClInclude Include="src\iota_n.hpp" />
     <ClInclude Include="src\const_type.hpp" />
     <ClInclude Include="src\iterator.hpp" />
     <ClInclude Include="src\iterator_bi.hpp" />

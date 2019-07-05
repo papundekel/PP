@@ -1,9 +1,4 @@
 #pragma once
-#include "move_.hpp"
-template <typename From, typename To>
-concept movable_to = requires (From from)
-{
-    To(move(from));
-};
+#include "constructible.hpp"
 template <typename T>
-concept movable = movable_to<T, T>;
+concept movable = constructible<T, T&&>;
