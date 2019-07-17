@@ -2,7 +2,7 @@
 #include "range.hpp"
 #include "it_swap.hpp"
 
-template <range_t R>
+template <Range R>
 void reverse(R r)
 {
 	for (; r && r.begin != --r.end; ++r)

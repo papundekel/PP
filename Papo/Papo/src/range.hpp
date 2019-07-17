@@ -6,6 +6,7 @@
 #include "min.hpp"
 #include "iterator_ra.hpp"
 #include "prev.hpp"
+#include "value_t.hpp"
 
 template <iterator it, sentinel<it> it_end = it>
 struct range
@@ -265,23 +266,23 @@ range_n(C&) -> range_n<begin_t<C>>;
 template <typename T>
 range_n(const std::initializer_list<T>&) -> range_n<const T*>;
 
-namespace detail
-{
-	template <typename T>
-	constexpr bool range_t = false;
+template <typename T>
+constexpr bool is_range_v = false;
 
-	template <typename it, typename it_end>
-	constexpr bool range_t<range<it, it_end>> = true;
+template <typename it, typename it_end>
+constexpr bool is_range_v<range<it, it_end>> = true;
 
-	template <typename it>
-	constexpr bool range_t<range_n<it>> = true;
-}
+template <typename it>
+constexpr bool is_range_v<range_n<it>> = true;
 
 template <typename T>
-concept range_t = detail::range_t<T>;
+concept Range = is_range_v<T>;
 
-template <range_t R>
+template <typename T>
+struct is_range : value_t<is_range_v<T>> {};
+
+template <Range R>
 concept finite_range_t = R::finite;
 
-template <range_t R>
+template <Range R>
 using range_base = base<typename R::begin_t>;

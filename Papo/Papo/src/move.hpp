@@ -3,7 +3,7 @@
 #include "range.hpp"
 #include "assignable.hpp"
 
-template <range_t Src, range_t Dest>
+template <Range Src, Range Dest>
 requires assignable_to<range_base<Src>&&, range_base<Dest>> && (Src::finite || Dest::finite)
 auto move(Src src, Dest dest)
 {

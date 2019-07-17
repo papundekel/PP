@@ -89,7 +89,7 @@ public:
 	{
 		u_generate(range(*this), g);
 	}
-	template <range_t R>
+	template <Range R>
 	list(R r)
 		: cnt(r.count())
 		, buffer(cnt)
@@ -250,7 +250,7 @@ public:
 		}
 		++cnt;
 	}
-	template <range_t R>
+	template <Range R>
 	void insert(T* where, R what)
 	{
 		auto size = distance(what);
@@ -290,7 +290,7 @@ public:
 	{
 		insert(buffer(index), forward<U>(value));
 	}
-	template <range_t R>
+	template <Range R>
 	void insert(size_t index, R what)
 	{
 		insert(buffer(index), what);
@@ -358,7 +358,7 @@ public:
 	{
 		copy(range(other), range(*this));
 	}
-	template <range_t R>
+	template <Range R>
 	list(R r)
 	{
 		copy(r, range(*this));
@@ -509,7 +509,7 @@ public:
 
 using string = list<char>;
 
-template <range_t R>
+template <Range R>
 list(R) -> list<remove_cv<range_base<R>>>;
 
 template <typename T>

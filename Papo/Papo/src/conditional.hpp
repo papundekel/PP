@@ -11,4 +11,4 @@ namespace detail
 }
 
 template <bool test, typename T, typename U>
-using conditional = typename detail::conditional<test, T, U>::type;
+using conditional = detail::conditional<test, T, U>::type;

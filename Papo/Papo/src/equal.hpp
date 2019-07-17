@@ -2,7 +2,7 @@
 #include "range.hpp"
 #include "equatable.hpp"
 
-template <range_t First, range_t Second>
+template <Range First, Range Second>
 requires equatable_with<range_base<First>, range_base<Second>> && (First::finite || Second::finite)
 bool equal(First first, Second second)
 {
