@@ -8,7 +8,7 @@ OBJFILES = $(subst $(SRCDIR)/,$(OBJDIR)/,$(x))
 CFLAGS = -fconcepts -std=c++2a -g -Wall -pedantic
 
 Papo: $(OBJFILES)
-	$(CXX) -o $@ $^ $(LDFLAGS)
+	$(CXX) -o $(OBJDIR)/$@ $^ $(LDFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) -c -o $@ $^ $(CFLAGS)
