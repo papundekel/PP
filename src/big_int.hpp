@@ -5,7 +5,7 @@
 #include <cstdint>
 #include "range.hpp"
 #include "integer_unsigned.hpp"
-#include "const_type.hpp"
+#include "const_t.hpp"
 
 template <integer T>
 constexpr uint8_t sign(const T* value)
@@ -19,7 +19,7 @@ constexpr uint8_t sign(const T* value)
 template <typename T>
 constexpr auto lower_byte(T& x)
 {
-	if constexpr (const_type<T>)
+	if constexpr (const_t<T>)
 		return reinterpret_cast<const uint8_t*>(&x);
 	else
 		return reinterpret_cast<	  uint8_t*>(&x);

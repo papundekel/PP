@@ -330,8 +330,5 @@ ASALocalRun/
 .mfractor/
 /Papo/Papo/Papo
 
-# ignore main.cpp
-main.cpp
-
 #ignore build
-*.out
+*.o
