@@ -17,11 +17,6 @@
                 "kind": "build",
                 "isDefault": true
             }
-        },
-        {
-            "label": "Run",
-            "type": "shell",
-            "command": "./${workspaceFolderBasename}"
         }
     ]
 }
