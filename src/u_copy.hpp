@@ -2,7 +2,7 @@
 #include "range.hpp"
 #include "construct.hpp"
 
-template <range_t Src, range_t Dest>
+template <Range Src, Range Dest>
 auto u_copy(Src src, Dest dest)
 {
 	for (; src && dest; ++dest, ++src)

@@ -4,7 +4,7 @@
 #include "next.hpp"
 #include "output.hpp"
 
-template <range_t R, callable_r<bool, range_base<R>> P>
+template <Range R, callable_r<bool, range_base<R>> P>
 auto split(R r, P p)
 {
 	using T = range_base<R>;

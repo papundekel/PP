@@ -332,3 +332,6 @@ ASALocalRun/
 
 # ignore main.cpp
 main.cpp
+
+#ignore build
+*.out

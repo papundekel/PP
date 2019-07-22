@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "next.hpp"
-template <range_t R>
+template <Range R>
 requires iterator_ra<typename R::begin_t> && iterator_ra<typename R::end_t>
 typename R::begin_t k_smallest(R r, size_t k)
 {
