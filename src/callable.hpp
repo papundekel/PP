@@ -1,11 +1,11 @@
 #pragma once
+#include "forward.hpp"
 #include "convertible.hpp"
-#include "conditional.hpp"
 
 template <typename F, typename ...Args>
 concept callable = requires (F f, Args... args)
 {
-    f(args...);
+    f(forward<Args>(args)...);
 };
 
 template <typename F, typename ...Args>

@@ -29,7 +29,7 @@ auto split(R r, P p)
 		else
 		{
 			construct(s.begin, x);
-			u_copy(t, range(*s.begin));
+			u_copy(t, range(*s));
 			t.begin = next(t.end);
 			x = 0;
 		}
