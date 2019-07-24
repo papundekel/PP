@@ -10,6 +10,7 @@ Papo: $(OBJFILES)
 	$(CXX) -o $@.o $^ $(LDFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	mkdir -p $(OBJDIR)
 	$(CXX) -c -o $@ $^ $(CFLAGS)
 
 .PHONY: clean
