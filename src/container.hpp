@@ -36,7 +36,7 @@ namespace detail
     template <typename C>
     concept has_begin = requires(C& c)
     {
-        { ::begin(c) } -> iterator;
+        { begin(c) } -> iterator;
     };
 
     template <typename C>
@@ -46,11 +46,15 @@ namespace detail
 	};
 }
 template <detail::has_begin C>
-using begin_t = decltype(::begin(declval<C&>()));
+using begin_t = decltype(begin(declval<C&>()));
 
 template <detail::has_end C>
-using end_t = decltype(::end(declval<C&>()));
+using end_t = decltype(end(declval<C&>()));
 
+template <typename C>
+constexpr bool is_container_v;
+template <typename C>
+constexpr bool is_container;
 template <typename C>
 concept container = detail::has_begin<C> && detail::has_end<C> && sentinel<end_t<C>, begin_t<C>>;
 
