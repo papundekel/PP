@@ -268,21 +268,21 @@ range_n(const std::initializer_list<T>&) -> range_n<const T*>;
 
 template <typename T>
 constexpr bool is_range_v = false;
-
 template <typename it, typename it_end>
 constexpr bool is_range_v<range<it, it_end>> = true;
-
 template <typename it>
 constexpr bool is_range_v<range_n<it>> = true;
-
+template <typename T>
+struct is_range : value_t<is_range_v<T>> {};
 template <typename T>
 concept Range = is_range_v<T>;
 
-template <typename T>
-struct is_range : value_t<is_range_v<T>> {};
-
 template <Range R>
-concept finite_range_t = R::finite;
+constexpr bool is_finite_range_v = R::finite;
+template <Range R>
+struct is_finite_range : value_t<is_finite_range_v<R>> {};
+template <Range R>
+concept FiniteRange = is_finite_range_v<R>;
 
 template <Range R>
 using range_base = base<typename R::begin_t>;
