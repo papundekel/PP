@@ -9,7 +9,7 @@ DEPFILES = $(subst $(SRCDIR)/,$(DEPDIR)/,$(SRCFILES:.cpp=.d))
 CFLAGS = -fconcepts -std=c++2a -g -Wall -pedantic
 
 Papo.out: $(OBJFILES)
-	$(CXX) -o $@ $^ $(LDFLAGS)
+	$(CXX) -o $@ $^
 
 $(DEPDIR)/%.d: $(SRCDIR)/%.cpp
 	mkdir -p $(DEPDIR)
@@ -19,7 +19,7 @@ $(OBJDIR)/%.o: $(DEPDIR)/%.d
 
 include $(DEPFILES)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.p
+$(OBJDIR)/%.o:
 	mkdir -p $(OBJDIR)
 	$(CXX) -c $< -o $@ $(CFLAGS)
 

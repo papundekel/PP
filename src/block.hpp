@@ -85,9 +85,17 @@ public:
 	{
 		return ptr + cnt;
 	}
+	T* operator()()
+	{
+		return ptr;
+	}
 	T* operator()(size_t index)
 	{
 		return ptr + index;
+	}
+	const T* operator()() const
+	{
+		return ptr;
 	}
 	const T* operator()(size_t index) const
 	{

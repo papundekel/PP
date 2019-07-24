@@ -15,8 +15,7 @@
 
 int main()
 {
-	int arr[] = {1, 3, 5, 7, 4, 5, 1, 9};
-	print(*find(range(arr), [](int x){ return x % 2 == 0; }));
+
 
 	return 0;
 }
