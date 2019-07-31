@@ -12,14 +12,14 @@
 
 #define _output(function, value) (begin = (function)(begin, end, (value)))
 
-class output_error{};
+class output_error {};
 
 char* copy_char(char* begin, char* end, char c);
 
 template <size_t size>
 constexpr char* copy_chars(char* begin, char* end, const char(&s)[size])
 {
-	if (end - begin >= size * sizeof(char))
+	if (begin < end && static_cast<size_t>(end - begin) >= size)
 		return reinterpret_cast<char*>(mem_cpy(s, begin, size - 1)) + size - 1;
 	else
 		throw output_error();
@@ -27,47 +27,50 @@ constexpr char* copy_chars(char* begin, char* end, const char(&s)[size])
 
 char to_char(unsigned char digit);
 
-template <typename T>
+template <integer T>
 char* to_chars(char* begin, char* end, T value)
 {
-	if constexpr (bool(integer<T>))
+	auto old_end = end;
+	--end;
+	if (value == 0 && end >= begin)
+		*end = '0';
+	else
 	{
-		auto old_end = end;
-		--end;
-		if (value == 0 && end >= begin)
-			*end = '0';
-		else
+		bool minus = false;
+		if (value < 0)
 		{
-			bool minus = false;
-			if (value < 0)
-			{
-				minus = true;
-				value = -value;
-			}
-			for (; end >= begin && value != 0; --end)
-			{
-				*end = to_char(value % 10);
-				value /= 10;
-			}
-			if (end >= begin && minus)
-				*end = '-';
-			else
-				++end;
+			minus = true;
+			value = -value;
 		}
-
-		auto count = old_end - end;
-		mem_mov(end, begin, count);
-		return begin + count;
-	}
-	else if constexpr (bool(almost<T, bool>))
-		return value ? _output(copy_chars, "true") : _output(copy_chars, "false");
-	else if constexpr (bool(floating<remove_cvref<T>>))
-	{
-		snprintf(begin, end - begin, "%f", value);
-		return ::end(begin);
+		for (; end >= begin && value != 0; --end)
+		{
+			*end = to_char(value % 10);
+			value /= 10;
+		}
+		if (end >= begin && minus)
+			*end = '-';
+		else
+			++end;
 	}
 
-	return nullptr;
+	auto count = old_end - end;
+	mem_mov(end, begin, count);
+	return begin + count;
+}
+
+template <almost<bool> T>
+char* to_chars(char* begin, char* end, T value)
+{
+	return value ? _output(copy_chars, "true") : _output(copy_chars, "false");
+}
+
+template <typename T>
+requires floating<remove_cvref<T>>
+char* to_chars(char* begin, char* end, T value)
+{
+	auto capacity = end - begin;
+	auto length = snprintf(begin, end - begin, "%f", value);
+	return capacity < length ? begin + length : end;
 }
 
 template <size_t size>

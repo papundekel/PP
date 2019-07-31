@@ -1,15 +1,18 @@
 #pragma once
 #include "int.hpp"
 constexpr size_t byte_size = 8;
+
 static_assert(byte_size > 1);
-static_assert(sizeof(unsigned char) == 1);
-constexpr size_t _byte_size_bits()
+namespace detail
 {
-	size_t i = 1;
-	for (size_t j = 2; j < byte_size; j <<= 1, ++i);
-	return i;
+	constexpr size_t byte_size_bits()
+	{
+		size_t i = 1;
+		for (size_t j = 2; j < byte_size; j <<= 1, ++i);
+		return i;
+	}
 }
-constexpr size_t byte_size_bits = _byte_size_bits();
+constexpr size_t byte_size_bits = detail::byte_size_bits();
 
 struct bit_ptr
 {

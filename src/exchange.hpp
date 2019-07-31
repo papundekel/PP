@@ -1,9 +1,9 @@
 #pragma once
 #include "move.hpp"
 #include "forward.hpp"
+#include "not.hpp"
 
-template <typename T, typename U>
-requires !const_t<T>
+template <non<is_const> T, typename U>
 T exchange(T& object, U&& value)
 {
 	T old = move(object);

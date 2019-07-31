@@ -176,7 +176,7 @@ list<char>::list(list<char>&& other) noexcept
 list<char>& list<char>::operator=(const list<char>& other)
 {
 	m_length = other.length();
-	buffer = block<char>(other.buffer, m_length);
+	buffer = other.buffer;
 	return *this;
 }
 list<char>& list<char>::operator=(list<char>&& other) noexcept
@@ -300,7 +300,10 @@ void list<char>::push_back(char c)
 list<char>& list<char>::append(char c)
 {
 	if (length() == capacity())
-		buffer = block<char>(buffer, 2 * capacity());
+	{
+		block<char> new_buffer(2 * capacity());
+		mem_cpy(buffer(), new_buffer(), length());
+	}
 
 	buffer[m_length] = c;
 	return *this;
