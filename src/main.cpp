@@ -14,21 +14,13 @@
 #include "remove.hpp"
 #include "const.hpp"
 #include "byte.hpp"
-#include <type_traits>
+#include "split.hpp"
+#include "same.hpp"
+#include "void_t.hpp"
 
 int main()
 {
-	block<int> a(3);
-	u_fill(range(a), 5);
-	block<ref<int>> b(a.count());
-	u_generate(range(b), [&a]()->auto&{ static size_t i = 0; return a[i++]; });
-	for (auto x : b)
-		x = 4;
-	print(range(a));
-
-	int x = 9;
-	ref r = x;
-	r = 8;
-	print(x);
+	
+	
 	return 0;
 }

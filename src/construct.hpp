@@ -3,7 +3,6 @@
 #include "get_address.hpp"
 #include "constructible.hpp"
 #include "const.hpp"
-#include <type_traits>
 
 template <iterator I, typename... Args>
 requires !Const<base<I>> && constructible<base<I>, Args...>

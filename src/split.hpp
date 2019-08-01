@@ -11,7 +11,7 @@ auto split(R r, P p)
 
 	size_t x = 1;
 
-	for (auto i = r.begin; i != r.end; ++i)
+	for (auto i = +r; i != -r; ++i)
 	{
 		if (p(*i))
 			++x;
@@ -21,19 +21,25 @@ auto split(R r, P p)
 	range s(arrays);
 
 	x = 0;
+	
+	range t(+r, +r);
 
-	for (range t(r.begin, r.begin); t.end != r.end; ++t.end)
+	for (; t.end != r.end; ++t.end)
 	{
-		if (!p(*t.end))
+		if (!p(&t))
 			++x;
 		else
 		{
-			construct(s.begin, x);
+			construct(+s, x);
 			u_copy(t, range(*s));
-			t.begin = next(t.end);
+			t.begin = next(-t);
 			x = 0;
+			++s;
 		}
 	}
+
+	construct(+s, x);
+	u_copy(t, range(*s));
 
 	return arrays;
 }

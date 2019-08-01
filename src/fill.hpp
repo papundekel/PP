@@ -2,9 +2,9 @@
 #include "range.hpp"
 #include "assignable.hpp"
 
-template <typename it, assignable_to<base<it>> T = base<it>>
-void fill(range<it> r, const T& value = T())
+template <Range R, assignable_to<range_base<R>> T = range_base<R>>
+void fill(R r, const T& value = T())
 {
-	for (; r.begin != r.end; ++r.begin)
-		*r.begin = value;
+	for (; r; ++r)
+		*r = value;
 }

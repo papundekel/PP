@@ -13,24 +13,6 @@ public:
         : ptr(&object)
     {}
     ref(const ref&) = default;
-    ref(ref&&) = default;
-
-    ref& operator=(const ref& other)
-    {
-        *ptr = *other.ptr;
-        return *this;
-    }
-    ref& operator=(ref&& other)
-    {
-        *ptr = move(*other.ptr);
-        return *this;
-    }
-    template <typename U>
-    ref& operator=(U&& other)
-    {
-        *ptr = forward<U>(other);
-        return *this;
-    }
 
     operator T&()
     {

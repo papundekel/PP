@@ -2,7 +2,7 @@
 #include "declval.hpp"
 
 template <typename T, typename ...Args>
-concept constructible = requires
+concept constructible = requires (Args... args)
 {
-    T(declval<Args>()...);
+    T(args...);
 };
