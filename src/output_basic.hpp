@@ -27,7 +27,7 @@ constexpr char* copy_chars(char* begin, char* end, const char(&s)[size])
 
 char to_char(unsigned char digit);
 
-template <integer T>
+template <integer_c T>
 char* to_chars(char* begin, char* end, T value)
 {
 	auto old_end = end;
@@ -58,14 +58,14 @@ char* to_chars(char* begin, char* end, T value)
 	return begin + count;
 }
 
-template <almost<bool> T>
+template <almost_c<bool> T>
 char* to_chars(char* begin, char* end, T value)
 {
 	return value ? _output(copy_chars, "true") : _output(copy_chars, "false");
 }
 
 template <typename T>
-requires floating<remove_cvref<T>>
+requires floating_c<remove_cvref<T>>
 char* to_chars(char* begin, char* end, T value)
 {
 	auto capacity = end - begin;
@@ -80,7 +80,7 @@ char* to_chars(char(&buffer)[size], const auto& x)
 }
 
 template <typename T>
-concept printable = requires(char (&buffer)[], T x)
+concept printable_c = requires(char (&buffer)[], T x)
 {
 	{ to_chars(buffer, x) } -> char*;
 };

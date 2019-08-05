@@ -1,7 +1,7 @@
 #pragma once
 
 template <typename T>
-concept incrementable = requires(T t)
+concept incrementable_c = requires(T t)
 {
     { ++t } -> T&;
     { t++ } -> T;

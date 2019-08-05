@@ -2,4 +2,4 @@
 #include "one_of.hpp"
 
 template <typename T>
-concept floating = one_of<T, float, double, long double>;
+concept floating_c = one_of_c<T, float, double, long double>;

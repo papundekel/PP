@@ -2,7 +2,7 @@
 #include "range.hpp"
 #include "next.hpp"
 
-template <Range R>
+template <range_c R>
 auto adjacent_find(R r)
 {
 	if (r)

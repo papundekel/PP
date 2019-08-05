@@ -2,7 +2,7 @@
 #include "range.hpp"
 #include "callable.hpp"
 
-template <Range R, callable<range_base<R>> F>
+template <range_c R, callable_c<range_base<R>> F>
 auto apply(R r, F f)
 {
 	for (; r; ++r)

@@ -5,8 +5,8 @@
 #include "incrementable.hpp"
 #include "decrementable.hpp"
 
-template <ordered T>
-concept number = requires(T x, T y)
+template <typename T>
+concept number_c = requires (T x, const T y)
 {
     { x +  y } -> T;
     { x -  y } -> T;
@@ -16,25 +16,25 @@ concept number = requires(T x, T y)
 	{ x -= y } -> T&;
     { x *= y } -> T&;
     { x /= y } -> T&;
-} && assignable<T> && equatable<T> && incrementable<T> && decrementable<T>;
+} && ordered_c<T> && assignable_c<T> && equatable_c<T> && incrementable_c<T> && decrementable_c<T>;
 
-template <number N>
-auto& operator+=(N& x, const N& y)
+template <typename N>
+constexpr N& operator+=(N& x, const N& y)
 {
     return x = x + y;
 }
-template <number N>
-auto& operator-=(N& x, const N& y)
+template <typename N>
+constexpr N& operator-=(N& x, const N& y)
 {
     return x = x - y;
 }
-template <number N>
-auto& operator*=(N& x, const N& y)
+template <typename N>
+constexpr N& operator*=(N& x, const N& y)
 {
     return x = x * y;
 }
-template <number N>
-auto& operator/=(N& x, const N& y)
+template <typename N>
+constexpr N& operator/=(N& x, const N& y)
 {
     return x = x / y;
 }

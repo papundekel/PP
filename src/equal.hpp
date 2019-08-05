@@ -2,10 +2,10 @@
 #include "range.hpp"
 #include "equatable.hpp"
 
-template <Range First, Range Second>
-requires equatable_with<range_base<First>, range_base<Second>> && (First::finite || Second::finite)
-bool equal(First first, Second second)
+template <range_c A, range_c B>
+requires equatable_with_c<range_base<A>, range_base<B>> && (A::finite || B::finite)
+bool equal(A a, B b)
 {
-	for (;  (first || second) && *first == *second; ++first, ++second);
-	return !(first || second);
+	for (;  (a || b) && *a == *b; ++a, ++b);
+	return !(a || b);
 }

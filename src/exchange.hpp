@@ -3,7 +3,7 @@
 #include "forward.hpp"
 #include "not.hpp"
 
-template <non<is_const> T, typename U>
+template <not_c<const_s> T, typename U>
 T exchange(T& object, U&& value)
 {
 	T old = move(object);

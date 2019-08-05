@@ -2,7 +2,7 @@
 #include "destroy_at.hpp"
 #include "range.hpp"
 
-template <Range R>
+template <range_c R>
 void destroy(R r)
 {
 	for (; r; ++r)

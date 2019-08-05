@@ -34,21 +34,21 @@ constexpr auto end(T(&arr)[size])
 namespace detail
 {
     template <typename C>
-    concept has_begin = requires(C& c)
+    concept has_begin_c = requires (C& c)
     {
-        { begin(c) } -> iterator;
+        { begin(c) } -> iterator_c;
     };
 
     template <typename C>
-    concept has_end = requires(C& c)
+    concept has_end_c = requires (C& c)
 	{
 		end(c);
 	};
 }
-template <detail::has_begin C>
+template <detail::has_begin_c C>
 using begin_t = decltype(begin(declval<C&>()));
 
-template <detail::has_end C>
+template <detail::has_end_c C>
 using end_t = decltype(end(declval<C&>()));
 
 template <typename C>
@@ -56,7 +56,7 @@ constexpr bool is_container_v;
 template <typename C>
 constexpr bool is_container;
 template <typename C>
-concept container = detail::has_begin<C> && detail::has_end<C> && sentinel<end_t<C>, begin_t<C>>;
+concept container_c = detail::has_begin_c<C> && detail::has_end_c<C> && sentinel_c<end_t<C>, begin_t<C>>;
 
-template <container C>
+template <container_c C>
 using container_base = base<begin_t<C>>;

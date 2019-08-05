@@ -2,7 +2,7 @@
 #include "range.hpp"
 #include "remove_cv.hpp"
 
-template <Range R, typename T = remove_cv<range_base<R>>>
+template <range_c R, typename T = remove_cv<range_base<R>>>
 auto accumulate(R r, T init = T())
 {
 	for (; r; ++r)

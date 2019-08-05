@@ -1,6 +1,9 @@
 #pragma once
 #include "integer.hpp"
-#include "signed_t.hpp"
+#include "signed.hpp"
 
-template <integer I>
-concept integer_unsigned = !signed_t<I>;
+template <typename I>
+concept integer_unsigned_c = integer_c<I> && !signed_c<I>;
+
+template <typename I>
+constexpr bool integer_unsigned_v = integer_unsigned_c<I>;

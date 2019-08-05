@@ -1,11 +1,11 @@
 #pragma once
-#include "movable.hpp"
+#include "constructible.hpp"
 #include "assignable.hpp"
 #include "const.hpp"
 #include "move.hpp"
 
-template <movable T>
-requires !Const<T> && assignable_to<T&&, T>
+template <typename T>
+requires !const_c<T> && constructible_c<T, T&&> && assignable_to_c<T&&, T>
 void swap(T& first, T& second)
 {
 	T temp = move(first);

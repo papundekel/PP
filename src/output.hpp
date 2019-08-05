@@ -20,7 +20,7 @@ void print(const auto& x)
 	print(buffer);
 }
 
-template <Range R>
+template <range_c R>
 void print(R r)
 {
 	apply(r, [](const auto& x) { print(x); });

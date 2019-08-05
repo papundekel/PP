@@ -2,7 +2,7 @@
 #include "forward.hpp"
 
 template <typename T, typename... Args>
-concept constructible = requires (Args... args)
+concept constructible_c = requires (Args... args)
 {
     T(frwd<Args>(args)...);
 };

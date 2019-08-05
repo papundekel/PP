@@ -2,12 +2,12 @@
 #include "value_t.hpp"
 
 template <typename T>
-struct is_const : value_t<false> {};
+constexpr auto const_v = false;
 template <typename T>
-struct is_const<const T> : value_t<true> {};
+constexpr auto const_v<const T> = true;
 
 template <typename T>
-constexpr auto is_const_v = is_const<T>::value;
+struct const_s : value_t<const_v<T>> {};
 
 template <typename T>
-concept Const = is_const_v<T>;
+concept const_c = const_v<T>;

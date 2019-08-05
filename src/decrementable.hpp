@@ -1,7 +1,7 @@
 #pragma once
 
 template <typename T>
-concept decrementable = requires(T t)
+concept decrementable_c = requires(T t)
 {
     { --t } -> T&;
     { t-- } -> T;
