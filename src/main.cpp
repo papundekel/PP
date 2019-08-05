@@ -1,26 +1,10 @@
 #include "output.hpp"
-#include "list.hpp"
-#include "constructible.hpp"
-#include "convertible.hpp"
-#include "add_const.hpp"
-#include "const.hpp"
-#include "apply.hpp"
-#include "equals.hpp"
 #include "find.hpp"
-#include "bim.hpp"
-#include "any_of.hpp"
-#include "all_of.hpp"
-#include "callable.hpp"
-#include "remove.hpp"
-#include "const.hpp"
-#include "byte.hpp"
-#include "split.hpp"
-#include "same.hpp"
-#include "void_t.hpp"
 
 int main()
 {
-	
-	
+	int arr[] = { 1, 4, 5, 6 };
+	print(!!find(range(arr), 2));
+
 	return 0;
 }

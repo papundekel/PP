@@ -1,8 +1,8 @@
 #pragma once
-#include "declval.hpp"
+#include "forward.hpp"
 
-template <typename T, typename ...Args>
+template <typename T, typename... Args>
 concept constructible = requires (Args... args)
 {
-    T(args...);
+    T(frwd<Args>(args)...);
 };
