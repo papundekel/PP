@@ -1,10 +1,15 @@
 #include "output.hpp"
-#include "find.hpp"
+#include "fundamental.hpp"
+#include "make_const.hpp"
+#include "same.hpp"
+#include "decrementable.hpp"
+#include "block.hpp"
+#include "make_integer_unsigned.hpp"
+#include "make_cv.hpp"
 
 int main()
 {
-	int arr[] = { 1, 4, 5, 6 };
-	print(!!find(range_n(arr), 6));
-	
+	print(same<const unsigned int, make_integer_unsigned<const unsigned int>>::v);
+
 	return 0;
 }

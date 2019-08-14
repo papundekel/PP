@@ -1,8 +1,9 @@
 #pragma once
+#include "value_t.hpp"
 #include "forward.hpp"
 
 template <typename T, typename... Args>
-concept constructible_c = requires (Args... args)
+struct constructible : value_t<requires (Args... args)
 {
     T(frwd<Args>(args)...);
-};
+}> {};

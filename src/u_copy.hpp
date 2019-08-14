@@ -2,7 +2,8 @@
 #include "range.hpp"
 #include "construct.hpp"
 
-template <range_c Src, range_c Dest>
+template <typename Src, typename Dest>
+requires range_type<Src>::v && range_type<Dest>::v
 auto u_copy(Src src, Dest dest)
 {
 	for (; src && dest; ++dest, ++src)

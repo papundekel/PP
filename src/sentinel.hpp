@@ -2,12 +2,14 @@
 #include "iterator.hpp"
 #include "equatable.hpp"
 
-template <typename S, iterator_c I>
-concept sentinel_c = equatable_with_c<I, S>;
+template <typename S, typename I>
+requires iterator<I>::v
+struct sentinel : equatable_with<I, S> {};
 
 class infinity {};
 
-template <iterator_c I>
+template <typename I>
+requires iterator<I>::v
 constexpr bool operator==(I i, infinity j)
 {
     return false;

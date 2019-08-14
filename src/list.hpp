@@ -2,7 +2,6 @@
 #include "int.hpp"
 #include <initializer_list>
 #include "destroy.hpp"
-#include "iterator_random_access.hpp"
 #include "copy.hpp"
 #include "fill.hpp"
 #include "u_copy.hpp"
@@ -89,7 +88,8 @@ public:
 	{
 		u_generate(range(*this), g);
 	}
-	template <range_c R>
+	template <typename R>
+	requires range_type<R>::v
 	list(R r)
 		: cnt(r.count())
 		, buffer(cnt)
@@ -250,7 +250,8 @@ public:
 		}
 		++cnt;
 	}
-	template <range_c R>
+	template <typename R>
+	requires range_type<R>::v
 	void insert(T* where, R what)
 	{
 		auto size = distance(what);
@@ -290,7 +291,8 @@ public:
 	{
 		insert(buffer(index), forward<U>(value));
 	}
-	template <range_c R>
+	template <typename R>
+	requires range_type<R>::v
 	void insert(size_t index, R what)
 	{
 		insert(buffer(index), what);
@@ -358,7 +360,8 @@ public:
 	{
 		copy(range(other), range(*this));
 	}
-	template <range_c R>
+	template <typename R>
+	requires range_type<R>::v
 	list(R r)
 	{
 		copy(r, range(*this));
@@ -460,8 +463,8 @@ public:
 	list& operator=(const list& other);
 	list& operator=(list&& other) noexcept;
 
-	using		iterator = iterator_random_access<char>;
-	using const_iterator = iterator_random_access<const char>;
+	using		iterator = char*;
+	using const_iterator = const char*;
 
 	iterator begin();
 	const_iterator begin() const;
@@ -509,7 +512,8 @@ public:
 
 using string = list<char>;
 
-template <range_c R>
+template <typename R>
+requires range_type<R>::v
 list(R) -> list<remove_cv<range_base<R>>>;
 
 template <typename T>

@@ -1,8 +1,8 @@
 #pragma once
 
-template <auto val>
+template <auto V>
 struct value_t
 {
-	static constexpr auto value = val;
-	using type = decltype(val);
+	static constexpr auto v = V;
+	using type = decltype(V);
 };

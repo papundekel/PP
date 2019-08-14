@@ -1,5 +1,5 @@
 #pragma once
-#include "one_of.hpp"
-
+#include "number.hpp"
+#include "integer.hpp"
 template <typename T>
-concept floating_c = one_of_c<T, float, double, long double>;
+struct floating : value_t<number<T>::v && !integer<T>::v> {};

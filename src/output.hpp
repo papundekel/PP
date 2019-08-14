@@ -20,7 +20,8 @@ void print(const auto& x)
 	print(buffer);
 }
 
-template <range_c R>
+template <typename R>
+requires range_type<R>::v
 void print(R r)
 {
 	apply(r, [](const auto& x) { print(x); });

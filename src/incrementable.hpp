@@ -1,11 +1,17 @@
 #pragma once
+#include "value_t.hpp"
 
-template <typename T>
-concept incrementable_c = requires(T t)
+namespace concepts
 {
-    { ++t } -> T&;
-    { t++ } -> T;
-};
+    template <typename T>
+    concept incrementable = requires(T t)
+    {
+        { ++t } -> T&;
+        { t++ } -> T;
+    };
+}
+template <typename T>
+struct incrementable : value_t<concepts::incrementable<T>> {};
 
 template <typename T>
 constexpr T operator++(T& t, int)

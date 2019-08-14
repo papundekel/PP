@@ -3,8 +3,8 @@
 #include "range.hpp"
 #include "assignable.hpp"
 
-template <range_c Src, range_c Dest>
-requires assignable_to_c<range_base<Src>&&, range_base<Dest>> && (Src::finite || Dest::finite)
+template <typename Src, typename Dest>
+requires range_type<Src>::v && range_type<Dest>::v && assignable_to<range_base<Src>&&, range_base<Dest>>::v && (Src::finite || Dest::finite)
 auto move(Src src, Dest dest)
 {
 	for (; src && dest; ++dest, ++src)

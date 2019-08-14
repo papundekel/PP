@@ -2,5 +2,5 @@
 #include "ordered.hpp"
 #include "invertible.hpp"
 
-template <ordered_c T>
-concept signed_c = invertible_c<T> && -static_cast<T>(1) < static_cast<T>(0);
+template <typename T>
+struct signed_type : value_t<ordered<T>::v && invertible<T>::v && -static_cast<T>(1) < static_cast<T>(0)> {};

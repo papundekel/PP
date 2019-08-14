@@ -11,4 +11,4 @@ namespace detail
 }
 
 template <typename T>
-using remove_reference = detail::remove_reference<T>::type;
+using remove_reference = detail::remove_reference<T>::t;

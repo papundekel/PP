@@ -1,15 +1,21 @@
 #pragma once
 #include "value_t.hpp"
 
-template <typename T, typename U, typename ...V>
-constexpr bool same_v = same_v<T, U> && same_v<U, V...>;
-template <typename T, typename U>
-constexpr bool same_v<T, U> = false;
-template <typename T>
-constexpr bool same_v<T, T> = true;
+namespace detail::same
+{
+    template <typename T, typename... U>
+    constexpr auto x = true;
+    template <typename T, typename U, typename ...V>
+    constexpr auto x<T, U, V...> = x<T, U> && x<U, V...>;
+    template <typename T, typename U>
+    constexpr auto x<T, U> = false;
+    template <typename T>
+    constexpr auto x<T, T> = true;
+}
 
-template <typename T>
-struct same : value_t<same_v<T>> {};
-
-template <typename T, typename U, typename ...V>
-concept same_c = same_v<T, U, V...>;
+template <typename T, typename... U>
+struct same : value_t<detail::same::x<T, U...>>
+{
+    template <typename V>
+    using as = value_t<detail::same::x<T, U..., V>>;
+};

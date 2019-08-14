@@ -2,7 +2,8 @@
 #include "destroy_at.hpp"
 #include "range.hpp"
 
-template <range_c R>
+template <typename R>
+requires range_type<R>::v
 void destroy(R r)
 {
 	for (; r; ++r)

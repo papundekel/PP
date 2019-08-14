@@ -21,25 +21,16 @@ namespace detail
 			: ptr(count != 0 ? reinterpret_cast<T*>(malloc(count * sizeof(T))) : nullptr)
 			, cnt(count)
 		{}
-		block_impl(const block_impl& other)
-			: block_impl(other.count())
-		{
-			mem_cpy(other(), begin(), count());
-		}
+		block_impl(const block_impl&) = delete;
 		block_impl(block_impl&& other)
 			: ptr(exchange(other.ptr, nullptr))
 			, cnt(exchange(other.cnt, 0))
 		{}
 		~block_impl()
 		{
-			free(const_cast<remove_const_t<T>*>(ptr));
+			free(ptr);
 		}
-		block_impl& operator=(const block_impl& other)
-		{
-			this->~block_impl();
-			new (this) block_impl(other);
-			return *this;
-		}
+		block_impl& operator=(const block_impl& other) = delete;
 		block_impl& operator=(block_impl&& other)
 		{
 			swap(ptr, other.ptr);
@@ -54,10 +45,11 @@ namespace detail
 		{
 			return cnt;
 		}
-		void reset(size_t count = 0)
+		block_impl& reset(size_t count = 0)
 		{
 			this->~block_impl();
 			new (this) block_impl(count);
+			return *this;
 		}
 		T* begin()
 		{
@@ -104,4 +96,4 @@ namespace detail
 }
 
 template <typename T>
-using block = detail::block<T>::type;
+using block = detail::block<T>::t;

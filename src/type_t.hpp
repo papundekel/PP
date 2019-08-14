@@ -1,7 +1,4 @@
 #pragma once
 
 template <typename T>
-struct type_t
-{
-	using type = T;
-};
+struct type_t {	using t = T; };

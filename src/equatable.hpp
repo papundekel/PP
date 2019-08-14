@@ -1,21 +1,26 @@
 #pragma once
 #include "same.hpp"
-#include "not.hpp"
+#include "non.hpp"
 
-template <typename T, typename U>
-concept equatable_with_c = requires(T t, U u)
+namespace detail::equatable_with
 {
-    { t == u } -> bool;
-    { u == t } -> bool;
-    { t != u } -> bool;
-    { u != t } -> bool;
-};
+    template <typename T, typename U>
+    concept x = requires (T t, U u)
+    {
+        { t == u } -> bool;
+        { u == t } -> bool;
+        { t != u } -> bool;
+        { u != t } -> bool;
+    };
+}
+template <typename T, typename U>
+struct equatable_with : value_t<detail::equatable_with::x<T, U>> {};
 
 template <typename T>
-concept equatable_c = equatable_with_c<T, T>;
+using equatable = equatable_with<T, T>;
 
 template <typename T, typename U>
-requires !same_c<T, U>
+requires !same<T, U>::v
 constexpr bool operator==(const T& t, const U& u)
 {
     return u == t;

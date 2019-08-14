@@ -1,9 +1,10 @@
 #pragma once
 #include "move.hpp"
 #include "forward.hpp"
-#include "not.hpp"
+#include "non.hpp"
 
-template <not_c<const_s> T, typename U>
+template <typename T, typename U>
+requires non<const_type, T>::v
 T exchange(T& object, U&& value)
 {
 	T old = move(object);

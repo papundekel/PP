@@ -2,7 +2,8 @@
 #include "range.hpp"
 #include "construct.hpp"
 
-template <range_c R, typename ...Args>
+template <typename R, typename ...Args>
+requires range_type<R>::v
 void u_fill(R r, Args&&... args)
 {
 	for (; r; ++r)

@@ -3,10 +3,15 @@
 #include "iterator_bi.hpp"
 #include "ordered.hpp"
 
-template <iterator_bi_c T>
-concept iterator_ra_c = requires(T i, T j, diff_t a)
+namespace detail::iterator_ra
 {
-    { i - j } -> diff_t;
-    { i + a } -> T;
-    { i - a } -> T;
-} && ordered_c<T>;
+    template <typename T>
+    concept x = requires (T i, T j, diff_t a)
+    {
+        { i - j } -> diff_t;
+        { i + a } -> T;
+        { i - a } -> T;
+    };  
+}
+template <typename T>
+struct iterator_ra : value_t<detail::iterator_ra::x<T>> {};

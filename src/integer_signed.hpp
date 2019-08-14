@@ -1,6 +1,8 @@
 #pragma once
 #include "integer.hpp"
-#include "number_signed.hpp"
+#include "signed.hpp"
 
-template <integer I>
-concept integer_signed = number_signed<I>;
+template <typename T>
+constexpr auto integer_signed_v = integer_v<T> && signed_v<T>;
+template <typename T>
+concept integer_signed_c = integer_signed_v<T>;

@@ -35,13 +35,14 @@ public:
 	static constexpr uintmax float_precision = 100000;
 };
 
-template <integer_c I>
+template <typename I>
+requires integer<I>::v
 Q pow(const Q& q, I exp)
 {
 	Q::intmax num_pow = pow(q.num, abs(exp));
 	Q::uintmax den_pow = pow(q.den, abs(exp));
 
-	if constexpr (integer_unsigned_v<I>)
+	if constexpr (integer_unsigned<I>::v)
 		return { num_pow, den_pow };
 	else
 	{

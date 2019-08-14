@@ -1,7 +1,5 @@
 #pragma once
-
+#include "value_t.hpp"
+#include "number.hpp"
 template <typename T>
-constexpr bool integer_v = static_cast<T>(1) / static_cast<T>(2) == 0;
-
-template <typename T>
-concept integer_c = integer_v<T>;
+struct integer : value_t<number<T>::v && static_cast<T>(1) / static_cast<T>(2) == 0> {};

@@ -6,7 +6,7 @@
 #include "swap.hpp"
 
 template <iterator First, iterator Second>
-void> it_swap(First first, Second second)
+void it_swap(First first, Second second)
 {
 	swap(*first, *second);
 }

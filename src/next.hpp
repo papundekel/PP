@@ -1,7 +1,8 @@
 #pragma once
 #include "iterator.hpp"
 
-template <iterator_c I>
+template <typename I>
+requires iterator<I>::v
 auto next(I i)
 {
 	return ++i;

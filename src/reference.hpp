@@ -3,10 +3,4 @@
 #include "reference_rvalue.hpp"
 
 template <typename T>
-concept reference_v = reference_lvalue_v<T> || reference_rvalue_v<T>;
-
-template <typename T>
-struct reference : value_t<reference_v<T>> {};
-
-template <typename T>
-concept reference_c = reference_v<T>;
+struct reference : value_t<reference_lvalue<T>::v || reference_rvalue<T>::v> {};

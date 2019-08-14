@@ -3,7 +3,8 @@
 #include "callable.hpp"
 #include "construct.hpp"
 
-template <range_c R, callable_r_c<range_base<R>> G>
+template <typename R, typename G>
+requires range_type<R>::v && callable_r<G, range_base<R>>::v
 void u_generate(R r, G g)
 {
 	for (; r; ++r)

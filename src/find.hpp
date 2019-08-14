@@ -5,7 +5,8 @@
 #include "equals.hpp"
 #include "move_.hpp"
 
-template <range_c R, callable_r_c<bool, range_base<R>> P>
+template <typename R, typename P>
+requires range_type<R>::v && callable_r<P, bool, range_base<R>>::v
 auto find(R r, P&& p)
 {
 	for (; r && !p(*r); ++r);
@@ -13,7 +14,8 @@ auto find(R r, P&& p)
 	return r;
 }
 
-template <range_c R, equatable_with_c<range_base<R>> P>
+template <typename R, typename P>
+requires range_type<R>::v && equatable_with<P, range_base<R>>::v
 auto find(R r, const P& p)
 {
 	for (; r && p != *r; ++r);

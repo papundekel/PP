@@ -3,4 +3,4 @@
 #include "remove_cvref.hpp"
 
 template <typename T, typename ...U>
-concept almost_c = same_c<remove_cvref<T>, remove_cvref<U>...>;
+using almost = same<remove_cvref<T>, remove_cvref<U>...>;

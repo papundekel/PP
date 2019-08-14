@@ -7,29 +7,18 @@
 #include "almost.hpp"
 #include "remove_reference.hpp"
 
-template <equatable_c I>
-concept iterator_c = requires(I i)
+namespace concepts
 {
-	{ *i } -> auto&&;
-} && incrementable_c<I>;
+	template <typename T>
+	concept iterator = ::equatable<T>::v && ::incrementable<T>::v &&
+	requires (T i)
+	{
+		{ *i } -> auto&&;
+	};
+}
+template <typename T>
+struct iterator : value_t<concepts::iterator<T>> {};
 
-template <iterator_c I, typename T>
-concept iterator_assignable_c = requires(I i)
-{
-	{ *i } -> assignable_to_c<T>;
-};
-
-template <iterator_c I, typename T>
-concept iterator_convertible_c = requires(I i)
-{
-	{ *i } -> convertible_to_c<T>;
-};
-
-template <iterator_c I, typename T>
-concept iterator_strict_c = requires(I i)
-{
-	{ *i } -> almost_c<T>;
-};
-
-template <iterator_c I>
+template <typename I>
+requires iterator<I>::v
 using base = remove_reference<decltype(*declval<I>())>;

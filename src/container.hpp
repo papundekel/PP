@@ -31,32 +31,38 @@ constexpr auto end(T(&arr)[size])
 {
 	return arr + size;
 }
-namespace detail
+namespace detail::has_begin
 {
     template <typename C>
-    concept has_begin_c = requires (C& c)
+    concept x = requires (C& c)
     {
-        { begin(c) } -> iterator_c;
+        requires iterator<decltype(begin(c))>::v;
     };
+}
+template <typename C>
+struct has_begin : value_t<detail::has_begin::x<C>> {};
 
+namespace detail::has_end
+{
     template <typename C>
-    concept has_end_c = requires (C& c)
+    concept x = requires (C& c)
 	{
 		end(c);
 	};
 }
-template <detail::has_begin_c C>
-using begin_t = decltype(begin(declval<C&>()));
+template <typename C>
+struct has_end : value_t<detail::has_end::x<C>> {};
 
-template <detail::has_end_c C>
+template <typename C>
+requires has_begin<C>::v
+using begin_t = decltype(begin(declval<C&>()));
+template <typename C>
+requires has_end<C>::v
 using end_t = decltype(end(declval<C&>()));
 
 template <typename C>
-constexpr bool is_container_v;
-template <typename C>
-constexpr bool is_container;
-template <typename C>
-concept container_c = detail::has_begin_c<C> && detail::has_end_c<C> && sentinel_c<end_t<C>, begin_t<C>>;
+struct container : value_t<has_begin<C>::v && has_end<C>::v && sentinel<end_t<C>, begin_t<C>>::v> {};
 
-template <container_c C>
+template <typename C>
+requires container<C>::v
 using container_base = base<begin_t<C>>;

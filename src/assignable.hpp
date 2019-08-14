@@ -1,10 +1,17 @@
 #pragma once
 #include "forward.hpp"
+#include "value_t.hpp"
 
-template <typename From, typename To = From>
-concept assignable_to_c = requires (From from, To to)
+namespace detail::assignable_to
 {
-    { to = frwd<From>(from) } -> To&;
-};
+    template <typename From, typename To>
+    concept x = requires (From from, To to)
+    {
+        { to = frwd<From>(from) } -> To&;
+    };
+}
+template <typename From, typename To = From>
+struct assignable_to : value_t<detail::assignable_to::x<From, To>> {};
+
 template <typename T>
-concept assignable_c = assignable_to_c<T>;
+struct assignable : assignable_to<T, T> {};

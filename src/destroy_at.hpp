@@ -2,11 +2,12 @@
 #include "iterator.hpp"
 #include "fundamental.hpp"
 
-template <iterator_c I>
+template <typename I>
+requires iterator<I>::v
 void destroy_at(I i)
 {
 	using base = base<I>;
 
-	if constexpr (!fundamental_v<base>)
+	if constexpr (!fundamental<base>::v)
 		i->~base();
 }

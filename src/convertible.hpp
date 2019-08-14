@@ -1,17 +1,12 @@
 #pragma once
-template <typename From, typename To>
-concept convertible_to_c = requires (const From from)
+#include "value_t.hpp"
+namespace detail::convertible_to
 {
-    To(from);
-};
-
-namespace detail
-{
-    template <typename To> constexpr void g(To to) {}
+    template <typename From, typename To>
+    concept x = requires (const From from)
+    {
+        static_cast<To>(from);
+    };
 }
-
 template <typename From, typename To>
-concept implicitly_convertible_to_c = requires (From from)
-{
-    detail::g<To>(from);
-};
+struct convertible_to : value_t<detail::convertible_to::x<From, To>> {};

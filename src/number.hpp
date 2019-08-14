@@ -5,20 +5,26 @@
 #include "incrementable.hpp"
 #include "decrementable.hpp"
 
-template <typename T>
-concept number_c = requires (T x, const T y)
+namespace detail::number
 {
-    { x +  y } -> T;
-    { x -  y } -> T;
-    { x *  y } -> T;
-    { x /  y } -> T;
-    { x += y } -> T&;
-	{ x -= y } -> T&;
-    { x *= y } -> T&;
-    { x /= y } -> T&;
-} && ordered_c<T> && assignable_c<T> && equatable_c<T> && incrementable_c<T> && decrementable_c<T>;
+    template <typename T>
+    concept x = requires (T x, const T y)
+    {
+        { x +  y } -> T;
+        { x -  y } -> T;
+        { x *  y } -> T;
+        { x /  y } -> T;
+        { x += y } -> T&;
+        { x -= y } -> T&;
+        { x *= y } -> T&;
+        { x /= y } -> T&;
+    };
+}
+template <typename T>
+struct number : value_t<detail::number::x<T> && ordered<T>::v && assignable<T>::v && equatable<T>::v && incrementable<T>::v && decrementable<T>::v> {};
 
 template <typename N>
+//requires requires (N& a, const N& b) { a = a + b; }
 constexpr N& operator+=(N& x, const N& y)
 {
     return x = x + y;

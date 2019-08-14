@@ -1,7 +1,12 @@
 #pragma once
 
-template <typename T>
-concept invertible_c = requires(T t)
+namespace detail::invertible
 {
-	{ -t } -> T;
-};
+	template <typename T>
+	concept x = requires (T t)
+	{
+		{ -t } -> T;
+	};
+}
+template <typename T>
+struct invertible : value_t<detail::invertible::x<T>> {};

@@ -176,7 +176,8 @@ list<char>::list(list<char>&& other) noexcept
 list<char>& list<char>::operator=(const list<char>& other)
 {
 	m_length = other.length();
-	buffer = other.buffer;
+	buffer.reset(m_length);
+	mem_cpy(other.buffer(), buffer(), m_length);
 	return *this;
 }
 list<char>& list<char>::operator=(list<char>&& other) noexcept

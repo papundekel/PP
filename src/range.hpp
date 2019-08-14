@@ -7,19 +7,22 @@
 #include "iterator_ra.hpp"
 #include "prev.hpp"
 #include "value_t.hpp"
+#include "is_type.hpp"
 
-template <iterator_c it, sentinel_c<it> it_end = it>
+template <typename it, typename it_end = it>
+requires iterator<it>::v && sentinel<it_end, it>::v
 struct range
 {
 	using begin_t = it;
 	using end_t = it_end;
-	static constexpr bool random_access = iterator_ra_c<it> && iterator_ra_c<it_end>;
-	static constexpr bool finite = !same_v<infinity, it_end>;
+	static constexpr bool random_access = iterator_ra<it>::v && iterator_ra<it_end>::v;
+	static constexpr bool finite = !same<infinity, it_end>::v;
 
 	it begin;
 	it_end end;
 
-	template <container_c C>
+	template <typename C>
+	requires container<C>::v
 	explicit range(C& c)
 		: begin(::begin(c))
 		, end(::end(c))
@@ -55,7 +58,7 @@ struct range
 		return *begin;
 	}
 	decltype(auto) operator&()
-	requires iterator_c<it_end>
+	requires iterator<it_end>::v
 	{
 		return *end;
 	}
@@ -65,19 +68,19 @@ struct range
 		return *this;
 	}
 	range& operator++(int)
-	requires iterator_c<it_end>
+	requires iterator<it_end>::v
 	{
 		++end;
 		return *this;
 	}
 	range& operator--()
-	requires iterator_bi_c<it>
+	requires iterator_bi<it>::v
 	{
 		--begin;
 		return *this;
 	}
 	range& operator--(int)
-	requires iterator_bi_c<it_end>
+	requires iterator_bi<it_end>::v
 	{
 		--end;
 		return *this;
@@ -146,28 +149,32 @@ struct range
 	}
 };
 
-template <container_c C>
+template <typename C>
+requires container<C>::v
 range(C&) -> range<begin_t<C>, end_t<C>>;
 template <typename T>
 range(const std::initializer_list<T>&) -> range<const T*>;
 
-template <iterator_c it>
+template <typename it>
+requires iterator<it>::v
 struct range_n
 {
 	using begin_t = it;
 	using end_t = it;
-	static constexpr bool random_access = iterator_ra_c<it>;
+	static constexpr bool random_access = iterator_ra<it>::v;
 	static constexpr bool finite = true;
 
 	it begin;
 	size_t cnt;
 
-	template <container_c C>
+	template <typename C>
+	requires container<C>::v
 	explicit range_n(C& c)
 		: begin(::begin(c))
 		, cnt(range(c).count())
 	{}
-	template <container_c C>
+	template <typename C>
+	requires container<C>::v
 	range_n(C& c, size_t cnt)
 		: begin(::begin(c))
 		, cnt(cnt)
@@ -210,7 +217,7 @@ struct range_n
 		return *this;
 	}
 	range_n& operator--()
-	requires iterator_bi_c<it>
+	requires iterator_bi<it>::v
 	{
 		--begin;
 		++cnt;
@@ -266,30 +273,22 @@ struct range_n
 	}
 };
 
-template <container_c C>
+template <typename C>
+requires container<C>::v
 range_n(C&) -> range_n<begin_t<C>>;
-template <container_c C>
+template <typename C>
+requires container<C>::v
 range_n(C&, size_t) -> range_n<begin_t<C>>;
 template <typename T>
 range_n(const std::initializer_list<T>&) -> range_n<const T*>;
 
 template <typename T>
-constexpr bool range_v = false;
-template <typename it, typename it_end>
-constexpr bool range_v<range<it, it_end>> = true;
-template <typename it>
-constexpr bool range_v<range_n<it>> = true;
-template <typename T>
-struct range_s : value_t<range_v<T>> {};
-template <typename T>
-concept range_c = range_v<T>;
+using range_type = value_t<is<range>::type<T>::v || is<range_n>::type<T>::v>;
 
-template <range_c R>
-constexpr bool finite_range_v = R::finite;
-template <range_c R>
-struct finite_range_s : value_t<finite_range_v<R>> {};
-template <range_c R>
-concept finite_range_c = finite_range_v<R>;
+template <typename R>
+requires range_type<R>::v
+struct finite_range : value_t<R::finite> {};
 
-template <range_c R>
+template <typename R>
+requires range_type<R>::v
 using range_base = base<typename R::begin_t>;
