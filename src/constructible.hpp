@@ -3,7 +3,7 @@
 #include "forward.hpp"
 
 template <typename T, typename... Args>
-struct constructible : value_t<requires (Args... args)
+using constructible = value_t<requires (Args... args)
 {
     T(frwd<Args>(args)...);
-}> {};
+}>;

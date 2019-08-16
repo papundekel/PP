@@ -2,8 +2,9 @@
 
 char* copy_char(char* begin, char* end, char c)
 {
-	*begin = c;
-	return ++begin;
+	if (begin != end)
+		*begin++ = c;
+	return begin;
 }
 
 char to_char(unsigned char digit)

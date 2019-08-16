@@ -10,7 +10,7 @@ class infinity {};
 
 template <typename I>
 requires iterator<I>::v
-constexpr bool operator==(I i, infinity j)
+constexpr bool operator==(I, infinity)
 {
     return false;
 }

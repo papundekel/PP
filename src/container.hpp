@@ -61,7 +61,7 @@ requires has_end<C>::v
 using end_t = decltype(end(declval<C&>()));
 
 template <typename C>
-struct container : value_t<has_begin<C>::v && has_end<C>::v && sentinel<end_t<C>, begin_t<C>>::v> {};
+using container = value_t<has_begin<C>::v && has_end<C>::v && sentinel<end_t<C>, begin_t<C>>::v>;
 
 template <typename C>
 requires container<C>::v

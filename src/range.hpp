@@ -8,6 +8,7 @@
 #include "prev.hpp"
 #include "value_t.hpp"
 #include "is_type.hpp"
+#include "conditional.hpp"
 
 template <typename it, typename it_end = it>
 requires iterator<it>::v && sentinel<it_end, it>::v
@@ -18,8 +19,8 @@ struct range
 	static constexpr bool random_access = iterator_ra<it>::v && iterator_ra<it_end>::v;
 	static constexpr bool finite = !same<infinity, it_end>::v;
 
-	it begin;
-	it_end end;
+	mutable it begin;
+	mutable it_end end;
 
 	template <typename C>
 	requires container<C>::v
@@ -45,11 +46,11 @@ struct range
 		, end(other.end)
 	{}
 
-	auto operator+()
+	auto operator+() const
 	{
 		return begin;
 	}
-	auto operator-()
+	auto operator-() const
 	{
 		return end;
 	}
@@ -62,24 +63,24 @@ struct range
 	{
 		return *end;
 	}
-	range& operator++()
+	decltype(auto) operator++()
 	{
 		++begin;
 		return *this;
 	}
-	range& operator++(int)
+	decltype(auto) operator++(int)
 	requires iterator<it_end>::v
 	{
 		++end;
 		return *this;
 	}
-	range& operator--()
+	decltype(auto) operator--()
 	requires iterator_bi<it>::v
 	{
 		--begin;
 		return *this;
 	}
-	range& operator--(int)
+	decltype(auto) operator--(int)
 	requires iterator_bi<it_end>::v
 	{
 		--end;
@@ -109,11 +110,11 @@ struct range
 		}
 	}
 
-	decltype(auto) first() const
+	decltype(auto) first()
 	{
 		return *begin;
 	}
-	decltype(auto) last() const
+	decltype(auto) last()
 	{
 		return *prev(end);
 	}
@@ -121,7 +122,7 @@ struct range
 	{
 		return begin == end;
 	}
-	operator bool()
+	operator bool() const
 	{
 		return !empty();
 	}
@@ -289,6 +290,16 @@ template <typename R>
 requires range_type<R>::v
 struct finite_range : value_t<R::finite> {};
 
-template <typename R>
-requires range_type<R>::v
-using range_base = base<typename R::begin_t>;
+namespace drange_base
+{
+	template <typename T>
+	constexpr base<typename T::begin_t> x();
+
+	template <typename T>
+	requires !range_type<T>::v && container<T>::v
+	constexpr container_base<T> x();
+}
+
+template <typename T>
+requires range_type<T>::v || container<T>::v
+using range_base = decltype(drange_base::x<T>());

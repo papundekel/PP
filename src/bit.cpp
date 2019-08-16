@@ -103,7 +103,7 @@ bit_ref bit_it::operator*() const
 }
 bit_ref bit_it::operator[](diff_t offset) const
 {
-	return bit;
+	return bit + offset;
 }
 bit_it& bit_it::operator++()
 {
@@ -161,7 +161,7 @@ const bit_ref const_bit_it::operator*() const
 }
 const bit_ref const_bit_it::operator[](diff_t offset) const
 {
-	return bit;
+	return bit + offset;
 }
 const_bit_it& const_bit_it::operator++()
 {

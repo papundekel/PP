@@ -1,21 +1,30 @@
 #pragma once
 template <typename T, size_t s>
-class array
+struct array
 {
-	T* ptr;
-public:
-	template <size_t size>
-	array(const T(&arr)[size])
-		: ptr(const_cast<T*>(arr))
+	T data[s];
+	
+	T* begin()
 	{
-		static_assert(size <= s);
+		return data;
 	}
-
-	constexpr size_t size()
+	const T* begin() const
+	{
+		return data;
+	}
+	T* end()
+	{
+		return data + s;
+	}
+	const T* end() const
+	{
+		return data + s;
+	}
+	constexpr auto size()
 	{
 		return s;
 	}
 };
 
-template <size_t s, typename T>
-array(T(&)[s])->array<T, s>;
+template <class T, class... U>
+array(T, U...) -> array<T, 1 + sizeof...(U)>;
