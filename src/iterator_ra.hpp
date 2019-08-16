@@ -14,4 +14,4 @@ namespace detail::iterator_ra
     };  
 }
 template <typename T>
-struct iterator_ra : value_t<detail::iterator_ra::x<T>> {};
+using iterator_ra = value_t<detail::iterator_ra::x<T>>;
