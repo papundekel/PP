@@ -3,4 +3,4 @@
 #include "reference_rvalue.hpp"
 
 template <typename T>
-struct reference : value_t<reference_lvalue<T>::v || reference_rvalue<T>::v> {};
+using reference = value_t<reference_lvalue<T>::v || reference_rvalue<T>::v>;

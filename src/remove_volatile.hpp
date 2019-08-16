@@ -1,11 +1,11 @@
 #pragma once
 #include "type_t.hpp"
-namespace detail
+namespace dremove_volatile
 {
     template <typename T>
-    struct remove_volatile : type_t<T> {};
+    struct x : type_t<T> {};
     template <typename T>
-    struct remove_volatile<volatile T> : type_t<T> {};
+    struct x<volatile T> : type_t<T> {};
 }
 template <typename T>
-using remove_volatile = detail::remove_volatile<T>::t;
+using remove_volatile = dremove_volatile::x<T>::t;

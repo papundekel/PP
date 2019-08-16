@@ -2,4 +2,4 @@
 #include "value_t.hpp"
 
 template <template <typename...> typename Test, typename... Args>
-struct non : value_t<!Test<Args...>::v> {};
+using non = value_t<!Test<Args...>::v>;

@@ -6,15 +6,19 @@
 template <typename... T>
 struct pack
 {
-	static constexpr auto count = 0;
+	static constexpr auto size = 0;
+	
 	template <size_t N>
 	using get = pack<>;
-	template <template <typename> typename F>
-	static constexpr size_t find = 0;
-	template <template <typename> typename F>
-	static constexpr auto contains = false;
-	template <template <typename> typename F>
-	static constexpr auto all = true;
+
+	#define constant(name, value)	template <template <typename> typename F>\
+									static constexpr auto name = value
+	constant(find, 0ull);
+	constant(contains, false);
+	constant(all, true);
+	constant(count, 0ull);
+	#undef constant
+
 	template <typename... V>
 	using append = pack<V...>;
 	template <typename... V>
@@ -28,7 +32,7 @@ struct pack
 template <typename T, typename... U>
 struct pack<T, U...>
 {
-	static constexpr auto count = 1 + sizeof...(U);
+	static constexpr auto size = 1 + sizeof...(U);
 
 private:
 	template <size_t N>
@@ -40,11 +44,12 @@ public:
 	template <template <typename> typename F>
 	static constexpr auto find = F<T>::v ? 0 : 1 + pack<U...>::template find<F>;
 
-	template <template <typename> typename F>
-	static constexpr auto contains = F<T>::v || (F<U>::v || ...);
-
-	template <template <typename> typename F>
-	static constexpr auto all = F<T>::v && (F<U>::v && ...);
+	#define fold_exp(name, bin_op)	template <template <typename> typename F>\
+									static constexpr auto name = F<T>::v bin_op (F<U>::v bin_op ...)
+	fold_exp(contains, ||);
+	fold_exp(all, &&);
+	fold_exp(count, +);
+	#undef fold_exp
 
 private:
 	template <typename... V>

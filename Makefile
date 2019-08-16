@@ -6,7 +6,7 @@ SRCFILES = $(wildcard $(SRCDIR)/*.cpp)
 OBJFILES = $(subst $(SRCDIR)/,$(OBJDIR)/,$(SRCFILES:.cpp=.o))
 DEPFILES = $(subst $(SRCDIR)/,$(DEPDIR)/,$(SRCFILES:.cpp=.d))
 
-CFLAGS = -fconcepts -std=c++2a -g -Wall -Wextra -pedantic
+CFLAGS = -fconcepts -std=c++2a -g -Wall -Wextra -Wpedantic
 
 Papo.out: $(OBJFILES)
 	$(CXX) -o $@ $^

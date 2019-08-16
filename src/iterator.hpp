@@ -7,17 +7,16 @@
 #include "almost.hpp"
 #include "remove_reference.hpp"
 
-namespace concepts
+namespace diterator
 {
 	template <typename T>
-	concept iterator = ::equatable<T>::v && ::incrementable<T>::v &&
-	requires (T i)
+	concept x = requires (T i)
 	{
 		{ *i } -> auto&&;
 	};
 }
 template <typename T>
-struct iterator : value_t<concepts::iterator<T>> {};
+struct iterator : value_t<equatable<T>::v && incrementable<T>::v && diterator::x<T>> {};
 
 template <typename I>
 requires iterator<I>::v

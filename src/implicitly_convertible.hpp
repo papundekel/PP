@@ -1,6 +1,6 @@
 #pragma once
 #include "value_t.hpp"
-namespace detail::abc
+namespace dimplicitly_convertible_to
 {
     template <typename To>
     constexpr void g(To to) {}
@@ -11,4 +11,4 @@ namespace detail::abc
     };
 }
 template <typename From, typename To>
-struct implicitly_convertible_to : value_t<detail::abc::x<From, To>> {};
+using implicitly_convertible_to = value_t<dimplicitly_convertible_to::x<From, To>>;

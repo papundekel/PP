@@ -7,15 +7,13 @@
 #include "is_constant_evaluated.hpp"
 #include "accumulate.hpp"
 #include "move_.hpp"
-#include "void_t.hpp"
 #include "ignore_type.hpp"
 #include "array.hpp"
+#include "is_type.hpp"
 
 int main()
 {
-	int a[] = { 1, 4, 5, 6 };
-
-	print(accumulate(a));
+	print(floating<bool>::v);
 
 	return 0;
 }

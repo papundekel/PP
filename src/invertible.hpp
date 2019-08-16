@@ -1,6 +1,6 @@
 #pragma once
 
-namespace detail::invertible
+namespace dinvertible
 {
 	template <typename T>
 	concept x = requires (T t)
@@ -9,4 +9,4 @@ namespace detail::invertible
 	};
 }
 template <typename T>
-struct invertible : value_t<detail::invertible::x<T>> {};
+using invertible = value_t<dinvertible::x<T>>;

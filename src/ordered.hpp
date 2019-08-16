@@ -1,6 +1,6 @@
 #pragma once
 #include "value_t.hpp"
-namespace detail::ordered_with
+namespace dordered_with
 {
     template <typename T, typename U>
     concept x = requires(T t, U u)
@@ -12,10 +12,10 @@ namespace detail::ordered_with
     };
 }
 template <typename T, typename U>
-struct ordered_with : value_t<detail::ordered_with::x<T, U>> {};
+using ordered_with = value_t<dordered_with::x<T, U>>;
 
 template <typename T>
-struct ordered : ordered_with<T, T> {};
+using ordered = ordered_with<T, T>;
 
 template <typename T, typename U>
 constexpr bool operator>(const T& t, const U& u)

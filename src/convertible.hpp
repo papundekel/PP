@@ -1,6 +1,6 @@
 #pragma once
 #include "value_t.hpp"
-namespace detail::convertible_to
+namespace dconvertible_to
 {
     template <typename From, typename To>
     concept x = requires (const From from)
@@ -9,4 +9,4 @@ namespace detail::convertible_to
     };
 }
 template <typename From, typename To>
-struct convertible_to : value_t<detail::convertible_to::x<From, To>> {};
+using convertible_to = value_t<dconvertible_to::x<From, To>>;

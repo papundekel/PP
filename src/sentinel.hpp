@@ -4,7 +4,7 @@
 
 template <typename S, typename I>
 requires iterator<I>::v
-struct sentinel : equatable_with<I, S> {};
+using sentinel = equatable_with<I, S>;
 
 class infinity {};
 

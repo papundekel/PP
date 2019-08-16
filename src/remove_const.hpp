@@ -1,11 +1,11 @@
 #pragma once
 #include "type_t.hpp"
-namespace detail
+namespace dremove_const
 {
     template <typename T>
-    struct remove_const : type_t<T> {};
+    struct x : type_t<T> {};
     template <typename T>
-    struct remove_const<const T> : type_t<T> {};
+    struct x<const T> : type_t<T> {};
 }
 template <typename T>
-using remove_const = detail::remove_const<T>::t;
+using remove_const = dremove_const::x<T>::t;

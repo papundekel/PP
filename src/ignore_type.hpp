@@ -2,6 +2,6 @@
 template <typename T>
 struct ignore
 {
-    template <typename U>
+    template <typename...>
     using type = T;
 };

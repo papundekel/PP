@@ -2,7 +2,7 @@
 #include "forward.hpp"
 #include "value_t.hpp"
 
-namespace detail::assignable_to
+namespace dassignable_to
 {
     template <typename From, typename To>
     concept x = requires (From from, To to)
@@ -11,7 +11,7 @@ namespace detail::assignable_to
     };
 }
 template <typename From, typename To = From>
-struct assignable_to : value_t<detail::assignable_to::x<From, To>> {};
+using assignable_to = value_t<dassignable_to::x<From, To>>;
 
 template <typename T>
-struct assignable : assignable_to<T, T> {};
+using assignable = assignable_to<T, T>;

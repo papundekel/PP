@@ -21,7 +21,7 @@ template <> struct limit<short>
 };
 template <> struct limit<int>
 {
-	static constexpr int max =  2147483647i32;
+	static constexpr int max = 2147483647i32;
 	static constexpr int min = -max - 1;
 };
 template <> struct limit<long long>

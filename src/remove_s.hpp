@@ -6,4 +6,4 @@ struct remove_s : type_t<T> {};
 template_remove_is
 struct remove_s<F<T>> : type_t<T> {};
 template_remove_is
-using remove_t = remove_s<T, F>::type;
+using remove_t = remove_s<T, F>::t;
