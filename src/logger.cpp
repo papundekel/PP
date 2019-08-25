@@ -1,29 +1,29 @@
 #include "logger.hpp"
 #include "output.hpp"
 
-bim::bim()
+logger::logger()
 {
     print("def ctor");
 }
-bim::bim(const bim&)
+logger::logger(const logger&)
 {
     print("copy ctor");
 }
-bim::bim(bim&&) noexcept
+logger::logger(logger&&) noexcept
 {
     print("move ctor");
 }
-bim& bim::operator=(const bim&)
+logger& logger::operator=(const logger&)
 {
     print("copy assignment");
     return *this;
 }
-bim& bim::operator=(bim&&)
+logger& logger::operator=(logger&&)
 {
     print("move assignment");
     return *this;
 }
-bim::~bim()
+logger::~logger()
 {
     print("dtor");
 }

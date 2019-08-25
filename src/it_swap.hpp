@@ -5,7 +5,8 @@
 #include "base_type.hpp"
 #include "swap.hpp"
 
-template <iterator First, iterator Second>
+template <typename First, typename Second>
+requires AND<iterator<First>, iterator<Second>>::v
 void it_swap(First first, Second second)
 {
 	swap(*first, *second);

@@ -2,6 +2,7 @@
 #include "type_t.hpp"
 #include "conditional.hpp"
 #include "value_t.hpp"
+#include "is_template_nontype.hpp"
 
 template <typename... T>
 struct pack
@@ -42,9 +43,11 @@ public:
 	using get = conditional<N == 0, T, get_helper<N>>;
 
 	template <template <typename> typename F>
+	requires is_template_nontype<value_t>::type<F<T>>::v
 	static constexpr auto find = F<T>::v ? 0 : 1 + pack<U...>::template find<F>;
 
 	#define fold_exp(name, bin_op)	template <template <typename> typename F>\
+									requires is_template_nontype<value_t>::type<F<T>>::v\
 									static constexpr auto name = F<T>::v bin_op (F<U>::v bin_op ...)
 	fold_exp(contains, ||);
 	fold_exp(all, &&);

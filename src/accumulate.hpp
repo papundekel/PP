@@ -5,7 +5,7 @@
 #include "constructible_template.hpp"
 
 template <typename R, typename T = remove_cv<range_base<R>>>
-requires range_type<R>::v || constructible_template<range, R>::v
+requires OR<range_type<R>, constructible_template<range, R>>::v
 auto accumulate(const R& x, T init)
 {
 	if constexpr (range_type<R>::v)

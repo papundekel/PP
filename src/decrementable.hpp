@@ -1,6 +1,7 @@
 #pragma once
 #include "copy_constructible.hpp"
 #include "implicitly_convertible.hpp"
+#include "value_t_operators.hpp"
 
 namespace ddecrementable_prefix
 {
@@ -25,7 +26,7 @@ template <typename T>
 using decrementable_postfix = value_t<ddecrementable_postfix::x<T>>;
 
 template <typename T>
-using decrementable = value_t<decrementable_prefix<T>::v && decrementable_postfix<T>::v>;
+using decrementable = AND<decrementable_prefix<T>, decrementable_postfix<T>>;
 
 template <typename T>
 requires decrementable_prefix<T>::v && copy_constructible<T>::v

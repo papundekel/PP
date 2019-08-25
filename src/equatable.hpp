@@ -1,11 +1,10 @@
 #pragma once
 #include "same.hpp"
-#include "non.hpp"
 
 namespace dequatable_with
 {
     template <typename T, typename U>
-    concept equatable_with = requires (T t, U u)
+    concept z = requires (T t, U u)
     {
         { t == u } -> bool;
         { u == t } -> bool;
@@ -14,7 +13,7 @@ namespace dequatable_with
     };
 }
 template <typename T, typename U>
-using equatable_with = value_t<dequatable_with::equatable_with<T, U>>;
+using equatable_with = value_t<dequatable_with::z<T, U>>;
 
 template <typename T>
 using equatable = equatable_with<T, T>;

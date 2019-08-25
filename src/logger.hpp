@@ -1,11 +1,11 @@
 #pragma once
 
-struct bim
+struct logger
 {
-	bim();
-	bim(const bim&);
-	bim(bim&&) noexcept;
-	bim& operator=(const bim&);
-	bim& operator=(bim&&);
-	~bim();
+	logger();
+	logger(const logger&);
+	logger(logger&&) noexcept;
+	logger& operator=(const logger&);
+	logger& operator=(logger&&);
+	~logger();
 };

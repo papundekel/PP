@@ -6,6 +6,7 @@
 #include "convertible.hpp"
 #include "almost.hpp"
 #include "remove_reference.hpp"
+#include "value_t_operators.hpp"
 
 namespace diterator
 {
@@ -14,9 +15,12 @@ namespace diterator
 	{
 		{ *i } -> auto&&;
 	};
+	template <typename T>
+	constexpr bool y = AND<equatable<T>, incrementable<T>, value_t<x<T>>>::v;
 }
+
 template <typename T>
-struct iterator : value_t<equatable<T>::v && incrementable<T>::v && diterator::x<T>> {};
+using iterator = value_t<diterator::y<T>>;
 
 template <typename I>
 requires iterator<I>::v

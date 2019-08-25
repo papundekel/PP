@@ -17,7 +17,8 @@
 #include "next.hpp"
 #include "equal.hpp"
 
-template<typename T, size_t cnt = 0> class list
+template <typename T, size_t cnt = 0>
+class list
 {
 public:
 	T buffer[cnt];
@@ -60,7 +61,8 @@ public:
 	}
 };
 
-template<typename T> class list<T>
+template <typename T>
+class list<T>
 {
 	size_t cnt;
 	block<T> buffer;
@@ -338,7 +340,8 @@ public:
 	template <typename U>
 	friend void swap(list<U>& left, list<U>& right);
 };
-template<size_t count> class list<bool, count>
+template <size_t count>
+class list<bool, count>
 {
 	static constexpr size_t byte_count = ::fit_count<byte_size, 1>(count);
 	unsigned char buffer[byte_count];
@@ -398,7 +401,8 @@ public:
 		return byte_count;
 	}
 };
-template<> class list<bool>
+template <>
+class list<bool>
 {
 	size_t cnt;
 	block<unsigned char> m_block;
@@ -444,7 +448,8 @@ public:
 	size_t size() const;
 	size_t capacity() const;
 };
-template<> class list<char>
+template <>
+class list<char>
 {
 	size_t m_length;
 	block<char> buffer;

@@ -7,7 +7,7 @@
 #include "iterator_ra.hpp"
 #include "prev.hpp"
 #include "value_t.hpp"
-#include "is_type.hpp"
+#include "is_template.hpp"
 #include "conditional.hpp"
 
 template <typename it, typename it_end = it>
@@ -284,7 +284,7 @@ template <typename T>
 range_n(const std::initializer_list<T>&) -> range_n<const T*>;
 
 template <typename T>
-using range_type = value_t<is<range>::type<T>::v || is<range_n>::type<T>::v>;
+using range_type = OR<is_template<range>::type<T>, is_template<range_n>::type<T>>;
 
 template <typename R>
 requires range_type<R>::v
