@@ -1,5 +1,4 @@
 #include "list.hpp"
-#include "list.hpp"
 #include <cstring>
 #include "sentinel.hpp"
 #include "mem_set.hpp"

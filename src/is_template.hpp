@@ -1,14 +1,14 @@
 #pragma once
-#include "value_t.hpp"
+#include "val.hpp"
 template <template <typename...> typename T>
 struct is_template
 {
 private:
 	template <typename U>
-	struct x : value_t<false> {};
+	struct x : val<false> {};
 	template <typename... U>
-	struct x<T<U...>> : value_t<true> {};
+	struct x<T<U...>> : val<true> {};
 public:
 	template <typename U>
-	using type = value_t<x<U>::v>;
+	using type = val<x<U>::v>;
 };

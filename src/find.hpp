@@ -15,7 +15,7 @@ auto find(R r, P&& p)
 }
 
 template <typename R, typename P>
-requires AND<range_type<R>, equatable_with<P, range_base<R>>>::v
+requires AND<range_type<R>, equatable<P, range_base<R>>>::v
 auto find(R r, const P& p)
 {
 	for (; r && p != *r; ++r);

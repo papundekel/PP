@@ -13,4 +13,4 @@ using fundamental_types = pack<void, nullptr_t, bool>
 ::append<fundamental_chars>;
 
 template <typename T>
-using fundamental = value_t<pointer_type<T>::v || fundamental_types::contains<same<T>::as>>;
+using fundamental = val<pointer_type<T>::v || fundamental_types::contains<same<T>::as>>;

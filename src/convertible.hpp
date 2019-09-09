@@ -1,5 +1,5 @@
 #pragma once
-#include "value_t.hpp"
+#include "val.hpp"
 namespace dconvertible_to
 {
     template <typename From, typename To>
@@ -9,4 +9,4 @@ namespace dconvertible_to
     };
 }
 template <typename From, typename To>
-using convertible_to = value_t<dconvertible_to::x<From, To>>;
+using convertible_to = val<dconvertible_to::x<From, To>>;

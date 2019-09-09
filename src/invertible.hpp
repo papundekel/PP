@@ -9,4 +9,4 @@ namespace dinvertible
 	};
 }
 template <typename T>
-using invertible = value_t<dinvertible::x<T>>;
+using invertible = val<dinvertible::x<T>>;

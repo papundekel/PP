@@ -1,13 +1,13 @@
 #pragma once
-#include "value_t.hpp"
+#include "val.hpp"
 #include "remove_cv.hpp"
 
 namespace dpointer_type
 {
     template <typename T>
-    struct x : value_t<false> {};
+    constexpr auto x = false;
     template <typename T>
-    struct x<T*> : value_t<true> {};
+    constexpr auto x<T*> = true;
 }
 template <typename T>
-using pointer_type = dpointer_type::x<remove_cv<T>>;
+using pointer_type = val<dpointer_type::x<remove_cv<T>>>;

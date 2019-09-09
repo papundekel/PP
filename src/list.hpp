@@ -16,6 +16,8 @@
 #include "forward.hpp"
 #include "next.hpp"
 #include "equal.hpp"
+#include "fit_count.hpp"
+#include "exchange.hpp"
 
 template <typename T, size_t cnt = 0>
 class list

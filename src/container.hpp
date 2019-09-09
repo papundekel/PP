@@ -40,7 +40,7 @@ namespace detail::has_begin
     };
 }
 template <typename C>
-struct has_begin : value_t<detail::has_begin::x<C>> {};
+struct has_begin : val<detail::has_begin::x<C>> {};
 
 namespace detail::has_end
 {
@@ -51,7 +51,7 @@ namespace detail::has_end
 	};
 }
 template <typename C>
-struct has_end : value_t<detail::has_end::x<C>> {};
+struct has_end : val<detail::has_end::x<C>> {};
 
 template <typename C>
 requires has_begin<C>::v
@@ -61,7 +61,7 @@ requires has_end<C>::v
 using end_t = decltype(end(declval<C&>()));
 
 template <typename C>
-using container = value_t<has_begin<C>::v && has_end<C>::v && sentinel<end_t<C>, begin_t<C>>::v>;
+using container = val<has_begin<C>::v && has_end<C>::v && sentinel<end_t<C>, begin_t<C>>::v>;
 
 template <typename C>
 requires container<C>::v

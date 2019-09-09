@@ -1,5 +1,5 @@
 #pragma once
-#include "value_t.hpp"
+#include "val.hpp"
 
 namespace dincrementable
 {
@@ -11,7 +11,7 @@ namespace dincrementable
     };
 }
 template <typename T>
-using incrementable = value_t<dincrementable::x<T>>;
+using incrementable = val<dincrementable::x<T>>;
 
 template <typename T>
 constexpr T operator++(T& t, int)

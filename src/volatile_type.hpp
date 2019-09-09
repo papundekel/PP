@@ -1,5 +1,5 @@
 #pragma once
+#include "same.hpp"
 #include "make_volatile.hpp"
-#include "has_projective_trait.hpp"
 template <typename T>
-using volatile_type = has_projective_trait<T, make_volatile>;
+using volatile_type = same<T, make_volatile<T>>;

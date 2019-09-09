@@ -1,99 +1,104 @@
 #pragma once
 #include <cstdlib>
-#include "mem_cpy.hpp"
-#include "fit_count.hpp"
-#include "swap.hpp"
-#include "exchange.hpp"
-#include "remove_const.hpp"
 #include "ref.hpp"
 #include "type_t.hpp"
+#include "equal.hpp"
+#include "swap.hpp"
 
-namespace detail
+namespace dblock
 {
 	template <typename T>
-	class block_impl
+	class block
 	{
-		T* ptr;
 		size_t cnt;
-
+		T* data;
 	public:
-		explicit block_impl(size_t count = 0)
-			: ptr(count != 0 ? reinterpret_cast<T*>(malloc(count * sizeof(T))) : nullptr)
-			, cnt(count)
+		block()
+			: cnt(0)
+			, data(nullptr)
 		{}
-		block_impl(const block_impl&) = delete;
-		block_impl(block_impl&& other)
-			: ptr(exchange(other.ptr, nullptr))
-			, cnt(exchange(other.cnt, 0))
+		explicit block(size_t count)
+			: cnt(count)
+    		, data(reinterpret_cast<T*>(malloc(count * sizeof(T))))
 		{}
-		~block_impl()
+		block(const block&) = delete;
+		block(block&& other)
+			: cnt(other.cnt)
+			, data(other.data)
 		{
-			free(ptr);
+			other.data = nullptr;
 		}
-		block_impl& operator=(const block_impl& other) = delete;
-		block_impl& operator=(block_impl&& other)
+		~block()
 		{
-			swap(ptr, other.ptr);
-			swap(cnt, other.cnt);
+			free(data);
+		}
+		block& operator=(const block&) = delete;
+		block& operator=(block&& other)
+		{
+			if (this != &other)
+			{
+				swap(cnt, other.cnt);
+				swap(data, other.data);
+			}
 			return *this;
 		}
-		operator bool() const
+		block& reset(size_t count = 0)
 		{
-			return ptr;
+			this->~block();
+			new (this) block(count);
+			return *this;
+		}
+		T* begin()
+		{
+			return data;
+		}
+		const T* begin() const
+		{
+			return data;
 		}
 		size_t count() const
 		{
 			return cnt;
 		}
-		block_impl& reset(size_t count = 0)
-		{
-			this->~block_impl();
-			new (this) block_impl(count);
-			return *this;
-		}
-		T* begin()
-		{
-			return ptr;
-		}
-		const T* begin() const
-		{
-			return ptr;
-		}
 		T* end()
 		{
-			return ptr + cnt;
+			return begin() + count();
 		}
 		const T* end() const
 		{
-			return ptr + cnt;
+			return begin() + count();
+		}
+		operator bool() const
+		{
+			return begin();
+		}
+		bool operator==(const block& other) const
+		{
+			return this == &other || equal(range(*this), range(other));
 		}
 		T* operator()(size_t index = 0)
 		{
-			return ptr + index;
+			return begin() + index;
 		}
 		const T* operator()(size_t index = 0) const
 		{
-			return ptr + index;
+			return begin() + index;
 		}
 		T& operator[](size_t index)
 		{
-			return ptr[index];
+			return begin()[index];
 		}
 		const T& operator[](size_t index) const
 		{
-			return ptr[index];
-		}
-		bool operator==(const block_impl& other) const
-		{
-			return ptr == other.ptr;
+			return begin()[index];
 		}
 	};
 
 	template <typename T>
-	struct block : type_t<block_impl<T>> {};
+	struct x : type_t<block<T>> {};
 	template <typename T>
-	struct block<T&> : type_t<block_impl<ref<T>>> {};
+	struct x<T&> : type_t<block<ref<T>>> {};
 }
 
 template <typename T>
-using block = detail::block<T>::t;
+using block = dblock::x<T>::t;

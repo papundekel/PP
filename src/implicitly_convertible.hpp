@@ -1,5 +1,5 @@
 #pragma once
-#include "value_t.hpp"
+#include "val.hpp"
 namespace dimplicitly_convertible_to
 {
     template <typename To>
@@ -11,4 +11,4 @@ namespace dimplicitly_convertible_to
     };
 }
 template <typename From, typename To>
-using implicitly_convertible_to = value_t<dimplicitly_convertible_to::x<From, To>>;
+using implicitly_convertible_to = val<dimplicitly_convertible_to::x<From, To>>;

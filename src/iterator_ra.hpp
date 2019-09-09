@@ -14,4 +14,4 @@ namespace diterator_ra
     };
 }
 template <typename T>
-using iterator_ra = AND<iterator_bi<T>, value_t<diterator_ra::x<T>>>;
+using iterator_ra = AND<iterator_bi<T>, val<diterator_ra::x<T>>>;

@@ -1,5 +1,5 @@
 #pragma once
-#include "value_t.hpp"
+#include "val.hpp"
 
 namespace dclass_type
 {
@@ -10,4 +10,4 @@ namespace dclass_type
 }
 
 template <typename T>
-using class_type = value_t<dclass_type::x<T>(nullptr)>;
+using class_type = val<dclass_type::x<T>(nullptr)>;

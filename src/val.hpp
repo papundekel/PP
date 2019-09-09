@@ -1,11 +1,11 @@
 #pragma once
 template <auto V>
-struct value_t
+struct val
 {
 	static constexpr auto v = V;
 	
 	using type = decltype(v);
 
 	template <typename T>
-	using ignore = value_t<v>;
+	using ignore = val<v>;
 };

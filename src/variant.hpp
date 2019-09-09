@@ -5,6 +5,6 @@ class variant
 public:
 	union
 	{
-		T... value; 
+		T... value;
 	};
 };

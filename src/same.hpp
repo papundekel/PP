@@ -1,5 +1,6 @@
 #pragma once
-#include "value_t.hpp"
+#include "val.hpp"
+#include "val_operators.hpp"
 
 namespace dsame
 {
@@ -7,9 +8,9 @@ namespace dsame
     constexpr auto x = false;
     template <typename T>
     constexpr auto x<T, T> = true;
-
+    
     template <typename T, typename... U>
-    using y = value_t<(x<T, U> && ...)>;
+    using y = AND<val<x<T, U>>...>;
 }
 
 template <typename T, typename... U>

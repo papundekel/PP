@@ -1,16 +1,16 @@
 #pragma once
-#include "value_t.hpp"
+#include "val.hpp"
 #include "keep_cv.hpp"
 #include "pack.hpp"
 #include "is_type.hpp"
 
-namespace detail::make_type
+namespace dmake_type
 {
     template <typename T>
     struct a
     {
         template <typename U>
-        using b = value_t<sizeof(T) <= sizeof(U)>;
+        using b = val<sizeof(T) <= sizeof(U)>;
     };
 
     template <typename P>
@@ -23,4 +23,4 @@ namespace detail::make_type
 }
 
 template <typename P, typename T>
-using make_type = keep_cv<T, detail::make_type::c<P>::template d>;
+using make_type = keep_cv<T, dmake_type::c<P>::template d>;

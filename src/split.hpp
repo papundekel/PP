@@ -3,8 +3,10 @@
 #include "u_copy.hpp"
 #include "next.hpp"
 #include "output.hpp"
+#include "val_operators.hpp"
 
-template <Range R, callable_r<bool, range_base<R>> P>
+template <typename R, typename P>
+requires AND<range_type<R>, callable_r<P, bool, range_base<R>>>::v
 auto split(R r, P p)
 {
 	using T = range_base<R>;

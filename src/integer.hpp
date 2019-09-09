@@ -1,5 +1,5 @@
 #pragma once
-#include "value_t.hpp"
+#include "val.hpp"
 #include "number.hpp"
 
 namespace dinteger
@@ -12,4 +12,4 @@ namespace dinteger
 }
 
 template <typename T>
-using integer = value_t<dinteger::x<T>()>;
+using integer = val<dinteger::x<T>()>;

@@ -1,7 +1,7 @@
 #pragma once
 #include "copy_constructible.hpp"
 #include "implicitly_convertible.hpp"
-#include "value_t_operators.hpp"
+#include "val_operators.hpp"
 
 namespace ddecrementable_prefix
 {
@@ -12,7 +12,7 @@ namespace ddecrementable_prefix
     };
 }
 template <typename T>
-using decrementable_prefix = value_t<ddecrementable_prefix::x<T>>;
+using decrementable_prefix = val<ddecrementable_prefix::x<T>>;
 
 namespace ddecrementable_postfix
 {
@@ -23,7 +23,7 @@ namespace ddecrementable_postfix
     };
 }
 template <typename T>
-using decrementable_postfix = value_t<ddecrementable_postfix::x<T>>;
+using decrementable_postfix = val<ddecrementable_postfix::x<T>>;
 
 template <typename T>
 using decrementable = AND<decrementable_prefix<T>, decrementable_postfix<T>>;

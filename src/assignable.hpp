@@ -1,8 +1,8 @@
 #pragma once
 #include "forward.hpp"
-#include "value_t.hpp"
+#include "val.hpp"
 
-namespace dassignable_to
+namespace dassignable
 {
     template <typename From, typename To>
     concept x = requires (From from, To to)
@@ -11,7 +11,4 @@ namespace dassignable_to
     };
 }
 template <typename From, typename To = From>
-using assignable_to = value_t<dassignable_to::x<From, To>>;
-
-template <typename T>
-using assignable = assignable_to<T, T>;
+using assignable = val<dassignable::x<From, To>>;

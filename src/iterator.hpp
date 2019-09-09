@@ -2,11 +2,10 @@
 #include "declval.hpp"
 #include "equatable.hpp"
 #include "incrementable.hpp"
-#include "assignable.hpp"
 #include "convertible.hpp"
 #include "almost.hpp"
 #include "remove_reference.hpp"
-#include "value_t_operators.hpp"
+#include "val_operators.hpp"
 
 namespace diterator
 {
@@ -16,11 +15,12 @@ namespace diterator
 		{ *i } -> auto&&;
 	};
 	template <typename T>
-	constexpr bool y = AND<equatable<T>, incrementable<T>, value_t<x<T>>>::v;
+	// using y = AND<>; causes weird recursive error
+	constexpr bool y = AND<equatable<T>, incrementable<T>, val<x<T>>>::v;
 }
 
 template <typename T>
-using iterator = value_t<diterator::y<T>>;
+using iterator = val<diterator::y<T>>;
 
 template <typename I>
 requires iterator<I>::v

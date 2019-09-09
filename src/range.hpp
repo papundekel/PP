@@ -6,7 +6,7 @@
 #include "min.hpp"
 #include "iterator_ra.hpp"
 #include "prev.hpp"
-#include "value_t.hpp"
+#include "val.hpp"
 #include "is_template.hpp"
 #include "conditional.hpp"
 
@@ -288,7 +288,7 @@ using range_type = OR<is_template<range>::type<T>, is_template<range_n>::type<T>
 
 template <typename R>
 requires range_type<R>::v
-struct finite_range : value_t<R::finite> {};
+struct finite_range : val<R::finite> {};
 
 namespace drange_base
 {

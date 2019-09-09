@@ -1,5 +1,5 @@
 #pragma once
-#include "value_t.hpp"
+#include "val.hpp"
 
 namespace dsame_template
 {
@@ -9,7 +9,7 @@ namespace dsame_template
     constexpr auto x<T, T> = true;
 
     template <template <typename...> typename T, template <typename...> typename... U>
-    using y = value_t<(x<T, U> && ...)>;
+    using y = val<(x<T, U> && ...)>;
 }
 
 template <template <typename...> typename T, template <typename...> typename... U>

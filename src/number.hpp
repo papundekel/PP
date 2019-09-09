@@ -22,7 +22,7 @@ namespace detail::number
     };
 }
 template <typename T>
-using number = value_t<detail::number::x<T> && constructible<T, int>::v && ordered<T>::v && assignable<T>::v && equatable<T>::v && incrementable<T>::v && decrementable<T>::v>;
+using number = val<detail::number::x<T> && constructible<T, int>::v && ordered<T>::v && assignable<T>::v && equatable<T>::v && incrementable<T>::v && decrementable<T>::v>;
 
 template <typename N>
 //requires requires (N& a, const N& b) { a = a + b; }

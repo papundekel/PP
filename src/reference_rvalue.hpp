@@ -1,6 +1,6 @@
 #pragma once
-#include "value_t.hpp"
+#include "val.hpp"
 template <typename T>
-struct reference_rvalue : value_t<false> {};
+struct reference_rvalue : val<false> {};
 template <typename T>
-struct reference_rvalue<T&&> : value_t<true> {};
+struct reference_rvalue<T&&> : val<true> {};

@@ -17,11 +17,11 @@
 #include "make_const.hpp"
 #include "block.hpp"
 #include "list.hpp"
+#include "split.hpp"
+#include "size_of.hpp"
 
 int main()
 {
-	list<char> a;
-	
-
+	print(same<int, remove_const<const int>>::v);
 	return 0;
 }

@@ -3,4 +3,4 @@
 #include "fundamental_chars.hpp"
 
 template <typename T>
-using character = value_t<fundamental_chars::contains<same<T>::as>>;
+using character = val<fundamental_chars::contains<same<T>::as>>;
