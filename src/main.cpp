@@ -7,32 +7,46 @@
 #include "number.hpp"
 
 template <typename... T>
-struct types2
-{
-	
-};
+struct tuple {};
 
 template <typename T, typename... U>
-struct types2<T>
+struct tuple<T, U...> : tuple<U...>
 {
-	using t = T;
+	using First = T;
+	using Rest = tuple<U...>;
+
+	First first;
+
+	template <typename V, typename... W>
+	tuple(V&& v, W&&... w)
+		: first(forward<T>(v))
+		, tuple<U...>(forward<W>(w)...)
+	{}
 };
+
+template <typename... T>
+tuple(T...) -> tuple<T...>;
 
 template <typename T>
-constexpr auto size2 = sizeof
+using tuple_first = typename T::First;
 
-template <auto F>
-struct wrapper
+template <typename T>
+using tuple_rest = typename T::Rest;
+
+template <size_t N, typename T>
+constexpr auto& ggg(T& t)
 {
-	constexpr auto operator()
-};
+	if constexpr (N != 0)
+		return ggg<N - 1>(reinterpret_cast<tuple_rest<T>&>(t));
+	else
+		return t.first;
+}
 
 int main()
 {
-	int a = 5;
-
-	//A{a};
-	print(constructible<A, int&>);
-
+	tuple<int, double, float> a = { 1, 2.0, 5.f };
+	print(ggg<0>(a));
+	print(ggg<1>(a));
+	print(ggg<2>(a));
 	return 0;
 }
