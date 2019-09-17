@@ -5,7 +5,6 @@
 #include "convertible.hpp"
 #include "almost.hpp"
 #include "remove_reference.hpp"
-#include "val_operators.hpp"
 
 namespace diterator
 {
@@ -14,14 +13,11 @@ namespace diterator
 	{
 		{ *i } -> auto&&;
 	};
-	template <typename T>
-	// using y = AND<>; causes weird recursive error
-	constexpr bool y = AND<equatable<T>, incrementable<T>, val<x<T>>>::v;
 }
 
 template <typename T>
-using iterator = val<diterator::y<T>>;
+constexpr auto iterator(T) { return diterator::x<untype<T>>;}
 
 template <typename I>
-requires iterator<I>::v
-using base = remove_reference<decltype(*declval<I>())>;
+requires iterator(I{})
+constexpr auto base(I i) { return remove_reference(typeof(*declval(i))); }

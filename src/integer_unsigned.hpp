@@ -3,4 +3,4 @@
 #include "signed.hpp"
 
 template <typename T>
-using integer_unsigned = AND<integer<T>, NOT<signed_type<T>>>;
+constexpr auto integer_unsigned(T t) { return integer(t) && !signed_type(t); }

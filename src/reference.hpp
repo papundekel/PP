@@ -3,4 +3,4 @@
 #include "reference_rvalue.hpp"
 
 template <typename T>
-using reference = val<reference_lvalue<T>::v || reference_rvalue<T>::v>;
+constexpr auto reference(T t) { return reference_lvalue(t) || reference_rvalue(t); }

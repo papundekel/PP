@@ -81,7 +81,7 @@ void list<bool>::push_back(bool value)
 	if (8 * cnt == m_block.count())
 	{
 		block<unsigned char> new_block(2 * m_block.count());
-		copy(range(*this), range(bit_it({ new_block(0), 0 }), infinity()));
+		copy(range(*this), range(bit_it({ new_block(0), 0 }), infinity{}));
 		m_block = move(new_block);
 	}
 	++cnt;

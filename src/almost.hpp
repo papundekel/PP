@@ -3,4 +3,7 @@
 #include "remove_cvref.hpp"
 
 template <typename... T>
-using almost = same<remove_cvref<T>...>;
+constexpr auto almost(T... t)
+{
+    return same(remove_cv(t)...);
+}

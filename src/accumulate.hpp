@@ -3,25 +3,28 @@
 #include "remove_cv.hpp"
 #include "constructible.hpp"
 #include "constructible_template.hpp"
+#include "move_.hpp"
+#include "forward.hpp"
 
-template <typename R, typename T = remove_cv<range_base<R>>>
-requires OR<range_type<R>, constructible_template<range, R>>::v
-auto accumulate(const R& x, T init)
+template <typename R, typename T = decl_type<remove_cv(range_base(type<R>{}))>>
+requires range_type(type<R>{})
+auto accumulate(R r, T&& init)
 {
-	if constexpr (range_type<R>::v)
-	{
-		auto r = x;
-		for (; r; ++r)
-			init += *r;
-		return init;
-	}
-	else
-		return accumulate(range(x), init);
+	for (; r; ++r)
+		init += *r;
+	return forward<T>(init);
 }
 
-template <typename R, typename T = remove_cv<range_base<R>>>
-requires constructible<T>::v
-auto accumulate(const R& x)
+template <typename R, typename T = decl_type<remove_cv(range_base(type<R>{}))>>
+requires !range_type(type<R>{}) && constructible_template<range>(type<const R>{})
+auto accumulate(const R& r, T&& init)
 {
-	return accumulate(x, T());
+	return accumulate(range(r), forward<T>(init));
+}
+
+template <typename R, typename T = decl_type<remove_cv(range_base(type<R>{}))>>
+requires constructible<T>
+auto accumulate(const R& r)
+{
+	return accumulate(r, T());
 }

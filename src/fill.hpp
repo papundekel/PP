@@ -2,8 +2,8 @@
 #include "range.hpp"
 #include "assignable.hpp"
 
-template <typename R, typename T = range_base<R>>
-requires range_type<R>::v && assignable<T, range_base<R>>::v
+template <typename R, typename T = decl_type<range_base(type<R>{})>>
+requires range_type(type<R>{}) && assignable(type<T>{}, range_base(type<R>{}))
 void fill(R r, const T& value = T())
 {
 	for (; r; ++r)

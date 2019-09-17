@@ -1,6 +1,6 @@
 #pragma once
-#include "val.hpp"
+#include "type.hpp"
 template <typename T>
-struct reference_lvalue : val<false> {};
+constexpr auto reference_lvalue(type<T>) { return false; }
 template <typename T>
-struct reference_lvalue<T&> : val<true> {};
+constexpr auto reference_lvalue(type<T&>) { return true; }

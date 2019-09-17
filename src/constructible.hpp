@@ -1,9 +1,9 @@
 #pragma once
-#include "val.hpp"
-#include "forward.hpp"
+#include "type.hpp"
+#include "declval.hpp"
 
 template <typename T, typename... Args>
-using constructible = val<requires (Args... args)
+constexpr bool constructible = requires
 {
-    T(frwd<Args>(args)...);
-}>;
+    T(declval<Args>()...);
+};

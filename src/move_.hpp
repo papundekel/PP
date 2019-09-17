@@ -4,5 +4,5 @@
 template <typename T>
 constexpr decltype(auto) move(T&& arg) noexcept
 {
-	return static_cast<remove_reference<T>&&>(arg);
+	return static_cast<decl_type<remove_reference(type<T>{})>&&>(arg);
 }

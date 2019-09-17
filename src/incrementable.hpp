@@ -4,14 +4,14 @@
 namespace dincrementable
 {
     template <typename T>
-    concept x = requires(T t)
+    concept x = requires(untype<T> t)
     {
-        { ++t } -> T&;
-        { t++ } -> T;
+        { ++t } -> untype<T>&;
+        { t++ } -> untype<T>;
     };
 }
 template <typename T>
-using incrementable = val<dincrementable::x<T>>;
+constexpr auto incrementable(T) { return dincrementable::x<T>; }
 
 template <typename T>
 constexpr T operator++(T& t, int)

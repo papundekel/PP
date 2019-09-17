@@ -3,11 +3,10 @@
 #include "fundamental.hpp"
 
 template <typename I>
-requires iterator<I>::v
+requires iterator(type<I>{})
 void destroy_at(I i)
 {
-	using base = base<I>;
-
-	if constexpr (!fundamental<base>::v)
-		i->~base();
+	using B = decl_type<base(type<I>{})>;
+	if constexpr (!fundamental(type<B>{}))
+		i->~B();
 }

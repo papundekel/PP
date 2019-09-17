@@ -1,35 +1,30 @@
 #pragma once
 #include "copy_constructible.hpp"
 #include "implicitly_convertible.hpp"
-#include "val_operators.hpp"
 
-namespace ddecrementable_prefix
+namespace ddecrementable
 {
     template <typename T>
     concept x = requires(T t)
     {
         { --t } -> T&;
     };
-}
-template <typename T>
-using decrementable_prefix = val<ddecrementable_prefix::x<T>>;
-
-namespace ddecrementable_postfix
-{
     template <typename T>
-    concept x = requires(T t)
+    concept y = requires(T t)
     {
-        requires implicitly_convertible_to<decltype(t--), T>::v;
+        requires implicitly_convertible_to(typeof(t--), type<T>{});
     };
 }
 template <typename T>
-using decrementable_postfix = val<ddecrementable_postfix::x<T>>;
+constexpr auto decrementable_prefix(T) { return ddecrementable::x<untype<T>>; }
+template <typename T>
+constexpr auto decrementable_postfix(T) { return ddecrementable::y<untype<T>>; }
 
 template <typename T>
-using decrementable = AND<decrementable_prefix<T>, decrementable_postfix<T>>;
+constexpr auto decrementable(T t) { return decrementable_prefix(t) && decrementable_postfix(t); }
 
 template <typename T>
-requires decrementable_prefix<T>::v && copy_constructible<T>::v
+requires decrementable_prefix(type<T>{}) && copy_constructible<T>
 constexpr T operator--(T& t, int)
 {
     auto copy = t;

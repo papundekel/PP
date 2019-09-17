@@ -7,8 +7,11 @@ namespace dassignable
     template <typename From, typename To>
     concept x = requires (From from, To to)
     {
-        { to = frwd<From>(from) } -> To&;
+        { to = forward<From>(from) } -> To&;
     };
 }
-template <typename From, typename To = From>
-using assignable = val<dassignable::x<From, To>>;
+template <typename From, typename To>
+constexpr auto assignable(From, To) { return dassignable::x<untype<From>, untype<To>>; }
+
+template <typename T>
+constexpr auto assignable(T t) { return assignable(t, t); }

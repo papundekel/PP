@@ -3,4 +3,4 @@
 #include "invertible.hpp"
 
 template <typename T>
-using signed_type = val<ordered<T>::v && invertible<T>::v && -static_cast<T>(1) < static_cast<T>(0)>;
+constexpr auto signed_type(T t) { return ordered(t) && invertible(t) && -static_cast<untype<T>>(1) < static_cast<untype<T>>(0); }

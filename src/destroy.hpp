@@ -3,7 +3,7 @@
 #include "range.hpp"
 
 template <typename R>
-requires range_type<R>::v
+requires range_type(type<R>{})
 void destroy(R r)
 {
 	for (; r; ++r)

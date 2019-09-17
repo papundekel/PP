@@ -1,6 +1,6 @@
 #pragma once
-#include "pack.hpp"
+#include "type.hpp"
 #include "fundamental_chars.hpp"
 
 template <typename T>
-using character = val<fundamental_chars::contains<same<T>::as>>;
+constexpr auto character(T t) { return contains(fundamental_chars, [t](auto x){ return x == t; }); }

@@ -2,7 +2,7 @@
 #include "iterator.hpp"
 
 template <typename I>
-requires iterator<I>::v
+requires iterator(type<I>{})
 auto next(I i)
 {
 	return ++i;

@@ -3,4 +3,4 @@
 #include "remove_cv.hpp"
 
 template <typename T>
-using remove_cvref = remove_cv<remove_reference<T>>;
+constexpr auto remove_cvref(T t) { return remove_reference(remove_cv(t));}

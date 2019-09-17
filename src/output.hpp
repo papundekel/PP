@@ -21,7 +21,7 @@ void print(const auto& x)
 }
 
 template <typename R>
-requires range_type<R>::v
+requires range_type(type<R>{})
 void print(R r)
 {
 	apply(r, [](const auto& x) { print(x); });

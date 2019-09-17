@@ -3,7 +3,7 @@
 #include <memory>
 
 template <typename I>
-requires iterator<I>::v
+requires iterator(type<I>{})
 auto get_address(I i)
 {
 	return std::addressof(*i);

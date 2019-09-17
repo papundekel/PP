@@ -1,5 +1,5 @@
 #pragma once
-#include "same.hpp"
+#include "type.hpp"
 
 namespace dequatable
 {
@@ -12,11 +12,12 @@ namespace dequatable
         { u != t } -> bool;
     };
 }
-template <typename T, typename U = T>
-using equatable = val<dequatable::x<T, U>>;
+template <typename T, typename U>
+constexpr auto equatable(T, U) { return dequatable::x<untype<T>, untype<U>>; }
+template <typename T>
+constexpr auto equatable(T t) { return equatable(t, t); }
 
 template <typename T, typename U>
-requires !same<T, U>::v
 constexpr bool operator==(const T& t, const U& u)
 {
     return u == t;

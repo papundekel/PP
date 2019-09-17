@@ -36,13 +36,13 @@ public:
 };
 
 template <typename I>
-requires integer<I>::v
+requires integer(type<I>{})
 Q pow(const Q& q, I exp)
 {
 	Q::intmax num_pow = pow(q.num, abs(exp));
 	Q::uintmax den_pow = pow(q.den, abs(exp));
 
-	if constexpr (integer_unsigned<I>::v)
+	if constexpr (integer_unsigned(type<I>{}))
 		return { num_pow, den_pow };
 	else
 	{

@@ -1,5 +1,6 @@
 #pragma once
-#include "val.hpp"
+#include "type.hpp"
+
 namespace dordered
 {
     template <typename T, typename U>
@@ -11,8 +12,10 @@ namespace dordered
         { u > t } -> bool;
     };
 }
-template <typename T, typename U = T>
-using ordered = val<dordered::x<T, U>>;
+template <typename T, typename U>
+constexpr auto ordered(T, U) { return dordered::x<untype<T>, untype<U>>;}
+template <typename T>
+constexpr auto ordered(T t) { return ordered(t, t); }
 
 template <typename T, typename U>
 constexpr bool operator>(const T& t, const U& u)

@@ -3,7 +3,10 @@
 #include "assignable.hpp"
 
 template <typename Src, typename Dest>
-requires range_type<Src>::v && range_type<Dest>::v && assignable<range_base<Src>, range_base<Dest>>::v && (Src::finite || Dest::finite)
+requires range_type(type<Src>{}) &&
+		 range_type(type<Dest>{}) &&
+		 assignable(range_base(type<Src>{}), range_base(type<Dest>{})) &&
+		 (Src::finite || Dest::finite)
 auto copy(Src src, Dest dest)
 {
 	for (; src && dest; ++dest, ++src)

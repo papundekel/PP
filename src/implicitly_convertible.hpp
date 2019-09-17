@@ -11,4 +11,4 @@ namespace dimplicitly_convertible_to
     };
 }
 template <typename From, typename To>
-using implicitly_convertible_to = val<dimplicitly_convertible_to::x<From, To>>;
+constexpr auto implicitly_convertible_to(From, To) { return dimplicitly_convertible_to::x<untype<From>, untype<To>>; }

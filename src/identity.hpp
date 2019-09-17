@@ -1,4 +1,4 @@
 #pragma once
-#include "type_t.hpp"
+#include "type.hpp"
 template <typename T>
-using identity = T;
+constexpr auto identity(T t) { return t; }

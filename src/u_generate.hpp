@@ -4,7 +4,7 @@
 #include "construct.hpp"
 
 template <typename R, typename G>
-requires range_type<R>::v && callable_r<G, range_base<R>>::v
+requires range_type(type<R>{}) && callable_r(type<G>{}, range_base(type<R>{}))
 void u_generate(R r, G g)
 {
 	for (; r; ++r)

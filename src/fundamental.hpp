@@ -7,10 +7,11 @@
 #include "fundamental_floats.hpp"
 #include "fundamental_chars.hpp"
 
-using fundamental_types = pack<void, nullptr_t, bool>
-::append<fundamental_integers>
-::append<fundamental_floats>
-::append<fundamental_chars>;
+constexpr auto fundamental_types = join(
+    types<void, nullptr_t, bool>{},
+    fundamental_integers,
+    fundamental_floats,
+    fundamental_chars);
 
 template <typename T>
-using fundamental = val<pointer_type<T>::v || fundamental_types::contains<same<T>::as>>;
+constexpr auto fundamental(T t) { return pointer_type(t) || contains(fundamental_types, [t](auto x){ return x == t; }); }

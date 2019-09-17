@@ -6,7 +6,7 @@
 #include "decrementable.hpp"
 #include "constructible.hpp"
 
-namespace detail::number
+namespace dnumber
 {
     template <typename T>
     concept x = requires (T x, const T y)
@@ -22,10 +22,9 @@ namespace detail::number
     };
 }
 template <typename T>
-using number = val<detail::number::x<T> && constructible<T, int>::v && ordered<T>::v && assignable<T>::v && equatable<T>::v && incrementable<T>::v && decrementable<T>::v>;
+constexpr auto number(T t) { return dnumber::x<untype<T>> && constructible<untype<T>, int> && ordered(t) && assignable(t) && equatable(t) && incrementable(t) && decrementable(t); }
 
 template <typename N>
-//requires requires (N& a, const N& b) { a = a + b; }
 constexpr N& operator+=(N& x, const N& y)
 {
     return x = x + y;

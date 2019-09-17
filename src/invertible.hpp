@@ -9,4 +9,4 @@ namespace dinvertible
 	};
 }
 template <typename T>
-using invertible = val<dinvertible::x<T>>;
+constexpr auto invertible(T) { return dinvertible::x<untype<T>>; }

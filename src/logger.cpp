@@ -25,5 +25,5 @@ logger& logger::operator=(logger&&)
 }
 logger::~logger()
 {
-    print("dtor");
+    //print("dtor");
 }

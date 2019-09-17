@@ -3,7 +3,7 @@
 #include "forward.hpp"
 
 template <typename T, typename U>
-requires NOT<const_type<T>>::v
+requires !const_type(type<T>{})
 T exchange(T& object, U&& value)
 {
 	T old = move(object);

@@ -93,7 +93,7 @@ public:
 		u_generate(range(*this), g);
 	}
 	template <typename R>
-	requires range_type<R>::v
+	requires range_type(type<R>{})
 	list(R r)
 		: cnt(r.count())
 		, buffer(cnt)
@@ -255,7 +255,7 @@ public:
 		++cnt;
 	}
 	template <typename R>
-	requires range_type<R>::v
+	requires range_type(type<R>{})
 	void insert(T* where, R what)
 	{
 		auto size = distance(what);
@@ -296,7 +296,7 @@ public:
 		insert(buffer(index), forward<U>(value));
 	}
 	template <typename R>
-	requires range_type<R>::v
+	requires range_type(type<R>{})
 	void insert(size_t index, R what)
 	{
 		insert(buffer(index), what);
@@ -332,12 +332,12 @@ public:
 		--cnt;
 		return next(where);
 	}
-	T* erase(range<T*> r)
+	/*T* erase(range<T*> r)
 	{
 		destroy(r);
 		cnt -= distance(r);
 		return r.begin;
-	}
+	}*/
 
 	template <typename U>
 	friend void swap(list<U>& left, list<U>& right);
@@ -366,7 +366,7 @@ public:
 		copy(range(other), range(*this));
 	}
 	template <typename R>
-	requires range_type<R>::v
+	requires range_type(type<R>{})
 	list(R r)
 	{
 		copy(r, range(*this));
@@ -520,8 +520,8 @@ public:
 using string = list<char>;
 
 template <typename R>
-requires range_type<R>::v
-list(R) -> list<remove_cv<range_base<R>>>;
+requires range_type(type<R>{})
+list(R) -> list<decl_type<remove_cv(range_base(type<R>{}))>>;
 
 template <typename T>
 void swap(list<T>& left, list<T>& right)

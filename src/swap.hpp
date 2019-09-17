@@ -5,7 +5,7 @@
 #include "move.hpp"
 
 template <typename T>
-requires AND<NOT<const_type<T>>, constructible<T, T&&>, assignable<T&&, T>>::v
+//requires AND<NOT<const_type<T>>, constructible<T, T&&>, assignable<T&&, T>>::v
 void swap(T& first, T& second)
 {
 	T temp = move(first);

@@ -1,5 +1,6 @@
 #pragma once
 #include "sentinel.hpp"
+#include "type.hpp"
 #include "declval.hpp"
 namespace detail
 {
@@ -31,38 +32,38 @@ constexpr auto end(T(&arr)[size])
 {
 	return arr + size;
 }
-namespace detail::has_begin
+namespace dhas_begin
 {
     template <typename C>
-    concept x = requires (C& c)
+    concept x = requires (untype<C>& c)
     {
-        requires iterator<decltype(begin(c))>::v;
+        requires iterator(type<decltype(begin(c))>{});
     };
 }
 template <typename C>
-struct has_begin : val<detail::has_begin::x<C>> {};
+constexpr auto has_begin(C) { return dhas_begin::x<C>; }
 
-namespace detail::has_end
+namespace dhas_end
 {
     template <typename C>
-    concept x = requires (C& c)
+    concept x = requires (untype<C>& c)
 	{
 		end(c);
 	};
 }
 template <typename C>
-struct has_end : val<detail::has_end::x<C>> {};
+constexpr auto has_end(C) { return dhas_end::x<C>; }
 
 template <typename C>
-requires has_begin<C>::v
-using begin_t = decltype(begin(declval<C&>()));
+requires has_begin(C{})
+constexpr auto begin_t(C c) { return typeof(begin(declval(c))); }
 template <typename C>
-requires has_end<C>::v
-using end_t = decltype(end(declval<C&>()));
+requires has_end(C{})
+constexpr auto end_t(C c) { return typeof(end(declval(c))); }
 
 template <typename C>
-using container = val<has_begin<C>::v && has_end<C>::v && sentinel<end_t<C>, begin_t<C>>::v>;
+constexpr auto container(C c) { return has_begin(c) && has_end(c) && sentinel(end_t(c), begin_t(c));}
 
 template <typename C>
-requires container<C>::v
-using container_base = base<begin_t<C>>;
+requires container(C{})
+constexpr auto container_base(C c) { return base(begin_t(c)); }

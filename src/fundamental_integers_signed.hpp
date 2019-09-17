@@ -1,3 +1,3 @@
 #pragma once
-#include "pack.hpp"
-using fundamental_integers_signed = pack<signed char, short, int, long long>;
+#include "type.hpp"
+constexpr auto fundamental_integers_signed = types<signed char, short, int, long long>{};

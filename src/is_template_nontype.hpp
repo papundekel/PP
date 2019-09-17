@@ -1,14 +1,21 @@
 #pragma once
 #include "val.hpp"
-template <template <auto...> typename T>
-struct is_template_nontype
+
+namespace dis_template_nontype
 {
-private:
-	template <typename U>
-	struct x : val<false> {};
-	template <auto... U>
-	struct x<T<U...>> : val<true> {};
-public:
-	template <typename U>
-	using type = val<x<U>::v>;
-};
+	template <template <auto...> typename T>
+	struct x
+	{
+	private:
+		template <typename U>
+		struct y : val<false> {};
+		template <auto... U>
+		struct y<T<U...>> : val<true> {};
+	public:
+		template <typename U>
+		static constexpr auto z = y<untype<U>>::v;
+	};
+}
+
+template <template <auto...> typename T, typename U>
+constexpr auto is_template_nontype(U) { return dis_template_nontype::x<T>::template z<U>; }

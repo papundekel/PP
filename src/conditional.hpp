@@ -1,5 +1,5 @@
 #pragma once
 #include "conditional_transform.hpp"
-#include "ignore_type.hpp"
+#include "ignore.hpp"
 template <bool test, typename T, typename U>
-using conditional = conditional_transform<test, ignore<T>::template type, U>;
+constexpr auto conditional(T t, U u) { return conditional_transform<test>([t](auto){ return t; }, u); }

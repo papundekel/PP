@@ -3,4 +3,4 @@
 #include "remove_volatile.hpp"
 
 template <typename T>
-using remove_cv = remove_volatile<remove_const<T>>;
+constexpr auto remove_cv(T t) { return remove_volatile(remove_const(t)); }

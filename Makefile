@@ -6,10 +6,11 @@ SRCFILES = $(wildcard $(SRCDIR)/*.cpp)
 OBJFILES = $(subst $(SRCDIR)/,$(OBJDIR)/,$(SRCFILES:.cpp=.o))
 DEPFILES = $(subst $(SRCDIR)/,$(DEPDIR)/,$(SRCFILES:.cpp=.d))
 
-CFLAGS = -fconcepts -std=c++2a -g -Wall -Wextra -Wpedantic
+CXXFLAGS = -Ofast -fconcepts -std=c++2a -g -Wall -Wextra -Wpedantic
+LDFLAGS = -Ofast
 
 Papo.out: $(OBJFILES)
-	$(CXX) -o $@ $^
+	$(CXX) -o $@ $^ $(LDFLAGS)
 
 $(DEPDIR)/%.d: $(SRCDIR)/%.cpp
 	mkdir -p $(DEPDIR)
@@ -21,7 +22,7 @@ include $(DEPFILES)
 
 $(OBJDIR)/%.o:
 	mkdir -p $(OBJDIR)
-	$(CXX) -c $< -o $@ $(CFLAGS)
+	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 .PHONY: clean
 clean:

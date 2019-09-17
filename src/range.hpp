@@ -11,19 +11,19 @@
 #include "conditional.hpp"
 
 template <typename it, typename it_end = it>
-requires iterator<it>::v && sentinel<it_end, it>::v
+requires iterator(type<it>{}) && sentinel(type<it_end>{}, type<it>{})
 struct range
 {
-	using begin_t = it;
-	using end_t = it_end;
-	static constexpr bool random_access = iterator_ra<it>::v && iterator_ra<it_end>::v;
-	static constexpr bool finite = !same<infinity, it_end>::v;
+	static constexpr auto b = type<it>{};
+	static constexpr auto e = type<it_end>{};
+	static constexpr auto random_access = iterator_ra(b) && iterator_ra(e);
+	static constexpr auto finite = !same(e, type<infinity>{});
 
 	mutable it begin;
 	mutable it_end end;
 
 	template <typename C>
-	requires container<C>::v
+	requires container(type<C>{})
 	explicit range(C& c)
 		: begin(::begin(c))
 		, end(::end(c))
@@ -37,11 +37,11 @@ struct range
 		: begin(begin)
 		, end(end)
 	{}
-	range(range other, it_end end)
+	range(const range& other, it_end end)
 		: begin(other.begin)
 		, end(end)
 	{}
-	range(it begin, range other)
+	range(it begin, const range& other)
 		: begin(begin)
 		, end(other.end)
 	{}
@@ -59,7 +59,7 @@ struct range
 		return *begin;
 	}
 	decltype(auto) operator&()
-	requires iterator<it_end>::v
+	requires iterator(e)
 	{
 		return *end;
 	}
@@ -69,19 +69,19 @@ struct range
 		return *this;
 	}
 	decltype(auto) operator++(int)
-	requires iterator<it_end>::v
+	requires iterator(e)
 	{
 		++end;
 		return *this;
 	}
 	decltype(auto) operator--()
-	requires iterator_bi<it>::v
+	requires iterator_bi(b)
 	{
 		--begin;
 		return *this;
 	}
 	decltype(auto) operator--(int)
-	requires iterator_bi<it_end>::v
+	requires iterator_bi(e)
 	{
 		--end;
 		return *this;
@@ -151,31 +151,30 @@ struct range
 };
 
 template <typename C>
-requires container<C>::v
-range(C&) -> range<begin_t<C>, end_t<C>>;
+//requires container(type<C>{})
+range(C&) -> range<decl_type<begin_t(type<C>{})>, decl_type<end_t(type<C>{})>>;
 template <typename T>
 range(const std::initializer_list<T>&) -> range<const T*>;
 
 template <typename it>
-requires iterator<it>::v
+requires iterator(type<it>{})
 struct range_n
 {
-	using begin_t = it;
-	using end_t = it;
-	static constexpr bool random_access = iterator_ra<it>::v;
-	static constexpr bool finite = true;
+	static constexpr auto b = type<it>{};
+	static constexpr auto random_access = iterator_ra(b);
+	static constexpr auto finite = true;
 
 	it begin;
 	size_t cnt;
 
 	template <typename C>
-	requires container<C>::v
+	requires container(type<C>{})
 	explicit range_n(C& c)
 		: begin(::begin(c))
 		, cnt(range(c).count())
 	{}
 	template <typename C>
-	requires container<C>::v
+	requires container(type<C>{})
 	range_n(C& c, size_t cnt)
 		: begin(::begin(c))
 		, cnt(cnt)
@@ -189,14 +188,14 @@ struct range_n
 		: begin(::begin(list))
 		, cnt(range_n(list).count())
 	{}
-	/*range_n(range_n other, size_t cnt)
+	range_n(range_n other, size_t cnt)
 		: begin()
 		, cnt(0)
 	{}
 	range_n(it begin, range_n other)
 		: begin()
 		, cnt(0)
-	{}*/
+	{}
 
 	decltype(auto) operator*()
 	{
@@ -218,7 +217,7 @@ struct range_n
 		return *this;
 	}
 	range_n& operator--()
-	requires iterator_bi<it>::v
+	requires iterator_bi(b)
 	{
 		--begin;
 		++cnt;
@@ -275,31 +274,27 @@ struct range_n
 };
 
 template <typename C>
-requires container<C>::v
-range_n(C&) -> range_n<begin_t<C>>;
+requires container(type<C>{})
+range_n(C&) -> range_n<decl_type<begin_t(type<C>{})>>;
 template <typename C>
-requires container<C>::v
-range_n(C&, size_t) -> range_n<begin_t<C>>;
+requires container(type<C>{})
+range_n(C&, size_t) -> range_n<decl_type<begin_t(type<C>{})>>;
 template <typename T>
 range_n(const std::initializer_list<T>&) -> range_n<const T*>;
 
 template <typename T>
-using range_type = OR<is_template<range>::type<T>, is_template<range_n>::type<T>>;
+constexpr auto range_type(T t) { return is_template<range>(t) || is_template<range_n>(t); }
 
 template <typename R>
-requires range_type<R>::v
-struct finite_range : val<R::finite> {};
+requires range_type(R{})
+constexpr auto finite_range(R r) { return untype<R>::finite; }
 
-namespace drange_base
+template <typename R>
+requires range_type(R{}) || container(R{})
+constexpr auto range_base(R r)
 {
-	template <typename T>
-	constexpr base<typename T::begin_t> x();
-
-	template <typename T>
-	requires !range_type<T>::v && container<T>::v
-	constexpr container_base<T> x();
+	if constexpr (range_type(r))
+		return typeof(*declval(r));
+	else
+		return container_base(r);
 }
-
-template <typename T>
-requires range_type<T>::v || container<T>::v
-using range_base = decltype(drange_base::x<T>());

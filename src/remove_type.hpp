@@ -1,17 +1,14 @@
 #pragma once
-#include "type_t.hpp"
+#include "type.hpp"
 
-namespace dremove_type
+/*template <typename F, typename T>
+constexpr auto remove_type(F f, type<T> t)
 {
-    template <template <typename> typename make>
-    struct x
-    {
-        template <typename T>
-        struct y : type_t<T> {};
-        template <typename T>
-        struct y<make<T>> : type_t<T> {};
-    };
+    return t;
 }
 
-template <template <typename> typename make, typename T>
-using remove_type = dremove_type::x<make>::template y<T>::t;
+template <typename F, typename T>
+constexpr auto remove_type(F f, type<decltype(f(type<T>{}))::typename t> t)
+{
+    return type<T>{};
+}*/

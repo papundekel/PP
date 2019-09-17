@@ -1,5 +1,7 @@
 #pragma once
 #include <cstddef>
-#include "conditional.hpp"
-
-using diff_t = conditional<sizeof(void*) == 8, long long, int>;
+#include "fundamental_integers_signed.hpp"
+#include "make_integer_unsigned.hpp"
+#include "type_get.hpp"
+#include "type_size.hpp"
+using diff_t = decl_type<get(fundamental_integers_signed, [](auto x){ return size(x) == sizeof(void*); })>;

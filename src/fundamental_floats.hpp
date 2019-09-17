@@ -1,3 +1,3 @@
 #pragma once
-#include "pack.hpp"
-using fundamental_floats = pack<float, double, long double>;
+#include "type.hpp"
+constexpr auto fundamental_floats = types<float, double, long double>{};

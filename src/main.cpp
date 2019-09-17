@@ -1,27 +1,38 @@
 #include "output.hpp"
-#include "pack.hpp"
-#include "empty_class.hpp"
-#include "declval.hpp"
-#include "pointer_type.hpp"
-#include "class_type.hpp"
-#include "is_constant_evaluated.hpp"
-#include "accumulate.hpp"
-#include "move_.hpp"
-#include "ignore_type.hpp"
+#include "type_join.hpp"
 #include "array.hpp"
-#include "is_template.hpp"
-#include "is_template_nontype.hpp"
-#include "same_template.hpp"
-#include "fundamental.hpp"
-#include "trait_test.hpp"
-#include "make_const.hpp"
-#include "block.hpp"
-#include "list.hpp"
-#include "split.hpp"
-#include "size_of.hpp"
+#include "accumulate.hpp"
+#include "logger.hpp"
+#include "make_reference_rvalue.hpp"
+#include "number.hpp"
+
+template <typename... T>
+struct types2
+{
+	
+};
+
+template <typename T, typename... U>
+struct types2<T>
+{
+	using t = T;
+};
+
+template <typename T>
+constexpr auto size2 = sizeof
+
+template <auto F>
+struct wrapper
+{
+	constexpr auto operator()
+};
 
 int main()
 {
-	print(same<int, remove_const<const int>>::v);
+	int a = 5;
+
+	//A{a};
+	print(constructible<A, int&>);
+
 	return 0;
 }

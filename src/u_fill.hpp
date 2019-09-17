@@ -3,7 +3,7 @@
 #include "construct.hpp"
 
 template <typename R, typename ...Args>
-requires range_type<R>::v
+requires range_type(type<R>{})
 void u_fill(R r, Args&&... args)
 {
 	for (; r; ++r)

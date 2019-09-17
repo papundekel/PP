@@ -3,10 +3,10 @@
 #include "construct.hpp"
 #include "move.hpp"
 
-template <typename it1, typename it1_end, typename it2, typename it2_end>
-it2 u_move(range<it1, it1_end> src, range<it2, it2_end> dest)
+template <typename Src, typename Dest>
+auto u_move(Src src, Dest dest)
 {
-	for (; src.begin != src.end; ++dest.begin, ++src.begin)
-		construct(dest.begin, move(*src.begin));
-	return dest.begin;
+	for (; src; ++dest, ++src)
+		construct(+dest, move(*src));
+	return dest;
 }

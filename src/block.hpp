@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdlib>
 #include "ref.hpp"
-#include "type_t.hpp"
+#include "type.hpp"
 #include "equal.hpp"
 #include "swap.hpp"
 
@@ -95,9 +95,9 @@ namespace dblock
 	};
 
 	template <typename T>
-	struct x : type_t<block<T>> {};
+	struct x : type<block<T>> {};
 	template <typename T>
-	struct x<T&> : type_t<block<ref<T>>> {};
+	struct x<T&> : type<block<ref<T>>> {};
 }
 
 template <typename T>
