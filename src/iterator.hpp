@@ -9,15 +9,15 @@
 namespace diterator
 {
 	template <typename T>
-	concept x = requires (T i)
+	constexpr auto x = requires (T i)
 	{
-		{ *i } -> auto&&;
+		{ *i } -> auto&;
 	};
 }
 
 template <typename T>
-constexpr auto iterator(T) { return diterator::x<untype<T>>;}
+constexpr auto iterator = diterator::x<T>;
 
 template <typename I>
-requires iterator(I{})
-constexpr auto base(I i) { return remove_reference(typeof(*declval(i))); }
+requires iterator<I>
+using base = remove_reference<decltype(*declval<I>())>;

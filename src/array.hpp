@@ -4,19 +4,19 @@ struct array
 {
 	T data[s];
 	
-	T* begin()
+	constexpr T* begin()
 	{
 		return data;
 	}
-	const T* begin() const
+	constexpr const T* begin() const
 	{
 		return data;
 	}
-	T* end()
+	constexpr T* end()
 	{
 		return data + s;
 	}
-	const T* end() const
+	constexpr const T* end() const
 	{
 		return data + s;
 	}

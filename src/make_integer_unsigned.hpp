@@ -3,4 +3,4 @@
 #include "fundamental_integers_unsigned.hpp"
 
 template <typename T>
-constexpr auto make_integer_unsigned(T t) { return make_type(fundamental_integers_unsigned, t); }
+using make_integer_unsigned = make_type<fundamental_integers_unsigned, T>;

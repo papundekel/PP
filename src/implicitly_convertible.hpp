@@ -1,14 +1,13 @@
 #pragma once
-#include "val.hpp"
 namespace dimplicitly_convertible_to
 {
     template <typename To>
-    constexpr void g(To to) {}
+    constexpr void f(To to) {}
     template <typename From, typename To>
-    concept x = requires (From from)
+    constexpr auto x = requires (From from)
     {
-        g<To>(from);
+        f<To>(from);
     };
 }
 template <typename From, typename To>
-constexpr auto implicitly_convertible_to(From, To) { return dimplicitly_convertible_to::x<untype<From>, untype<To>>; }
+constexpr auto implicitly_convertible_to = dimplicitly_convertible_to::x<From, To>;

@@ -3,7 +3,4 @@
 #include "reference_rvalue.hpp"
 
 template <typename T>
-constexpr auto declval() noexcept -> decl_type<conditional<reference_rvalue(type<T>{})>(type<T&&>{},  type<T&>{})>;
-
-template <typename T>
-constexpr auto declval(T) noexcept -> decltype(declval<untype<T>>());
+constexpr auto declval() noexcept -> conditional<reference_rvalue<T>, T&&, T&>;

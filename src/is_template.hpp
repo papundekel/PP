@@ -14,9 +14,12 @@ namespace dis_template
 		struct y<T<U...>> : val<true> {};
 	public:
 		template <typename U>
-		static constexpr auto z = y<untype<U>>::v;
+		static constexpr auto w = false;
+
+		template <typename U>
+		static constexpr auto z = y<U>::v;
 	};
 }
 
 template <template <typename...> typename T, typename U>
-constexpr auto is_template(U) { return dis_template::x<T>::template z<U>; }
+constexpr auto is_template = dis_template::x<T>::template z<U>;

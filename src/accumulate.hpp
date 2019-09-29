@@ -6,7 +6,7 @@
 #include "move_.hpp"
 #include "forward.hpp"
 
-template <typename R, typename T = decl_type<remove_cv(range_base(type<R>{}))>>
+template <typename R, typename T>
 requires range_type(type<R>{})
 auto accumulate(R r, T&& init)
 {
@@ -15,7 +15,7 @@ auto accumulate(R r, T&& init)
 	return forward<T>(init);
 }
 
-template <typename R, typename T = decl_type<remove_cv(range_base(type<R>{}))>>
+template <typename R, typename T>
 requires !range_type(type<R>{}) && constructible_template<range>(type<const R>{})
 auto accumulate(const R& r, T&& init)
 {

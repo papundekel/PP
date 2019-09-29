@@ -3,4 +3,4 @@
 #include "decrementable.hpp"
 
 template <typename T>
-constexpr auto iterator_bi(T t) { return iterator(t) && decrementable(t); }
+constexpr auto iterator_bi = iterator<T> && decrementable<T>;

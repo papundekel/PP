@@ -1,15 +1,14 @@
 #pragma once
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "type.hpp"
 
-template <bool test, typename Transform, typename T>
-constexpr auto conditional_transform(Transform transform, T t)
+namespace dconditional_transform
 {
-    if constexpr (test)
-        return transform(t);
-    else
-        return t;
+    template <bool test, template <typename> typename Transform, typename T>
+    constexpr auto x()
+    {
+        if constexpr (test) return type<Transform<T>>{};
+        else				return type<T>{};
+    }
 }
-
-#pragma GCC diagnostic pop
+template <bool test, template <typename> typename Transform, typename T>
+using conditional_transform = decl_type<dconditional_transform::x<test, Transform, T>>;

@@ -6,7 +6,7 @@
 namespace diterator_ra
 {
     template <typename T>
-    concept x = requires (T i, T j, diff_t a)
+    constexpr auto x = requires (T i, T j, diff_t a)
     {
         { i - j } -> diff_t;
         { i + a } -> T;
@@ -14,4 +14,4 @@ namespace diterator_ra
     };
 }
 template <typename T>
-constexpr auto iterator_ra(T t) { return iterator_bi(t) && diterator_ra::x<untype<T>>; }
+constexpr auto iterator_ra = iterator_bi<T> && diterator_ra::x<T>;

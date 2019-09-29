@@ -1,3 +1,3 @@
 #pragma once
-template <typename T>
-constexpr auto ignore(T t, ...) { return t; }
+template <typename T, typename... U>
+using ignore = T;

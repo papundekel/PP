@@ -3,13 +3,13 @@
 #include "equatable.hpp"
 
 template <typename S, typename I>
-requires iterator(I{})
-constexpr auto sentinel(S s, I i) { return equatable(s, i); }
+requires iterator<I>
+constexpr auto sentinel = equatable<S, I>;
 
-class infinity {};
+namespace { class infinity {}; }
 
 template <typename I>
-requires iterator(I{})
+requires iterator<I>
 constexpr bool operator==(I, infinity)
 {
     return false;
