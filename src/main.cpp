@@ -1,14 +1,8 @@
-#include "output.hpp"
-#include "array.hpp"
-#include "accumulate.hpp"
-#include "logger.hpp"
-#include "make_reference_rvalue.hpp"
-#include "number.hpp"
-#include "tuple.hpp"
+#include "io/output.hpp"
 
 int main()
 {
-	
+    print("df");
 
-	return 0;
+    return 0;
 }
