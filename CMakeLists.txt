@@ -1,11 +1,7 @@
-﻿# CMakeList.txt : CMake project for Papo, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.8)
 
-project ("Papo")
+project(Papo)
 
-# Add source to this project's executable.
-add_executable (Papo "Papo.cpp" "Papo.h")
+add_subdirectory(src)
 
-# TODO: Add tests and install targets if needed.
+set(CMAKE_CXX_STANDARD 20)
