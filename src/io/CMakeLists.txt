@@ -2,4 +2,4 @@
 
 file(GLOB IO_SOURCES *.cpp)
 
-add_executable(io ${IO_SOURCES})
+add_library(io ${IO_SOURCES})

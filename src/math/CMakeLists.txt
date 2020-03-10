@@ -2,4 +2,4 @@
 
 file(GLOB MATH_SOURCES *.cpp)
 
-add_executable(math ${MATH_SOURCES})
+add_library(math ${MATH_SOURCES})

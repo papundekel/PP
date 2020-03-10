@@ -2,4 +2,4 @@
 
 file(GLOB DATA_SOURCES *.cpp)
 
-add_executable(data ${DATA_SOURCES})
+add_library(data ${DATA_SOURCES})

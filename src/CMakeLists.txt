@@ -11,4 +11,4 @@ add_subdirectory("utility")
 
 file(GLOB MAIN_SOURCES *.cpp)
 
-add_executable(src ${MAIN_SOURCES})
+add_executable(Papo ${MAIN_SOURCES})

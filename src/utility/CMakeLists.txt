@@ -2,4 +2,4 @@
 
 file(GLOB UTILITY_SOURCES *.cpp)
 
-add_executable(utility ${UTILITY_SOURCES})
+add_library(utility ${UTILITY_SOURCES})
