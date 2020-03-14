@@ -1,8 +1,9 @@
-#include "io/output.hpp"
+#include <iostream>
+#include "Papo.hpp"
 
 int main()
 {
-    print("df");
+    std::cout << f();
 
     return 0;
 }

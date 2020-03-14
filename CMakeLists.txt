@@ -3,7 +3,7 @@
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 20)
 
-project(Papo)
+project(PP)
 
 add_subdirectory(Papo)
 add_subdirectory(Papundekel)

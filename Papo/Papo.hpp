@@ -1,0 +1,9 @@
+#pragma once
+#include "D:\Programming\Papo\Papo\algorithm.hpp"
+#include "D:\Programming\Papo\Papo\data.hpp"
+#include "D:\Programming\Papo\Papo\io.hpp"
+#include "D:\Programming\Papo\Papo\math.hpp"
+#include "D:\Programming\Papo\Papo\odd.hpp"
+#include "D:\Programming\Papo\Papo\trait.hpp"
+#include "D:\Programming\Papo\Papo\type.hpp"
+#include "D:\Programming\Papo\Papo\utility.hpp"
