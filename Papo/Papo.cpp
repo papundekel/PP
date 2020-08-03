@@ -1,9 +1,12 @@
 #include <iostream>
+#include <vector>
+#include <utility>
 #include "Papo.hpp"
 
 int main()
 {
-    std::cout << f();
 
-    return 0;
+
+	std::cout.flush();
+	return 0;
 }

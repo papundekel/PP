@@ -31,16 +31,9 @@ void create_header(const fs::path& path)
 	header h(path.filename().string());
 
 	for (auto&& entry : fs::recursive_directory_iterator(path))
-	{
 		if (entry.is_regular_file())
-		{
-			auto path = entry.path();
-			if (path.extension() == ".hpp")
-			{
+			if (auto path = entry.path(); path.extension() == ".hpp")
 				h.include(path.string());
-			}
-		}
-	}
 }
 
 int main()
