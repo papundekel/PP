@@ -1,5 +1,0 @@
-cmake_minimum_required (VERSION 3.8)
-
-file(GLOB ALGORITHM_SOURCES *.cpp)
-
-add_library(algorithm ${ALGORITHM_SOURCES})
