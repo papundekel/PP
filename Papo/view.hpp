@@ -64,9 +64,15 @@ namespace Papo
 		return end(std::forward<View>(v)) - begin(std::forward<View>(v));
 	}
 	template <detail::view_with_count View>
-	constexpr size_t size(View&& v)
+	constexpr size_t count(View&& v)
 	{
 		return std::forward<View>(v).count();
+	}
+
+	template <view View>
+	constexpr bool empty(View&& v)
+	{
+		return begin(std::forward<View>(v)) == end(std::forward<View>(v));
 	}
 
 	template <view View>
