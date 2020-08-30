@@ -50,23 +50,23 @@ namespace Papo
 		concept is_size_t = same<T, size_t>;
 
 		template <typename T>
-		concept view_with_size =
+		concept view_with_count =
 			view<T> &&
 			requires (const T t)
 			{
-				{ t.size() } -> is_size_t;
-				// { t.size() } -> same<size_t>; // doesn't compile
+				{ t.count() } -> is_size_t;
+				// { t.count() } -> same<size_t>; // doesn't compile
 			};
 	}
 	template <view View>
-	constexpr size_t size(View&& v)
+	constexpr size_t count(View&& v)
 	{
 		return end(std::forward<View>(v)) - begin(std::forward<View>(v));
 	}
-	template <detail::view_with_size View>
+	template <detail::view_with_count View>
 	constexpr size_t size(View&& v)
 	{
-		return std::forward<View>(v).size();
+		return std::forward<View>(v).count();
 	}
 
 	template <view View>
