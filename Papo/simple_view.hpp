@@ -6,7 +6,7 @@
 
 namespace Papo
 {
-	template <iterator Iterator, sentinel<Iterator> Sentinel>
+	template <iterator Iterator, sentinel<Iterator> Sentinel = Iterator>
 	class simple_view
 	{
 		compressed_pair<Iterator, Sentinel> pair;
