@@ -1,9 +1,0 @@
-#pragma once
-#include "/mnt/d/Programming/PPreflection/Papo/Papo/algorithm.hpp"
-#include "/mnt/d/Programming/PPreflection/Papo/Papo/concepts.hpp"
-#include "/mnt/d/Programming/PPreflection/Papo/Papo/data.hpp"
-#include "/mnt/d/Programming/PPreflection/Papo/Papo/io.hpp"
-#include "/mnt/d/Programming/PPreflection/Papo/Papo/math.hpp"
-#include "/mnt/d/Programming/PPreflection/Papo/Papo/odd.hpp"
-#include "/mnt/d/Programming/PPreflection/Papo/Papo/type.hpp"
-#include "/mnt/d/Programming/PPreflection/Papo/Papo/utility.hpp"
