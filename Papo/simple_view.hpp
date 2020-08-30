@@ -43,8 +43,6 @@ namespace Papo
 	};
 	template <view View>
 	simple_view(View&&) -> simple_view<begin_t<View>, end_t<View>>;
-	template <typename T>
-	simple_view(const std::initializer_list<T>&)->simple_view<const T*, const T*>;
 
 	template <iterator Iterator>
 	constexpr view auto operator^(Iterator begin, sentinel<Iterator> auto end)
