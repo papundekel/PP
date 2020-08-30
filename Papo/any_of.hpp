@@ -1,11 +1,15 @@
 #pragma once
 #include <utility>
+#include "view.hpp"
 
-template <typename Range, typename Predicate>
-constexpr bool any_of(Range&& r, Predicate&& p)
+namespace Papo
 {
-	for (auto&& e : std::forward<Range>(r))
-		if (std::forward<Predicate>(p)(e))
-			return true;
-	return false;
+	template <view View, typename Predicate>
+	constexpr bool any_of(View&& v, Predicate&& p)
+	{
+		for (auto&& e : std::forward<View>(v))
+			if (std::forward<Predicate>(p)(e))
+				return true;
+		return false;
+	}
 }

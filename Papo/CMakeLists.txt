@@ -1,3 +1,3 @@
 cmake_minimum_required (VERSION 3.8)
 
-add_executable(Papo Papo.cpp "zip_with.hpp")
+add_executable(Papo Papo.cpp)

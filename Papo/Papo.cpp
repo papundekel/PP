@@ -1,20 +1,19 @@
 #include <iostream>
 #include <vector>
 #include <tuple>
-#include "zip_with.hpp"
+#include "any_of.hpp"
+#include "transform_view.hpp"
 
-void f(int a, int b)
-{
-	std::cout << a << "->" << b << '\n';
-}
+
 
 int main()
 {
-	std::vector<int> a = { 1, 5, 7, 4 };
+	std::vector<int> v = { 1, 5, 4, 6 };
 
-	std::vector<int> b = { 5, 7, 53, 4, 9 };
+	for (auto&& x : v | Papo::transform([](const auto& x) { return x * 2; }))
+		std::cout << x << '\n';
 
-	Papo::zip_with(f, a, b);
+
 
 	std::cout.flush();
 	return 0;

@@ -70,7 +70,7 @@ namespace Papo
 	template <view View>
 	using end_t = decltype(end(std::declval<View>()));
 	template <iterator Iterator>
-	using iterator_base_t = std::decay_t<decltype(*std::declval<Iterator>())>;
+	using iterator_base_t = decltype(*std::declval<Iterator>());
 	template <view View>
 	using view_base_t = iterator_base_t<begin_t<View>>;
 	
