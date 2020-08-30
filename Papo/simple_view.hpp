@@ -23,6 +23,10 @@ namespace Papo
 		constexpr simple_view(View&& v)
 			: simple_view(Papo::begin(std::forward<View>(v)), Papo::end(std::forward<View>(v)))
 		{}
+		template <typename T>
+		constexpr simple_view(const std::initializer_list<T>& l)
+			: simple_view(Papo::begin(l), Papo::end(l))
+		{}
 		constexpr iterator auto begin() const
 		{
 			return pair.first;
