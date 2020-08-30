@@ -7,7 +7,7 @@ namespace Papo
 
 	namespace detail
 	{
-		// saves memory when one type from the pair is empty
+		// saves memory when one qualified_type from the pair is empty
 		//
 		// useful in simple_view with unbounded, where the only
 		// information is the type of its end iterator, not data
