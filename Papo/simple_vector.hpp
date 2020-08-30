@@ -5,82 +5,85 @@
 #include <memory>
 #include "dynamic_block.hpp"
 
-template <typename T>
-class simple_vector
+namespace Papo
 {
-	static constexpr std::size_t default_capacity = 16;
-
-	std::size_t count_;
-	dynamic_block<T> block;
-
-	constexpr void destroy_all() noexcept
+	template <typename T>
+	class simple_vector
 	{
-		std::destroy(begin(), end());
-	}
+		static constexpr std::size_t default_capacity = 16;
 
-public:
-	explicit constexpr simple_vector(std::size_t capacity) noexcept
-		: count_(0)
-		, block(capacity)
-	{}
-	constexpr simple_vector() noexcept
-		: simple_vector(default_capacity)
-	{}
+		std::size_t count_;
+		dynamic_block<T> block;
 
-	constexpr ~simple_vector()
-	{
-		destroy_all();
-	}
-
-	template <typename U>
-	constexpr void push_back(U&& value)
-	{
-		if (count() == capacity())
+		constexpr void destroy_all() noexcept
 		{
-			dynamic_block<T> new_block(2 * capacity());
-
-			std::uninitialized_move(begin(), end(), new_block.begin());
-
-			destroy_all();
-
-			block = std::move(new_block);
+			std::destroy(begin(), end());
 		}
 
-		std::construct_at(end(), std::forward<U>(value));
+	public:
+		explicit constexpr simple_vector(std::size_t capacity) noexcept
+			: count_(0)
+			, block(capacity)
+		{}
+		constexpr simple_vector() noexcept
+			: simple_vector(default_capacity)
+		{}
 
-		++count_;
-	}
+		constexpr ~simple_vector()
+		{
+			destroy_all();
+		}
 
-	constexpr void clear() noexcept
-	{
-		destroy_all();
-		block = dynamic_block<T>(default_capacity);
-		count_ = 0;
-	}
+		template <typename U>
+		constexpr void push_back(U&& value)
+		{
+			if (count() == capacity())
+			{
+				dynamic_block<T> new_block(2 * capacity());
 
-	constexpr T* begin() noexcept
-	{
-		return block.begin();
-	}
-	constexpr T* end() noexcept
-	{
-		return begin() + count_;
-	}
-	constexpr const T* begin() const noexcept
-	{
-		return block.begin();
-	}
-	constexpr const T* end() const noexcept
-	{
-		return begin() + count_;
-	}
+				std::uninitialized_move(begin(), end(), new_block.begin());
 
-	constexpr std::size_t count() const noexcept
-	{
-		return count_;
-	}
-	constexpr std::size_t capacity() const noexcept
-	{
-		return block.count();
-	}
-};
+				destroy_all();
+
+				block = std::move(new_block);
+			}
+
+			std::construct_at(end(), std::forward<U>(value));
+
+			++count_;
+		}
+
+		constexpr void clear() noexcept
+		{
+			destroy_all();
+			block = dynamic_block<T>(default_capacity);
+			count_ = 0;
+		}
+
+		constexpr T* begin() noexcept
+		{
+			return block.begin();
+		}
+		constexpr T* end() noexcept
+		{
+			return begin() + count_;
+		}
+		constexpr const T* begin() const noexcept
+		{
+			return block.begin();
+		}
+		constexpr const T* end() const noexcept
+		{
+			return begin() + count_;
+		}
+
+		constexpr std::size_t count() const noexcept
+		{
+			return count_;
+		}
+		constexpr std::size_t capacity() const noexcept
+		{
+			return block.count();
+		}
+	};
+}

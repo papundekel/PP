@@ -19,13 +19,15 @@ namespace Papo
 			t.end();
 		};
 	}
-	constexpr iterator auto begin(detail::has_begin auto&& v)
+	template <detail::has_begin View>
+	constexpr iterator auto begin(View&& v)
 	{
-		return v.begin();
+		return std::forward<View>(v).begin();
 	}
-	constexpr auto end(detail::has_end auto&& v)
+	template <detail::has_end View>
+	constexpr auto end(View&& v)
 	{
-		return v.end();
+		return std::forward<View>(v).end();
 	}
 
 	namespace detail
@@ -56,13 +58,15 @@ namespace Papo
 				// { t.size() } -> same<size_t>; // doesn't compile
 			};
 	}
-	constexpr size_t size(view auto&& v)
+	template <view View>
+	constexpr size_t size(View&& v)
 	{
-		return end(v) - begin(v);
+		return end(std::forward<View>(v)) - begin(std::forward<View>(v));
 	}
-	constexpr size_t size(detail::view_with_size auto&& v)
+	template <detail::view_with_size View>
+	constexpr size_t size(View&& v)
 	{
-		return v.size();
+		return std::forward<View>(v).size();
 	}
 
 	template <view View>

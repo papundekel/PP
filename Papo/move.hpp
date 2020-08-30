@@ -5,12 +5,12 @@
 namespace Papo
 {
 	template <view FromView, view ToView>
-	constexpr void copy(FromView&& from, ToView&& to)
+	constexpr void move(FromView&& from, ToView&& to)
 	{
 		zip_with(
-			[]<typename From, typename To>(From&& from, To&& to)
+			[]<typename To>(auto&& from, To&& to)
 			{
-				std::forward<To>(to) = std::forward<From>(from);
+				std::forward<To>(to) = std::move(from);
 			},
 			std::forward<FromView>(from), std::forward<ToView>(to));
 	}
