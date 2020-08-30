@@ -12,6 +12,9 @@ namespace Papo
 		compressed_pair<Iterator, Sentinel> pair;
 
 	public:
+		constexpr simple_view()
+			: pair()
+		{}
 		constexpr simple_view(Iterator begin, Sentinel end)
 			: pair{ begin, end }
 		{}
