@@ -3,10 +3,10 @@
 
 namespace Papo
 {
-	struct empty {};
-
 	namespace detail
 	{
+		struct empty {};
+
 		// saves memory when one type from the pair is empty
 		//
 		// useful in simple_view with unbounded, where the only
