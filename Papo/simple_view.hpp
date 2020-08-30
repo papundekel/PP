@@ -3,6 +3,7 @@
 #include "view.hpp"
 #include "compressed_pair.hpp"
 #include "unbounded.hpp"
+#include "size_t.hpp"
 
 namespace Papo
 {
@@ -29,6 +30,10 @@ namespace Papo
 		constexpr auto end() const
 		{
 			return pair.second;
+		}
+		constexpr decltype(auto) operator[](size_t index) const
+		{
+			return begin()[index];
 		}
 	};
 	template <view View>
