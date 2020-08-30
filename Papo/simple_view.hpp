@@ -1,5 +1,6 @@
 #pragma once
 #include <utility>
+#include <initializer_list>
 #include "view.hpp"
 #include "compressed_pair.hpp"
 #include "unbounded.hpp"
