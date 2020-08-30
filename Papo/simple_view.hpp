@@ -24,7 +24,7 @@ namespace Papo
 		constexpr simple_view(View&& v)
 			: simple_view(Papo::begin(std::forward<View>(v)), Papo::end(std::forward<View>(v)))
 		{}
-		constexpr simple_view(const std::initializer_list<iterator_base_t<Iterator>>& l)
+		constexpr simple_view(const std::initializer_list<std::remove_reference_t<iterator_base_t<Iterator>>>& l)
 			: simple_view(l.begin(), l.end())
 		{}
 		constexpr iterator auto begin() const
