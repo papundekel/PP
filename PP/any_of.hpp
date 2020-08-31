@@ -2,7 +2,7 @@
 #include <utility>
 #include "view.hpp"
 
-namespace Papo
+namespace PP
 {
 	template <view View, typename Predicate>
 	constexpr bool any_of(View&& v, Predicate&& p)

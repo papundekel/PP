@@ -1,7 +1,7 @@
 #pragma once
 #include <type_traits>
 
-namespace Papo
+namespace PP
 {
 	namespace detail
 	{

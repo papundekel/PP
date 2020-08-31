@@ -1,7 +1,7 @@
 #pragma once
 #include "declval.hpp"
 
-namespace Papo
+namespace PP
 {
 	template <typename T, typename... Args>
 	concept constructible = requires

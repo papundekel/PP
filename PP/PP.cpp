@@ -23,7 +23,7 @@ struct X
 
 int main()
 {
-	Papo::simple_vector<X> v;
+	PP::simple_vector<X> v;
 	v.push_back(X{});
 	v.push_back(X{});
 	v.push_back(X{});
@@ -31,7 +31,7 @@ int main()
 
 	std::array<X, 4> a;
 
-	Papo::move(v, a);
+	PP::move(v, a);
 
 	std::cout.flush();
 	return 0;

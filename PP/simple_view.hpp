@@ -6,7 +6,7 @@
 #include "unbounded.hpp"
 #include "size_t.hpp"
 
-namespace Papo
+namespace PP
 {
 	template <iterator Iterator, sentinel<Iterator> Sentinel = Iterator>
 	class simple_view
@@ -22,7 +22,7 @@ namespace Papo
 		{}
 		template <view View>
 		constexpr simple_view(View&& v)
-			: simple_view(Papo::begin(std::forward<View>(v)), Papo::end(std::forward<View>(v)))
+			: simple_view(PP::begin(std::forward<View>(v)), PP::end(std::forward<View>(v)))
 		{}
 		constexpr simple_view(const std::initializer_list<std::remove_reference_t<iterator_base_t<Iterator>>>& l)
 			: simple_view(l.begin(), l.end())

@@ -1,7 +1,7 @@
 #pragma once
 #include "same.hpp"
 
-namespace Papo
+namespace PP
 {
 	template <typename T>
 	concept nonvoid = !same<T, void>;

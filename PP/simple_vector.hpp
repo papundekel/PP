@@ -5,7 +5,7 @@
 #include <memory>
 #include "dynamic_block.hpp"
 
-namespace Papo
+namespace PP
 {
 	template <typename T>
 	class simple_vector

@@ -3,7 +3,7 @@
 #include <cstddef>
 #include "unique_pointer.hpp"
 
-namespace Papo
+namespace PP
 {
 	template <typename T>
 	class dynamic_block

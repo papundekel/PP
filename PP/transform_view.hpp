@@ -1,7 +1,7 @@
 #pragma once
 #include "simple_view.hpp"
 
-namespace Papo
+namespace PP
 {
 	template <iterator BaseIterator, typename Transform>
 	class transform_iterator

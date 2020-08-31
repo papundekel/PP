@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Papo
+namespace PP
 {
 	namespace detail
 	{

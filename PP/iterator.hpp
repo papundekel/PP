@@ -3,7 +3,7 @@
 #include "nonvoid.hpp"
 #include "size_t.hpp"
 
-namespace Papo
+namespace PP
 {
 	namespace detail
 	{

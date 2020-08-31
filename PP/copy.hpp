@@ -2,7 +2,7 @@
 #include <type_traits>
 #include "zip_with.hpp"
 
-namespace Papo
+namespace PP
 {
 	template <view FromView, view ToView>
 	constexpr void copy(FromView&& from, ToView&& to)

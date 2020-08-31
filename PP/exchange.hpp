@@ -1,7 +1,7 @@
 #pragma once
 #include <utility>
 
-namespace Papo
+namespace PP
 {
 	template <typename T, typename U>
 	constexpr auto exchange(T& x, U&& new_value)

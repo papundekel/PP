@@ -6,7 +6,7 @@
 #include "exchange.hpp"
 #include "placeholder.hpp"
 
-namespace Papo
+namespace PP
 {
 	template <typename T>
 	struct default_defaulter
@@ -34,12 +34,12 @@ namespace Papo
 		{}
 
 		constexpr unique(unique&& other) noexcept
-			: pair{ Papo::exchange(other.pair.first, other.pair.second()), std::move(other).pair.second }
+			: pair{ PP::exchange(other.pair.first, other.pair.second()), std::move(other).pair.second }
 		{}
 
 		constexpr unique& operator=(unique&& other) noexcept
 		{
-			pair.first = Papo::exchange(other.pair.first, other.pair.second());
+			pair.first = PP::exchange(other.pair.first, other.pair.second());
 			pair.second = std::move(other).pair.second;
 			return *this;
 		}

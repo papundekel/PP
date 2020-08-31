@@ -4,7 +4,7 @@
 #include "size_t.hpp"
 #include "iterator.hpp"
 
-namespace Papo
+namespace PP
 {
 	namespace detail
 	{

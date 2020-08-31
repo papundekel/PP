@@ -1,7 +1,7 @@
 #pragma once
 #include "view.hpp"
 
-namespace Papo
+namespace PP
 {
 	constexpr iterator auto find(view auto&& v, auto p)
 	{

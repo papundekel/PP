@@ -4,7 +4,7 @@
 #include <memory>
 #include <utility>
 
-namespace Papo
+namespace PP
 {
 	template <typename T, std::size_t capacity_, bool looping = false>
 	class array_vector

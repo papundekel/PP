@@ -1,7 +1,7 @@
 #pragma once
 #include "iterator.hpp"
 
-namespace Papo
+namespace PP
 {
 	struct unbounded_t {};
 	inline constexpr unbounded_t unbounded{};

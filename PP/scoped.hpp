@@ -3,7 +3,7 @@
 #include "different_cvref.hpp"
 #include "placeholder.hpp"
 
-namespace Papo
+namespace PP
 {
 	struct noop	{ constexpr void operator()(auto&&) const noexcept {} };
 

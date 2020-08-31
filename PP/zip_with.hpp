@@ -4,7 +4,7 @@
 #include "view.hpp"
 #include "declval.hpp"
 
-namespace Papo
+namespace PP
 {
 	template <typename F, view... Views>
 	constexpr void zip_with(F&& f, Views&&... views) noexcept(std::is_nothrow_invocable_v<F, view_base_t<Views>...>)

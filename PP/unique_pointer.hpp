@@ -4,7 +4,7 @@
 #include "scoped.hpp"
 #include "unique.hpp"
 
-namespace Papo
+namespace PP
 {
 	namespace detail
 	{
