@@ -4,10 +4,11 @@
 #include "constructible.hpp"
 #include "different_cvref.hpp"
 #include "exchange.hpp"
+#include "placeholder.hpp"
 
 namespace Papo
 {
-	template <constructible T>
+	template <typename T>
 	struct default_defaulter
 	{
 		T operator()() const
@@ -17,28 +18,52 @@ namespace Papo
 	};
 
 	template <typename T, typename Defaulter = default_defaulter<T>>
-	struct unique
+	class unique
 	{
 		compressed_pair<T, Defaulter> pair;
 
-		template <different_cvref<unique> U, typename D>
-		constexpr unique(U&& value, D&& defaulter)
-			: pair{ std::forward<U>(value), std::forward<D>(defaulter) }
+	public:
+		constexpr unique()
+			: pair{ Defaulter{}(), {} }
+		{}
+
+
+		template <typename D>
+		constexpr unique(placeholder, D&& defaulter)
+			: pair{ std::forward<D>(defaulter)(), std::forward<D>(defaulter) }
 		{}
 
 		constexpr unique(unique&& other) noexcept
 			: pair{ Papo::exchange(other.pair.first, other.pair.second()), std::move(other).pair.second }
 		{}
 
-		constexpr operator=(unique&& other) noexcept
+		constexpr unique& operator=(unique&& other) noexcept
 		{
 			pair.first = Papo::exchange(other.pair.first, other.pair.second());
 			pair.second = std::move(other).pair.second;
+			return *this;
 		}
 
 		constexpr T& get() noexcept
 		{
-			return value;
+			return pair.first;
 		}
+		constexpr const T& get() const noexcept
+		{
+			return pair.first;
+		}
+		constexpr T release() noexcept
+		{
+			return std::move(pair).first;
+		}
+
+		template <different_cvref<unique> U>
+		constexpr unique(U&& value)
+			: pair{ std::forward<U>(value), {} }
+		{}
+		template <different_cvref<unique> U, typename D>
+		constexpr unique(U&& value, D&& defaulter)
+			: pair{ std::forward<U>(value), std::forward<D>(defaulter) }
+		{}
 	};
 }

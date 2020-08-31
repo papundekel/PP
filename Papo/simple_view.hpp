@@ -55,4 +55,10 @@ namespace Papo
 	{
 		return begin(v) ^ unbounded;
 	}
+
+	template <view View>
+	constexpr view auto operator>>(std::size_t offset, View&& v)
+	{
+		return simple_view(begin(std::forward<View>(v)) + offset, end(std::forward<View>(v)));
+	}
 }

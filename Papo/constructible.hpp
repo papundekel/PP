@@ -1,5 +1,5 @@
 #pragma once
-#include "../utility/declval.hpp"
+#include "declval.hpp"
 
 namespace Papo
 {
