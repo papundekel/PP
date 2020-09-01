@@ -9,8 +9,18 @@ namespace PP
 	template <typename T, std::size_t capacity_, bool looping = false>
 	class array_vector
 	{
+		template <typename U>
+		struct zero_initialized
+		{
+			U value;
+
+			zero_initialized()
+				: value()
+			{}
+		};
+
 		std::byte buffer[capacity_ * sizeof(T)];
-		std::size_t count_;
+		zero_initialized<std::size_t> count_;
 
 		constexpr T* begin_helper() noexcept
 		{
@@ -18,7 +28,7 @@ namespace PP
 		}
 		constexpr T* end_helper() noexcept
 		{
-			return begin_helper() + count_;
+			return begin_helper() + count();
 		}
 
 		constexpr void destroy_all() noexcept
@@ -61,24 +71,24 @@ namespace PP
 
 		constexpr bool empty() const noexcept
 		{
-			return count_ == 0;
+			return count() == 0;
 		}
 
 		constexpr auto count() const noexcept
 		{
-			return count_;
+			return count_.value;
 		}
 
 		constexpr void clear() noexcept
 		{
 			destroy_all();
-			count_ = 0;
+			count_.value = 0;
 		}
 
 		template <typename U>
 		constexpr void push_back(U&& object) noexcept(std::is_nothrow_constructible_v<T, U>)
 		{
-			if (count_ == capacity_)
+			if (count() == capacity_)
 			{
 				if constexpr (!looping)
 					std::terminate();
@@ -87,14 +97,14 @@ namespace PP
 			}
 
 			std::construct_at(end(), std::forward<U>(object));
-			++count_;
+			++count_.value;
 		}
 
 		constexpr void pop_back() noexcept
 		{
-			if (count_ != 0)
+			if (!empty())
 			{
-				--count_;
+				--count_.value;
 				std::destroy_at(end());
 			}
 			else
