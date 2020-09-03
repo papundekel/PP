@@ -87,25 +87,9 @@ namespace PP
 	namespace detail
 	{
 		template <typename T>
-		struct initializer_list_wrapper
-		{
-			std::initializer_list<T> x;
-
-			constexpr auto begin() const
-			{
-				return x.begin();
-			}
-			constexpr auto end() const
-			{
-				return x.end();
-			}
-			constexpr auto size() const
-			{
-				return x.size();
-			}
-		};
+		struct initializer_list_wrapper : public std::initializer_list<T> {};
 		template <typename T>
-		constexpr auto& wrap_initializer_list(const std::initializer_list<T>& l)
+		constexpr decltype(auto) wrap_initializer_list(const std::initializer_list<T>& l)
 		{
 			return reinterpret_cast<const initializer_list_wrapper<T>&>(l);
 		}

@@ -39,9 +39,21 @@ namespace PP
 	{
 		return t += 1;
 	}
+	constexpr auto operator++(detail::has_operator_advance auto& t, int)
+	{
+		auto x = t;
+		++t;
+		return x;
+	}
 	constexpr auto& operator--(detail::has_operator_back auto& t)
 	{
 		return t -= 1;
+	}
+	constexpr auto operator--(detail::has_operator_back auto& t, int)
+	{
+		auto x = t;
+		--t;
+		return x;
 	}
 
 	template <typename Iterator>
