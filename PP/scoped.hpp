@@ -5,9 +5,7 @@
 
 namespace PP
 {
-	struct noop	{ constexpr void operator()(auto&&) const noexcept {} };
-
-	template <typename T, typename Destructor = noop>
+	template <typename T, typename Destructor>
 	class scoped
 	{
 		compressed_pair<T, Destructor> pair;
