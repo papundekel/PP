@@ -5,6 +5,7 @@
 #include "compressed_pair.hpp"
 #include "unbounded.hpp"
 #include "size_t.hpp"
+#include "different_cvref.hpp"
 
 namespace PP
 {
@@ -21,6 +22,7 @@ namespace PP
 			: pair{ begin, end }
 		{}
 		template <view View>
+		requires different_cvref<View, simple_view>
 		constexpr simple_view(View&& v)
 			: simple_view(PP::begin(std::forward<View>(v)), PP::end(std::forward<View>(v)))
 		{}
@@ -43,7 +45,7 @@ namespace PP
 	template <view View>
 	simple_view(View&&) -> simple_view<begin_t<View>, end_t<View>>;
 	template <typename T>
-	simple_view(const std::initializer_list<T>&)->simple_view<const T*, const T*>;
+	simple_view(const std::initializer_list<T>&) -> simple_view<const T*, const T*>;
 
 	template <iterator Iterator>
 	constexpr view auto operator^(Iterator begin, sentinel<Iterator> auto end)

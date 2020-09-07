@@ -40,6 +40,10 @@ namespace PP
 		{
 			return pair.first - other.pair.first;
 		}
+		constexpr decltype(auto) operator[](std::size_t index) const
+		{
+			return pair.second(pair.first[index]);
+		}
 		constexpr auto& base()
 		{
 			return pair.first;
