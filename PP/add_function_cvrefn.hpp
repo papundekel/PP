@@ -1,9 +1,9 @@
 #pragma once
-#include "cv_qualifier.h"
-#include "ref_qualifier.h"
-#include "get_function_info.h"
-#include "apply_pack.h"
-#include "get_value_type.h"
+#include "cv_qualifier.hpp"
+#include "ref_qualifier.hpp"
+#include "get_function_info.hpp"
+#include "apply_pack.hpp"
+#include "get_value_type.hpp"
 
 namespace PP
 {

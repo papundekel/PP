@@ -1,6 +1,6 @@
 #pragma once
-#include "cv_qualifier.h"
-#include "get_type.h"
+#include "cv_qualifier.hpp"
+#include "get_type.hpp"
 
 namespace PP
 {

@@ -1,7 +1,7 @@
 #pragma once
-#include "get_function_info.h"
-#include "add_cv.h"
-#include "add_ref.h"
+#include "get_function_info.hpp"
+#include "add_cv.hpp"
+#include "add_ref.hpp"
 
 namespace PP
 {

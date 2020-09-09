@@ -1,6 +1,7 @@
-#include "type_pack.h"
-#include "type_t.h"
-#include "apply_pack.h"
+#pragma once
+#include "type_pack.hpp"
+#include "type_t.hpp"
+#include "apply_pack.hpp"
 
 namespace PP
 {

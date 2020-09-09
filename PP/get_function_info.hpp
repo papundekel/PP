@@ -1,8 +1,8 @@
 #pragma once
 #include <type_traits>
-#include "type_pack.h"
-#include "cv_qualifier.h"
-#include "ref_qualifier.h"
+#include "type_pack.hpp"
+#include "cv_qualifier.hpp"
+#include "ref_qualifier.hpp"
 
 namespace PP
 {
