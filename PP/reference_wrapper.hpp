@@ -7,7 +7,7 @@ namespace PP
 	{
 		T* ptr;
 
-		constexpr cref_t(T& ref) noexcept
+		constexpr reference_wrapper(T& ref) noexcept
 			: ptr(&ref)
 		{}
 		
