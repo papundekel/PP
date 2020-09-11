@@ -27,27 +27,27 @@ namespace PP
 	template<class Ret, class... Args>
 	struct get_function_info<Ret(Args...)> : detail::function_info<Ret, false, cv_qualifier::none, ref_qualifier::none, Args...> {};
 	template<class Ret, class... Args>
-	struct get_function_info<Ret(Args...) const> : detail::function_info<Ret, false, cv_qualifier::const_, ref_qualifier::none, Args...> {};
+	struct get_function_info<Ret(Args...) const> : detail::function_info<Ret, false, cv_qualifier::Const, ref_qualifier::none, Args...> {};
 	template<class Ret, class... Args>
-	struct get_function_info<Ret(Args...) volatile> : detail::function_info<Ret, false, cv_qualifier::volatile_, ref_qualifier::none, Args...> {};
+	struct get_function_info<Ret(Args...) volatile> : detail::function_info<Ret, false, cv_qualifier::Volatile, ref_qualifier::none, Args...> {};
 	template<class Ret, class... Args>
 	struct get_function_info<Ret(Args...) const volatile> : detail::function_info<Ret, false, cv_qualifier::const_volatile, ref_qualifier::none, Args...> {};
 
 	template<class Ret, class... Args>
 	struct get_function_info<Ret(Args...)&> : detail::function_info<Ret, false, cv_qualifier::none, ref_qualifier::lvalue, Args...> {};
 	template<class Ret, class... Args>
-	struct get_function_info<Ret(Args...) const&> : detail::function_info<Ret, false, cv_qualifier::const_, ref_qualifier::lvalue, Args...> {};
+	struct get_function_info<Ret(Args...) const&> : detail::function_info<Ret, false, cv_qualifier::Const, ref_qualifier::lvalue, Args...> {};
 	template<class Ret, class... Args>
-	struct get_function_info<Ret(Args...) volatile&> : detail::function_info<Ret, false, cv_qualifier::volatile_, ref_qualifier::lvalue, Args...> {};
+	struct get_function_info<Ret(Args...) volatile&> : detail::function_info<Ret, false, cv_qualifier::Volatile, ref_qualifier::lvalue, Args...> {};
 	template<class Ret, class... Args>
 	struct get_function_info<Ret(Args...) const volatile&> : detail::function_info<Ret, false, cv_qualifier::const_volatile, ref_qualifier::lvalue, Args...> {};
 
 	template<class Ret, class... Args>
 	struct get_function_info<Ret(Args...)&&> : detail::function_info<Ret, false, cv_qualifier::none, ref_qualifier::rvalue, Args...> {};
 	template<class Ret, class... Args>
-	struct get_function_info<Ret(Args...) const&&> : detail::function_info<Ret, false, cv_qualifier::const_, ref_qualifier::rvalue, Args...> {};
+	struct get_function_info<Ret(Args...) const&&> : detail::function_info<Ret, false, cv_qualifier::Const, ref_qualifier::rvalue, Args...> {};
 	template<class Ret, class... Args>
-	struct get_function_info<Ret(Args...) volatile&&> : detail::function_info<Ret, false, cv_qualifier::volatile_, ref_qualifier::rvalue, Args...> {};
+	struct get_function_info<Ret(Args...) volatile&&> : detail::function_info<Ret, false, cv_qualifier::Volatile, ref_qualifier::rvalue, Args...> {};
 	template<class Ret, class... Args>
 	struct get_function_info<Ret(Args...) const volatile&&> : detail::function_info<Ret, false, cv_qualifier::const_volatile, ref_qualifier::rvalue, Args...> {};
 
@@ -56,27 +56,27 @@ namespace PP
 	template<class Ret, class... Args>
 	struct get_function_info<Ret(Args...) noexcept> : detail::function_info<Ret, true, cv_qualifier::none, ref_qualifier::none, Args...> {};
 	template<class Ret, class... Args>
-	struct get_function_info<Ret(Args...) const noexcept> : detail::function_info<Ret, true, cv_qualifier::const_, ref_qualifier::none, Args...> {};
+	struct get_function_info<Ret(Args...) const noexcept> : detail::function_info<Ret, true, cv_qualifier::Const, ref_qualifier::none, Args...> {};
 	template<class Ret, class... Args>
-	struct get_function_info<Ret(Args...) volatile noexcept> : detail::function_info<Ret, true, cv_qualifier::volatile_, ref_qualifier::none, Args...> {};
+	struct get_function_info<Ret(Args...) volatile noexcept> : detail::function_info<Ret, true, cv_qualifier::Volatile, ref_qualifier::none, Args...> {};
 	template<class Ret, class... Args>
 	struct get_function_info<Ret(Args...) const volatile noexcept> : detail::function_info<Ret, true, cv_qualifier::const_volatile, ref_qualifier::none, Args...> {};
 
 	template<class Ret, class... Args>
 	struct get_function_info<Ret(Args...) & noexcept> : detail::function_info<Ret, true, cv_qualifier::none, ref_qualifier::lvalue, Args...> {};
 	template<class Ret, class... Args>
-	struct get_function_info<Ret(Args...) const& noexcept> : detail::function_info<Ret, true, cv_qualifier::const_, ref_qualifier::lvalue, Args...> {};
+	struct get_function_info<Ret(Args...) const& noexcept> : detail::function_info<Ret, true, cv_qualifier::Const, ref_qualifier::lvalue, Args...> {};
 	template<class Ret, class... Args>
-	struct get_function_info<Ret(Args...) volatile& noexcept> : detail::function_info<Ret, true, cv_qualifier::volatile_, ref_qualifier::lvalue, Args...> {};
+	struct get_function_info<Ret(Args...) volatile& noexcept> : detail::function_info<Ret, true, cv_qualifier::Volatile, ref_qualifier::lvalue, Args...> {};
 	template<class Ret, class... Args>
 	struct get_function_info<Ret(Args...) const volatile& noexcept> : detail::function_info<Ret, true, cv_qualifier::const_volatile, ref_qualifier::lvalue, Args...> {};
 
 	template<class Ret, class... Args>
 	struct get_function_info<Ret(Args...) && noexcept> : detail::function_info<Ret, true, cv_qualifier::none, ref_qualifier::rvalue, Args...> {};
 	template<class Ret, class... Args>
-	struct get_function_info<Ret(Args...) const&& noexcept> : detail::function_info<Ret, true, cv_qualifier::const_, ref_qualifier::rvalue, Args...> {};
+	struct get_function_info<Ret(Args...) const&& noexcept> : detail::function_info<Ret, true, cv_qualifier::Const, ref_qualifier::rvalue, Args...> {};
 	template<class Ret, class... Args>
-	struct get_function_info<Ret(Args...) volatile&& noexcept> : detail::function_info<Ret, true, cv_qualifier::volatile_, ref_qualifier::rvalue, Args...> {};
+	struct get_function_info<Ret(Args...) volatile&& noexcept> : detail::function_info<Ret, true, cv_qualifier::Volatile, ref_qualifier::rvalue, Args...> {};
 	template<class Ret, class... Args>
 	struct get_function_info<Ret(Args...) const volatile&& noexcept> : detail::function_info<Ret, true, cv_qualifier::const_volatile, ref_qualifier::rvalue, Args...> {};
 }

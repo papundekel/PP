@@ -11,9 +11,9 @@ namespace PP
 		{
 			if constexpr (cv == cv_qualifier::none)
 				return type_t<T>{};
-			else if constexpr (cv == cv_qualifier::const_)
+			else if constexpr (cv == cv_qualifier::Const)
 				return type_t<const T>{};
-			else if constexpr (cv == cv_qualifier::volatile_)
+			else if constexpr (cv == cv_qualifier::Volatile)
 				return type_t<volatile T>{};
 			else
 				return type_t<const volatile T>{};

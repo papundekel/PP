@@ -13,19 +13,6 @@ namespace PP
 	public:
 		constexpr scoped() = default;
 
-		template <different_cvref<scoped> U>
-		constexpr scoped(U&& value)
-			: pair{ std::forward<U>(value), {} }
-		{}
-		template <typename D>
-		constexpr scoped(placeholder, D&& destructor)
-			: pair{ {}, std::forward<D>(destructor) }
-		{}
-		template <different_cvref<scoped> U, typename D>
-		constexpr scoped(U&& value, D&& destructor)
-			: pair{ std::forward<U>(value), std::forward<D>(destructor) }
-		{}
-
 		constexpr scoped(const scoped&) = default;
 		constexpr scoped(scoped&&) = default;
 
@@ -64,5 +51,18 @@ namespace PP
 		{
 			destroy();
 		}
+
+		template <different_cvref<scoped> U>
+		constexpr scoped(U&& value)
+			: pair{ std::forward<U>(value), {} }
+		{}
+		template <different_cvref<scoped> U, typename D>
+		constexpr scoped(U&& value, D&& destructor)
+			: pair{ std::forward<U>(value), std::forward<D>(destructor) }
+		{}
+		template <typename D>
+		constexpr scoped(placeholder, D&& destructor)
+			: pair{ {}, std::forward<D>(destructor) }
+		{}
 	};
 }
