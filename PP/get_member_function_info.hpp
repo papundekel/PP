@@ -12,6 +12,6 @@ namespace PP
 	{
 		using Function = F;
 		using Class = C;
-		using Caller = add_ref<get_function_info<F>::ref, add_cv<get_function_info<F>::cv, C>>;
+		using Caller = add_ref_t<get_function_info<F>::ref, add_cv_t<get_function_info<F>::cv, C>>;
 	};
 }

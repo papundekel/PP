@@ -18,7 +18,7 @@ namespace PP
 			{
 				return *ptr;
 			}
-			constexpr operator T& () const noexcept
+			constexpr operator T&() const noexcept
 			{
 				return get();
 			}
