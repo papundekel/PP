@@ -1,6 +1,6 @@
 #pragma once
-#include <tuple>
 #include <type_traits>
+#include "tuple.hpp"
 #include "tuple_get.hpp"
 #include "functional/compose.hpp"
 #include "functional/apply_partially.hpp"
@@ -8,10 +8,10 @@
 
 namespace PP
 {
-	constexpr inline auto tuple_split = apply_partially(tuple_apply,
+	constexpr inline auto tuple_split = apply_partially<false>(tuple_apply,
 		[]<typename H, typename... T>(H&& head, T&&... tail)
 		{
-			return std::forward_as_tuple(std::forward<H>(head), std::forward_as_tuple(std::forward<T>(tail)...));
+			return std::pair<H&&, std::tuple<T&&...>>(std::forward<H>(head), std::forward_as_tuple(std::forward<T>(tail)...));
 		});
 
 	constexpr inline auto tuple_head = tuple_get<0>;

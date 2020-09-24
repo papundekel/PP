@@ -3,32 +3,47 @@
 
 namespace PP
 {
-	template <typename F, typename G>
-	constexpr auto operator|(F&& f, G&& g) noexcept
+	template <bool copy_first = true, bool copy_second = true>
+	constexpr inline auto compose = [](auto f, auto g)
 	{
-		return [&f, &g]<typename... T>(T&&... t) -> decltype(auto)
-		{
-			return std::forward<F>(f)(std::forward<G>(g)(std::forward<T>(t)...));
-		};
-	}
-
-	template <typename F, typename G>
-	constexpr auto operator||(F&& f, G&& g) noexcept
-	{
-		return[f = std::forward<F>(f), g = std::forward<G>(g)]<typename... T>(T&&... t) -> decltype(auto)
+		return [f = std::move(f), g = std::move(g)]<typename... T>(T&&... t) -> decltype(auto)
 		{
 			return f(g(std::forward<T>(t)...));
 		};
+	};
+	template <>
+	constexpr inline auto compose<false, true> = [](auto& f, auto g) noexcept
+	{
+		return [&f, g = std::move(g)]<typename... T>(T&&... t) -> decltype(auto)
+		{
+			return f(g(std::forward<T>(t)...));
+		};
+	};
+	template <>
+	constexpr inline auto compose<true, false> = [](auto f, auto& g) noexcept
+	{
+		return [f = std::move(f), &g]<typename... T>(T&&... t) -> decltype(auto)
+		{
+			return f(g(std::forward<T>(t)...));
+		};
+	};
+	template <>
+	constexpr inline auto compose<false, false> = [](auto& f, auto& g) noexcept
+	{
+		return [&f, &g]<typename... T>(T&&... t) -> decltype(auto)
+		{
+			return f(g(std::forward<T>(t)...));
+		};
+	};
+
+	template <typename F, typename G>
+	constexpr auto operator|(F& f, G& g) noexcept
+	{
+		return compose<false, false>(f, g);
 	}
 
-	template <typename... F>
-	constexpr auto compose(F&&... f) noexcept
+	constexpr auto operator||(auto f, auto g) noexcept
 	{
-		return (std::forward<F>(f) || ... || id_weak);
-	}
-	template <typename... F>
-	constexpr auto compose_no_copy(F&&... f) noexcept
-	{
-		return (std::forward<F>(f) | ... | id_weak);
+		return compose<>(std::move(f), std::move(g));
 	}
 }

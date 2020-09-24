@@ -3,22 +3,40 @@
 
 namespace PP
 {
-	template <typename F, typename... Args>
-	constexpr auto apply_partially(F&& f, Args&&... args) noexcept
+	template <bool copy_f = true, bool copy_args = true>
+	constexpr inline auto apply_partially = [](auto f, auto... args)
 	{
 		return
-			[&f, ...args = std::forward<Args>(args)]<typename... OtherArgs>(OtherArgs&&... other_args)
+			[f = std::move(f), ...args = std::move(args)]<typename... OtherArgs>(OtherArgs&&... other_args) -> decltype(auto)
 			{
-				return std::forward<F>(f)(args..., std::forward<OtherArgs>(other_args)...);
+				return f(args..., std::forward<OtherArgs>(other_args)...);
 			};
-	}
-	template <typename F, typename... Args>
-	constexpr auto apply_partially_no_copy(F&& f, Args&&... args) noexcept
+	};
+	template <>
+	constexpr inline auto apply_partially<false, true> = [](auto& f, auto... args)
 	{
 		return
-			[&f, &args...]<typename... OtherArgs>(OtherArgs&&... other_args)
+			[&f, ...args = std::move(args)]<typename... OtherArgs>(OtherArgs&&... other_args) -> decltype(auto)
 			{
-				return std::forward<F>(f)(std::forward<Args>(args)..., std::forward<OtherArgs>(other_args)...);
+				return f(args..., std::forward<OtherArgs>(other_args)...);
 			};
-	}
+	};
+	template <>
+	constexpr inline auto apply_partially<true, false> = [](auto f, auto&... args)
+	{
+		return
+			[f = std::move(f), &args...]<typename... OtherArgs>(OtherArgs&&... other_args) -> decltype(auto)
+			{
+				return f(args..., std::forward<OtherArgs>(other_args)...);
+			};
+	};
+	template <>
+	constexpr inline auto apply_partially<false, false> = [](auto& f, auto&... args)
+	{
+		return
+			[&f, &args...]<typename... OtherArgs>(OtherArgs&&... other_args) -> decltype(auto)
+			{
+				return f(args..., std::forward<OtherArgs>(other_args)...);
+			};
+	};
 }

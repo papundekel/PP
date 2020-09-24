@@ -40,19 +40,19 @@ namespace PP
 		constexpr function_info(type_t<R(P...) const volatile&&>) noexcept : function_info(cv_qualifier::const_volatile, ref_qualifier::rvalue, false) {}
 
 
-		constexpr function_info(type_t<R(P...) noexcept>) noexcept : function_info(cv_qualifier::none, ref_qualifier::none, false) {}
-		constexpr function_info(type_t<R(P...) const noexcept>) noexcept : function_info(cv_qualifier::Const, ref_qualifier::none, false) {}
-		constexpr function_info(type_t<R(P...) volatile noexcept>) noexcept : function_info(cv_qualifier::Volatile, ref_qualifier::none, false) {}
-		constexpr function_info(type_t<R(P...) const volatile noexcept>) noexcept : function_info(cv_qualifier::const_volatile, ref_qualifier::none, false) {}
+		constexpr function_info(type_t<R(P...) noexcept>) noexcept : function_info(cv_qualifier::none, ref_qualifier::none, true) {}
+		constexpr function_info(type_t<R(P...) const noexcept>) noexcept : function_info(cv_qualifier::Const, ref_qualifier::none, true) {}
+		constexpr function_info(type_t<R(P...) volatile noexcept>) noexcept : function_info(cv_qualifier::Volatile, ref_qualifier::none, true) {}
+		constexpr function_info(type_t<R(P...) const volatile noexcept>) noexcept : function_info(cv_qualifier::const_volatile, ref_qualifier::none, true) {}
 
-		constexpr function_info(type_t<R(P...) & noexcept>) noexcept : function_info(cv_qualifier::none, ref_qualifier::lvalue, false) {}
-		constexpr function_info(type_t<R(P...) const& noexcept>) noexcept : function_info(cv_qualifier::Const, ref_qualifier::lvalue, false) {}
-		constexpr function_info(type_t<R(P...) volatile& noexcept>) noexcept : function_info(cv_qualifier::Volatile, ref_qualifier::lvalue, false) {}
-		constexpr function_info(type_t<R(P...) const volatile& noexcept>) noexcept : function_info(cv_qualifier::const_volatile, ref_qualifier::lvalue, false) {}
+		constexpr function_info(type_t<R(P...) & noexcept>) noexcept : function_info(cv_qualifier::none, ref_qualifier::lvalue, true) {}
+		constexpr function_info(type_t<R(P...) const& noexcept>) noexcept : function_info(cv_qualifier::Const, ref_qualifier::lvalue, true) {}
+		constexpr function_info(type_t<R(P...) volatile& noexcept>) noexcept : function_info(cv_qualifier::Volatile, ref_qualifier::lvalue, true) {}
+		constexpr function_info(type_t<R(P...) const volatile& noexcept>) noexcept : function_info(cv_qualifier::const_volatile, ref_qualifier::lvalue, true) {}
 
-		constexpr function_info(type_t<R(P...) && noexcept>) noexcept : function_info(cv_qualifier::none, ref_qualifier::rvalue, false) {}
-		constexpr function_info(type_t<R(P...) const&& noexcept>) noexcept : function_info(cv_qualifier::Const, ref_qualifier::rvalue, false) {}
-		constexpr function_info(type_t<R(P...) volatile&& noexcept>) noexcept : function_info(cv_qualifier::Volatile, ref_qualifier::rvalue, false) {}
-		constexpr function_info(type_t<R(P...) const volatile&& noexcept>) noexcept : function_info(cv_qualifier::const_volatile, ref_qualifier::rvalue, false) {}
+		constexpr function_info(type_t<R(P...) && noexcept>) noexcept : function_info(cv_qualifier::none, ref_qualifier::rvalue, true) {}
+		constexpr function_info(type_t<R(P...) const&& noexcept>) noexcept : function_info(cv_qualifier::Const, ref_qualifier::rvalue, true) {}
+		constexpr function_info(type_t<R(P...) volatile&& noexcept>) noexcept : function_info(cv_qualifier::Volatile, ref_qualifier::rvalue, true) {}
+		constexpr function_info(type_t<R(P...) const volatile&& noexcept>) noexcept : function_info(cv_qualifier::const_volatile, ref_qualifier::rvalue, true) {}
 	};
 }

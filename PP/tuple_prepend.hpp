@@ -1,25 +1,26 @@
 #pragma once
 #include <tuple>
 #include "functional/apply_partially.hpp"
+#include "tuple_apply.hpp"
 
 namespace PP
 {
-	template <typename Head>
-	constexpr auto tuple_prepend(Head&& head)
+	template <bool copy = true>
+	constexpr inline auto tuple_prepend = [](auto head)
 	{
-		return apply_partially(tuple_apply,
-			[head = std::forward<Head>(head)]<typename... T>(T&&... elements)
+		return apply_partially<false>(tuple_apply,
+			[head = std::move(head)]<typename... T>(T&&... elements)
 			{
-				return std::tuple<std::decay_t<Head>, T&&...>(head, std::forward<T>(elements)...);
+				return std::tuple<decltype(head), T&&...>(head, std::forward<T>(elements)...);
 			});
-	}
-	template <typename Head, typename Tuple>
-	constexpr auto tuple_prepend_no_copy(Head&& head, Tuple&& tuple)
+	};
+	template <>
+	constexpr inline auto tuple_prepend<false> = [](auto& head)
 	{
-		return std::apply(
+		return apply_partially<false>(tuple_apply,
 			[&head]<typename... T>(T&&... elements)
 			{
-				return std::forward_as_tuple(std::forward<Head>(head), std::forward<T>(elements)...);
-			}, std::forward<Tuple>(tuple));
-	}
+				return std::tuple<decltype(head), T&&...>(head, std::forward<T>(elements)...);
+			});
+	};
 }

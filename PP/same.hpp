@@ -5,10 +5,10 @@ namespace PP
 	namespace detail
 	{
 		template <typename T, typename U>
-		inline constexpr auto same = false;
+		constexpr inline bool same = false;
 		template <typename T>
-		inline constexpr auto same<T, T> = true;
+		constexpr inline bool same<T, T> = true;
 	}
 	template <typename T, typename U>
-	concept same = detail::same<T, U>;
+	concept same = detail::same<T, U> && detail::same<U, T>;
 }

@@ -1,15 +1,27 @@
 #pragma once
 #include <tuple>
+#include "tuple_apply.hpp"
 
 namespace PP
 {
-	template <typename Map, typename Tuple>
-	constexpr auto tuple_map(Map&& map, Tuple&& tuple)
-	{
-		return std::apply(
-			[&map]<typename... T>(T&&... t)
-			{
-				return std::make_tuple(std::forward<Map>(map)(std::forward<T>(t))...);
-			}, std::forward<Tuple>(tuple));
-	}
+	template <bool copy = true>
+	constexpr inline auto tuple_map =
+		[](auto map)
+		{
+			return apply_partially<false>(tuple_apply,
+				[map = std::move(map)]<typename... T>(T&&... t)
+				{
+					return std::forward_as_tuple(map(std::forward<T>(t))...);
+				});
+		};
+	template <>
+	constexpr inline auto tuple_map =
+		[](auto& map)
+		{
+			return apply_partially<false>(tuple_apply,
+				[&map ]<typename... T>(T&&... t)
+				{
+					return std::forward_as_tuple(map(std::forward<T>(t))...);
+				});
+		};
 }
