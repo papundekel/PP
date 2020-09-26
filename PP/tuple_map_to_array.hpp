@@ -3,13 +3,14 @@
 #include <type_traits>
 #include <array>
 #include "reference_wrapper.hpp"
+#include "tuple_like.hpp"
 
 namespace PP
 {
 	struct tuple_map_homo_deduce_return_type {};
 
 	constexpr inline auto tuple_map_to_array =
-		[]<typename Map, typename Tuple, typename Type = tuple_map_homo_deduce_return_type>
+		[]<typename Map, tuple_like Tuple, typename Type = tuple_map_homo_deduce_return_type>
 		(Map&& map, Tuple&& tuple, Type = {})
 		{
 			return std::apply(

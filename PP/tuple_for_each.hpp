@@ -1,15 +1,25 @@
 #pragma once
-#include <tuple>
+#include "tuple_apply.hpp"
+#include "functional/apply_partially.hpp"
 
 namespace PP
 {
-	template <typename F, typename Tuple>
-	constexpr auto tuple_for_each(F&& f, Tuple&& tuple)
+	template <bool copy = true>
+	constexpr inline auto tuple_for_each = [](auto f)
 	{
-		return std::apply(
+		return tuple_apply<>(
+			[f = std::move(f)]<typename... T>(T&&... t)
+			{
+				(f(std::forward<T>(t)), ...);
+			});
+	};
+	template <>
+	constexpr inline auto tuple_for_each<false> = [](auto& f)
+	{
+		return tuple_apply<>(
 			[&f]<typename... T>(T&&... t)
 			{
-				(std::forward<F>(f)(std::forward<T>(t)), ...);
-			}, std::forward<Tuple>(tuple));
-	}
+				(f(std::forward<T>(t)), ...);
+			});
+	};
 }

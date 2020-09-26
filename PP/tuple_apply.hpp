@@ -6,13 +6,32 @@
 
 namespace PP
 {
+	template <bool copy = true>
 	constexpr inline auto tuple_apply =
-		[]<typename F, tuple_like Tuple>(F&& f, Tuple&& tuple) -> decltype(auto)
+		[](auto f)
 		{
 			return
-				[&f, &tuple]<std::size_t... I>(std::index_sequence<I...>) -> decltype(auto)
+				[g = std::move(f)]<tuple_like Tuple>(Tuple&& tuple) -> decltype(auto)
 				{
-					return std::forward<F>(f)(tuple_get<I>(std::forward<Tuple>(tuple))...);
-				}(std::make_index_sequence<tuple_size_v<Tuple>>{});
+					return
+						[&g, &tuple]<std::size_t... I>(std::index_sequence<I...>) -> decltype(auto)
+						{
+							return g(tuple_get<I>(std::forward<Tuple>(tuple))...);
+						}(std::make_index_sequence<tuple_size_v<Tuple>>{});
+				};
+		};
+	template <>
+	constexpr inline auto tuple_apply<false> =
+		[](auto& f)
+		{
+			return
+				[&f]<tuple_like Tuple>(Tuple&& tuple) -> decltype(auto)
+				{
+					return
+						[&f, &tuple]<std::size_t... I>(std::index_sequence<I...>) -> decltype(auto)
+						{
+							return f(tuple_get<I>(std::forward<Tuple>(tuple))...);
+						}(std::make_index_sequence<tuple_size_v<Tuple>>{});
+				};
 		};
 }

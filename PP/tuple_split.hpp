@@ -8,7 +8,7 @@
 
 namespace PP
 {
-	constexpr inline auto tuple_split = apply_partially<false>(tuple_apply,
+	constexpr inline auto tuple_split = tuple_apply<>(
 		[]<typename H, typename... T>(H&& head, T&&... tail)
 		{
 			return std::pair<H&&, std::tuple<T&&...>>(std::forward<H>(head), std::forward_as_tuple(std::forward<T>(tail)...));

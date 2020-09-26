@@ -5,33 +5,31 @@
 #include "type_tuple.hpp"
 #include "tuple_map.hpp"
 #include "tuple_zip.hpp"
-
-/*namespace PP
-{
-	template <typename Tuples>
-	constexpr auto cartesian_product(Tuples tuples)
-	{
-
-	}
-}*/
-
+#include "tuple_for_each.hpp"
 
 struct X
 {
-	X() = default;
+	int x;
+	X(int x) : x(x) {}
 	X(const X&) { std::cout << "copied\n"; }
 	X(X&&) { std::cout << "moved\n"; }
+	X& operator=(const X&) = default;
+	X& operator=(X&&) = default;
 };
+
+template <typename T>
+struct A { T x; };
 
 int main()
 {
-	auto types = PP::type_tuple_v<int, double>;
-	auto values = std::array{ 4, 8 };
-
-	auto p = std::forward_as_tuple(types, values);
-
-	auto zipped = PP::tuple_zip(p);
-
+	PP::tuple_for_each<>
+		([](auto&& p)
+		{
+			auto [type, id] = std::move(p);
+			std::cout << PP::sizeof_v(type) << " : " << id.x << '\n';
+		})
+		(PP::tuple_zip(std::forward_as_tuple(PP::type_tuple_v<A<int>, A<double>, A<char>>, std::array{ X{1}, X{4}, X{7} })));
+	
 	std::cout.flush();
 	return 0;
 }
