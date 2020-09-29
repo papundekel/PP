@@ -15,8 +15,8 @@ namespace PP
 	constexpr inline value_t<V> value_v = {};
 
 	template <auto x, auto y>
-	constexpr bool operator==(value_t<x>, value_t<y>)
+	constexpr bool operator<=>(value_t<x>, value_t<y>)
 	{
-		return x == y;
+		return x <=> y;
 	}
 }

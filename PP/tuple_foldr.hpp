@@ -1,29 +1,29 @@
 #pragma once
 #include "tuple_apply.hpp"
+#include "tuple_size.hpp"
+#include "functional/constant.hpp"
+#include "tuple_like.hpp"
+#include "tuple.hpp"
+#include "tuple_split.hpp"
 
 namespace PP
 {
-	template <typename F, typename T>
-	struct fold_wrap
+	namespace detail
 	{
-		F& f;
-		T&& x;
-	};
-
-	template <typename T, typename F, typename U>
-	constexpr auto operator*(T&& a, fold_wrap<F, U> b)
-	{
-		return fold_wrap{ b.f, b.f(std::forward<T>(a), std::forward<U>(b.x)) };
+		struct tuple_foldr_helper
+		{
+			constexpr decltype(auto) operator()(auto&& f, auto&& init, tuple_like auto&& tuple) const
+			{
+				auto split = tuple_split(std::forward<decltype(tuple)>(tuple));
+				if constexpr (tuple_like<decltype(split)>)
+					return std::forward<decltype(f)>(f)(
+						tuple_get<0>(split),
+						(*this)(std::forward<decltype(f)>(f), std::forward<decltype(init)>(init), tuple_get<1>(split)));
+				else
+					return std::forward<decltype(init)>(init);
+			}
+		};
 	}
 
-	template <bool copy_f = true, bool copy_init = true>
-	constexpr inline auto tuple_foldr =
-		[](auto f, auto init)
-		{
-			return tuple_apply<>(
-				[f = std::move(f), init = std::move(init)]<typename... T>(T&&... t) -> decltype(auto)
-				{
-					return (std::forward<T>(t) * ... * init);
-				});
-		};
+	constexpr inline auto tuple_foldr = detail::tuple_foldr_helper{};
 }

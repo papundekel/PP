@@ -3,5 +3,5 @@
 
 namespace PP
 {
-	constexpr inline auto negate = []<typename T>(T&& t) -> bool { return !std::forward<T>(t); };
+	constexpr inline auto negate = [](auto&& t) -> bool { return !std::forward<decltype(t)>(t); };
 }

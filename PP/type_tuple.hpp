@@ -14,7 +14,7 @@ namespace PP
 	template <std::size_t I, typename... Types>
 	constexpr auto& get(value_t<I>, type_tuple<Types...>) noexcept
 	{
-		return PP::type_v<std::tuple_element_t<I, std::tuple<Types...>>>;
+		return type_v<std::tuple_element_t<I, std::tuple<Types...>>>;
 	};
 }
 

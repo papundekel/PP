@@ -20,7 +20,7 @@ namespace PP
 
 		template <typename T>
 		requires (!has_type<T> && has_value_any<T>)
-		constexpr decltype(get_type_helper<decltype(get_value<T>)>()) get_type_helper() noexcept;
+		constexpr decltype(get_type_helper<decltype(get_value<T>())>()) get_type_helper() noexcept;
 
 		template <typename T>
 		constexpr type_t<get_type__no_type_member_error> get_type_helper() noexcept;

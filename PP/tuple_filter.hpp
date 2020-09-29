@@ -21,7 +21,7 @@ namespace PP
 				auto filtered_tail = (*this)(std::forward<Tail>(tail)...);
 
 				if constexpr (filter(std::decay_t<Head>{}))
-					return tuple_prepend_no_copy(std::forward<Head>(head), filtered_tail);
+					return tuple_prepend(std::forward<Head>(head), filtered_tail);
 				else
 					return filtered_tail;
 			}

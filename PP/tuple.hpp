@@ -1,3 +1,4 @@
+#pragma once
 #include <tuple>
 #include "value_t.hpp"
 #include "get_value.hpp"
@@ -5,7 +6,7 @@
 namespace PP::detail
 {
 	template <typename T>
-	struct is_std_tuple_helper : public value_t<false>{};
+	struct is_std_tuple_helper : public value_t<false> {};
 	template <typename... Types>
 	struct is_std_tuple_helper<std::tuple<Types...>> : public value_t<true> {};
 
@@ -15,9 +16,9 @@ namespace PP::detail
 
 namespace std
 {
-	template <std::size_t I, PP::detail::is_std_tuple T>
-	constexpr decltype(auto) get(PP::value_t<I>, T&& tuple)
+	template <std::size_t I>
+	constexpr decltype(auto) get(PP::value_t<I>, PP::detail::is_std_tuple auto&& tuple)
 	{
-		return std::get<I>(std::forward<T>(tuple));
+		return std::get<I>(std::forward<decltype(tuple)>(tuple));
 	}
 }

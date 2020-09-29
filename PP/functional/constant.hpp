@@ -7,12 +7,12 @@ namespace PP
 	constexpr inline auto constant =
 		[](auto c)
 		{
-			return[c = std::move(c)](auto&&...){ return c; };
+			return [c = std::move(c)](auto&&...){ return c; };
 		};
 	template <>
 	constexpr inline auto constant<false> =
 		[](auto& c)
 		{
-			return[&c](auto&&...){ return c; };
+			return [&c](auto&&...){ return c; };
 		};
 }

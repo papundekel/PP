@@ -4,8 +4,8 @@
 namespace PP
 {
 	constexpr inline auto equal =
-		[]<typename X, typename Y>(X&& x, Y&& y)
+		[](auto&& x, auto&& y)
 		{
-			return std::forward<X>(x) == std::forward<Y>(y);
+			return std::forward<decltype(x)>(x) == std::forward<decltype(y)>(y);
 		};
 }

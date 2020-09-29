@@ -1,23 +1,30 @@
 #pragma once
-#include "tuple_split.hpp"
+#include "tuple_foldr.hpp"
 
 namespace PP
 {
-	struct tuple_find_default {};
+	struct tuple_find_fail {};
 
-	template <auto predicate, tuple_like Tuple, typename Default = tuple_find_default>
-	constexpr auto tuple_find(Tuple tuple, Default d = {}) noexcept
+	namespace detail
 	{
-		if constexpr (tuple_size_v<Tuple> != 0)
+		struct tuple_find_index_helper
 		{
-			auto [head, tail] = tuple_split(tuple);
+			constexpr std::size_t operator()(auto&& predicate, tuple_like auto&& tuple) const
+			{
+				if constexpr (tuple_size(tuple_map_default<decltype(tuple)>(constant<>(std::tuple<>{}))) != 0)
+				{
+					auto [head, tail] = tuple_split(std::forward<decltype(tuple)>(tuple));
 
-			if constexpr (predicate(std::remove_reference_t<decltype(head)>{}))
-				return head;
-			else
-				return tuple_find<predicate>(tail, d);
-		}
-		else
-			return d;
+					if (std::forward<decltype(predicate)>(predicate)(head))
+						return 0;
+					else
+						return 1 + (*this)(std::forward<decltype(predicate)>(predicate), tail);
+				}
+				else
+					return 0;
+			}
+		};
 	}
+
+	constexpr inline auto tuple_find_index = detail::tuple_find_index_helper{};
 }

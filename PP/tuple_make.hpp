@@ -5,9 +5,9 @@
 
 namespace PP
 {
-	constexpr inline auto tuple_make = tuple_apply<>(
-		[]<typename... T>(T&&... t)
+	constexpr inline auto tuple_make = apply_partially<false>(tuple_apply,
+		[](auto&&... t)
 		{
-			return std::make_tuple(std::forward<T>(t)...);
+			return std::make_tuple(std::forward<decltype(t)>(t)...);
 		});
 }

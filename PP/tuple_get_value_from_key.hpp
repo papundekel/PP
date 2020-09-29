@@ -8,7 +8,7 @@
 
 namespace PP
 {
-	template <typename Key, typename Value>
+	/*template <typename Key, typename Value>
 	using key_value_pair = std::pair<type_t<Key>, type_t<Value>>;
 
 	struct key_not_found {};
@@ -21,5 +21,5 @@ namespace PP
 			return tuple_get<1>(pair);
 		else
 			return pair;
-	}
+	}*/
 }

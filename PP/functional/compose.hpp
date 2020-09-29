@@ -4,46 +4,45 @@
 namespace PP
 {
 	template <bool copy_first = true, bool copy_second = true>
-	constexpr inline auto compose = [](auto f, auto g)
-	{
-		return [f = std::move(f), g = std::move(g)]<typename... T>(T&&... t) -> decltype(auto)
-		{
-			return f(g(std::forward<T>(t)...));
-		};
-	};
-	template <>
-	constexpr inline auto compose<false, true> = [](auto& f, auto g) noexcept
-	{
-		return [&f, g = std::move(g)]<typename... T>(T&&... t) -> decltype(auto)
-		{
-			return f(g(std::forward<T>(t)...));
-		};
-	};
-	template <>
-	constexpr inline auto compose<true, false> = [](auto f, auto& g) noexcept
-	{
-		return [f = std::move(f), &g]<typename... T>(T&&... t) -> decltype(auto)
-		{
-			return f(g(std::forward<T>(t)...));
-		};
-	};
-	template <>
-	constexpr inline auto compose<false, false> = [](auto& f, auto& g) noexcept
+	constexpr inline auto compose = [](auto& f, auto& g)
 	{
 		return [&f, &g]<typename... T>(T&&... t) -> decltype(auto)
 		{
 			return f(g(std::forward<T>(t)...));
 		};
 	};
+	template <>
+	constexpr inline auto compose<false, true> = [](auto& f, auto&& g)
+	{
+		return [&f, g = std::forward<decltype(g)>(g)]<typename... T>(T&&... t) -> decltype(auto)
+		{
+			return compose<false, false>(f, g)(std::forward<T>(t)...);
+		};
+	};
+	template <>
+	constexpr inline auto compose<true, false> = [](auto&& f, auto& g)
+	{
+		return [f = std::forward<decltype(f)>(f), &g]<typename... T>(T&&... t) -> decltype(auto)
+		{
+			return compose<false, false>(f, g)(std::forward<T>(t)...);
+		};
+	};
+	template <>
+	constexpr inline auto compose<true, true> = [](auto&& f, auto&& g)
+	{
+		return [f = std::forward<decltype(f)>(f), g = std::forward<decltype(g)>(g)]<typename... T>(T&&... t) -> decltype(auto)
+		{
+			return compose<false, false>(f, g)(std::forward<T>(t)...);
+		};
+	};
 
-	template <typename F, typename G>
-	constexpr auto operator|(F& f, G& g) noexcept
+	constexpr auto operator|(auto& f, auto& g) noexcept
 	{
 		return compose<false, false>(f, g);
 	}
 
-	constexpr auto operator||(auto f, auto g) noexcept
+	constexpr auto operator||(auto&& f, auto&& g) noexcept
 	{
-		return compose<>(std::move(f), std::move(g));
+		return compose<>(std::forward<decltype(f)>(f), std::forward<decltype(g)>(g));
 	}
 }
