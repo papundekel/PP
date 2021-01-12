@@ -2,6 +2,9 @@
 #include <utility>
 #include <type_traits>
 #include "value_t.hpp"
+#include "type_t.hpp"
+#include "declval.hpp"
+#include "tuple_size.hpp"
 
 namespace PP
 {
@@ -10,7 +13,7 @@ namespace PP
 		template <typename T, std::size_t... I>
 		concept tuple_like_helper_helper = requires
 		{
-			((void)get(value_t<I>{}, std::declval<T>()), ...);
+			((void)get(value_t<I>{}, declval(type_v<T>)), ...);
 		};
 
 		template <typename T, std::size_t... I>
@@ -19,9 +22,9 @@ namespace PP
 	}
 
 	template <typename T>
-	concept tuple_like = requires
+	concept tuple_like = requires(T t)
 	{
-		std::tuple_size<std::remove_reference_t<T>>::value;
-		detail::tuple_like_helper<T>(std::make_index_sequence<std::tuple_size<std::remove_reference_t<T>>::value>{});
+		tuple_size(type_v<T>);
+		detail::tuple_like_helper<T>(std::make_index_sequence<tuple_size(type_v<T>)>{});
 	};
 }

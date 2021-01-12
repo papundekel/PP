@@ -5,5 +5,5 @@
 namespace PP
 {
 	template <auto... Values>
-	constexpr inline auto value_tuple = type_tuple_v<value_t<Values>...>;
+	constexpr inline auto value_tuple_v = type_tuple_v<value_t<Values>...>;
 }

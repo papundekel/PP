@@ -1,5 +1,5 @@
 #pragma once
-#include <tuple>
+#include "tuple.hpp"
 #include "tuple_prepend.hpp"
 #include "functional/apply_partially.hpp"
 #include "overloaded.hpp"
@@ -15,13 +15,12 @@ namespace PP
 			{
 				return std::tuple<>{};
 			}
-			template <typename Head, typename... Tail>
-			constexpr auto operator()(Head&& head, Tail&&... tail) const noexcept
+			constexpr auto operator()(auto&& head, auto&&... tail) const noexcept
 			{
-				auto filtered_tail = (*this)(std::forward<Tail>(tail)...);
+				auto filtered_tail = (*this)(std::forward<decltype(tail)>(tail)...);
 
-				if constexpr (filter(std::decay_t<Head>{}))
-					return tuple_prepend(std::forward<Head>(head), filtered_tail);
+				if constexpr (filter(std::decay_t<decltype(head)>{}))
+					return tuple_prepend(std::forward<decltype(head)>(head), filtered_tail);
 				else
 					return filtered_tail;
 			}
@@ -29,5 +28,5 @@ namespace PP
 	}
 
 	template <auto filter>
-	constexpr inline auto tuple_filter = apply_partially(tuple_apply, detail::tuple_filter_helper<filter>{});
+	constexpr inline auto tuple_filter = apply_partially<false, true>(tuple_apply, detail::tuple_filter_helper<filter>{});
 }

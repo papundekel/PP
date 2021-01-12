@@ -1,9 +1,22 @@
 #pragma once
+#include "functor.hpp"
+#include "../type_t.hpp"
 
 namespace PP
 {
-	template <typename T>
-	inline constexpr auto id = [](T t) -> decltype(auto) { return t; };
+	constexpr inline functor id
+	{
+		[]<typename T>(type_t<T>, type_t<T>::type t) -> decltype(auto)
+		{
+			return static_cast<T>(t);
+		}
+	};
 
-	constexpr inline auto id_weak = [](auto&& t) -> decltype(auto) { return std::forward<decltype(t)>(t); };
+	constexpr inline functor id_weak
+	{
+		[](auto&& t) -> decltype(auto)
+		{
+			return PP_FORWARD(t);
+		}
+	};
 }

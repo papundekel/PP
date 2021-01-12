@@ -14,5 +14,5 @@ namespace PP
 				{
 					return std::forward<decltype(predicate)>(predicate)(std::forward<decltype(x)>(x)) ? y + 1 : y;
 				};
-		}, id_weak);
+		});
 }

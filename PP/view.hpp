@@ -1,97 +1,112 @@
 #pragma once
-#include <utility>
 #include <type_traits>
-#include "size_t.hpp"
+#include <utility>
+
+#include "always_false.hpp"
+#include "apply_transform.hpp"
+#include "concepts/array.hpp"
+#include "declval.hpp"
+#include "functional/functor.hpp"
 #include "iterator.hpp"
+#include "remove_cvref.hpp"
+#include "size_t.hpp"
 
 namespace PP
 {
 	namespace detail
 	{
 		template <typename T>
-		concept has_begin = requires (T t)
+		concept has_begin = requires
 		{
-			{ t.begin() } -> iterator;
+			{ declval(type_v<T>).begin() } -> concepts::iterator;
 		};
 		template <typename T>
-		concept has_end = requires (T t)
+		concept has_end = requires
 		{
-			t.end();
+			declval(type_v<T>).end();
 		};
 	}
-	template <detail::has_begin View>
-	constexpr iterator auto begin(View&& v)
+	constexpr auto begin(auto&& v)
 	{
-		return std::forward<View>(v).begin();
+		if constexpr (requires { { PP_FORWARD(v).begin() } -> concepts::iterator; })
+			return PP_FORWARD(v).begin();
+		else if constexpr ((is_array | remove_cvref)(PP_DECLTYPE(v)))
+			return v;
+		else
+			static_assert(always_false<decltype(v)>);
 	}
-	template <detail::has_end View>
-	constexpr auto end(View&& v)
+	constexpr auto end(auto&& v)
 	{
-		return std::forward<View>(v).end();
+		if constexpr (requires { { PP_FORWARD(v).end() } -> concepts::nonvoid; })
+			return PP_FORWARD(v).end();
+		else if constexpr ((is_bounded_array | remove_cvref)(PP_DECLTYPE(v)))
+			return v + sizeof(v);
+		else
+			static_assert(always_false<decltype(v)>);
 	}
 
 	namespace detail
 	{
-		template <typename View>
-		using begin_t = decltype(begin(std::declval<View>()));
+		PP_FUNCTOR(view_begin_iterator_pure, auto v)
+		{
+			return PP_DECLTYPE(begin(declval(v)));
+		}};
 	}
-
-	template <typename View>
-	concept view = requires (View v)
-	{
-		{ begin(v) } -> iterator;
-		{ end(v) } -> sentinel<detail::begin_t<View>>;
-	};
-
-	namespace detail
-	{
-		// workaround
-		template <typename T>
-		concept is_size_t = same<T, size_t>;
-
-		template <typename T>
-		concept view_with_count =
-			view<T> &&
-			requires (const T t)
-			{
-				{ t.count() } -> is_size_t;
-				// { t.count() } -> same<size_t>; // doesn't compile
-			};
-	}
-	template <view View>
-	constexpr size_t count(View&& v)
-	{
-		return end(std::forward<View>(v)) - begin(std::forward<View>(v));
-	}
-	template <detail::view_with_count View>
-	constexpr size_t count(View&& v)
-	{
-		return std::forward<View>(v).count();
-	}
-
-	template <view View>
-	constexpr bool empty(View&& v)
-	{
-		return begin(std::forward<View>(v)) == end(std::forward<View>(v));
-	}
-
-	template <view View>
-	using begin_t = detail::begin_t<View>;
-	template <view View>
-	using end_t = decltype(end(std::declval<View>()));
-	template <iterator Iterator>
-	using iterator_base_t = decltype(*std::declval<Iterator>());
-	template <view View>
-	using view_base_t = iterator_base_t<begin_t<View>>;
 	
+	PP_FUNCTOR(is_view, auto v)
+	{
+		return requires
+		{
+			{ begin(declval(v)) } -> concepts::iterator;
+			{ end(declval(v)) } -> concepts::sentinel<PP_APPLY_TRANSFORM(detail::view_begin_iterator_pure, v)>;
+		};
+	}};
+
+	namespace concepts
+	{
+		template <typename T>
+		concept view = is_view(type_v<T>);
+	}
+	
+	constexpr decltype(auto) count(concepts::view auto&& v)
+	{
+		if constexpr (requires { PP_FORWARD(v).count(); })
+			return PP_FORWARD(v).count();
+		else
+			return end(PP_FORWARD(v)) - begin(PP_FORWARD(v));
+	}
+
+	constexpr bool empty(concepts::view auto&& v)
+	{
+		return begin(PP_FORWARD(v)) == end(PP_FORWARD(v));
+	}
+
+	PP_FUNCTOR(view_begin_iterator, auto v)
+	requires concepts::view<PP_GET_TYPE(v)>
+	{
+		return detail::view_begin_iterator_pure(v);
+	}};
+	PP_FUNCTOR(view_end_iterator, auto v)
+	requires concepts::view<PP_GET_TYPE(v)>
+	{
+		return PP_DECLTYPE(end(declval(v)));
+	} };
+	constexpr inline auto view_base = iterator_base | view_begin_iterator;
+
 	namespace detail
 	{
 		template <typename T>
-		struct initializer_list_wrapper : public std::initializer_list<T> {};
+		struct initializer_list_wrapper : public std::initializer_list<T>
+		{};
 		template <typename T>
 		constexpr decltype(auto) wrap_initializer_list(const std::initializer_list<T>& l)
 		{
 			return reinterpret_cast<const initializer_list_wrapper<T>&>(l);
 		}
+	}
+
+	constexpr auto begin_end(auto&& v)
+	{
+		return std::make_pair(begin(PP_FORWARD(v)),	end(PP_FORWARD(v)));
 	}
 }

@@ -1,3 +1,4 @@
+#pragma once
 #include <array>
 #include "value_t.hpp"
 #include "get_value.hpp"
@@ -16,7 +17,7 @@ namespace PP::detail
 namespace std
 {
 	template <std::size_t I, PP::detail::is_std_array A>
-	constexpr decltype(auto) get(PP::value_t<I>, A&& a)
+	constexpr decltype(auto) get(PP::value_t<I>, A&& a) noexcept
 	{
 		return std::get<I>(std::forward<A>(a));
 	}

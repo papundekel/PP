@@ -1,3 +1,4 @@
+#pragma once
 #include <utility>
 #include "value_t.hpp"
 #include "get_value.hpp"

@@ -1,27 +1,23 @@
 #pragma once
-#include "same.hpp"
-#include "nonvoid.hpp"
+#include "concepts/equatable.hpp"
+#include "concepts/nonvoid.hpp"
+#include "concepts/same.hpp"
+#include "functional/functor.hpp"
 #include "size_t.hpp"
 
 namespace PP
 {
 	namespace detail
 	{
-		// workaround
-		template <typename T, typename U>
-		concept same_lr = same<T, U&>;
-
 		template <typename T>
 		concept has_operator_advance = requires (T t, size_t n)
 		{
-			{ t += n } -> same_lr<T>;
-			// { t += n } -> same<T&>; // doesn't compile
+			{ t += n } -> concepts::same<T&>;
 		};
 		template <typename T>
 		concept has_operator_back = requires (T t, size_t n)
 		{
-			{ t -= n } -> same_lr<T>;
-			// { t -= n } -> same<T&>; // doesn't compile
+			{ t -= n } -> concepts::same<T&>;
 		};
 	}
 
@@ -55,19 +51,33 @@ namespace PP
 		--t;
 		return x;
 	}
-
-	template <typename Iterator>
-	concept iterator = requires (Iterator i)
+	
+	PP_FUNCTOR(is_iterator, auto t)
 	{
-		{ ++i } -> same<Iterator&>;
-		{ *i } -> nonvoid;
-	};
-
-	template <typename Sentinel, typename Iterator>
-	concept sentinel =
-		iterator<Iterator> &&
-		requires (const Iterator i, const Sentinel s)
+		return requires
 		{
-			{ i == s } -> same<bool>;
+			{ ++declval(t) } -> concepts::same<PP_GET_TYPE(t)&>;
+			{ *declval(t) } -> concepts::nonvoid;
 		};
+	}};
+	namespace concepts
+	{
+		template <typename T>
+		concept iterator = is_iterator(type_v<T>);
+	}
+
+	namespace concepts
+	{
+		template <typename S, typename I>
+		concept sentinel = iterator<I> && equatable<I, S>;
+	}
+	PP_FUNCTOR(is_sentinel, auto s, auto i)
+	{
+		return concepts::sentinel<PP_GET_TYPE(s), PP_GET_TYPE(i)>;
+	}};
+
+	PP_FUNCTOR(iterator_base, auto i)
+	{
+		return PP_DECLTYPE(*declval(i));
+	}};
 }

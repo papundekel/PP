@@ -4,14 +4,13 @@
 
 namespace PP
 {
-	template <view FromView, view ToView>
-	constexpr void move(FromView&& from, ToView&& to)
+	constexpr void move(view auto&& from, view auto&& to)
 	{
 		zip_with(
-			[]<typename To>(auto&& from, To&& to)
+			[](auto&& from, auto&& to)
 			{
-				std::forward<To>(to) = std::move(from);
+				PP_FORWARD(to) = std::move(from);
 			},
-			std::forward<FromView>(from), std::forward<ToView>(to));
+			PP_FORWARD(from), PP_FORWARD(to));
 	}
 }

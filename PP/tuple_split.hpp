@@ -10,12 +10,17 @@
 
 namespace PP
 {
-	constexpr inline auto tuple_split = apply_partially<false, true>(tuple_apply,
+	namespace detail
+	{
+		constexpr inline struct tuple_split_fail_t {} tuple_split_fail;
+	}
+
+	constexpr inline auto tuple_split = apply_partially<false>(tuple_apply,
 		overloaded{
 		[](auto&& head, auto&&... tail)
 		{
 			return std::pair<decltype(head), std::tuple<decltype(tail)...>>
-				(std::forward<decltype(head)>(head), std::forward_as_tuple(std::forward<decltype(tail)>(tail)...));
+				(PP_FORWARD(head), std::forward_as_tuple(PP_FORWARD(tail)...));
 		},
 		[]() { return false; } });
 

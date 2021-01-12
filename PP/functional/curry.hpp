@@ -1,19 +1,29 @@
 #pragma once
-#include <utility>
+#include "functor.hpp"
 
 namespace PP
 {
-	constexpr inline auto curry =
-		[](auto&& f)
-		{
-			return
-				[f = std::forward<decltype(f)>(f)](auto&& arg)
-				{
-					return
-						[f, arg = std::forward<decltype(arg)>(arg)](auto&&... args) -> decltype(auto)
-						{
-							return f(arg, std::forward<decltype(args)>(args)...);
-						};
-				};
-		};
+	PP_FUNCTOR(curry, auto&& f)
+	{
+		return functor{
+			[f_copy = PP_FORWARD(f)] (auto&& arg)
+			{
+				return functor{
+					[f_copy, arg = PP_FORWARD(arg)] (auto&&... args) -> decltype(auto)
+					{
+						return f_copy(arg, PP_FORWARD(args)...);
+					}};
+			}};
+	}};
+
+	template <typename F>
+	constexpr auto operator~(const functor<F>& f) noexcept
+	{
+		return curry(f.f);
+	}
+	template <typename F>
+	constexpr auto operator~(const functor<F>&& f) noexcept
+	{
+		return curry(std::move(f).f);
+	}
 }

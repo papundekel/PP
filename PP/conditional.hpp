@@ -4,12 +4,12 @@
 
 namespace PP
 {
-	template <typename Condition, typename True, typename False>
-	using conditional = get_type<decltype([]()
-		{
-			if constexpr (get_value<Condition>())
-				return type_t<True>{};
-			else
-				return type_t<False>{};
-		}())>;
+	constexpr inline auto conditional =
+		[]<auto Condition>(PP::value_t<Condition> condition, auto true_value, auto false_value)
+	{
+		if constexpr (Condition)
+			return true_value;
+		else
+			return false_value;
+	};
 }

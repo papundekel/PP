@@ -1,13 +1,12 @@
 #pragma once
-#include <utility>
+#include "forward.hpp"
 
 namespace PP
 {
-	template <typename T, typename U>
-	constexpr auto exchange(T& x, U&& new_value)
+	constexpr auto exchange(auto& x, auto&& new_value)
 	{
-		T old = std::move(x);
-		x = std::forward<U>(new_value);
+		auto old = std::move(x);
+		x = PP_FORWARD(new_value);
 		return old;
 	}
 }

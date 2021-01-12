@@ -2,11 +2,11 @@
 
 namespace PP
 {
-	template<class... Ts>
+	template <typename... Ts>
 	struct overloaded : public Ts...
 	{
 		using Ts::operator()...;
 	};
-	template<class... Ts>
+	template <typename... Ts>
 	overloaded(Ts...) -> overloaded<Ts...>;
 }

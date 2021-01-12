@@ -1,48 +1,35 @@
 #pragma once
-#include <utility>
+#include "functor.hpp"
 
 namespace PP
 {
-	template <bool copy_first = true, bool copy_second = true>
-	constexpr inline auto compose = [](auto& f, auto& g)
+	PP_FUNCTOR(compose, auto&& f, auto&& g)
 	{
-		return [&f, &g]<typename... T>(T&&... t) -> decltype(auto)
-		{
-			return f(g(std::forward<T>(t)...));
-		};
-	};
-	template <>
-	constexpr inline auto compose<false, true> = [](auto& f, auto&& g)
-	{
-		return [&f, g = std::forward<decltype(g)>(g)]<typename... T>(T&&... t) -> decltype(auto)
-		{
-			return compose<false, false>(f, g)(std::forward<T>(t)...);
-		};
-	};
-	template <>
-	constexpr inline auto compose<true, false> = [](auto&& f, auto& g)
-	{
-		return [f = std::forward<decltype(f)>(f), &g]<typename... T>(T&&... t) -> decltype(auto)
-		{
-			return compose<false, false>(f, g)(std::forward<T>(t)...);
-		};
-	};
-	template <>
-	constexpr inline auto compose<true, true> = [](auto&& f, auto&& g)
-	{
-		return [f = std::forward<decltype(f)>(f), g = std::forward<decltype(g)>(g)]<typename... T>(T&&... t) -> decltype(auto)
-		{
-			return compose<false, false>(f, g)(std::forward<T>(t)...);
-		};
-	};
+		return functor{
+			[f = PP_FORWARD(f), g = PP_FORWARD(g)](auto&&... args) -> decltype(auto)
+			{
+				return f(g(PP_FORWARD(args)...));
+			}};
+	}};
 
-	constexpr auto operator|(auto& f, auto& g) noexcept
+	template <typename F, typename G>
+	constexpr auto operator|(const functor<F>& f, const functor<G>& g)
 	{
-		return compose<false, false>(f, g);
+		return compose(f.f, g.f);
 	}
-
-	constexpr auto operator||(auto&& f, auto&& g) noexcept
+	template <typename F, typename G>
+	constexpr auto operator|(const functor<F>& f, const functor<G>&& g)
 	{
-		return compose<>(std::forward<decltype(f)>(f), std::forward<decltype(g)>(g));
+		return compose(f.f, std::move(g).f);
+	}
+	template <typename F, typename G>
+	constexpr auto operator|(const functor<F>&& f, const functor<G>& g)
+	{
+		return compose(std::move(f).f, g.f);
+	}
+	template <typename F, typename G>
+	constexpr auto operator|(const functor<F>&& f, const functor<G>&& g)
+	{
+		return compose(std::move(f).f, std::move(g).f);
 	}
 }

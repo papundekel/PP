@@ -1,14 +1,11 @@
 #pragma once
+#include "get_type.hpp"
+#include "type_t.hpp"
 
 namespace PP
 {
-	namespace detail
+	constexpr auto operator==(auto t, auto u) noexcept
 	{
-		template <typename T, typename U>
-		constexpr inline bool same = false;
-		template <typename T>
-		constexpr inline bool same<T, T> = true;
+		return to_type_t(t) == to_type_t(u);
 	}
-	template <typename T, typename U>
-	concept same = detail::same<T, U> && detail::same<U, T>;
 }

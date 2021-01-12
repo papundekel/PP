@@ -5,11 +5,11 @@
 #include "compressed_pair.hpp"
 #include "unbounded.hpp"
 #include "size_t.hpp"
-#include "different_cvref.hpp"
+#include "concepts/same_except_cvref.hpp"
 
 namespace PP
 {
-	template <iterator Iterator, sentinel<Iterator> Sentinel = Iterator>
+	template <typename Iterator, concepts::sentinel<Iterator> Sentinel = Iterator>
 	class simple_view
 	{
 		compressed_pair<Iterator, Sentinel> pair;
@@ -21,15 +21,14 @@ namespace PP
 		constexpr simple_view(Iterator begin, Sentinel end)
 			: pair{ begin, end }
 		{}
-		template <view View>
-		requires different_cvref<View, simple_view>
-		constexpr simple_view(View&& v)
-			: simple_view(PP::begin(std::forward<View>(v)), PP::end(std::forward<View>(v)))
+		constexpr simple_view(concepts::view auto&& v)
+		requires (!same_except_cvref(type_v<simple_view>, PP_DECLTYPE(v)))
+			: simple_view(begin(PP_FORWARD(v)), end(PP_FORWARD(v)))
 		{}
-		constexpr simple_view(const std::initializer_list<std::remove_reference_t<iterator_base_t<Iterator>>>& l)
+		constexpr simple_view(const std::initializer_list<apply_transform_t<remove_reference | iterator_base, Iterator>>& l)
 			: simple_view(l.begin(), l.end())
 		{}
-		constexpr iterator auto begin() const
+		constexpr auto begin() const
 		{
 			return pair.first;
 		}
@@ -42,25 +41,22 @@ namespace PP
 			return begin()[index];
 		}
 	};
-	template <view View>
-	simple_view(View&&) -> simple_view<begin_t<View>, end_t<View>>;
+	simple_view(concepts::view auto&& v) -> simple_view<PP_APPLY_TRANSFORM(view_begin_iterator, v), PP_APPLY_TRANSFORM(view_end_iterator, v)>;
 	template <typename T>
 	simple_view(const std::initializer_list<T>&) -> simple_view<const T*, const T*>;
 
-	template <iterator Iterator>
-	constexpr view auto operator^(Iterator begin, sentinel<Iterator> auto end)
+	constexpr concepts::view auto operator^(auto begin, concepts::sentinel<decltype(begin)> auto end)
 	{
 		return simple_view(begin, end);
 	}
 
-	constexpr view auto operator|(view auto&& v, unbounded_t)
+	constexpr concepts::view auto operator|(concepts::view auto&& v, unbounded_t)
 	{
-		return begin(v) ^ unbounded;
+		return begin(PP_FORWARD(v)) ^ unbounded;
 	}
 
-	template <view View>
-	constexpr view auto operator>>(std::size_t offset, View&& v)
+	constexpr concepts::view auto operator>>(std::size_t offset, concepts::view auto&& v)
 	{
-		return simple_view(begin(std::forward<View>(v)) + offset, end(std::forward<View>(v)));
+		return simple_view(begin(PP_FORWARD(v)) + offset, end(PP_FORWARD(v)));
 	}
 }

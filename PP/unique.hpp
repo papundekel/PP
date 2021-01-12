@@ -1,17 +1,33 @@
 #pragma once
 #include <utility>
+
 #include "compressed_pair.hpp"
-#include "constructible.hpp"
-#include "different_cvref.hpp"
+#include "concepts/constructible.hpp"
 #include "exchange.hpp"
 #include "placeholder.hpp"
 
 namespace PP
 {
+	template <typename T, typename Defaulter>
+	class unique;
+
+	namespace detail
+	{
+		template <typename T>
+		constexpr inline bool is_unique = false;
+		template <typename T, typename Defaulter>
+		constexpr inline bool is_unique<unique<T, Defaulter>> = true;
+	}
+
 	template <typename T>
 	struct default_defaulter
 	{
-		T operator()() const
+		default_defaulter() = default;
+		template <typename U>
+		constexpr default_defaulter(U&&) noexcept
+		{}
+
+		constexpr T operator()() const
 		{
 			return {};
 		}
@@ -20,6 +36,9 @@ namespace PP
 	template <typename T, typename Defaulter = default_defaulter<T>>
 	class unique
 	{
+		template <typename U, typename D>
+		friend class unique;
+
 		compressed_pair<T, Defaulter> pair;
 
 	public:
@@ -27,43 +46,45 @@ namespace PP
 			: pair{ Defaulter{}(), {} }
 		{}
 
-
 		template <typename D>
-		constexpr unique(placeholder, D&& defaulter)
-			: pair{ std::forward<D>(defaulter)(), std::forward<D>(defaulter) }
+		constexpr unique(placeholder_t, D&& defaulter)
+			: pair(std::forward<D>(defaulter)(), std::forward<D>(defaulter))
 		{}
 
-		constexpr unique(unique&& other) noexcept
-			: pair{ PP::exchange(other.pair.first, other.pair.second()), std::move(other).pair.second }
+		template <typename U, typename D>
+		constexpr unique(unique<U, D>&& other) noexcept
+			: pair(PP::exchange(other.pair.first, other.pair.second()), std::move(other).pair.second)
 		{}
 
-		constexpr unique& operator=(unique&& other) noexcept
+		constexpr auto& operator=(unique&& other) noexcept
 		{
 			pair.first = PP::exchange(other.pair.first, other.pair.second());
 			pair.second = std::move(other).pair.second;
 			return *this;
 		}
 
-		constexpr T& get() noexcept
+		constexpr auto& inner() noexcept
 		{
 			return pair.first;
 		}
-		constexpr const T& get() const noexcept
+		constexpr auto& inner() const noexcept
 		{
 			return pair.first;
 		}
-		constexpr T release() noexcept
+		constexpr auto release() noexcept
 		{
-			return std::move(pair).first;
+			return PP::exchange(std::move(pair).first, pair.second());
 		}
 
-		template <different_cvref<unique> U>
+		template <typename U>
+		requires (!detail::is_unique<std::remove_cvref_t<U>>)
 		constexpr unique(U&& value)
-			: pair{ std::forward<U>(value), {} }
+			: pair(std::forward<U>(value), {})
 		{}
-		template <different_cvref<unique> U, typename D>
+		template <typename U, typename D>
+		requires (!detail::is_unique<std::remove_cvref_t<U>>)
 		constexpr unique(U&& value, D&& defaulter)
-			: pair{ std::forward<U>(value), std::forward<D>(defaulter) }
+			: pair(std::forward<U>(value), std::forward<D>(defaulter))
 		{}
 	};
 }

@@ -4,13 +4,15 @@
 
 namespace PP
 {
-	constexpr inline auto disjunction = apply_partially<false>(tuple_apply,
-		[](auto&&... functions) constexpr
+	constexpr inline auto disjunction = apply_partially(tuple_apply,
+		[](auto&&... functions)
 		{
-			return
-				[...functions = std::forward<decltype(functions)>(functions)](auto&&... args) constexpr
+			return functor
+			{
+				[...functions = PP_FORWARD(functions)](auto&&... args) -> decltype(auto)
 				{
-					return (functions(std::forward<decltype(args)>(args)...) || ...);
-				};
+					return (functions(PP_FORWARD(args)...) || ...);
+				}
+			};
 		});
 }

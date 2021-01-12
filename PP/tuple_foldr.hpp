@@ -1,9 +1,4 @@
 #pragma once
-#include "tuple_apply.hpp"
-#include "tuple_size.hpp"
-#include "functional/constant.hpp"
-#include "tuple_like.hpp"
-#include "tuple.hpp"
 #include "tuple_split.hpp"
 
 namespace PP
@@ -17,8 +12,8 @@ namespace PP
 				auto split = tuple_split(std::forward<decltype(tuple)>(tuple));
 				if constexpr (tuple_like<decltype(split)>)
 					return std::forward<decltype(f)>(f)(
-						tuple_get<0>(split),
-						(*this)(std::forward<decltype(f)>(f), std::forward<decltype(init)>(init), tuple_get<1>(split)));
+						tuple_get<0>(std::move(split)),
+						(*this)(std::forward<decltype(f)>(f), std::forward<decltype(init)>(init), tuple_get<1>(std::move(split))));
 				else
 					return std::forward<decltype(init)>(init);
 			}
@@ -26,4 +21,11 @@ namespace PP
 	}
 
 	constexpr inline auto tuple_foldr = detail::tuple_foldr_helper{};
+
+	constexpr inline auto tuple_foldr1 =
+		[](auto&& f, tuple_like auto&& tuple)
+		{
+			auto split = tuple_split(std::forward<decltype(tuple)>(tuple));
+			return tuple_foldr(std::forward<decltype(f)>(f), tuple_get<0>(std::move(split)), tuple_get<1>(std::move(split)));
+		};
 }

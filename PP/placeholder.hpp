@@ -2,5 +2,5 @@
 
 namespace PP
 {
-	struct placeholder{};
+	constexpr inline struct placeholder_t {} placeholder;
 }

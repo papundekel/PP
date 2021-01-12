@@ -1,10 +1,12 @@
 #pragma once
-#include <cstddef>
 #include "tuple_like.hpp"
 #include "value_t.hpp"
+#include "functional/functor.hpp"
 
 namespace PP
 {
-	template <std::size_t I>
-	constexpr inline auto tuple_get = []<tuple_like Tuple>(Tuple&& tuple) -> decltype(auto) { return get(value_t<I>{}, std::forward<Tuple>(tuple)); };
+	constexpr inline functor tuple_get{[]<auto I>(value_t<I>, tuple_like auto&& tuple) -> decltype(auto)
+	{
+		return get(value_v<I>, PP_FORWARD(tuple));
+	}};
 }

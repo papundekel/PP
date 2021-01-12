@@ -2,7 +2,7 @@
 #include <tuple>
 #include "tuple_apply.hpp"
 #include "functional/map_arguments.hpp"
-#include "functional/id.hpp"
+#include "forward.hpp"
 
 namespace PP
 {
@@ -12,7 +12,7 @@ namespace PP
 			return [&head](auto&&... elements)
 			{
 				return std::tuple<decltype(head), decltype(elements)...>
-					(std::forward<decltype(head)>(head), std::forward<decltype(elements)>(elements)...);
+					(PP_FORWARD(head), PP_FORWARD(elements)...);
 			};
-		}, id_weak);
+		});
 }

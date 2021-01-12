@@ -91,7 +91,7 @@ namespace PP
 	
 	constexpr inline auto make_function_type = overloaded{
 		detail::make_function_type_helper,
-		[]<function_info info>(value_t<info>)
+		[]<auto info>(value_t<info>)
 		{
 			return detail::make_function_type_helper(info.return_type, info.parameter_types, value_v<info.Noexcept>, value_v<info.cv>, value_v<info.ref>);
 		} };

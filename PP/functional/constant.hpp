@@ -1,18 +1,14 @@
 #pragma once
-#include <utility>
+#include "functor.hpp"
 
 namespace PP
 {
-	template <bool copy = true>
-	constexpr inline auto constant =
-		[](auto c)
-		{
-			return [c = std::move(c)](auto&&...){ return c; };
-		};
-	template <>
-	constexpr inline auto constant<false> =
-		[](auto& c)
-		{
-			return [&c](auto&&...){ return c; };
-		};
+	PP_FUNCTOR(constant, auto&& c)
+	{
+		return functor{
+			[c = PP_FORWARD(c)](auto&&...)
+			{
+				return c;
+			}};
+	}};
 }
