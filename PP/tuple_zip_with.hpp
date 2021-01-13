@@ -11,24 +11,21 @@
 #include "tuple_get.hpp"
 #include "tuple_make.hpp"
 #include "tuple_map.hpp"
-#include "tuple_map_default.hpp"
 #include "tuple_prepend.hpp"
 #include "tuple_size.hpp"
 #include "tuple_split.hpp"
+#include "tuple_types.hpp"
 
 namespace PP
 {
-	constexpr inline auto tuple_nonempty = !equal(partial_tag, 0) | tuple_size;
-
 	constexpr inline auto tuple_zip =
 	[](tuple_like auto&& tuples)
 	{
-		if constexpr (tuple_all(tuple_nonempty,
-			tuple_map_default<decltype(tuples)>(tuple_make | tuple_map(partial_tag, constant<>(std::tuple<>{}))))
+		if constexpr (tuple_all(!equal(partial_tag, 0) | tuple_type_size, tuple_types(PP_DECLTYPE(tuples))))
 		{
 			auto splits = tuple_map(tuple_split, PP_FORWARD(tuples));
 
-			auto heads = tuple_map(tuple_get<0>, std::move(splits));
+			auto heads = tuple_map(tuple_get(pari, std::move(splits));
 			auto tails = tuple_map(tuple_get<1>, std::move(splits));
 
 			auto zipped_tail = tuple_zip(std::move(tails));

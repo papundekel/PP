@@ -4,19 +4,13 @@
 
 namespace PP
 {
-	constexpr inline functor id
+	PP_FUNCTOR(id, auto t, type_t<PP_GET_TYPE(t)>::type x) -> decltype(auto)
 	{
-		[]<typename T>(type_t<T>, type_t<T>::type t) -> decltype(auto)
-		{
-			return static_cast<T>(t);
-		}
-	};
+		return static_cast<PP_GET_TYPE(t)>(x);
+	}};
 
-	constexpr inline functor id_weak
+	PP_FUNCTOR(id_weak, auto&& x) -> decltype(auto)
 	{
-		[](auto&& t) -> decltype(auto)
-		{
-			return PP_FORWARD(t);
-		}
-	};
+		return PP_FORWARD(x);
+	}};
 }

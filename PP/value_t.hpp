@@ -1,4 +1,5 @@
 #pragma once
+#include "forward.hpp"
 
 namespace PP
 {
@@ -15,9 +16,9 @@ namespace PP
 			return V;
 		}
 
-		constexpr decltype(auto) operator()() const noexcept
+		constexpr decltype(auto) operator()(auto&&... args) const noexcept
 		{
-			return V;
+			return V(PP_FORWARD(args)...);
 		}
 	};
 	template <auto V>
@@ -38,10 +39,4 @@ namespace PP
 	constexpr inline value_t<false> value_false = {};
 
 	constexpr inline value_t<nullptr> value_nullptr = {};
-
-	template <auto x, auto y>
-	constexpr auto operator<=>(value_t<x>, value_t<y>)
-	{
-		return x <=> y;
-	}
 }

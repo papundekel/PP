@@ -5,11 +5,11 @@
 
 namespace PP
 {
-	constexpr inline auto all_of = []<view View, typename Predicate = decltype(id_weak)&>(View && v, Predicate && p = id_weak)
+	PP_FUNCTOR(all_of, concepts::view auto&& v, auto&& p = id_weak)
 	{
-		for (auto&& e : std::forward<View>(v))
-			if (!std::forward<Predicate>(p)(e))
+		for (auto&& e : PP_FORWARD(v))
+			if (!PP_FORWARD(p)(e))
 				return false;
 		return true;
-	};
+	}};
 }

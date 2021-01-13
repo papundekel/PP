@@ -1,9 +1,12 @@
 #pragma once
-#include "type_tuple.hpp"
+#include "tuple.hpp"
 #include "value_t.hpp"
 
 namespace PP
 {
 	template <auto... Values>
-	constexpr inline auto value_tuple_v = type_tuple_v<value_t<Values>...>;
+	using value_tuple = tuple<value_t<Values>...>;
+
+	template <auto... Values>
+	constexpr inline auto value_tuple_v = value_tuple<Values...>{};
 }

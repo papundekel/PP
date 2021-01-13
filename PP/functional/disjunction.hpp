@@ -4,15 +4,13 @@
 
 namespace PP
 {
-	constexpr inline auto disjunction = apply_partially(tuple_apply,
+	constexpr inline auto disjunction = tuple_apply(partial_tag,
 		[](auto&&... functions)
 		{
-			return functor
-			{
+			return functor{
 				[...functions = PP_FORWARD(functions)](auto&&... args) -> decltype(auto)
 				{
 					return (functions(PP_FORWARD(args)...) || ...);
-				}
-			};
+				}};
 		});
 }

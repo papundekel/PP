@@ -1,33 +1,37 @@
 #pragma once
-#include <type_traits>
+#include "decompose_template.hpp"
+#include "remove_reference.hpp"
+#include "apply_transform.hpp"
 
 namespace PP
 {
-	namespace detail
+	template <typename T>
+	struct reference_wrapper
 	{
-		template <typename T>
-		struct reference_wrapper
+		apply_transform_t<remove_reference, T>* ptr;
+
+		constexpr reference_wrapper(T&& ref) noexcept
+			: ptr(&ref)
+		{}
+
+		constexpr T&& get() const noexcept
 		{
-			T* ptr;
-
-			constexpr reference_wrapper(T& ref) noexcept
-				: ptr(&ref)
-			{}
-
-			constexpr T& get() const noexcept
-			{
-				return *ptr;
-			}
-			constexpr operator T&() const noexcept
-			{
-				return get();
-			}
-		};
-	}
+			return static_cast<T&&>(*ptr);
+		}
+		constexpr operator T&&() const noexcept
+		{
+			return get();
+		}
+	};
 
 	template <typename T>
-	using reference_wrapper = detail::reference_wrapper<std::remove_reference_t<T>>;
+	using clref_t = reference_wrapper<const T&>;
 
-	template <typename T>
-	using cref_t = reference_wrapper<const T>;
+	PP_FUNCTOR(unref, auto&& x) -> decltype(auto)
+	{
+		if constexpr (PP_DECLTYPE(x)->Template == template_v<reference_wrapper>)
+			return x.get();
+		else
+			return PP_FORWARD(x);
+	}};
 }

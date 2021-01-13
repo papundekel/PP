@@ -1,29 +1,30 @@
 #pragma once
 #include "is_referencable.hpp"
-#include "get_type_weak.hpp"
+#include "get_type.hpp"
 
 namespace PP
 {
-	template <bool rvalue>
-	struct reference_tag_t {};
-	template <bool rvalue>
-	constexpr inline reference_tag_t<rvalue> reference_tag = {};
-	constexpr inline reference_tag_t<false> lvalue_tag = {};
-	constexpr inline reference_tag_t<true > rvalue_tag = {};
-
-	template <bool rvalue>
-	constexpr auto operator+(auto t, reference_tag_t<rvalue>) noexcept
+	PP_FUNCTOR(add_reference, value_wrap auto rvalue, type_wrap auto type)
 	{
-		using T = PP_GET_TYPE_WEAK(t);
+		constexpr auto T = PP_COPY_TYPE(type);
 
-		if constexpr (is_referencable(type_v<T>))
+		if constexpr (is_referencable(T))
 		{
-			if constexpr (rvalue)
-				return type_v<T&&>;
+			if constexpr (PP_GET_VALUE(rvalue))
+				return type_v<PP_GET_TYPE(T)&&>;
 			else
-				return type_v<T&>;
+				return type_v<PP_GET_TYPE(T)&>;
 		}
 		else
 			return t;
+	}};
+	
+	constexpr inline auto lvalue_tag = value_v<false>;
+	constexpr inline auto rvalue_tag = value_v<true>;
+
+	template <bool rvalue>
+	constexpr auto operator+(type_wrap auto t, value_wrap auto rvalue) noexcept
+	{
+		return add_reference(rvalue, t);
 	}
 }

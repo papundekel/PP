@@ -1,37 +1,26 @@
 #pragma once
-#include <tuple>
-#include <type_traits>
-#include <limits>
+#include "get_value.hpp"
 #include "view.hpp"
-#include "value_t.hpp"
 
 namespace PP
 {
-	template <iterator Iterator, std::size_t Count = std::numeric_limits<std::size_t>::max()>
+	template <iterator Iterator>
 	class view_tuple
 	{
 		Iterator begin;
 
 	public:
-		explicit constexpr view_tuple(Iterator begin, PP::value_t<Count> = {}) noexcept
+		explicit constexpr view_tuple(Iterator begin) noexcept
 			: begin(begin)
 		{}
-		explicit constexpr view_tuple(view auto v, PP::value_t<Count> = {}) noexcept
-			: begin(begin(v))
+		explicit constexpr view_tuple(view auto&& v) noexcept
+			: begin(begin(PP_FORWARD(v)))
 		{}
 
-		template <std::size_t I, iterator It, std::size_t C>
-		friend constexpr decltype(auto) get(value_t<I>, view_tuple<It, C> v_tuple) noexcept
+		template <iterator It>
+		friend constexpr decltype(auto) get(value_wrap auto i, view_tuple<It> v_tuple) noexcept
 		{
-			return v_tuple.begin[I];
+			return v_tuple.begin[*i];
 		};
 	};
-}
-
-namespace std
-{
-	template <typename Iterator, std::size_t Count>
-	struct tuple_size<PP::view_tuple<Iterator, Count>> : public integral_constant<size_t, Count> {};
-	template <std::size_t I, typename Iterator, std::size_t Count>
-	struct tuple_element<I, PP::view_tuple<Iterator, Count>> : public type_identity<PP::iterator_base_t<Iterator>> {};
 }

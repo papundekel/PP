@@ -1,42 +1,38 @@
 #pragma once
-#include <tuple>
-#include <type_traits>
-#include <array>
-#include "reference_wrapper.hpp"
 #include "functional/map_arguments.hpp"
+#include "reference_wrapper.hpp"
+#include "same.hpp"
 #include "tuple_like.hpp"
 #include "tuple_apply.hpp"
-#include "same.hpp"
 
 namespace PP
 {
 	struct tuple_map_homo_deduce_return_type {};
 
-	constexpr inline auto tuple_map_to_array =
-		[]<typename Type = tuple_map_homo_deduce_return_type>
-		(auto&& map, tuple_like auto&& tuple, Type = {})
-		{
-			return tuple_apply(
-				[&map](auto&&... elements)
-				{
-					if constexpr (std::is_same_v<Type, tuple_map_homo_deduce_return_type>)
-					{
-						constexpr auto one_type = same_types(PP::type_v<decltype(std::forward<decltype(map)>(map)(std::forward<decltype(elements)>(elements)))>...);
+	PP_FUNCTOR(tuple_map_to_array, auto&& map, tuple_like auto&& t, auto type = type_v<tuple_map_homo_deduce_return_type>)
+	{
+		return tuple_apply(
+			[&map, t](auto&&... elements)
+			{
+				constexpr auto T = PP_COPY_TYPE(type);
 
-						if constexpr (PP::map_v(PP::template_v<std::is_lvalue_reference>, one_type))
-							return std::array<reference_wrapper<PP::get_type<decltype(one_type)>>, sizeof...(elements)>{ std::forward<decltype(map)>(map)(std::forward<decltype(elements)>(elements))... };
-						else
-							return std::array{ std::forward<decltype(map)>(map)(std::forward<decltype(elements)>(elements))... };
-					}
+				if constexpr (T == type_v<tuple_map_homo_deduce_return_type>)
+				{
+					constexpr auto one_type = same_types(PP_DECLTYPE(PP_FORWARD(map)(PP_FORWARD(elements)))...);
+
+					if constexpr (is_reference(one_type))
+						return std::array<reference_wrapper<!PP_GET_TYPE(one_type)>, sizeof...(elements)>{ PP_FORWARD(map)(PP_FORWARD(elements))... };
 					else
-					{
-						using U = PP::get_type<Type>;
-						if constexpr (std::is_reference_v<U>)
-							return std::array<reference_wrapper<U>, sizeof...(elements)>{ std::forward<decltype(map)>(map)(std::forward<decltype(elements)>(elements))... };
-						else
-							return std::array<U, sizeof...(elements)>{ std::forward<decltype(map)>(map)(std::forward<decltype(elements)>(elements))... };
-					}
-					
-				}, std::forward<decltype(tuple)>(tuple));
-		};
+						return std::array{ PP_FORWARD(map)(PP_FORWARD(elements))... };
+				}
+				else
+				{
+					if constexpr (is_reference(T))
+						return std::array<reference_wrapper<PP_GET_TYPE(T)>, sizeof...(elements)>{ PP_FORWARD(map)(PP_FORWARD(elements))... };
+					else
+						return std::array<PP_GET_TYPE(T), sizeof...(elements)>{ PP_FORWARD(map)(PP_FORWARD(elements))... };
+				}
+
+			}, PP_FORWARD(t));
+	}};
 }

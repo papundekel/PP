@@ -19,4 +19,10 @@ namespace PP
 	{
 		return PP_COPY_TYPE(t);
 	}};
+
+	template <typename T>
+	concept type_wrap = requires
+	{
+		typename T::type;
+	};
 }

@@ -12,7 +12,7 @@ namespace PP
 			return
 				[&f](auto&&... t)
 				{
-					(std::forward<decltype(f)>(f)(std::forward<decltype(t)>(t)), ...);
+					(PP_FORWARD(t)), ...);
 				};
 		}, id_weak);
 }

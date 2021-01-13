@@ -12,24 +12,8 @@ namespace PP
 			}};
 	}};
 
-	template <typename F, typename G>
-	constexpr auto operator|(const functor<F>& f, const functor<G>& g)
+	constexpr auto operator|(is_functor auto&& f, is_functor auto&& g)
 	{
-		return compose(f.f, g.f);
-	}
-	template <typename F, typename G>
-	constexpr auto operator|(const functor<F>& f, const functor<G>&& g)
-	{
-		return compose(f.f, std::move(g).f);
-	}
-	template <typename F, typename G>
-	constexpr auto operator|(const functor<F>&& f, const functor<G>& g)
-	{
-		return compose(std::move(f).f, g.f);
-	}
-	template <typename F, typename G>
-	constexpr auto operator|(const functor<F>&& f, const functor<G>&& g)
-	{
-		return compose(std::move(f).f, std::move(g).f);
+		return compose(PP_FORWARD(f).f, PP_FORWARD(g).f);
 	}
 }

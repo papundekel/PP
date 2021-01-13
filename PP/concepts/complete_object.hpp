@@ -17,5 +17,7 @@ namespace PP
 	{
 		template <typename T>
 		concept complete_object = is_complete_object(type_v<T>);
+		template <typename T>
+		concept incomplete_object = !complete_object<T>;
 	}
 }

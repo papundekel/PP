@@ -11,14 +11,8 @@ namespace PP
 		}
 	};
 
-	template <typename F>
-	constexpr auto operator!(const functor<F>& f) noexcept
+	constexpr auto operator!(is_functor auto&& f) noexcept
 	{
-		return negate | f;
-	}
-	template <typename F>
-	constexpr auto operator!(const functor<F>&& f) noexcept
-	{
-		return negate | std::move(f);
+		return negate | PP_FORWARD(f);
 	}
 }

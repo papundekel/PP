@@ -17,10 +17,10 @@ namespace PP
 			}
 			constexpr auto operator()(auto&& head, auto&&... tail) const noexcept
 			{
-				auto filtered_tail = (*this)(std::forward<decltype(tail)>(tail)...);
+				auto filtered_tail = (*this)(PP_FORWARD(tail)...);
 
 				if constexpr (filter(std::decay_t<decltype(head)>{}))
-					return tuple_prepend(std::forward<decltype(head)>(head), filtered_tail);
+					return tuple_prepend(PP_FORWARD(head), filtered_tail);
 				else
 					return filtered_tail;
 			}

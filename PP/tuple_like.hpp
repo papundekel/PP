@@ -1,10 +1,11 @@
 #pragma once
-#include <utility>
 #include <type_traits>
-#include "value_t.hpp"
-#include "type_t.hpp"
+#include <utility>
+
 #include "declval.hpp"
 #include "tuple_size.hpp"
+#include "type_t.hpp"
+#include "value_t.hpp"
 
 namespace PP
 {
@@ -22,9 +23,9 @@ namespace PP
 	}
 
 	template <typename T>
-	concept tuple_like = requires(T t)
+	concept tuple_like = requires
 	{
-		tuple_size(type_v<T>);
-		detail::tuple_like_helper<T>(std::make_index_sequence<tuple_size(type_v<T>)>{});
+		tuple_type_size(type_v<T>);
+		detail::tuple_like_helper<T>(std::make_index_sequence<tuple_type_size(type_v<T>)>{});
 	};
 }

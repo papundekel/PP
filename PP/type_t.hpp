@@ -1,5 +1,4 @@
 #pragma once
-#include "value_t.hpp"
 
 namespace PP
 {
@@ -9,6 +8,8 @@ namespace PP
 		using type = T;
 
 		constexpr auto operator->() const noexcept;
+
+		static constexpr char arbitrary_concept_tag_type_t = {};
 	};
 	template <typename T>
 	constexpr inline type_t<T> type_v = {};
@@ -24,25 +25,17 @@ namespace PP
 		return true;
 	}
 
-	constexpr auto operator==(auto a, auto b) noexcept
-	requires requires { typename decltype(a)::type; }
-	{
-		return true;
-	}
-
-
-	template <auto I>
-	requires (I == 0)
-	constexpr auto get(value_t<I>, type_t<auto> t) noexcept
+	constexpr auto get(auto i, type_t<auto> t) noexcept
+	requires (*decltype(i){} == 0)
 	{
 		return t;
 	}
 	constexpr std::size_t size_implementation(auto t) noexcept
-	requires requires { typename decltype(t)::type::type; }
+	requires requires { decltype(t)::type::arbitrary_concept_tag_type_t; }
 	{
 		return 1;
 	}
 
-	#define PP_TYPE_UNSAFE(x) decltype(x)::type
+	#define PP_TYPE_UNSAFE(x) typename decltype(x)::type
 	#define PP_DECLTYPE(x) (::PP::type_v<decltype(x)>)
 }

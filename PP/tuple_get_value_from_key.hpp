@@ -18,9 +18,9 @@ namespace PP
 	template <auto predicate, typename Default = key_not_found>
 	constexpr auto tuple_get_value_from_key(tuple_like auto&& tuple, Default d = {})
 	{
-		constexpr std::size_t i = tuple_find_index(predicate || tuple_get<0>, std::forward<decltype(tuple)>(tuple));
-		if constexpr (i != tuple_size(tuple_map_default<decltype(tuple)>(constant<>(std::tuple<>{}))))
-			return tuple_get<1>(tuple_get<i>(std::forward<decltype(tuple)>(tuple)));
+		constexpr std::size_t i = tuple_find_index(predicate | tuple_get(partial_tag, value_v<0>), PP_FORWARD(tuple));
+		if constexpr (i != tuple_type_size(PP_DECLTYPE(tuple)))
+			return tuple_get(value_v<1>, tuple_get(value_v<i>, PP_FORWARD(tuple)));
 		else
 			return d;
 	}

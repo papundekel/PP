@@ -1,26 +1,30 @@
 #pragma once
-#include "../integer_sequence.hpp"
 #include "../forward.hpp"
 #include "../functional/functor.hpp"
+#include "../std_integer_sequence.hpp"
 #include "../tuple.hpp"
-#include "constant.hpp"
+#include "../tuple_size.hpp"
+#include "../tuple_like.hpp"
 #include "id.hpp"
+#include "constant.hpp"
 
 namespace PP
 {
 	namespace detail
 	{
-		constexpr decltype(auto) map_arguments_element_helper(auto maps, auto i, auto maps_size)
+		constexpr decltype(auto) map_arguments_element_helper(tuple_like auto maps, value_wrap auto i)
 		{
+			constexpr auto maps_size = tuple_type_size(PP_DECLTYPE(maps));
+
 			if constexpr (i < maps_size)
 				return get(i, maps);
 			else
 				return id_weak;
 		}
 		template <std::size_t... I>
-		constexpr decltype(auto) map_arguments_helper(auto& f, auto maps, auto maps_size, std::index_sequence<I...>, auto&&... args)
+		constexpr decltype(auto) map_arguments_helper(auto& f, tuple_like auto maps, std::index_sequence<I...>, auto&&... args)
 		{
-			return f(map_arguments_element_helper(maps, PP::value_v<I>, maps_size)(PP_FORWARD(args))...);
+			return f(map_arguments_element_helper(maps, value_v<I>)(PP_FORWARD(args))...);
 		}
 	}
 
@@ -31,8 +35,7 @@ namespace PP
 			{
 				return detail::map_arguments_helper
 					( f
-					, std::forward_as_tuple(maps...)
-					, PP::value_v<sizeof...(maps)>
+					, forward_as_tuple(maps...)
 					, std::make_index_sequence<sizeof...(args)>{}
 					, PP_FORWARD(args)...);
 			}};

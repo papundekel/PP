@@ -16,14 +16,8 @@ namespace PP
 			}};
 	}};
 
-	template <typename F>
-	constexpr auto operator~(const functor<F>& f) noexcept
+	constexpr auto operator~(is_functor auto&& f) noexcept
 	{
-		return curry(f.f);
-	}
-	template <typename F>
-	constexpr auto operator~(const functor<F>&& f) noexcept
-	{
-		return curry(std::move(f).f);
+		return curry(PP_FORWARD(f).f);
 	}
 }

@@ -1,24 +1,48 @@
 #pragma once
-#include <array>
-#include "value_t.hpp"
+#include "concepts/reference.hpp"
+#include "decompose_template.hpp"
 #include "get_value.hpp"
+#include "reference_wrapper.hpp"
 
-namespace PP::detail
+namespace PP
 {
-	template <typename T>
-	struct is_std_array_helper : public value_t<false> {};
-	template <typename T, std::size_t N>
-	struct is_std_array_helper<std::array<T, N>> : public value_t<true> {};
-
-	template <typename T>
-	concept is_std_array = get_value<is_std_array_helper<std::remove_cvref_t<T>>>();
-}
-
-namespace std
-{
-	template <std::size_t I, PP::detail::is_std_array A>
-	constexpr decltype(auto) get(PP::value_t<I>, A&& a) noexcept
+	namespace detail
 	{
-		return std::get<I>(std::forward<A>(a));
+		template <typename T, typename C>
+		struct array
+		{
+			static constexpr std::size_t count = -type_v<C>;
+
+			T buffer[count];
+		};
+	}
+	template <typename T, std::size_t Count>
+	using array = detail::array<PP_GET_TYPE([](auto t)
+		{
+			constexpr auto type = PP_COPY_TYPE(t);
+			if constexpr (is_reference(type))
+				return type_v<reference_wrapper<PP_GET_TYPE(type)>>;
+			else
+				return t;
+		}(type_v<T>)), value_t<Count>>;
+
+	/*PP_FUNCTOR(make_array, auto&& arg, auto&&... args)
+	{
+		return array<PP_GET_TYPE(~PP_DECLTYPE(arg))>{ arg, args... };
+	}};*/
+
+	namespace concepts
+	{
+		template <typename T>
+		concept PP_array = type_v<T>->Template == template_v<PP::detail::array>;
+	}
+
+	constexpr auto begin(concepts::PP_array auto&& a) noexcept
+	{
+		return a.buffer;
+	}
+	constexpr auto end(concepts::PP_array auto&& a) noexcept
+	{
+		return a.buffer + a.count;
 	}
 }

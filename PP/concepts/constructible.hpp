@@ -9,11 +9,11 @@ namespace PP
 	constexpr inline auto is_constructible = map_arguments(tuple_apply,
 		[](auto t)
 		{
-			return [t](auto... as)
+			return [](auto... as)
 			{
 				return requires
 				{
-					declval(t)(declval(as)...);
+					PP_GET_TYPE(t)(declval(as)...);
 				};
 			};
 		}, id_weak);

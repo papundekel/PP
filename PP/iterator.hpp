@@ -1,7 +1,7 @@
 #pragma once
 #include "concepts/equatable.hpp"
-#include "concepts/nonvoid.hpp"
 #include "concepts/same.hpp"
+#include "concepts/void.hpp"
 #include "functional/functor.hpp"
 #include "size_t.hpp"
 
