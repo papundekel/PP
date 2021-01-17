@@ -1,45 +1,39 @@
 #pragma once
 #include "type_t.hpp"
-#include "get_value.hpp"
+#include "value_t.hpp"
+#include "tuple_recursive.hpp"
+#include "tuple_head_no_get.hpp"
 
 namespace PP
 {
 	template <typename...>
-	struct type_tuple
+	struct type_tuple {};
+	template <typename Head, typename... Rest>
+	struct type_tuple<Head, Rest...>
 	{
-		static constexpr std::size_t type_tuple_size = 0;
-	};
-	template <typename T, typename... Types>
-	struct type_tuple<T, Types...>
-	{
-		constexpr auto operator[](auto i) const noexcept
+		constexpr auto head() const noexcept
 		{
-			constexpr auto I = PP_COPY_VALUE(i);
-
-			if constexpr (I == value_0)
-				return type_v<T>;
-			else
-				return type_tuple<Types...>{}[I - value_1];
-		};
-
-		static constexpr std::size_t type_tuple_size = 1 + sizeof...(Types);
+			return type_v<Head>;
+		}
+		constexpr auto head_element() const noexcept
+		{
+			return type_v<type_t<Head>>;
+		}
+		constexpr auto pred() const noexcept
+		{
+			return type_tuple<Rest...>{};
+		}
+		constexpr auto operator[](value_wrap auto i) const noexcept
+		{
+			return tuple_recursive(tuple_head_no_get, i, *this);
+		}
 	};
-	template <typename... Types>
-	constexpr inline type_tuple<Types...> type_tuple_v = {};
+	template <typename... T>
+	constexpr inline type_tuple<T...> type_tuple_v = {};
 
-	template <typename... Types>
-	constexpr auto get(value_wrap auto i, type_tuple<Types...> t) noexcept
+	template <typename... T>
+	constexpr auto tuple_count_implementation(type_tuple<T...> t) noexcept
 	{
-		return t[i];
-	};
-	template <typename... Types>
-	constexpr auto element_implementation(value_wrap auto i, type_tuple<Types...> t) noexcept
-	{
-		return PP_DECLTYPE(get(i, t));
-	};
-	constexpr auto size_implementation(type_wrap auto t) noexcept
-	requires requires { PP_GET_TYPE(t)::type_tuple_size; }
-	{
-		return PP_GET_TYPE(t)::type_tuple_size;
+		return value_v<sizeof...(T)>;
 	};
 }

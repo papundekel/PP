@@ -1,41 +1,40 @@
 #pragma once
 #include "template_t.hpp"
 #include "get_value.hpp"
+#include "tuple_recursive.hpp"
+#include "tuple_head_no_get.hpp"
 
 namespace PP
 {
 	template <template <typename...> typename...>
-	struct template_tuple
-	{
-		static constexpr std::size_t template_tuple_size = 0;
-	};
+	struct template_tuple {};
 	template <template <typename...> typename T, template <typename...> typename... Templates>
-	struct template_tuple
+	struct template_tuple<T, Templates...>
 	{
-		constexpr auto operator[](auto i) const noexcept
+		constexpr auto head() const noexcept
 		{
-			constexpr auto I = PP_COPY_VALUE(i);
-
-			if constexpr (I == value_0)
-				return template_v<T>;
-			else
-				return template_tuple<Templates...>{}[I - value_1];
+			return template_v<T>;
 		}
-
-		static constexpr std::size_t template_tuple_size = 1 + sizeof...(Templates);
+		constexpr auto head_element() const noexcept
+		{
+			return type_v<template_t<T>>;
+		}
+		constexpr auto pred() const noexcept
+		{
+			return template_tuple<Templates...>{};
+		}
+		constexpr auto operator[](value_wrap auto i) const noexcept
+		{
+			return tuple_recursive(tuple_head_no_get, i, *this);
+		}
 	};
 
 	template <template <typename...> typename... Templates>
 	constexpr inline template_tuple<Templates...> template_tuple_v = {};
 
 	template <template <typename...> typename... Templates>
-	constexpr auto get(auto i, template_tuple<Templates...> t) noexcept
+	constexpr auto tuple_count_implementation(template_tuple<Templates...> t) noexcept
 	{
-		return t[i];
-	};
-	constexpr auto size_implementation(auto t) noexcept
-	requires requires { PP_GET_TYPE(t)::template_tuple_size; }
-	{
-		return PP_GET_TYPE(t)::template_tuple_size;
+		return value_v<sizeof...(Templates)>;
 	};
 }

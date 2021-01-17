@@ -3,5 +3,5 @@
 
 namespace PP
 {
-	auto declval(auto t) noexcept -> PP_GET_TYPE(t)&&;
+	auto declval(type_wrap auto t) noexcept -> PP_GET_TYPE(t)&&;
 }

@@ -1,14 +1,22 @@
 #pragma once
-#include <type_traits>
+#include "add_const.hpp"
+#include "add_volatile.hpp"
 #include "cv_qualifier.hpp"
-#include "functional/id.hpp"
-#include "tuple_get_value_from_key.hpp"
-#include "value_t.hpp"
+#include "get_value.hpp"
 
 namespace PP
 {
-	PP_FUNCTOR(add_cv, auto cv, auto t)
+	PP_FUNCTOR(add_cv, value_wrap auto cv, type_wrap auto t)
 	{
-		return tuple_get_value_from_key();
+		constexpr auto CV = *PP_COPY_VALUE(cv);
+
+		if constexpr (CV == cv_qualifier::none)
+			return t;
+		else if constexpr (CV == cv_qualifier::Const)
+			return add_const(t);
+		else if constexpr (CV == cv_qualifier::Volatile)
+			return add_volatile(t);
+		else
+			return add_const(add_volatile(t));
 	}};
 }

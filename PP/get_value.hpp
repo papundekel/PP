@@ -52,6 +52,7 @@ namespace PP
 
 	#define PP_GET_VALUE(x) (-PP_DECLTYPE(x))
 	#define PP_COPY_VALUE(x) (::PP::value_v<PP_GET_VALUE(x)>)
+	#define PP_GET_VALUE_TYPE(x) PP_DECLTYPE(PP_GET_VALUE(x))
 
 	constexpr auto operator==(value_wrap auto x, value_wrap auto y)
 	{

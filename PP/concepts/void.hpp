@@ -13,8 +13,5 @@ namespace PP
 	{
 		template <typename T>
 		concept void_type = is_void(type_v<T>);
-
-		template <typename T>
-		concept nonvoid = !void_type<T>;
 	}
 }

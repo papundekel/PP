@@ -25,6 +25,11 @@ namespace PP
 		return (detail::cv_qualifier_t)a & (detail::cv_qualifier_t)b;
 	}
 
+	constexpr auto operator|(cv_qualifier a, cv_qualifier b) noexcept
+	{
+		return cv_qualifier((detail::cv_qualifier_t)a | (detail::cv_qualifier_t)b);
+	}
+
 	namespace detail
 	{
 		constexpr inline auto bool_to_int = [](bool p) { return p ? 1 : 0; };
@@ -33,19 +38,19 @@ namespace PP
 	//constexpr inline auto is_const_v = detail::bool_to_int | apply_partially(map_v, template_v<std::is_const>);
 	//constexpr inline auto is_volatile_v = detail::bool_to_int | apply_partially(map_v, template_v<std::is_volatile>);
 
-	constexpr bool is_const(cv_qualifier q) noexcept
+	constexpr bool cv_is_const(cv_qualifier q) noexcept
 	{
 		return q & cv_qualifier::Const;
 	}
 
-	constexpr bool is_volatile(cv_qualifier q) noexcept
+	constexpr bool cv_is_volatile(cv_qualifier q) noexcept
 	{
 		return q & cv_qualifier::Volatile;
 	}
 
 	constexpr bool operator>=(cv_qualifier a, cv_qualifier b) noexcept
 	{
-		// is_const(b) -> is_const(a) && is_volatile(b) -> is_volatile(a)
-		return ((!is_const(b) || is_const(a)) && (!is_volatile(b) || is_volatile(a)));
+		// cv_is_const(b) -> cv_is_const(a) && cv_is_volatile(b) -> cv_is_volatile(a)
+		return ((!cv_is_const(b) || cv_is_const(a)) && (!cv_is_volatile(b) || cv_is_volatile(a)));
 	}
 }

@@ -1,7 +1,5 @@
 #pragma once
-#include <tuple>
-#include <type_traits>
-
+#include "tuple.hpp"
 #include "declval.hpp"
 #include "forward.hpp"
 #include "functional/functor.hpp"
@@ -11,27 +9,15 @@
 
 namespace PP
 {
-	constexpr inline auto tuple_map =
-		
-	/*[](auto&& f, auto&& tuple)
-	{
-		return tuple_apply([&f](auto&&... elements) -> decltype(auto)
-			{
-				return std::tuple<decltype(std::declval<decltype(f)>()(std::declval<decltype(elements)>()))...>
-					(PP_FORWARD(f)(PP_FORWARD(elements))...);
-			}, PP_FORWARD(tuple));
-	};*/
-	
-	map_arguments(tuple_apply,
-	[](auto&& map)
-	{
-		return [&map](auto&&... elements) -> decltype(auto)
+	constexpr inline auto tuple_map = map_arguments(tuple_apply,
+		[](auto&& map)
 		{
-			return std::tuple<decltype(declval<decltype(map)>()(declval<decltype(elements)>()))...>
-				(PP_FORWARD(map)(PP_FORWARD(elements))...);
-		};
-	}
-	, id_weak);
+			return [&map](auto&&... elements) -> decltype(auto)
+			{
+				return tuple<decltype(declval<decltype(map)>()(declval<decltype(elements)>()))...>
+					(PP_FORWARD(map)(PP_FORWARD(elements))...);
+			};
+		}, id_forward);
 
 	constexpr decltype(auto) operator*(const functor<auto>& f, tuple_like auto&& tuple)
 	{

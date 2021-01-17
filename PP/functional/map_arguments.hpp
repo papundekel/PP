@@ -3,26 +3,23 @@
 #include "../functional/functor.hpp"
 #include "../std_integer_sequence.hpp"
 #include "../tuple.hpp"
-#include "../tuple_size.hpp"
-#include "../tuple_like.hpp"
+#include "../tuple_get.hpp"
+#include "../tuple_count.hpp"
 #include "id.hpp"
-#include "constant.hpp"
 
 namespace PP
 {
 	namespace detail
 	{
-		constexpr decltype(auto) map_arguments_element_helper(tuple_like auto maps, value_wrap auto i)
+		constexpr decltype(auto) map_arguments_element_helper(auto maps, auto i)
 		{
-			constexpr auto maps_size = tuple_type_size(PP_DECLTYPE(maps));
-
-			if constexpr (i < maps_size)
-				return get(i, maps);
+			if constexpr (i < tuple_type_count(PP_DECLTYPE(maps)))
+				return tuple_get(i, maps);
 			else
-				return id_weak;
+				return id_forward;
 		}
 		template <std::size_t... I>
-		constexpr decltype(auto) map_arguments_helper(auto& f, tuple_like auto maps, std::index_sequence<I...>, auto&&... args)
+		constexpr decltype(auto) map_arguments_helper(auto& f, auto maps, std::index_sequence<I...>, auto&&... args)
 		{
 			return f(map_arguments_element_helper(maps, value_v<I>)(PP_FORWARD(args))...);
 		}

@@ -1,12 +1,13 @@
 #pragma once
-#include "simple_view.hpp"
-#include "base.hpp"
-#include "get_type.hpp"
 #include "apply_template.hpp"
-#include "decompose_template.hpp"
 #include "apply_transform.hpp"
 #include "arrow_operator_wrapper.hpp"
+#include "concepts/pointer.hpp"
+#include "decompose_template.hpp"
+#include "get_type.hpp"
+#include "iterator_inner.hpp"
 #include "remove_cvref.hpp"
+#include "simple_view.hpp"
 
 namespace PP
 {
@@ -20,15 +21,15 @@ namespace PP
 
 		constexpr auto&& transform_iterator_base_get(auto&& i) noexcept
 		{
-			if constexpr PP_DECLTYPE(i)->Template == template_v<transform_iterator_pointer_base>)
+			if constexpr (PP_DECLTYPE(i)->Template == template_v<transform_iterator_pointer_base>)
 				return i.ptr;
 			else
 				return PP_FORWARD(i);
 		}
 
-		constexpr inline auto x = [](auto t)
+		constexpr inline auto x = [](type_wrap auto t)
 		{
-			if constexpr (-template_v<std::is_pointer>[t])
+			if constexpr (is_pointer(PP_COPY_TYPE(t)))
 				return template_v<transform_iterator_pointer_base>[t];
 			else
 				return t;
@@ -39,58 +40,44 @@ namespace PP
 	}
 
 	template <typename BaseIterator, typename Transform>
-	class transform_iterator : public detail::transform_iterator_base_t<BaseIterator>, public detail::transform_iterator_base_t<Transform>
+	class transform_iterator
 	{
-		using IteratorBase = detail::transform_iterator_base_t<BaseIterator>;
-		using TransformBase = detail::transform_iterator_base_t<Transform>;
+		BaseIterator i;
+		Transform t;
 
 	public:
-		constexpr transform_iterator(BaseIterator i, Transform&& t)
-			: IteratorBase(i)
-			, TransformBase(std::move(t))
-		{}
-		constexpr transform_iterator(BaseIterator i, const Transform& t)
-			: IteratorBase(i)
-			, TransformBase(t)
+		constexpr transform_iterator(BaseIterator i, Transform t)
+			: i(std::move(i))
+			, t(std::move(t))
 		{}
 
 		constexpr decltype(auto) operator*() const
 		{
-			return detail::transform_iterator_base_get((const TransformBase&)*this)(*base());
+			return t(*i);
 		}
-		constexpr decltype(auto) operator->() const
+		constexpr auto operator->() const
 		{
 			return arrow_operator_wrapper(**this);
 		}
-		constexpr auto& operator+=(size_t offset)
+		constexpr auto operator+(size_t offset)
 		{
-			base() += offset;
-			return *this;
+			return transform_iterator(i + offset, t);
 		}
-		constexpr auto& operator-=(size_t offset)
+		constexpr auto operator==(concepts::iterator auto other) const
 		{
-			base() -= offset;
-			return *this;
+			return i == PP::iterator_base(other);
 		}
-		constexpr auto operator==(iterator auto other) const
+		constexpr auto operator-(concepts::iterator auto other) const
 		{
-			return base() == other;
-		}
-		constexpr auto operator-(const auto& other) const
-		{
-			return base() - PP::base(other);
+			return i - PP::iterator_base(other);
 		}
 		constexpr decltype(auto) operator[](std::size_t index) const
 		{
-			return this->operator()(base()[index]);
+			return t(i[index]);
 		}
-		constexpr BaseIterator& base()
+		constexpr BaseIterator inner() const
 		{
-			return detail::transform_iterator_base_get((IteratorBase&)*this);
-		}
-		constexpr const BaseIterator& base() const
-		{
-			return detail::transform_iterator_base_get((const IteratorBase&)*this);
+			return i;
 		}
 	};
 
@@ -100,26 +87,25 @@ namespace PP
 		Functor functor;
 	};
 
-	template <typename F>
-	constexpr view auto transform_view(view auto&& v, F&& f)
+	constexpr auto transform_view(concepts::view auto&& v, auto&& f)
 	{
-		return transform_iterator(begin(v), std::forward<F>(f)) ^ transform_iterator(end(v), std::forward<F>(f));
+		return
+			transform_iterator(begin(PP_FORWARD(v)), PP_FORWARD(f))	^
+			transform_iterator(  end(PP_FORWARD(v)), PP_FORWARD(f));
 	}
 
-	constexpr iterator auto operator&(iterator auto i, transform<auto> t)
+	constexpr auto operator&(concepts::iterator auto i, transform<auto> t)
 	{
 		return transform_iterator(i, std::move(t).functor);
 	}
 
-	template <view View>
-	constexpr view auto operator||(View&& v, transform<auto> t)
+	constexpr auto operator||(concepts::view auto&& v, transform<auto> t)
 	{
-		return begin(std::forward<View>(v)) & std::move(t) ^ end(std::forward<View>(v));
+		return begin(PP_FORWARD(v)) & std::move(t) ^ end(PP_FORWARD(v));
 	}
 
-	template <view View>
-	constexpr view auto operator|(View&& v, transform<auto> t)
+	constexpr auto operator|(concepts::view auto&& v, transform<auto> t)
 	{
-		return transform_view(std::forward<View>(v), std::move(t).functor);
+		return transform_view(PP_FORWARD(v), std::move(t).functor);
 	}
 }

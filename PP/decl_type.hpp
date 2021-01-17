@@ -1,6 +1,6 @@
 #pragma once
-#include "type_t.hpp"
 #include "functional/functor.hpp"
+#include "type_t.hpp"
 
 namespace PP
 {
@@ -8,7 +8,7 @@ namespace PP
 	{
 		return PP_DECLTYPE(v);
 	}};
-	PP_FUNCTOR(decl_type, auto&& v)
+	PP_FUNCTOR(decl_type_forward, auto&& v)
 	{
 		return PP_DECLTYPE(v);
 	}};

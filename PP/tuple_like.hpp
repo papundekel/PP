@@ -1,9 +1,9 @@
 #pragma once
-#include <type_traits>
-#include <utility>
-
 #include "declval.hpp"
-#include "tuple_size.hpp"
+#include "tuple_count.hpp"
+#include "tuple_element.hpp"
+#include "tuple_get.hpp"
+#include "tuple_index_sequence_for.hpp"
 #include "type_t.hpp"
 #include "value_t.hpp"
 
@@ -14,7 +14,8 @@ namespace PP
 		template <typename T, std::size_t... I>
 		concept tuple_like_helper_helper = requires
 		{
-			((void)get(value_t<I>{}, declval(type_v<T>)), ...);
+			((void)tuple_get(value_v<I>, declval(type_v<T>)), ...);
+			((void)tuple_element(value_v<I>, declval(type_v<T>)), ...);
 		};
 
 		template <typename T, std::size_t... I>
@@ -23,9 +24,9 @@ namespace PP
 	}
 
 	template <typename T>
-	concept tuple_like = requires
+	concept tuple_like = requires (type_t<T> t)
 	{
-		tuple_type_size(type_v<T>);
-		detail::tuple_like_helper<T>(std::make_index_sequence<tuple_type_size(type_v<T>)>{});
+		tuple_count(declval(t));
+		detail::tuple_like_helper<T>(tuple_index_sequence_for(declval(t)));
 	};
 }

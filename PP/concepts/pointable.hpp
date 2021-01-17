@@ -1,21 +1,13 @@
 #pragma once
-#include "../functional/functor.hpp"
-#include "../get_type.hpp"
-#include "../templated_dummy.hpp"
+#include "atomic/pointable.hpp"
+#include "referencable.hpp"
+#include "void.hpp"
 
 namespace PP
 {
-	PP_FUNCTOR(is_pointable, auto t)
-	{
-		return requires
-		{
-			typename detail::templated_dummy<PP_GET_TYPE(t)*>;
-		};
-	}};
-
 	namespace concepts
 	{
 		template <typename T>
-		concept pointable = is_pointable(type_v<T>);
+		concept pointable = is_pointable(type_v<T>) || referencable<T> || void_type<T>;
 	}
 }

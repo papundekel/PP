@@ -14,5 +14,5 @@ namespace PP
 				{
 					(PP_FORWARD(t)), ...);
 				};
-		}, id_weak);
+		}, id_forward);
 }

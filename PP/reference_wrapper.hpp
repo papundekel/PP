@@ -27,6 +27,11 @@ namespace PP
 	template <typename T>
 	using clref_t = reference_wrapper<const T&>;
 
+	PP_FUNCTOR(ref, auto&& x)
+	{
+		return reference_wrapper<decltype(x)>(PP_FORWARD(x));
+	}};
+
 	PP_FUNCTOR(unref, auto&& x) -> decltype(auto)
 	{
 		if constexpr (PP_DECLTYPE(x)->Template == template_v<reference_wrapper>)

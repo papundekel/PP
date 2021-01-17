@@ -25,7 +25,7 @@ namespace PP
 	}};
 
 	constexpr inline auto apply_template_type = get_type | apply_template;
-	constexpr inline auto apply_template_value = get_type_value | apply_template
+	constexpr inline auto apply_template_value = get_type_value | apply_template;
 
 	template <template <typename...> typename Template>
 	constexpr auto template_t<Template>::operator[](auto&& types) const noexcept

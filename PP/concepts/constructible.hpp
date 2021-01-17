@@ -16,7 +16,7 @@ namespace PP
 					PP_GET_TYPE(t)(declval(as)...);
 				};
 			};
-		}, id_weak);
+		}, id_forward);
 
 	namespace concepts
 	{

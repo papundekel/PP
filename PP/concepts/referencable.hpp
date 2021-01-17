@@ -1,14 +1,9 @@
 #pragma once
-#include "../get_type_weak.hpp"
-#include "../templated_dummy.hpp"
+#include "function_pure.hpp"
+#include "object.hpp"
 
-namespace PP
+namespace PP::concepts
 {
-	PP_FUNCTOR(is_referencable, auto t)
-	{
-		return requires
-		{
-			typename detail::templated_dummy<PP_GET_TYPE_WEAK(t)&>;
-		};
-	}};
+	template <typename T>
+	concept referencable = function_pure<T> || object<T>;
 }

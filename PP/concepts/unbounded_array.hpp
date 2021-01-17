@@ -1,19 +1,15 @@
 #pragma once
-#include "../functional/functor.hpp"
+#include "../functional/compose.hpp"
 #include "../get_type.hpp"
 #include "../overloaded.hpp"
-#include "../templated_dummy.hpp"
 
 namespace PP
 {
-	PP_FUNCTOR(is_unbounded_array, auto t)
+	constexpr inline auto is_unbounded_array = functor{ overloaded
 	{
-		return overloaded
-		{
-			[]<typename T>(type_t<T[]>) { return true; },
-			[](auto t) { return false; }
-		}(to_type_t(t));
-	}};
+		[] <typename T>(type_t<T[]>) { return true; },
+		[](auto t) { return false; }
+	}} | to_type_t;
 
 	namespace concepts
 	{

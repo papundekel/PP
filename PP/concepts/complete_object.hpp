@@ -1,23 +1,12 @@
 #pragma once
-#include "../functional/functor.hpp"
-#include "../get_type.hpp"
-#include "../templated_dummy.hpp"
+#include "atomic/complete_object.hpp"
+#include "bounded_array.hpp"
+#include "non_array_object.hpp"
 
-namespace PP
+namespace PP::concepts
 {
-	PP_FUNCTOR(is_complete_object, auto t)
-	{
-		return requires
-		{
-			typename detail::templated_dummy<PP_GET_TYPE(t)[]>;
-		};
-	}};
-
-	namespace concepts
-	{
-		template <typename T>
-		concept complete_object = is_complete_object(type_v<T>);
-		template <typename T>
-		concept incomplete_object = !complete_object<T>;
-	}
+	template <typename T>
+	concept complete_object = atomic::complete_object<T> ||
+		bounded_array<T> ||
+		non_array_object<T>);
 }

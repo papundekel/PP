@@ -20,4 +20,3 @@ namespace PP
 		concept class_type = is_class(type_v<T>);
 	}
 };
-
