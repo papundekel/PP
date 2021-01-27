@@ -37,7 +37,7 @@ namespace PP
 
 	public:
 		template <typename PointerOther>
-		requires (remove_cvref(type_v<PointerOther>)->Template != template_v<unique_pointer>)
+		requires (remove_cvref(type<PointerOther>)->Template != template_v<unique_pointer>)
 		explicit constexpr unique_pointer(const PointerOther& ptr)
 			: ptr(ptr)
 		{}

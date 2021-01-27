@@ -1,5 +1,5 @@
 #pragma once
-#include "forward.hpp"
+#include "utility/forward.hpp"
 
 namespace PP
 {
@@ -22,7 +22,7 @@ namespace PP
 		}
 	};
 	template <auto V>
-	constexpr inline value_t<V> value_v = {};
+	constexpr inline value_t<V> value = {};
 
 	constexpr inline value_t<0> value_0 = {};
 	constexpr inline value_t<1> value_1 = {};
@@ -39,4 +39,7 @@ namespace PP
 	constexpr inline value_t<false> value_false = {};
 
 	constexpr inline value_t<nullptr> value_nullptr = {};
+
+	#define PP_SIZEOF(x) (::PP::value<sizeof(x)>)
+	#define PP_SIZEOF___(x) (::PP::value<sizeof...(x)>)
 }

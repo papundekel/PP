@@ -19,35 +19,35 @@ namespace PP
 					if constexpr (ref == ref_qualifier::none)
 					{
 						if constexpr (cv == cv_qualifier::none)
-							return type_v<Return(Parameters...) >;
+							return type<Return(Parameters...) >;
 						else if constexpr (cv == cv_qualifier::Const)
-							return type_v<Return(Parameters...) const>;
+							return type<Return(Parameters...) const>;
 						else if constexpr (cv == cv_qualifier::Volatile)
-							return type_v<Return(Parameters...) volatile>;
+							return type<Return(Parameters...) volatile>;
 						else
-							return type_v<Return(Parameters...) const volatile>;
+							return type<Return(Parameters...) const volatile>;
 					}
 					else if constexpr (ref == ref_qualifier::lvalue)
 					{
 						if constexpr (cv == cv_qualifier::none)
-							return type_v<Return(Parameters...) &>;
+							return type<Return(Parameters...) &>;
 						else if constexpr (cv == cv_qualifier::Const)
-							return type_v<Return(Parameters...) const&>;
+							return type<Return(Parameters...) const&>;
 						else if constexpr (cv == cv_qualifier::Volatile)
-							return type_v<Return(Parameters...) volatile&>;
+							return type<Return(Parameters...) volatile&>;
 						else
-							return type_v<Return(Parameters...) const volatile&>;
+							return type<Return(Parameters...) const volatile&>;
 					}
 					else
 					{
 						if constexpr (cv == cv_qualifier::none)
-							return type_v<Return(Parameters...) &&>;
+							return type<Return(Parameters...) &&>;
 						else if constexpr (cv == cv_qualifier::Const)
-							return type_v<Return(Parameters...) const&&>;
+							return type<Return(Parameters...) const&&>;
 						else if constexpr (cv == cv_qualifier::Volatile)
-							return type_v<Return(Parameters...) volatile&&>;
+							return type<Return(Parameters...) volatile&&>;
 						else
-							return type_v<Return(Parameters...) const volatile&&>;
+							return type<Return(Parameters...) const volatile&&>;
 					}
 				}
 				else
@@ -55,35 +55,35 @@ namespace PP
 					if constexpr (ref == ref_qualifier::none)
 					{
 						if constexpr (cv == cv_qualifier::none)
-							return type_v<Return(Parameters...) noexcept>;
+							return type<Return(Parameters...) noexcept>;
 						else if constexpr (cv == cv_qualifier::Const)
-							return type_v<Return(Parameters...) const noexcept>;
+							return type<Return(Parameters...) const noexcept>;
 						else if constexpr (cv == cv_qualifier::Volatile)
-							return type_v<Return(Parameters...) volatile noexcept>;
+							return type<Return(Parameters...) volatile noexcept>;
 						else
-							return type_v<Return(Parameters...) const volatile noexcept>;
+							return type<Return(Parameters...) const volatile noexcept>;
 					}
 					else if constexpr (ref == ref_qualifier::lvalue)
 					{
 						if constexpr (cv == cv_qualifier::none)
-							return type_v<Return(Parameters...) & noexcept>;
+							return type<Return(Parameters...) & noexcept>;
 						else if constexpr (cv == cv_qualifier::Const)
-							return type_v<Return(Parameters...) const& noexcept>;
+							return type<Return(Parameters...) const& noexcept>;
 						else if constexpr (cv == cv_qualifier::Volatile)
-							return type_v<Return(Parameters...) volatile& noexcept>;
+							return type<Return(Parameters...) volatile& noexcept>;
 						else
-							return type_v<Return(Parameters...) const volatile& noexcept>;
+							return type<Return(Parameters...) const volatile& noexcept>;
 					}
 					else
 					{
 						if constexpr (cv == cv_qualifier::none)
-							return type_v<Return(Parameters...) && noexcept>;
+							return type<Return(Parameters...) && noexcept>;
 						else if constexpr (cv == cv_qualifier::Const)
-							return type_v<Return(Parameters...) const&& noexcept>;
+							return type<Return(Parameters...) const&& noexcept>;
 						else if constexpr (cv == cv_qualifier::Volatile)
-							return type_v<Return(Parameters...) volatile&& noexcept>;
+							return type<Return(Parameters...) volatile&& noexcept>;
 						else
-							return type_v<Return(Parameters...) const volatile&& noexcept>;
+							return type<Return(Parameters...) const volatile&& noexcept>;
 					}
 				}
 			};
@@ -93,6 +93,6 @@ namespace PP
 		detail::make_function_type_helper,
 		[]<auto info>(value_t<info>)
 		{
-			return detail::make_function_type_helper(info.return_type, info.parameter_types, value_v<info.Noexcept>, value_v<info.cv>, value_v<info.ref>);
+			return detail::make_function_type_helper(info.return_type, info.parameter_types, value<info.Noexcept>, value<info.cv>, value<info.ref>);
 		} };
 }

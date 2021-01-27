@@ -5,7 +5,7 @@
 
 namespace PP
 {
-	PP_FUNCTOR(is_complete_object, type_wrap auto t)
+	PP_FUNCTOR(is_complete_object, concepts::type auto t)
 	{
 		return requires
 		{

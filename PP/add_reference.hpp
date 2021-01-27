@@ -1,26 +1,29 @@
 #pragma once
-#include "concepts/referencable.hpp"
+#include "concepts/atomic/referencable.hpp"
 #include "get_type.hpp"
+#include "get_value.hpp"
 
 namespace PP
 {
-	PP_FUNCTOR(add_reference, value_wrap auto rvalue, type_wrap auto type)
+	PP_FUNCTOR(add_reference, concepts::value auto rvalue, concepts::type auto t)
 	{
-		if constexpr (is_referencable(PP_COPY_TYPE(type)))
+		using T = PP_GET_TYPE(t);
+
+		if constexpr (is_referencable(type<T>))
 		{
 			if constexpr (PP_GET_VALUE(rvalue))
-				return type_v<PP_GET_TYPE(type)&&>;
+				return type<T&&>;
 			else
-				return type_v<PP_GET_TYPE(type)&>;
+				return type<T&>;
 		}
 		else
-			return type;
+			return t;
 	}};
 	
-	constexpr inline auto lvalue_tag = value_v<false>;
-	constexpr inline auto rvalue_tag = value_v<true>;
+	constexpr inline auto lvalue_tag = value<false>;
+	constexpr inline auto rvalue_tag = value<true>;
 
-	constexpr auto operator+(type_wrap auto t, value_wrap auto rvalue) noexcept
+	constexpr auto operator+(concepts::type auto t, concepts::value auto rvalue) noexcept
 	{
 		return add_reference(rvalue, t);
 	}

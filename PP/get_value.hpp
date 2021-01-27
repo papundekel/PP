@@ -21,8 +21,11 @@ namespace PP
 		};
 	}
 
-	template <typename T>
-	concept value_wrap = detail::has_value_f<T> || detail::has_value<T>;
+	namespace concepts
+	{
+		template <typename T>
+		concept value = detail::has_value_f<T> || detail::has_value<T>;
+	}
 
 	constexpr inline functor get_type_value{ overloaded
 	{
@@ -40,38 +43,38 @@ namespace PP
 
 	constexpr inline auto get_value = get_type_value | decl_type_copy;
 
-	constexpr decltype(auto) operator*(value_wrap auto v) noexcept
+	constexpr decltype(auto) operator*(concepts::value auto v) noexcept
 	{
 		return get_value(v);
 	}
 
-	constexpr decltype(auto) operator-(type_wrap auto t) noexcept
+	constexpr decltype(auto) operator-(concepts::type auto t) noexcept
 	{
 		return get_type_value(t);
 	}
 
 	#define PP_GET_VALUE(x) (-PP_DECLTYPE(x))
-	#define PP_COPY_VALUE(x) (::PP::value_v<PP_GET_VALUE(x)>)
+	#define PP_COPY_VALUE(x) (::PP::value<PP_GET_VALUE(x)>)
 	#define PP_GET_VALUE_TYPE(x) PP_DECLTYPE(PP_GET_VALUE(x))
 
-	constexpr auto operator==(value_wrap auto x, value_wrap auto y)
+	constexpr auto operator==(concepts::value auto x, concepts::value auto y)
 	{
-		return value_v<PP_GET_VALUE(x) == PP_GET_VALUE(y)>;
+		return value<PP_GET_VALUE(x) == PP_GET_VALUE(y)>;
 	}
-	constexpr auto operator<(value_wrap auto x, value_wrap auto y)
+	constexpr auto operator<(concepts::value auto x, concepts::value auto y)
 	{
-		return value_v<PP_GET_VALUE(x) < PP_GET_VALUE(y)>;
+		return value<PP_GET_VALUE(x) < PP_GET_VALUE(y)>;
 	}
-	constexpr auto operator+(value_wrap auto x, value_wrap auto y)
+	constexpr auto operator+(concepts::value auto x, concepts::value auto y)
 	{
-		return value_v<PP_GET_VALUE(x) + PP_GET_VALUE(y)>;
+		return value<PP_GET_VALUE(x) + PP_GET_VALUE(y)>;
 	}
-	constexpr auto operator-(value_wrap auto x, value_wrap auto y)
+	constexpr auto operator-(concepts::value auto x, concepts::value auto y)
 	{
-		return value_v<PP_GET_VALUE(x) - PP_GET_VALUE(y)>;
+		return value<PP_GET_VALUE(x) - PP_GET_VALUE(y)>;
 	}
-	constexpr auto operator-(value_wrap auto x)
+	constexpr auto operator-(concepts::value auto x)
 	{
-		return value_v<-PP_GET_VALUE(x)>;
+		return value<-PP_GET_VALUE(x)>;
 	}
 }

@@ -1,10 +1,15 @@
 #pragma once
-#include <tuple>
-#include "all_of.hpp"
-#include "tuple_map_to_array.hpp"
-#include "functional/compose.hpp"
+#include "tuple_apply.hpp"
+#include "tuple_like.hpp"
 
 namespace PP
 {
-	constexpr inline auto tuple_all = all_of | tuple_map_to_array;
+	PP_FUNCTOR(tuple_all, auto&& predicate, concepts::tuple auto&& t)
+	{
+		return tuple_apply(
+			[&predicate](auto&&... elements) -> decltype(auto)
+			{
+				return (PP_FORWARD(predicate)(PP_FORWARD(elements)) && ...);
+			}, PP_FORWARD(t));
+	}};
 }

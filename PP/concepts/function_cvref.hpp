@@ -1,4 +1,6 @@
 #pragma once
+#include "../functional/negate.hpp"
+#include "../macros/simple_concept.hpp"
 #include "atomic/pointable.hpp"
 #include "reference.hpp"
 
@@ -6,9 +8,5 @@ namespace PP
 {
 	constexpr inline auto is_function_cvref = !is_reference && !is_pointable;
 
-	namespace concepts
-	{
-		template <typename T>
-		concept function_cvref = is_function_cvref(type_v<T>);
-	}
+	PP_CONCEPT1(function_cvref)
 }

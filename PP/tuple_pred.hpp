@@ -5,26 +5,23 @@ namespace PP
 {
 	namespace detail
 	{
-		constexpr decltype(auto) tuple_pred_member(auto&& t)
-		requires requires { PP_FORWARD(t).pred(); }
+		template <typename T>
+		concept tuple_concept_pred_member = requires
 		{
-			return PP_FORWARD(t).pred();
-		}
-		constexpr decltype(auto) tuple_pred(auto&& t)
-		requires requires { pred_implementation(PP_FORWARD(t)); }
+			declval(type<T>).pred();
+		};
+		template <typename T>
+		concept tuple_concept_pred_any = tuple_concept_pred_member<T> || requires
 		{
-			return pred_implementation(PP_FORWARD(t));
-		}
+			pred_implementation(declval(type<T>));
+		};
 	}
 
-	PP_FUNCTOR(tuple_pred, auto&& t) -> decltype(auto)
-	requires (
-		requires { detail::tuple_pred_member(PP_FORWARD(t)); } ||
-		requires { detail::tuple_pred(PP_FORWARD(t)); })
+	PP_FUNCTOR(tuple_pred, detail::tuple_concept_pred_any auto&& t) -> decltype(auto)
 	{
-		if constexpr (requires { detail::tuple_pred_member(PP_FORWARD(t)); })
-			return detail::tuple_pred_member(PP_FORWARD(t));
+		if constexpr (detail::tuple_concept_pred_member<decltype(t)>)
+			return PP_FORWARD(t).pred();
 		else
-			return detail::tuple_pred(PP_FORWARD(t));
+			return pred_implementation(PP_FORWARD(t));
 	}};
 }

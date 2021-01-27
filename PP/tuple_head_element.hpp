@@ -6,12 +6,12 @@ namespace PP
 	namespace detail
 	{
 		constexpr auto tuple_head_element_member(auto&& t)
-		requires requires { { PP_FORWARD(t).head_element() } -> type_wrap; }
+		requires requires { { PP_FORWARD(t).head_element() } -> concepts::type; }
 		{
 			return PP_FORWARD(t).head_element();
 		}
 		constexpr auto tuple_head_element_nonmember(auto&& t)
-		requires requires { { head_element_implementation(PP_FORWARD(t)) } -> type_wrap; }
+		requires requires { { head_element_implementation(PP_FORWARD(t)) } -> concepts::type; }
 		{
 			return head_element_implementation(PP_FORWARD(t));
 		}

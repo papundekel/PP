@@ -1,11 +1,11 @@
 #pragma once
-#include "value_t.hpp"
+#include "tuple_like.hpp"
 
 namespace PP
 {
 	template <std::size_t I>
-	constexpr decltype(auto) get(auto&& t) noexcept
+	constexpr decltype(auto) get(concepts::tuple auto&& t) noexcept
 	{
-		return get(value_v<I>, PP_FORWARD(t));
+		return PP_FORWARD(t)[value<I>];
 	}
 }

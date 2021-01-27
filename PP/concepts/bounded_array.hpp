@@ -1,17 +1,12 @@
 #pragma once
+#include "../functional/negate.hpp"
+#include "../macros/simple_concept.hpp"
 #include "atomic/complete_object.hpp"
 #include "atomic/returnable.hpp"
 
 namespace PP
 {
-	namespace concepts
-	{
-		template <typename T>
-		concept bounded_array = atomic::complete_object<T> && !returnable<T>;
-	}
+	constexpr inline auto is_bounded_array = is_complete_object && !is_returnable;
 
-	PP_FUNCTOR(is_bounded_array, type_wrap auto t)
-	{
-		return concepts::bounded_array<PP_GET_TYPE(t)>;
-	}};
+	PP_CONCEPT1(bounded_array)
 }

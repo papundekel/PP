@@ -11,9 +11,5 @@ namespace PP
 		[](auto t) { return false; }
 	}} | to_type_t;
 
-	namespace concepts
-	{
-		template <typename T>
-		concept unbounded_array = is_unbounded_array(type_v<T>);
-	}
+	PP_CONCEPT1(unbounded_array)
 }

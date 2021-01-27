@@ -1,4 +1,6 @@
 #pragma once
+#include "../functional/functor.hpp"
+#include "../get_type.hpp"
 #include "class.hpp"
 #include "convertible_to.hpp"
 
@@ -10,9 +12,8 @@ namespace PP
 		concept derived_from = class_type<D> && class_type<B> && convertible_to<const volatile D*, const volatile B*>;
 	}
 
-	PP_FUNCTOR(is_derived_from, auto t)
+	PP_FUNCTOR(is_derived_from, concepts::type auto d, concepts::type auto b)
 	{
-		return concepts::derived_from<PP_GET_TYPE(t)>;
-	}
-};
+		return concepts::derived_from<PP_GET_TYPE(d), PP_GET_TYPE(b)>;
+	}};
 }

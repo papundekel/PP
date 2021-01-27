@@ -1,16 +1,15 @@
 #pragma once
 #include "functional/functor.hpp"
 #include "concepts/pointable.hpp"
+#include "remove_reference.hpp"
 
 namespace PP
 {
-	PP_FUNCTOR(add_pointer, auto t)
+	constexpr inline auto add_pointer = functor{ [](concepts::type auto t)
 	{
-		using T = PP_GET_TYPE(t);
-
-		if constexpr (concepts::pointable<T>)
-			return type_v<T*>;
+		if constexpr (is_pointable(PP_COPY_TYPE(t)))
+			return type<PP_GET_TYPE(t)*>;
 		else
 			return t;
-	}};
+	}} | remove_reference;
 }

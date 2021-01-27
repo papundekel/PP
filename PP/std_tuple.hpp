@@ -8,7 +8,7 @@
 namespace PP::concepts
 {
 	template <typename T>
-	concept std_tuple = type_v<T>->Template == template_v<std::tuple>;
+	concept std_tuple = PP::type<T>->Template == template_v<std::tuple>;
 }
 
 namespace std

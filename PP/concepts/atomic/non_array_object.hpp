@@ -1,6 +1,4 @@
 #pragma once
-#include "../../functional/functor.hpp"
-#include "../../get_type.hpp"
 #include "complete_object.hpp"
 #include "returnable.hpp"
 

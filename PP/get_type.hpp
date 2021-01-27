@@ -1,26 +1,30 @@
 #pragma once
 #include "decl_type.hpp"
+#include "functional/compose.hpp"
 #include "functional/functor.hpp"
 #include "type_t.hpp"
 
 namespace PP
 {
-	template <typename T>
-	concept type_wrap = requires
+	namespace concepts
 	{
-		typename T::type;
-	};
-
-	PP_FUNCTOR(get_type, type_wrap auto t)
+		template <typename T>
+		concept type = requires
+		{
+			typename T::type;
+		};
+	}
+	
+	PP_FUNCTOR(get_type, concepts::type auto t)
 	{
-		return type_v<PP_TYPE_UNSAFE(t)::type>;
+		return type<PP_TYPE_UNSAFE(t)::type>;
 	}};
 
 	template <typename T>
-	using get_type_t = PP_TYPE_UNSAFE(get_type(type_v<T>));
+	using get_type_t = PP_TYPE_UNSAFE(get_type(type<T>));
 
 	#define PP_GET_TYPE(x) ::PP::get_type_t<decltype(x)>
-	#define PP_COPY_TYPE(x) (::PP::type_v<PP_GET_TYPE(x)>)
+	#define PP_COPY_TYPE(x) (::PP::type<PP_GET_TYPE(x)>)
 
 	constexpr inline auto to_type_t = get_type | decl_type_copy;
 }

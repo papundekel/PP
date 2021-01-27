@@ -1,44 +1,42 @@
 #pragma once
-#include <tuple>
-
+#include "empty_tuple.hpp"
 #include "functional/apply_partially.hpp"
-#include "functional/comparisons.hpp"
-#include "functional/constant.hpp"
-#include "functional/map_arguments.hpp"
+#include "functional/operators.hpp"
 #include "functional/negate.hpp"
 #include "tuple_all.hpp"
 #include "tuple_apply.hpp"
+#include "tuple_count.hpp"
 #include "tuple_get.hpp"
+#include "tuple_like.hpp"
 #include "tuple_make.hpp"
 #include "tuple_map.hpp"
 #include "tuple_prepend.hpp"
-#include "tuple_count.hpp"
 #include "tuple_split.hpp"
 #include "tuple_types.hpp"
 
 namespace PP
 {
-	PP_FUNCTOR(tuple_zip, tuple_like auto&& tuples)
+	PP_FUNCTOR(tuple_zip, concepts::tuple auto&& tuples)
 	{
-		if constexpr (tuple_all(!equal(partial_tag, 0) | tuple_type_size, tuple_types(PP_DECLTYPE(tuples))))
+		if constexpr (tuple_all(!eql * 0 | tuple_type_count, tuple_types(PP_DECLTYPE(tuples))))
 		{
-			auto splits = tuple_map(tuple_split, PP_FORWARD(tuples));
+			auto splits = tuple_split + PP_FORWARD(tuples);
 
-			auto heads = tuple_get(partial_tag, value_0) * std::move(splits);
-			auto tails = tuple_get(partial_tag, value_1) * std::move(splits);
-
-			auto zipped_tail = tuple_zip(std::move(tails));
-
-			return tuple_make(
-				tuple_prepend(std::move(heads), std::move(zipped_tail)));
+			return (tuple_make | tuple_prepend)
+				(tuple_get * value_0 + move(splits),
+				tuple_zip(tuple_get * value_1 + move(splits)));
 		}
 		else
-			return std::tuple<>{};
+			return empty_tuple{};
 	}};
 
-	PP_FUNCTOR(tuple_zip_with, auto&& f, auto&& tuples)
+	PP_FUNCTOR(tuple_zip_with, auto&& f, concepts::tuple auto&& tuples)
 	{
-		return tuple_map(tuple_apply(partial_tag, PP_FORWARD(f)),
-						 tuple_zip(PP_FORWARD(tuples)));
+		return tuple_apply * ref(PP_FORWARD(f)) + tuple_zip(PP_FORWARD(tuples));
 	}};
+
+	constexpr auto operator^(concepts::tuple auto&& a, concepts::tuple auto&& b)
+	{
+		return tuple_zip(forward_as_tuple(PP_FORWARD(a), PP_FORWARD(b)));
+	}
 }

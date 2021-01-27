@@ -54,17 +54,13 @@ namespace PP
 	
 	PP_FUNCTOR(is_iterator, auto t)
 	{
-		return requires
+		return requires (PP_GET_TYPE(t) i)
 		{
-			{ ++declval(t) } -> concepts::same<PP_GET_TYPE(t)&>;
-			{ *declval(t) } -> concepts::nonvoid;
+			++i;
+			{ *i } -> concepts::nonvoid;
 		};
 	}};
-	namespace concepts
-	{
-		template <typename T>
-		concept iterator = is_iterator(type_v<T>);
-	}
+	PP_CONCEPT1(iterator)
 
 	namespace concepts
 	{

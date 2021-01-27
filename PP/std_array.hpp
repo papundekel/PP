@@ -19,17 +19,17 @@ namespace PP
 	namespace concepts
 	{
 		template <typename T>
-		concept std_array = is_std_array(type_v<T>);
+		concept std_array = is_std_array(type<T>);
 	}
 }
 
 namespace std
 {
-	constexpr decltype(auto) get(PP::value_wrap auto i, PP::concepts::std_array auto&& a) noexcept
+	constexpr decltype(auto) get(PP::concepts::value auto i, PP::concepts::std_array auto&& a) noexcept
 	{
 		return std::get<(std::size_t)-PP_DECLTYPE(i)>(PP_FORWARD(a));
 	}
-	constexpr auto size_implementation(PP::type_wrap auto t)
+	constexpr auto size_implementation(PP::concepts::type auto t)
 	requires PP::concepts::std_array<PP_GET_TYPE(t)>
 	{
 		return tuple_size_v<PP_GET_TYPE(~t)>;

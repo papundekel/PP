@@ -8,6 +8,6 @@ namespace PP
 	namespace concepts
 	{
 		template <typename T>
-		concept pointable = is_pointable(type_v<T>) || referencable<T> || void_type<T>;
+		concept pointable = is_pointable(PP::type<T>) || referencable<T> || void_type<T>;
 	}
 }

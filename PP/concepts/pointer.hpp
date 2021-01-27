@@ -2,6 +2,7 @@
 #include "../functional/compose.hpp"
 #include "../get_type.hpp"
 #include "../overloaded.hpp"
+#include "../remove_cv.hpp"
 
 namespace PP
 {
@@ -9,11 +10,7 @@ namespace PP
 	{
 		[] <typename T>(type_t<T*>) { return true; },
 		[](auto t) { return false; }
-	}} | to_type_t;
+	}} | remove_cv;
 
-	namespace concepts
-	{
-		template <typename T>
-		concept pointer = is_pointer(type_v<T>);
-	}
+	PP_CONCEPT1(pointer)
 }

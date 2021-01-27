@@ -1,7 +1,8 @@
 #pragma once
-#include "tuple_split.hpp"
-#include "tuple_apply.hpp"
+#include "forward_as.hpp"
 #include "functional/apply_partially.hpp"
+#include "tuple_apply.hpp"
+#include "utility/move.hpp"
 
 namespace PP
 {
@@ -11,43 +12,35 @@ namespace PP
 		struct fold_wrapper
 		{
 			F f;
-			T obj;
+			T init;
 		};
 
-		#define PP_FOLD_WRAPPER(f, value) (::PP::detail::fold_wrapper<decltype(f), decltype(value)>{ f, value })
-		
-		template <typename F, typename T, typename U>
-		constexpr auto operator||(U&& element, fold_wrapper<F, T> init)
+		#define PP_FORWARD_AS_FOLD_WRAPPER(f, init) ::PP::detail::fold_wrapper<decltype(f), decltype(init)>{ f, init }
+
+		template <typename F, typename T>
+		constexpr auto operator||(fold_wrapper<F, T> wrap, auto&& element)
 		{
-			return PP_FOLD_WRAPPER(PP_FORWARD(init.f), PP_FORWARD(init.f)(PP_FORWARD(element), PP_FORWARD(init.obj)));
+			return PP_FORWARD_AS_FOLD_WRAPPER(PP_FORWARD(wrap.f), PP_FORWARD(wrap.f)(PP_FORWARD(wrap.init), PP_FORWARD(element)));
 		}
-		template <typename F, typename T, typename U>
-		constexpr auto operator||(fold_wrapper<F, T> init, U&& element)
+		template <typename F, typename T>
+		constexpr auto operator||(auto&& element, fold_wrapper<F, T> wrap)
 		{
-			return PP_FOLD_WRAPPER(PP_FORWARD(init.f), PP_FORWARD(init.f)(PP_FORWARD(init.obj), PP_FORWARD(element)));
+			return PP_FORWARD_AS_FOLD_WRAPPER(PP_FORWARD(wrap.f), PP_FORWARD(wrap.f)(PP_FORWARD(element), PP_FORWARD(wrap.init)));
 		}
 	}
 
-	PP_FUNCTOR(tuple_fold, value_wrap auto left, auto&& f, auto&& init, tuple_like auto&& tuple)
+	PP_FUNCTOR(tuple_fold, concepts::value auto left, auto&& f, auto&& init, concepts::tuple auto&& tuple)
 	{
-		return tuple_apply(
-			[left, &f, &init](auto&&... elements) -> decltype(auto)
+		return functor{ [left, &f, &init]
+			(auto&&... elements) -> decltype(auto)
 			{
 				if constexpr (PP_GET_VALUE(left))
-					return (PP_FOLD_WRAPPER(PP_FORWARD(f), PP_FORWARD(init)) || ... || PP_FORWARD(elements)).obj;
+					return (PP_FORWARD_AS_FOLD_WRAPPER(PP_FORWARD(f), PP_FORWARD(init)) || ... || PP_FORWARD(elements)).init;
 				else
-					return (PP_FORWARD(elements) || ... || PP_FOLD_WRAPPER(PP_FORWARD(f), PP_FORWARD(init))).obj;
-			}, PP_FORWARD(tuple));
+					return (PP_FORWARD(elements) || ... || PP_FORWARD_AS_FOLD_WRAPPER(PP_FORWARD(f), PP_FORWARD(init))).init;
+			}}[PP_FORWARD(tuple)];
 	}};
 
-	PP_FUNCTOR(tuple_fold1, value_wrap auto left, auto&& f, tuple_like auto&& tuple)
-	{
-		auto [head, tail] = tuple_split(PP_FORWARD(tuple));
-		return tuple_fold(left, PP_FORWARD(f), PP_FORWARD(head), PP_FORWARD(tail));
-	}};
-
-	constexpr inline auto tuple_foldl  = tuple_fold (partial_tag, value_true);
-	constexpr inline auto tuple_foldr  = tuple_fold (partial_tag, value_false);
-	constexpr inline auto tuple_foldl1 = tuple_fold1(partial_tag, value_true);
-	constexpr inline auto tuple_foldr1 = tuple_fold1(partial_tag, value_false);
+	constexpr inline auto tuple_foldl = tuple_fold * value_true;
+	constexpr inline auto tuple_foldr = tuple_fold * value_false;
 }

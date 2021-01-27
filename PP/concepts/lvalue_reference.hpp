@@ -1,17 +1,17 @@
 #pragma once
-#include "reference.hpp"
-#include "same.hpp"
+#include "../add_reference.hpp"
+#include "../same.hpp"
+#include "atomic/reference.hpp"
 
 namespace PP
 {
-	namespace concepts
-	{
-		template <typename T>
-		concept lvalue_reference = reference<T> && same<T, T&>;
-	}
+	constexpr inline auto is_lvalue_reference =
+		is_reference &&
+		functor{ []
+		(concepts::type auto t)
+		{
+			return t == t + lvalue_tag;
+		}};
 
-	PP_FUNCTOR(is_lvalue_reference, auto t)
-	{
-		return concepts::lvalue_reference<PP_GET_TYPE(t)>;
-	}};
+	PP_CONCEPT1(lvalue_reference)
 }

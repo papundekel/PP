@@ -1,10 +1,9 @@
 #pragma once
 #include "type_tuple.hpp"
-#include "tuple_prepend.hpp"
 
 namespace PP
 {
-	constexpr inline auto non_void_fundamental_types = type_tuple_v<
+	constexpr inline auto non_void_fundamental_types = type_tuple<
 		  decltype(nullptr)
 		, float
 		, double
@@ -30,6 +29,4 @@ namespace PP
 		, char32_t
 #endif
 	>;
-
-	constexpr inline auto fundamental_types = tuple_prepend(type_v<void>, non_void_fundamental_types);
 }

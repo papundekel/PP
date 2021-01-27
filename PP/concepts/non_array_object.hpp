@@ -6,15 +6,12 @@
 #include "pointer_to_member.hpp"
 #include "user_defined.hpp"
 
-namespace PP
+namespace PP::concepts
 {
-	namespace concepts
-	{
-		template <typename T>
-		concept non_array_object = atomic::non_array_object<T> ||
-			non_void_fundamental<T> ||
-			pointer<T> ||
-			pointer_to_member<T> ||
-			user_defined<T>);
-	}
+	template <typename T>
+	concept non_array_object = is_non_array_object(PP::type<T>) ||
+		non_void_fundamental<T> ||
+		pointer<T> ||
+		pointer_to_member<T> ||
+		user_defined<T>;
 }

@@ -27,7 +27,7 @@ namespace PP
 				return PP_FORWARD(i);
 		}
 
-		constexpr inline auto x = [](type_wrap auto t)
+		constexpr inline auto x = [](concepts::type auto t)
 		{
 			if constexpr (is_pointer(PP_COPY_TYPE(t)))
 				return template_v<transform_iterator_pointer_base>[t];

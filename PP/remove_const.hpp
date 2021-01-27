@@ -8,7 +8,7 @@ namespace PP
 {
 	constexpr inline auto remove_const = functor{ overloaded
 	{
-		[]<typename T>(type_t<const T>) { return type_v<T>; },
+		[]<typename T>(type_t<const T>) { return type<T>; },
 		[](auto t) { return t; }
 	}} | to_type_t;
 }

@@ -8,11 +8,12 @@
 
 namespace PP
 {
-	constexpr inline auto get_cv = functor{ [](type_wrap auto t)
+	constexpr inline auto get_cv = functor{ []
+	(concepts::type auto t)
 	{
 		constexpr auto T = PP_COPY_TYPE(t);
 
-		return value_v<
+		return value<
 			(is_const(T) ? cv_qualifier::Const : cv_qualifier::none) |
 			(is_volatile(T) ? cv_qualifier::Volatile : cv_qualifier::none)>;
 	}} | remove_reference;

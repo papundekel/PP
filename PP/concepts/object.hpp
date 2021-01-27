@@ -12,8 +12,5 @@ namespace PP
 		concept object = complete_object<T> || unbounded_array<T>;
 	}
 
-	PP_FUNCTOR(is_object, type_wrap auto t)
-	{
-		return concepts::object<PP_GET_TYPE(t)>;
-	}};
+	PP_CONCEPT_FUNCTOR(object)
 }

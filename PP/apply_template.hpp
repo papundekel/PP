@@ -1,27 +1,28 @@
 #pragma once
+#include "functional/functor.hpp"
+#include "functional/apply_partially.hpp"
 #include "get_type.hpp"
 #include "get_value.hpp"
-#include "functional/functor.hpp"
 #include "template_t.hpp"
-#include "tuple_index_sequence_for.hpp"
+#include "tuple_apply.hpp"
+#include "tuple_get.hpp"
 #include "tuple_like.hpp"
+#include "tuple_value_sequence_for.hpp"
 #include "type_t.hpp"
 #include "value_t.hpp"
 
 namespace PP
 {
-	namespace detail
+	constexpr inline functor apply_template_pack{ []
+	<template <typename...> typename Template>
+	(template_t<Template>, concepts::type auto... types)
 	{
-		template <template <typename...> typename Template, std::size_t... I>
-		constexpr auto apply_template_helper(template_t<Template>, auto&& types, std::index_sequence<I...>) noexcept
-		{
-			return type_v<Template<PP_GET_TYPE(get(PP::value_v<I>, PP_FORWARD(types)))...>>;
-		};
-	}
+		return type<Template<PP_GET_TYPE(types)...>>;
+	}};
 
-	PP_FUNCTOR(apply_template, auto Template, tuple_like auto&& types)
+	PP_FUNCTOR(apply_template, auto Template, concepts::tuple auto&& types)
 	{
-		return detail::apply_template_helper(Template, PP_FORWARD(types), tuple_index_sequence_for(types));
+		return (apply_template_pack * Template)[PP_FORWARD(types)];
 	}};
 
 	constexpr inline auto apply_template_type = get_type | apply_template;

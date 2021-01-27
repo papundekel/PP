@@ -65,7 +65,7 @@ namespace PP
 
 	public:
 		explicit constexpr any_iterator_wrap(auto&& i)
-		requires (same_except_cvref(type_v<Iterator>, PP_DECLTYPE(i)))
+		requires (same_except_cvref(type<Iterator>, PP_DECLTYPE(i)))
 			: i(PP_FORWARD(i))
 		{}
 
@@ -130,7 +130,7 @@ namespace PP
 
 		constexpr any_iterator_unique_pointer<any_iterator_forward_base, T> copy_forward() const override final
 		{
-			return make_unique(unique_tag_stack, type_v<any_iterator_forward_wrapper>, this->i);
+			return make_unique(unique_tag_stack, type<any_iterator_forward_wrapper>, this->i);
 		}
 	};
 
@@ -301,7 +301,7 @@ namespace PP
 		using Base<T>::Base;
 
 		template <typename Iterator, typename... CompatibleIterators>
-		constexpr any_iterator_helper(Iterator&& i, PP::type_tuple<CompatibleIterators...> = {})
+		constexpr any_iterator_helper(Iterator&& i, PP::type_tuple_t<CompatibleIterators...> = {})
 			: Base<T>(std::make_unique<Wrapper<T, std::remove_cvref_t<Iterator>, CompatibleIterators...>>
 				(std::forward<Iterator>(i)))
 		{}
@@ -335,7 +335,7 @@ namespace PP
 			: simple_view<Type<T>>(std::move(v))
 		{}
 		constexpr any_view(concepts::view auto&& v)
-		requires (!same_except_cvref(type_v<any_view>, PP_DECLTYPE(v)) && !same_except_cvref(type_v<simple_view<Type<T>>>, PP_DECLTYPE(v)))
+		requires (!same_except_cvref(type<any_view>, PP_DECLTYPE(v)) && !same_except_cvref(type<simple_view<Type<T>>>, PP_DECLTYPE(v)))
 			: simple_view<Type<T>>(
 				Type<T>(begin(PP_FORWARD(v)),   view_end_iterator(PP_DECLTYPE(v))),
 				Type<T>(  end(PP_FORWARD(v)), view_begin_iterator(PP_DECLTYPE(v))))

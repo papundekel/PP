@@ -18,7 +18,7 @@ namespace PP
 		{}
 
 		constexpr pointer_new(placeholder_t, auto&& value)
-			: pointer_new(PP::type_v<std::remove_cvref_t<decltype(value)	>>, PP_FORWARD(value))
+			: pointer_new(PP::type<std::remove_cvref_t<decltype(value)	>>, PP_FORWARD(value))
 		{}
 
 		constexpr pointer_new(const pointer_new<pointer_new_compatible<T> auto>& other) noexcept

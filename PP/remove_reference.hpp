@@ -8,12 +8,12 @@ namespace PP
 {
 	constexpr inline auto remove_reference = functor{ overloaded
 	{
-		[]<typename T>(type_t<T&&>) { return type_v<T>; },
-		[]<typename T>(type_t<T& >) { return type_v<T>; },
+		[]<typename T>(type_t<T&&>) { return type<T>; },
+		[]<typename T>(type_t<T& >) { return type<T>; },
 		[](auto t) { return t; }
 	}} | to_type_t;
 
-	constexpr auto operator!(type_wrap auto t) noexcept
+	constexpr auto operator!(concepts::type auto t) noexcept
 	{
 		return remove_reference(t);
 	}

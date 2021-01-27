@@ -9,13 +9,8 @@ namespace PP
 	namespace concepts
 	{
 		template <typename T>
-		concept user_defined = atomic::user_defined<T> ||
+		concept user_defined = is_user_defined(PP::type<T>) ||
 			class_type<T> ||
-			enum_type<T>);
+			enum_type<T>;
 	}
-
-	PP_FUNCTOR(is_user_defined, type_wrap auto t)
-	{
-		return concepts::user_defined<PP_GET_TYPE(t)>;
-	}};
 }

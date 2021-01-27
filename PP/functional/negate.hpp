@@ -1,18 +1,12 @@
 #pragma once
 #include "compose.hpp"
+#include "functor.hpp"
+#include "operators.hpp"
 
 namespace PP
 {
-	constexpr inline functor negate
+	constexpr auto operator!(concepts::functor auto&& f) noexcept
 	{
-		[](auto&& t) -> decltype(auto)
-		{
-			return !PP_FORWARD(t);
-		}
-	};
-
-	constexpr auto operator!(is_functor auto&& f) noexcept
-	{
-		return negate | PP_FORWARD(f);
+		return neg | PP_FORWARD(f);
 	}
 }

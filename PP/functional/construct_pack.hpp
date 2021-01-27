@@ -1,10 +1,10 @@
 #pragma once
-#include "functor.hpp"
 #include "../get_type.hpp"
+#include "functor.hpp"
 
 namespace PP
 {
-	PP_FUNCTOR(construct, auto t, auto&&... args)
+	PP_FUNCTOR(construct_pack, concepts::type auto t, auto&&... args) -> decltype(auto)
 	{
 		return PP_GET_TYPE(t)(PP_FORWARD(args)...);
 	}};

@@ -6,7 +6,7 @@
 
 namespace PP
 {
-	PP_FUNCTOR(add_cv, value_wrap auto cv, type_wrap auto t)
+	PP_FUNCTOR(add_cv, concepts::value auto cv, concepts::type auto t)
 	{
 		constexpr auto CV = *PP_COPY_VALUE(cv);
 

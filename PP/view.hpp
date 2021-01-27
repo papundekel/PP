@@ -6,45 +6,53 @@
 #include "iterator.hpp"
 #include "remove_reference.hpp"
 #include "size_t.hpp"
+#include "tuple_std.hpp"
 
 namespace PP
 {
 	namespace detail
 	{
 		template <typename T>
-		concept view_has_member_begin = requires
+		concept view_concept_begin_member = requires
 		{
-			{ declval(type_v<T>).begin() } -> concepts::iterator;
+			{ declval(type<T>).begin() } -> concepts::iterator;
 		};
 		template <typename T>
-		concept view_has_member_end = requires
+		concept view_concept_begin_array_reference = view_concept_begin_member<T> || (is_array | remove_reference <<= type<T>);
+		template <typename T>
+		concept view_concept_begin_any = view_concept_begin_array_reference<T> || requires
 		{
-			{ declval(type_v<T>).end() } -> concepts::nonvoid;
+			{ begin(declval(type<T>)) } -> concepts::iterator;
+		};
+
+		template <typename T>
+		concept view_concept_end_member = requires
+		{
+			{ declval(type<T>).end() } -> concepts::nonvoid;
+		};
+		template <typename T>
+		concept view_concept_end_bounded_array_reference = view_concept_end_member<T> || (is_bounded_array | remove_reference <<= type<T>);
+		template <typename T>
+		concept view_concept_end_any = view_concept_end_bounded_array_reference<T> || requires
+		{
+			{ end(declval(type<T>)) } -> concepts::nonvoid;
 		};
 	}
 	
-	PP_FUNCTOR(view_begin, auto&& v) -> decltype(auto)
-	requires
-		requires view_has_member_begin<decltype(v)> ||
-		requires (is_array(!PP_DECLTYPE(v))) ||
-		requires requires { { begin(PP_FORWARD(v)) } -> concepts::iterator; }
+	PP_FUNCTOR(view_begin, detail::view_concept_begin_any auto&& v) -> decltype(auto)
 	{
-		if constexpr (view_has_member_begin<decltype(v)>)
+		if constexpr (detail::view_concept_begin_member<decltype(v)>)
 			return PP_FORWARD(v).begin();
-		else if constexpr (is_array(!PP_DECLTYPE(v)))
+		else if constexpr (detail::view_concept_begin_array_reference<decltype(v)>)
 			return v + 0;
 		else
 			return begin(PP_FORWARD(v));
 	}};
-	PP_FUNCTOR(view_end, auto&& v) -> decltype(auto)
-	requires
-	requires view_has_member_end<decltype(v)> ||
-	requires (is_bounded_array(!PP_DECLTYPE(v))) ||
-	requires requires { { end(PP_FORWARD(v)) } -> concepts::nonvoid; }
+	PP_FUNCTOR(view_end, detail::view_concept_end_any auto&& v) -> decltype(auto)
 	{
-		if constexpr (view_has_member_end<decltype(v)>)
+		if constexpr (detail::view_concept_end_member<decltype(v)>)
 			return PP_FORWARD(v).end();
-		else if constexpr (is_bounded_array(!PP_DECLTYPE(v)))
+		else if constexpr (detail::view_concept_end_bounded_array_reference<decltype(v)>)
 			return v + sizeof(v);
 		else
 			return end(PP_FORWARD(v));
@@ -52,13 +60,13 @@ namespace PP
 
 	namespace detail
 	{
-		PP_FUNCTOR(view_begin_iterator_pure, auto v)
+		PP_FUNCTOR(view_begin_iterator_pure, concepts::type auto v)
 		{
 			return PP_DECLTYPE(view_begin(declval(v)));
 		}};
 	}
 	
-	PP_FUNCTOR(is_view, type_wrap auto t)
+	PP_FUNCTOR(is_view, concepts::type auto t)
 	{
 		return requires
 		{
@@ -67,11 +75,7 @@ namespace PP
 		};
 	}};
 
-	namespace concepts
-	{
-		template <typename T>
-		concept view = is_view(type_v<T>);
-	}
+	PP_CONCEPT1(view)
 	
 	constexpr decltype(auto) count(concepts::view auto&& v)
 	{
@@ -110,8 +114,8 @@ namespace PP
 		}
 	}
 
-	constexpr auto begin_end(auto&& v)
+	PP_FUNCTOR(view_begin_end, concepts::view auto&& v)
 	{
-		return std::make_pair(view_begin(PP_FORWARD(v)), view_end(PP_FORWARD(v)));
-	}
+		return make_tuple(view_begin(PP_FORWARD(v)), view_end(PP_FORWARD(v)));
+	}};
 }

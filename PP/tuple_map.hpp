@@ -1,30 +1,23 @@
 #pragma once
 #include "tuple.hpp"
 #include "declval.hpp"
-#include "forward.hpp"
 #include "functional/functor.hpp"
-#include "functional/id.hpp"
-#include "functional/map_arguments.hpp"
 #include "tuple_apply.hpp"
 
 namespace PP
 {
-	constexpr inline auto tuple_map = map_arguments(tuple_apply,
-		[](auto&& map)
-		{
-			return [&map](auto&&... elements) -> decltype(auto)
+	PP_FUNCTOR(tuple_map, auto&& map, concepts::tuple auto&& t)
+	{
+		return functor{ [&map]
+			(auto&&... elements)
 			{
-				return tuple<decltype(declval<decltype(map)>()(declval<decltype(elements)>()))...>
+				return tuple<decltype(declval(PP_DECLTYPE(map))(declval(PP_DECLTYPE(elements))))...>
 					(PP_FORWARD(map)(PP_FORWARD(elements))...);
-			};
-		}, id_forward);
+			}}[PP_FORWARD(t)];
+	}};
 
-	constexpr decltype(auto) operator*(const functor<auto>& f, tuple_like auto&& tuple)
+	constexpr auto operator+(concepts::functor auto&& f, concepts::tuple auto&& tuple)
 	{
-		return tuple_map(f.f, PP_FORWARD(tuple));
-	}
-	constexpr decltype(auto) operator*(const functor<auto>&& f, tuple_like auto&& tuple)
-	{
-		return tuple_map(std::move(f).f, PP_FORWARD(tuple));
+		return tuple_map(PP_FORWARD(f).f, PP_FORWARD(tuple));
 	}
 }

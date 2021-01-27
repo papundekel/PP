@@ -1,0 +1,18 @@
+#pragma once
+#include "functional/compose_apply.hpp"
+#include "generator_tuple.hpp"
+#include "tuple.hpp"
+#include "tuple_count.hpp"
+#include "tuple_zip_with.hpp"
+
+namespace PP
+{
+	PP_FUNCTOR(tuple_zip_indices, concepts::tuple auto&& t)
+	{
+		return *functor{ []
+			(auto i, auto&& element)
+			{
+				return tuple<decltype(i), decltype(element)>(i, PP_FORWARD(element));
+			}} + (make_id_tuple(tuple_count_value_t(t)) ^ PP_FORWARD(t));
+	}};
+}

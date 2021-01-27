@@ -1,32 +1,19 @@
 #pragma once
-#include "tuple.hpp"
-#include "tuple_prepend.hpp"
-#include "functional/apply_partially.hpp"
-#include "overloaded.hpp"
+#include "empty_tuple.hpp"
+#include "tuple_fold.hpp"
 
 namespace PP
 {
-	namespace detail
+	PP_FUNCTOR(tuple_filter, concepts::value auto predicate, concepts::tuple auto&& t)
 	{
-		template <auto filter>
-		struct tuple_filter_helper
-		{
-			constexpr auto operator()() const noexcept
+		return tuple_foldr([]
+			(auto&& element, auto&& tail)
 			{
-				return std::tuple<>{};
-			}
-			constexpr auto operator()(auto&& head, auto&&... tail) const noexcept
-			{
-				auto filtered_tail = (*this)(PP_FORWARD(tail)...);
-
-				if constexpr (filter(std::decay_t<decltype(head)>{}))
-					return tuple_prepend(PP_FORWARD(head), filtered_tail);
+				if constexpr (PP_COPY_VALUE(predicate)(PP_FORWARD(element)))
+					return tuple_prepend(PP_FORWARD(element), PP_FORWARD(tail));
 				else
-					return filtered_tail;
-			}
-		};
-	}
-
-	template <auto filter>
-	constexpr inline auto tuple_filter = apply_partially<false, true>(tuple_apply, detail::tuple_filter_helper<filter>{});
+					return PP_FORWARD(tail);
+			},
+			empty_tuple{}, PP_FORWARD(t));
+	}};
 }

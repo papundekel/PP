@@ -17,17 +17,17 @@ namespace PP
 			: begin(move(begin))
 		{}
 
-		constexpr decltype(auto) operator[](value_wrap auto i) const noexcept
+		constexpr decltype(auto) operator[](concepts::value auto i) const noexcept
 		{
 			return begin[*i];
 		};
-		constexpr auto element(value_wrap auto i) const noexcept
+		constexpr auto element(concepts::value auto i) const noexcept
 		{
 			return PP_DECLTYPE(operator[](i));
 		}
 		constexpr auto tuple_count() const noexcept
 		{
-			return value_v<std::size_t(0) - 1>;
+			return value<std::size_t(0) - 1>;
 		}
 	};
 	constexpr auto make_view_tuple(concepts::view auto&& v) noexcept

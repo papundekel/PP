@@ -17,30 +17,33 @@ namespace PP
 	namespace detail
 	{
 		template <template <typename...> typename T, typename... Types>
-		struct decompose_template_pair
+		struct decompose_pair
 		{
 			template_t<T> Template;
-			type_tuple<Types...> types;
+			type_tuple_t<Types...> types;
 		};
 
 		template <typename T>
-		struct decompose_template_dummy {};
+		struct decompose_dummy {};
 	}
 	
-	constexpr inline auto decompose_template = functor{ overloaded
+	constexpr inline auto decompose = functor{ overloaded
 	{
-		[] <template <typename...> typename Template, typename... Types>(PP::type_t<Template<Types...>>)
+		[] <template <typename...> typename T, typename... Types>(type_t<T<Types...>>)
 		{
-			return detail::decompose_template_pair{ template_v<Template>, type_tuple_v<Types...> };
+			return detail::decompose_pair{ Template<T>, type_tuple<Types...> };
 		},
 		[](auto&&)
 		{
-			return detail::decompose_template_pair{ template_v<detail::decompose_template_dummy>, type_tuple_v<> };
+			return detail::decompose_pair{ Template<detail::decompose_dummy>, type_tuple<> };
 		}
 	}} | remove_cvref;
 
-	constexpr auto operator*(type_wrap auto t) noexcept
+	constexpr inline auto decompose_template = functor{ [](auto p) { return p.Template; } } | decompose;
+	constexpr inline auto decompose_types = functor{ [](auto p) { return p.types; } } | decompose;
+
+	constexpr auto operator*(concepts::type auto t) noexcept
 	{
-		return decompose_template(t);
+		return decompose(t);
 	}
 }

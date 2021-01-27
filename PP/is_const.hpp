@@ -4,7 +4,7 @@
 
 namespace PP
 {
-	PP_FUNCTOR(is_const, type_wrap auto t)
+	PP_FUNCTOR(is_const, concepts::type auto t)
 	{
 		return remove_const(t) != t;
 	}};

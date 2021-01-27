@@ -7,34 +7,34 @@
 namespace PP
 {
 	template <template <typename...> typename...>
-	struct template_tuple {};
+	struct template_tuple_t {};
 	template <template <typename...> typename T, template <typename...> typename... Templates>
-	struct template_tuple<T, Templates...>
+	struct template_tuple_t<T, Templates...>
 	{
 		constexpr auto head() const noexcept
 		{
-			return template_v<T>;
+			return Template<T>;
 		}
 		constexpr auto head_element() const noexcept
 		{
-			return type_v<template_t<T>>;
+			return type<template_t<T>>;
 		}
 		constexpr auto pred() const noexcept
 		{
-			return template_tuple<Templates...>{};
+			return template_tuple_t<Templates...>{};
 		}
-		constexpr auto operator[](value_wrap auto i) const noexcept
+		constexpr auto operator[](concepts::value auto i) const noexcept
 		{
 			return tuple_recursive(tuple_head_no_get, i, *this);
 		}
 	};
 
 	template <template <typename...> typename... Templates>
-	constexpr inline template_tuple<Templates...> template_tuple_v = {};
+	constexpr inline template_tuple_t<Templates...> template_tuple = {};
 
 	template <template <typename...> typename... Templates>
-	constexpr auto tuple_count_implementation(template_tuple<Templates...> t) noexcept
+	constexpr auto tuple_count_implementation(template_tuple_t<Templates...> t) noexcept
 	{
-		return value_v<sizeof...(Templates)>;
+		return value<sizeof...(Templates)>;
 	};
 }

@@ -1,10 +1,11 @@
 #pragma once
+#include "../../functional/functor.hpp"
 #include "../../get_type.hpp"
 #include "../../templated_dummy.hpp"
 
 namespace PP
 {
-	PP_FUNCTOR(is_referencable, type_wrap auto t)
+	PP_FUNCTOR(is_referencable, concepts::type auto t)
 	{
 		return requires
 		{

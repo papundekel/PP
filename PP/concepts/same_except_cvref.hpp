@@ -14,7 +14,7 @@ namespace PP
 		concept different_except_cvref = !same_except_cvref<T, U>;
 	}
 
-	PP_FUNCTOR(is_same_except_cvref, auto t, auto u)
+	PP_FUNCTOR(is_same_except_cvref, concepts::type auto t, concepts::type auto u)
 	{
 		return concepts::same_except_cvref<PP_GET_TYPE(t), PP_GET_TYPE(u)>;
 	}};

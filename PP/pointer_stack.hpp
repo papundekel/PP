@@ -6,7 +6,7 @@
 #include "add_pointer.hpp"
 #include "concepts/convertible_to.hpp"
 #include "decompose_template.hpp"
-#include "functional/comparisons.hpp"
+#include "functional/operators.hpp"
 #include "get_type.hpp"
 #include "get_value.hpp"
 #include "placeholder.hpp"
@@ -27,7 +27,7 @@ namespace PP
 				{
 					auto [value_types, sizes, alignments] = tuple_zip(std::pair{ from->types, to->types });
 
-					return is_convertible_to[add_pointer * value_types]
+					return is_convertible_to[add_pointer + value_types]
 						&& less_or_eq[sizes]
 						&& less_or_eq[alignments];
 				}
@@ -78,7 +78,7 @@ namespace PP
 			{}
 
 			constexpr pointer_stack(const auto& other) noexcept
-				requires (pointer_stack_compatible(type_v<pointer_stack>, PP_DECLTYPE(other)))
+				requires (pointer_stack_compatible(type<pointer_stack>, PP_DECLTYPE(other)))
 			{
 				std::copy(other.buffer.begin(), other.buffer.end(), buffer.begin());
 				is_valid_ = other.is_valid_;

@@ -5,7 +5,7 @@
 
 namespace PP
 {
-	PP_FUNCTOR(is_pointable, auto t)
+	PP_FUNCTOR(is_pointable, concepts::type auto t)
 	{
 		return requires
 		{

@@ -1,26 +1,27 @@
 #pragma once
 #include "../declval.hpp"
-#include "../functional/functor.hpp"
+#include "../functional/apply_partially.hpp"
+#include "../get_type.hpp"
 #include "../tuple_apply.hpp"
-#include "../functional/map_arguments.hpp"
 
 namespace PP
 {
-	constexpr inline auto is_constructible = map_arguments(tuple_apply,
-		[](auto t)
+	PP_FUNCTOR(is_constructible_pack, concepts::type auto t, concepts::type auto... arg_types)
+	{
+		return requires
 		{
-			return [](auto... as)
-			{
-				return requires
-				{
-					PP_GET_TYPE(t)(declval(as)...);
-				};
-			};
-		}, id_forward);
+			PP_GET_TYPE(t)(declval(arg_types)...);
+		};
+	}};
+
+	PP_FUNCTOR(is_constructible, concepts::type auto t, concepts::tuple auto arg_tuple)
+	{
+		return (is_constructible_pack * t)[arg_tuple];
+	}};
 
 	namespace concepts
 	{
 		template <typename T, typename... Args>
-		concept constructible = is_constructible(type_v<T>, type_tuple_v<Args...>);
+		concept constructible = is_constructible_pack(PP::type<T>, PP::type<Args>...);
 	}
 }

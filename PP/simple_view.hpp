@@ -22,7 +22,7 @@ namespace PP
 			: pair{ begin, end }
 		{}
 		constexpr simple_view(concepts::view auto&& v)
-		requires (!same_except_cvref(type_v<simple_view>, PP_DECLTYPE(v)))
+		requires (!same_except_cvref(type<simple_view>, PP_DECLTYPE(v)))
 			: simple_view(begin(PP_FORWARD(v)), end(PP_FORWARD(v)))
 		{}
 		constexpr simple_view(const std::initializer_list<apply_transform_t<remove_reference | iterator_base, Iterator>>& l)

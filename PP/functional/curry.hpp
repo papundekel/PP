@@ -5,18 +5,18 @@ namespace PP
 {
 	PP_FUNCTOR(curry, auto&& f)
 	{
-		return functor{
-			[f_copy = PP_FORWARD(f)] (auto&& arg)
+		return functor{	[ff = PP_FORWARD(f)]
+			(auto&& arg)
 			{
-				return functor{
-					[f_copy, arg = PP_FORWARD(arg)] (auto&&... args) -> decltype(auto)
+				return functor{ [fff = ff, arg = PP_FORWARD(arg)]
+					(auto&&... args) -> decltype(auto)
 					{
-						return f_copy(arg, PP_FORWARD(args)...);
+						return fff(arg, PP_FORWARD(args)...);
 					}};
 			}};
 	}};
 
-	constexpr auto operator~(is_functor auto&& f) noexcept
+	constexpr auto operator~(concepts::functor auto&& f)
 	{
 		return curry(PP_FORWARD(f).f);
 	}

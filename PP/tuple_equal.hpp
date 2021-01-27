@@ -12,7 +12,7 @@ namespace PP
 		}
 	}
 
-	template <PP::tuple_like A, PP::tuple_like B>
+	template <PP::concepts::tuple A, PP::concepts::tuple B>
 	constexpr auto operator==(const A& a, const B& b)
 	{
 		return std::tuple_size_v<A> == std::tuple_size_v<B> && detail::tuple_equal_helper(a, b, std::make_index_sequence<std::tuple_size_v<A>>{});

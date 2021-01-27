@@ -5,26 +5,23 @@ namespace PP
 {
 	namespace detail
 	{
-		constexpr  decltype(auto) tuple_head_no_get_member(auto&& t)
-		requires requires { PP_FORWARD(t).head(); }
+		template <typename T>
+		concept tuple_concept_head_no_get_member = requires
 		{
-			return PP_FORWARD(t).head();
-		}
-		constexpr decltype(auto) tuple_head_no_get(auto&& t)
-		requires requires { head_implementation(PP_FORWARD(t)); }
+			declval(type<T>).head();
+		};
+		template <typename T>
+		concept tuple_concept_head_no_get_any = tuple_concept_head_no_get_member<T> || requires
 		{
-			return head_implementation(PP_FORWARD(t));
-		}
+			head_implementation(declval(type<T>));
+		};
 	}
 
-	PP_FUNCTOR(tuple_head_no_get, auto&& t) -> decltype(auto)
-	requires
-		requires { detail::tuple_head_no_get_member(PP_FORWARD(t)); } ||
-		requires { detail::tuple_head_no_get(PP_FORWARD(t)); }
+	PP_FUNCTOR(tuple_head_no_get, detail::tuple_concept_head_no_get_any auto&& t) -> decltype(auto)
 	{
-		if constexpr (requires { detail::tuple_head_no_get_member(PP_FORWARD(t)); })
-			return detail::tuple_head_no_get_member(PP_FORWARD(t));
+		if constexpr (detail::tuple_concept_head_no_get_member<decltype(t)>)
+			return PP_FORWARD(t).head();
 		else
-			return detail::tuple_head_no_get(PP_FORWARD(t));
+			return head_implementation(PP_FORWARD(t));
 	}};
 }
