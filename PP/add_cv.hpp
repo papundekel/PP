@@ -19,4 +19,16 @@ namespace PP
 		else
 			return add_const(add_volatile(t));
 	}};
+
+	template <cv_qualifier cv> struct add_cv_tag_t : public value_t<cv> {};
+
+	constexpr inline add_cv_tag_t<cv_qualifier::Const> add_const_tag = {};
+	constexpr inline add_cv_tag_t<cv_qualifier::Volatile> add_volatile_tag = {};
+	constexpr inline add_cv_tag_t<cv_qualifier::const_volatile> add_const_volatile_tag = {};
+
+	template <cv_qualifier cv>
+	constexpr auto operator+(concepts::type auto t, add_cv_tag_t<cv> tag) noexcept
+	{
+		return add_cv(tag, t);
+	}
 }

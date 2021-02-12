@@ -5,7 +5,7 @@
 
 namespace PP
 {
-	template <auto generator, std::size_t count>
+	template <auto generator, size_t count>
 	class generator_tuple_t
 	{
 	public:

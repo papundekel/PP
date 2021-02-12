@@ -12,7 +12,7 @@ namespace PP
 		return *functor{ []
 			(auto i, auto&& element)
 			{
-				return tuple<decltype(i), decltype(element)>(i, PP_FORWARD(element));
+				return tuple<decltype(i), decltype(element)>(placeholder, i, PP_FORWARD(element));
 			}} + (make_id_tuple(tuple_count_value_t(t)) ^ PP_FORWARD(t));
 	}};
 }

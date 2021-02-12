@@ -13,7 +13,7 @@ namespace PP
 		[](auto&& head, auto&&... tail)
 		{
 			return tuple<decltype(head), tuple<decltype(tail)...>>
-				(PP_FORWARD(head), forward_as_tuple(PP_FORWARD(tail)...));
+				(placeholder, PP_FORWARD(head), forward_as_tuple(PP_FORWARD(tail)...));
 		},
 		[]() { return false; }
 	}};

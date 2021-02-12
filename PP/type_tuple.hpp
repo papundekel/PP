@@ -13,8 +13,7 @@ namespace PP
 	struct type_tuple_t<Head, Rest...>
 	{
 		type_tuple_t() = default;
-		constexpr type_tuple_t(type_t<Head>, type_t<Rest>...) noexcept
-		{}
+		constexpr type_tuple_t(auto, auto...) noexcept {}
 
 		constexpr auto head() const noexcept
 		{
@@ -40,10 +39,10 @@ namespace PP
 	constexpr inline type_tuple_t<T...> type_tuple = {};
 
 	template <typename... T>
-	constexpr auto tuple_count_implementation(type_tuple_t<T...> t) noexcept
+	constexpr auto tuple_count_implementation(type_tuple_t<T...>) noexcept
 	{
 		return value<sizeof...(T)>;
-	};
+	}
 
 	PP_FUNCTOR(make_type_tuple, concepts::type auto... t)
 	{

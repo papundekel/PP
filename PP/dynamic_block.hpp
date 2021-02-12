@@ -1,15 +1,15 @@
 #pragma once
-#include <memory>
-#include <cstddef>
+#include "uninitialized_copy.hpp"
 #include "unique_pointer.hpp"
+#include "view.hpp"
 
 namespace PP
 {
 	template <typename T>
 	class dynamic_block
 	{
-		std::size_t count_;
-		unique_pointer<std::byte[]> buffer;
+		size_t count_;
+		unique_pointer<pointer_new_array<std::byte>> buffer;
 
 		constexpr T* begin_helper() const noexcept
 		{
@@ -23,8 +23,13 @@ namespace PP
 	public:
 		explicit constexpr dynamic_block(std::size_t count) noexcept
 			: count_(count)
-			, buffer(new std::byte[count_ * sizeof(T)])
+			, buffer(pointer_new_array<std::byte>(count_))
 		{}
+		explicit constexpr dynamic_block(concepts::view auto&& v)
+			: dynamic_block(PP::view_count(PP_FORWARD(v)))
+		{
+			uninitialized_copy(*this, PP_FORWARD(v));
+		}
 
 		constexpr T* begin() noexcept
 		{

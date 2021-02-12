@@ -26,6 +26,6 @@ namespace PP
 
 	constexpr auto operator|(concepts::functor auto&& f, concepts::functor auto&& g)
 	{
-		return compose(PP_FORWARD(f).f, PP_FORWARD(g).f);
+		return compose(unwrap_functor(PP_FORWARD(f)), unwrap_functor(PP_FORWARD(g)));
 	}
 }

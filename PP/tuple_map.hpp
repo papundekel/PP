@@ -12,7 +12,7 @@ namespace PP
 			(auto&&... elements)
 			{
 				return tuple<decltype(declval(PP_DECLTYPE(map))(declval(PP_DECLTYPE(elements))))...>
-					(PP_FORWARD(map)(PP_FORWARD(elements))...);
+					(placeholder, PP_FORWARD(map)(PP_FORWARD(elements))...);
 			}}[PP_FORWARD(t)];
 	}};
 

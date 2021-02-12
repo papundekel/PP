@@ -18,6 +18,6 @@ namespace PP
 
 	constexpr auto operator~(concepts::functor auto&& f)
 	{
-		return curry(PP_FORWARD(f).f);
+		return curry(unwrap_functor(PP_FORWARD(f)));
 	}
 }

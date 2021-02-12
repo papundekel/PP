@@ -1,4 +1,6 @@
 #pragma once
+#include "atomic/reference.hpp"
+#include "../functional/negate.hpp"
 #include "lvalue_reference.hpp"
 
 namespace PP

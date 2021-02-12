@@ -37,8 +37,8 @@ namespace PP
 		}
 
 	public:
-		array_vector()
-			= default;
+		array_vector() = default;
+
 		constexpr array_vector(const array_vector& other) noexcept(std::is_nothrow_copy_constructible_v<T>)
 		{
 			std::uninitialized_copy(other.begin(), other.end(), begin());

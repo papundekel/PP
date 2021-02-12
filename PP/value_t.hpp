@@ -24,16 +24,16 @@ namespace PP
 	template <auto V>
 	constexpr inline value_t<V> value = {};
 
-	constexpr inline value_t<0> value_0 = {};
-	constexpr inline value_t<1> value_1 = {};
-	constexpr inline value_t<2> value_2 = {};
-	constexpr inline value_t<3> value_3 = {};
-	constexpr inline value_t<4> value_4 = {};
-	constexpr inline value_t<5> value_5 = {};
-	constexpr inline value_t<6> value_6 = {};
-	constexpr inline value_t<7> value_7 = {};
-	constexpr inline value_t<8> value_8 = {};
-	constexpr inline value_t<9> value_9 = {};
+	constexpr inline value_t<0u> value_0 = {};
+	constexpr inline value_t<1u> value_1 = {};
+	constexpr inline value_t<2u> value_2 = {};
+	constexpr inline value_t<3u> value_3 = {};
+	constexpr inline value_t<4u> value_4 = {};
+	constexpr inline value_t<5u> value_5 = {};
+	constexpr inline value_t<6u> value_6 = {};
+	constexpr inline value_t<7u> value_7 = {};
+	constexpr inline value_t<8u> value_8 = {};
+	constexpr inline value_t<9u> value_9 = {};
 	
 	constexpr inline value_t<true> value_true = {};
 	constexpr inline value_t<false> value_false = {};

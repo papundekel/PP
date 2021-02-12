@@ -11,8 +11,8 @@ namespace PP
 	public:
 		using pointer_new_base<T>::pointer_new_base;
 
-		template <typename... Args>
-		constexpr pointer_new_array(PP::type_t<T>, std::size_t count) // TODO noexcept(?)
+		template <concepts::type Type = type_t<void>>
+		constexpr pointer_new_array(std::size_t count, Type t = {})
 			: pointer_new_base<T>(new T[count])
 		{}
 
@@ -26,4 +26,6 @@ namespace PP
 			delete[] this->ptr;
 		}
 	};
+
+	pointer_new_array(std::size_t, concepts::type auto t)->pointer_new_array<PP_GET_TYPE(t)>;
 }

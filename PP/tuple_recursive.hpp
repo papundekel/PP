@@ -2,6 +2,7 @@
 #include "tuple_pred.hpp"
 #include "get_value.hpp"
 #include "tuple_count.hpp"
+#include "value_t_static_cast.hpp"
 
 namespace PP
 {

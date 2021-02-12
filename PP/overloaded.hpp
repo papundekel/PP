@@ -1,4 +1,5 @@
 #pragma once
+#include "functional/functor.hpp"
 
 namespace PP
 {
@@ -8,5 +9,10 @@ namespace PP
 		using Ts::operator()...;
 	};
 	template <typename... Ts>
-	overloaded(Ts...) -> overloaded<Ts...>;
+	overloaded(Ts...)->overloaded<Ts...>;
+
+	PP_FUNCTOR(make_overloaded_pack, auto&&... functors)
+	{
+		return functor{ overloaded{ PP_FORWARD(functors)... } };
+	}};
 }

@@ -9,12 +9,12 @@ namespace PP
 	{
 		return requires
 		{
-			{ declval(a) == declval(b) } -> concepts::convertible_to<bool>;
+			{ PP::declval(a) == PP::declval(b) } -> concepts::convertible_to<bool>;
 		};
 	}};
 
 	namespace concepts
-	{
+	{	
 		template <typename T, typename U>
 		concept equatable = is_equatable(PP::type<T>, PP::type<U>);
 	}

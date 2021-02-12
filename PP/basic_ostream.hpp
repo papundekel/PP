@@ -1,4 +1,6 @@
 #pragma once
+#include <ostream>
+
 #include "simple_ostream.hpp"
 
 namespace PP
@@ -9,14 +11,14 @@ namespace PP
 		Buffer<char> buffer;
 
 	public:
-		constexpr void write(std::string_view s) noexcept override final
+		constexpr void write(any_view_ra<const char&> view) noexcept override final
 		{
-			for (char c : s)
+			for (auto& c : view)
 				buffer.push_back(c);
 		}
 		void write_to_ostream(std::ostream& out) noexcept override final
 		{
-			out.write(buffer.begin(), buffer.count());
+			out.write(view_begin(buffer), view_count(buffer));
 			buffer.clear();
 		}
 	};

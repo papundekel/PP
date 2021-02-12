@@ -1,18 +1,8 @@
 #pragma once
-#include <type_traits>
-#include <cstdint>
-
-#include "functional/apply_partially.hpp"
-#include "functional/compose.hpp"
 
 namespace PP
 {
-	namespace detail
-	{
-		using cv_qualifier_t = std::uint_fast8_t;
-	}
-
-	enum class cv_qualifier : detail::cv_qualifier_t
+	enum class cv_qualifier : unsigned int
 	{
 		none = 0b00,
 		Const = 0b01,
@@ -22,21 +12,18 @@ namespace PP
 
 	constexpr bool operator&(cv_qualifier a, cv_qualifier b) noexcept
 	{
-		return (detail::cv_qualifier_t)a & (detail::cv_qualifier_t)b;
+		return (unsigned int)a & (unsigned int)b;
 	}
 
 	constexpr auto operator|(cv_qualifier a, cv_qualifier b) noexcept
 	{
-		return cv_qualifier((detail::cv_qualifier_t)a | (detail::cv_qualifier_t)b);
+		return cv_qualifier((unsigned int)a | (unsigned int)b);
 	}
 
 	namespace detail
 	{
 		constexpr inline auto bool_to_int = [](bool p) { return p ? 1 : 0; };
 	}
-
-	//constexpr inline auto is_const_v = detail::bool_to_int | apply_partially(map_v, template_v<std::is_const>);
-	//constexpr inline auto is_volatile_v = detail::bool_to_int | apply_partially(map_v, template_v<std::is_volatile>);
 
 	constexpr bool cv_is_const(cv_qualifier q) noexcept
 	{

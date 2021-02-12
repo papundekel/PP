@@ -1,7 +1,7 @@
 #pragma once
 #include <variant>
 
-#include "functional/construct_pack.hpp"
+#include "construct_pack.hpp"
 #include "make_in_place_index.hpp"
 
 namespace PP

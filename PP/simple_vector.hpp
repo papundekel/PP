@@ -4,16 +4,17 @@
 #include <algorithm>
 #include <memory>
 #include "dynamic_block.hpp"
+#include "view.hpp"
 
 namespace PP
 {
 	template <typename T>
 	class simple_vector
 	{
-		static constexpr std::size_t default_capacity = 16;
+		static constexpr size_t default_capacity = 16;
 
-		std::size_t count_;
 		dynamic_block<T> block;
+		size_t count_;
 
 		constexpr void destroy_all() noexcept
 		{
@@ -21,9 +22,13 @@ namespace PP
 		}
 
 	public:
+		explicit constexpr simple_vector(concepts::view auto&& v)
+			: block(PP_FORWARD(v))
+			, count_(block.count())
+		{}
 		explicit constexpr simple_vector(std::size_t capacity) noexcept
-			: count_(0)
-			, block(capacity)
+			: block(capacity)
+			, count_(0)
 		{}
 		constexpr simple_vector() noexcept
 			: simple_vector(default_capacity)

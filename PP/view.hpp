@@ -53,7 +53,7 @@ namespace PP
 		if constexpr (detail::view_concept_end_member<decltype(v)>)
 			return PP_FORWARD(v).end();
 		else if constexpr (detail::view_concept_end_bounded_array_reference<decltype(v)>)
-			return v + sizeof(v);
+			return v + sizeof(v) / sizeof(*v);
 		else
 			return end(PP_FORWARD(v));
 	}};
@@ -77,7 +77,7 @@ namespace PP
 
 	PP_CONCEPT1(view)
 	
-	constexpr decltype(auto) count(concepts::view auto&& v)
+	constexpr decltype(auto) view_count(concepts::view auto&& v)
 	{
 		if constexpr (requires { PP_FORWARD(v).count(); })
 			return PP_FORWARD(v).count();
@@ -85,7 +85,7 @@ namespace PP
 			return view_end(PP_FORWARD(v)) - view_begin(PP_FORWARD(v));
 	}
 
-	constexpr bool empty(concepts::view auto&& v)
+	constexpr bool view_empty(concepts::view auto&& v)
 	{
 		return view_begin(PP_FORWARD(v)) == view_end(PP_FORWARD(v));
 	}

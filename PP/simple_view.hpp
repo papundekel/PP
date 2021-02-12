@@ -23,7 +23,7 @@ namespace PP
 		{}
 		constexpr simple_view(concepts::view auto&& v)
 		requires (!same_except_cvref(type<simple_view>, PP_DECLTYPE(v)))
-			: simple_view(begin(PP_FORWARD(v)), end(PP_FORWARD(v)))
+			: simple_view(view_begin(PP_FORWARD(v)), view_end(PP_FORWARD(v)))
 		{}
 		constexpr simple_view(const std::initializer_list<apply_transform_t<remove_reference | iterator_base, Iterator>>& l)
 			: simple_view(l.begin(), l.end())
@@ -45,18 +45,18 @@ namespace PP
 	template <typename T>
 	simple_view(const std::initializer_list<T>&) -> simple_view<const T*, const T*>;
 
-	constexpr concepts::view auto operator^(auto begin, concepts::sentinel<decltype(begin)> auto end)
+	constexpr concepts::view auto operator^(concepts::iterator auto begin, concepts::sentinel<decltype(begin)> auto end)
 	{
 		return simple_view(begin, end);
 	}
 
 	constexpr concepts::view auto operator|(concepts::view auto&& v, unbounded_t)
 	{
-		return begin(PP_FORWARD(v)) ^ unbounded;
+		return view_begin(PP_FORWARD(v)) ^ unbounded;
 	}
 
 	constexpr concepts::view auto operator>>(std::size_t offset, concepts::view auto&& v)
 	{
-		return simple_view(begin(PP_FORWARD(v)) + offset, end(PP_FORWARD(v)));
+		return simple_view(view_begin(PP_FORWARD(v)) + offset, view_end(PP_FORWARD(v)));
 	}
 }

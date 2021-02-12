@@ -1,4 +1,5 @@
 #pragma once
+#include "size_t.hpp"
 
 namespace PP
 {
@@ -8,11 +9,14 @@ namespace PP
 		using type = T;
 
 		constexpr auto operator->() const noexcept;
+		constexpr decltype(auto) operator()(auto&&...) const;
 	};
 	template <typename T>
-	constexpr inline type_t<T> type = {};
+	constexpr inline type_t<T> type{};
 
-	constexpr inline type_t<void> type_void = {};
+	constexpr inline type_t<void> type_void{};
+	constexpr inline type_t<char> type_char{};
+	constexpr inline type_t<size_t> type_size_t{};
 
 	template <typename T, typename U>
 	constexpr auto operator==(type_t<T>, type_t<U>) noexcept

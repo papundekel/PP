@@ -1,17 +1,12 @@
 #pragma once
-#include <utility>
-#include <memory>
-
-#include "type_t.hpp"
-
-#include "scoped.hpp"
-#include "unique.hpp"
-
+#include "placeholder.hpp"
 #include "pointer_new.hpp"
 #include "pointer_new_array.hpp"
 #include "pointer_stack.hpp"
-
 #include "remove_cvref.hpp"
+#include "scoped.hpp"
+#include "type_t.hpp"
+#include "unique.hpp"
 
 namespace PP
 {
@@ -20,7 +15,7 @@ namespace PP
 		struct unique_pointer_deleter
 		{
 			template <typename Pointer>
-			constexpr void operator()(const unique<Pointer>& ptr) const // TODO noexcept(?)
+			constexpr void operator()(const unique<Pointer>& ptr) const
 			{
 				ptr.inner().destroy();
 			}
@@ -30,26 +25,33 @@ namespace PP
 	template <typename Pointer>
 	class unique_pointer
 	{
-		template <typename P>
+		template <typename>
 		friend class unique_pointer;
 
 		scoped<unique<Pointer>, detail::unique_pointer_deleter> ptr;
 
 	public:
-		template <typename PointerOther>
-		requires (remove_cvref(type<PointerOther>)->Template != template_v<unique_pointer>)
-		explicit constexpr unique_pointer(const PointerOther& ptr)
-			: ptr(ptr)
+		constexpr unique_pointer(placeholder_t, const auto& ptr)
+			: ptr(make_unique_default(ptr), detail::unique_pointer_deleter{})
 		{}
 
 		template <typename PointerOther>
 		constexpr unique_pointer(unique_pointer<PointerOther>&& other)
-			: ptr(std::move(other).ptr)
+			: ptr(move(other).ptr)
 		{}
+		
+		template <typename PointerOther>
+		constexpr unique_pointer& operator=(unique_pointer<PointerOther>&& other)
+		{
+			ptr = move(other).ptr;
+			return *this;
+		}
 
 		template <typename PointerOther>
 		constexpr unique_pointer(const unique_pointer<PointerOther>&) = delete;
-		
+		template <typename PointerOther>
+		constexpr unique_pointer& operator=(const unique_pointer<PointerOther>&) = delete;
+
 		constexpr auto get() const noexcept
 		{
 			return ptr.inner().inner().get_ptr();
@@ -80,31 +82,27 @@ namespace PP
 		}
 	};
 	template <typename Pointer>
-	unique_pointer(const Pointer&) -> unique_pointer<Pointer>;
+	unique_pointer(placeholder_t, const Pointer&) -> unique_pointer<Pointer>;
 
 	constexpr inline struct unique_tag_stack_t		{} unique_tag_stack;
 	constexpr inline struct unique_tag_new_t		{} unique_tag_new;
 	constexpr inline struct unique_tag_new_array_t	{} unique_tag_new_array;
 
-	constexpr auto make_unique(unique_tag_stack_t, auto type, auto&&... args)
+	constexpr auto make_unique_pointer(unique_tag_stack_t, concepts::type auto t, auto&&... args)
 	{
-		return unique_pointer(pointer_stack(type, PP_FORWARD(args)...));
+		return unique_pointer(placeholder, make_pointer_stack(t, PP_FORWARD(args)...));
 	}
-	constexpr auto make_unique(unique_tag_new_t, auto type, auto&&... args)
+	constexpr auto make_unique_pointer(unique_tag_new_t, concepts::type auto t, auto&&... args)
 	{
-		return unique_pointer(pointer_new(type, PP_FORWARD(args)...));
+		return unique_pointer(placeholder, pointer_new(t, PP_FORWARD(args)...));
 	}
-	constexpr auto make_unique(unique_tag_new_array_t, auto type, std::size_t count)
+	constexpr auto make_unique_pointer(unique_tag_new_array_t, concepts::type auto t, std::size_t count)
 	{
-		return unique_pointer(pointer_new_array(type, count));
+		return unique_pointer(placeholder, pointer_new_array(count, t));
 	}
 
-	constexpr auto make_unique_copy(unique_tag_stack_t, auto&& value)
+	constexpr auto make_unique_copy(auto tag, auto&& value)
 	{
-		return unique_pointer(pointer_stack(PP::placeholder, PP_FORWARD(value)));
-	}
-	constexpr auto make_unique_copy(unique_tag_new_t, auto&& value)
-	{
-		return unique_pointer(pointer_new(PP::placeholder, PP_FORWARD(value)));
+		return make_unique_pointer(tag, ~PP_DECLTYPE(value), PP_FORWARD(value));
 	}
 }

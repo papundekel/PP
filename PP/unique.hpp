@@ -1,30 +1,20 @@
 #pragma once
-#include <utility>
-
 #include "compressed_pair.hpp"
 #include "concepts/constructible.hpp"
+#include "construct_pack.hpp"
+#include "decompose_template.hpp"
 #include "exchange.hpp"
 #include "placeholder.hpp"
+#include "remove_reference.hpp"
+#include "utility/forward.hpp"
+#include "utility/move.hpp"
 
 namespace PP
 {
-	template <typename T, typename Defaulter>
-	class unique;
-
-	namespace detail
-	{
-		template <typename T>
-		constexpr inline bool is_unique = false;
-		template <typename T, typename Defaulter>
-		constexpr inline bool is_unique<unique<T, Defaulter>> = true;
-	}
-
 	template <typename T>
 	struct default_defaulter
 	{
-		default_defaulter() = default;
-		template <typename U>
-		constexpr default_defaulter(U&&) noexcept
+		constexpr default_defaulter(auto&&...) noexcept
 		{}
 
 		constexpr T operator()() const
@@ -36,30 +26,29 @@ namespace PP
 	template <typename T, typename Defaulter = default_defaulter<T>>
 	class unique
 	{
-		template <typename U, typename D>
+		template <typename, typename>
 		friend class unique;
 
 		compressed_pair<T, Defaulter> pair;
 
 	public:
-		constexpr unique()
-			: pair{ Defaulter{}(), {} }
+		constexpr unique(placeholder_t, auto&& value)
+			: pair(PP_FORWARD(value), Defaulter{})
 		{}
-
-		template <typename D>
-		constexpr unique(placeholder_t, D&& defaulter)
-			: pair(std::forward<D>(defaulter)(), std::forward<D>(defaulter))
+		constexpr unique(auto&& value, auto&& defaulter)
+			: pair(PP_FORWARD(value), PP_FORWARD(defaulter))
 		{}
 
 		template <typename U, typename D>
-		constexpr unique(unique<U, D>&& other) noexcept
-			: pair(PP::exchange(other.pair.first, other.pair.second()), std::move(other).pair.second)
+		constexpr unique(unique<U, D>&& other)
+			: pair(PP::exchange(other.pair.first, other.pair.second()), move(other).pair.second)
 		{}
 
-		constexpr auto& operator=(unique&& other) noexcept
+		template <typename U, typename D>
+		constexpr auto& operator=(unique<U, D>&& other)
 		{
 			pair.first = PP::exchange(other.pair.first, other.pair.second());
-			pair.second = std::move(other).pair.second;
+			pair.second = move(other).pair.second;
 			return *this;
 		}
 
@@ -67,24 +56,21 @@ namespace PP
 		{
 			return pair.first;
 		}
-		constexpr auto& inner() const noexcept
+		constexpr const auto& inner() const noexcept
 		{
 			return pair.first;
 		}
 		constexpr auto release() noexcept
 		{
-			return PP::exchange(std::move(pair).first, pair.second());
+			return PP::exchange(move(pair).first, pair.second());
 		}
-
-		template <typename U>
-		requires (!detail::is_unique<std::remove_cvref_t<U>>)
-		constexpr unique(U&& value)
-			: pair(std::forward<U>(value), {})
-		{}
-		template <typename U, typename D>
-		requires (!detail::is_unique<std::remove_cvref_t<U>>)
-		constexpr unique(U&& value, D&& defaulter)
-			: pair(std::forward<U>(value), std::forward<D>(defaulter))
-		{}
 	};
+
+	PP_FUNCTOR(make_unique_default, auto&& value)
+	{
+		constexpr auto value_type = ~PP_DECLTYPE(value);
+		constexpr auto defaulter_type = Template<default_defaulter>(value_type);
+
+		return Template<unique>(value_type, defaulter_type)(PP_FORWARD(value), defaulter_type());
+	}};
 }

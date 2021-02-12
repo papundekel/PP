@@ -1,4 +1,5 @@
 #pragma once
+#include "functional/functor.hpp"
 #include "value_t.hpp"
 
 namespace PP
@@ -36,8 +37,13 @@ namespace PP
 	constexpr inline auto value_tuple = value_tuple_t<Values...>{};
 
 	template <auto... V>
-	constexpr auto tuple_count_implementation(value_tuple_t<V...> t) noexcept
+	constexpr auto tuple_count_implementation(value_tuple_t<V...>) noexcept
 	{
 		return value<sizeof...(V)>;
-	};
+	}
+
+	PP_FUNCTOR(make_value_tuple, concepts::value auto... v)
+	{
+		return value_tuple_t(to_value_t(v)...);
+	}};
 }

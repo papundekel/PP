@@ -1,60 +1,83 @@
 #pragma once
-#include "unique_pointer.hpp"
+#include "concepts/same_except_cvref.hpp"
+#include "construct_pack.hpp"
+#include "empty_tuple.hpp"
+#include "empty_view.hpp"
+#include "ptrdiff_t.hpp"
 #include "simple_view.hpp"
+#include "singular_tuple.hpp"
+#include "tuple_std.hpp"
+#include "tuple_find_index.hpp"
+#include "tuple_get_dynamic.hpp"
+#include "tuple_prepend.hpp"
+#include "unique_pointer.hpp"
+#include "utility/move.hpp"
+#include "value_t.hpp"
+#include "variant_visit.hpp"
 
 namespace PP
 {
-	template <template <typename> typename Base, typename T>
-	using any_iterator_unique_pointer = unique_pointer<pointer_stack<Base<T>, 32, alignof(std::max_align_t)>>;
-	
+	enum class iterator_category
+	{
+		forward,
+		bi,
+		ra
+	};
+
+	template <typename Category, typename T>
+	class any_iterator_base {};
+
+	template <typename Category, typename T>
+	using any_iterator_unique_pointer = unique_pointer<pointer_stack<any_iterator_base<Category, T>, 32, alignof(std::max_align_t)>>;
+
 	template <typename T>
-	class any_iterator_forward_base
+	class any_iterator_base<value_t<iterator_category::forward>, T>
 	{
 	public:
-		constexpr virtual any_iterator_unique_pointer<any_iterator_forward_base, T> copy_forward() const = 0;
+		constexpr virtual any_iterator_unique_pointer<value_t<iterator_category::forward>, T> copy_forward() const = 0;
 
 		constexpr virtual T dereference() const = 0;
 
 		constexpr virtual void increment() = 0;
 
-		constexpr virtual bool equal(const any_iterator_forward_base& other) const = 0;
+		constexpr virtual bool equal(const any_iterator_base& other) const = 0;
 
-		constexpr virtual ~any_iterator_forward_base() {}
+		constexpr virtual ~any_iterator_base() {}
 	};
 
 	template <typename T>
-	class any_iterator_bi_base : public any_iterator_forward_base<T>
+	class any_iterator_base<value_t<iterator_category::bi>, T> : public any_iterator_base<value_t<iterator_category::forward>, T>
 	{
 	public:
-		constexpr virtual any_iterator_unique_pointer<any_iterator_bi_base, T> copy_bi() const = 0;
+		constexpr virtual any_iterator_unique_pointer<value_t<iterator_category::bi>, T> copy_bi() const = 0;
 
-		constexpr any_iterator_unique_pointer<any_iterator_forward_base, T> copy_forward() const override final
+		constexpr any_iterator_unique_pointer<value_t<iterator_category::forward>, T> copy_forward() const override final
 		{
 			return copy_bi();
 		}
 
 		constexpr virtual void decrement() = 0;
 
-		constexpr virtual ~any_iterator_bi_base() {}
+		constexpr virtual ~any_iterator_base() {}
 	};
 
 	template <typename T>
-	class any_iterator_ra_base : public any_iterator_bi_base<T>
+	class any_iterator_base<value_t<iterator_category::ra>, T> : public any_iterator_base<value_t<iterator_category::bi>, T>
 	{
 	public:
-		constexpr virtual any_iterator_unique_pointer<any_iterator_ra_base, T> copy_ra() const = 0;
+		constexpr virtual any_iterator_unique_pointer<value_t<iterator_category::ra>, T> copy_ra() const = 0;
 
-		constexpr any_iterator_unique_pointer<any_iterator_bi_base, T> copy_bi() const override final
+		constexpr any_iterator_unique_pointer<value_t<iterator_category::bi>, T> copy_bi() const override final
 		{
 			return copy_ra();
 		}
 
-		constexpr virtual void advance(std::ptrdiff_t offset) = 0;
-		constexpr virtual T index(std::ptrdiff_t offset) = 0;
+		constexpr virtual void advance(ptrdiff_t offset) = 0;
+		constexpr virtual T index(ptrdiff_t offset) = 0;
 
-		constexpr virtual std::ptrdiff_t difference(const any_iterator_ra_base& other) const = 0;
+		constexpr virtual ptrdiff_t difference(const any_iterator_base& other) const = 0;
 
-		constexpr virtual ~any_iterator_ra_base() {}
+		constexpr virtual ~any_iterator_base() {}
 	};
 
 	template <typename Iterator>
@@ -64,8 +87,7 @@ namespace PP
 		Iterator i;
 
 	public:
-		explicit constexpr any_iterator_wrap(auto&& i)
-		requires (same_except_cvref(type<Iterator>, PP_DECLTYPE(i)))
+		explicit constexpr any_iterator_wrap(concepts::same_except_cvref<Iterator> auto&& i)
 			: i(PP_FORWARD(i))
 		{}
 
@@ -79,26 +101,27 @@ namespace PP
 		}
 	};
 
-	template <typename T>
-	struct find_valid_wrap
+	template <typename... OtherIterators>
+	constexpr auto invoke_on_first_valid(auto&& f, auto def, const auto& other)
 	{
-		T object;
-	};
+		auto ptrs = make_tuple(dynamic_cast<const any_iterator_wrap<OtherIterators>*>(&other)...);
+		auto i = tuple_find_index([](auto* p) { return p != nullptr; }, ptrs);
 
-	template <typename T>
-	constexpr auto operator||(find_valid_wrap<T> l, find_valid_wrap<T> r)
-	{
-		return l.object ? l : r;
+		if (i != sizeof...(OtherIterators))
+			return variant_visit(PP_FORWARD(f), tuple_get_dynamic(i, ptrs));
+		else
+			return def;
 	}
 
-	template <typename T, typename... OtherIterators>
-	constexpr auto find_valid(const any_iterator_forward_base<T>& other)
-	{
-		return (... || find_valid_wrap{ dynamic_cast<const any_iterator_wrap<OtherIterators>*>(&other) }).object;
-	}
+	template <typename Category, typename C, typename T, typename Iterator, typename... CompatibleIterators>
+	class any_iterator_wrapper_implementation {};
+	template <typename Category, typename C, typename T, typename Iterator, typename... CompatibleIterators>
+	class any_iterator_wrapper {};
 
-	template <typename T, template <typename> typename Base, typename Iterator, typename... CompatibleIterators>
-	class any_iterator_forward_wrapper_implementation : public Base<T>, public any_iterator_wrap<Iterator>
+	template <typename T, typename C, typename Iterator, typename... CompatibleIterators>
+	class any_iterator_wrapper_implementation<value_t<iterator_category::forward>, C, T, Iterator, CompatibleIterators...>
+		: public any_iterator_base<C, T>
+		, public any_iterator_wrap<Iterator>
 	{
 	public:
 		using any_iterator_wrap<Iterator>::
@@ -114,115 +137,130 @@ namespace PP
 			++(this->i);
 		}
 
-		constexpr bool equal(const any_iterator_forward_base<T>& other) const override final
+		constexpr bool equal(const any_iterator_base<value_t<iterator_category::forward>, T>& other) const override final
 		{
-			auto ptr = find_valid<Iterator, CompatibleIterators...>(other);
-			return ptr && ptr->equal_sentinel(this->i);
+			return invoke_on_first_valid<Iterator, CompatibleIterators...>([this]
+				(auto* ptr)
+				{
+					return ptr->equal_sentinel(this->i);
+				}, false, other);
 		}
 	};
 
-	template <typename T, typename Iterator, typename... CompatibleIterators>
-	class any_iterator_forward_wrapper : public any_iterator_forward_wrapper_implementation<T, any_iterator_forward_base, Iterator, CompatibleIterators...>
+	template <typename C, typename T, typename Iterator, typename... CompatibleIterators>
+	class any_iterator_wrapper<value_t<iterator_category::forward>, C, T, Iterator, CompatibleIterators...>
+		: public any_iterator_wrapper_implementation<value_t<iterator_category::forward>, C, T, Iterator, CompatibleIterators...>
 	{
 	public:
-		using any_iterator_forward_wrapper_implementation<T, any_iterator_forward_base, Iterator, CompatibleIterators...>::
-			any_iterator_forward_wrapper_implementation;
+		using any_iterator_wrapper_implementation<value_t<iterator_category::forward>, T, Iterator, CompatibleIterators...>::
+			any_iterator_wrapper_implementation;
 
-		constexpr any_iterator_unique_pointer<any_iterator_forward_base, T> copy_forward() const override final
+		constexpr any_iterator_unique_pointer<value_t<iterator_category::forward>, T> copy_forward() const override final
 		{
-			return make_unique(unique_tag_stack, type<any_iterator_forward_wrapper>, this->i);
+			return make_unique_pointer(unique_tag_stack, type<any_iterator_wrapper>, this->i);
 		}
 	};
 
-	template <typename T, template <typename> typename Base, typename Iterator, typename... CompatibleIterators>
-	class any_iterator_bi_wrapper_implementation : public any_iterator_forward_wrapper_implementation<T, Base, Iterator, CompatibleIterators...>
+	template <typename C, typename T, typename Iterator, typename... CompatibleIterators>
+	class any_iterator_wrapper_implementation<value_t<iterator_category::bi>, C, T, Iterator, CompatibleIterators...>
+		: public any_iterator_wrapper_implementation<value_t<iterator_category::forward>, C, T, Iterator, CompatibleIterators...>
 	{
 	public:
-		using any_iterator_forward_wrapper_implementation<T, Base, Iterator, CompatibleIterators...>::
-			any_iterator_forward_wrapper_implementation;
+		using any_iterator_wrapper_implementation<value_t<iterator_category::forward>, C, T, Iterator, CompatibleIterators...>::
+			any_iterator_wrapper_implementation;
 
 		constexpr void decrement() override final
 		{
-			--(this->i);
+			--this->i;
 		}
 	};
 
-	template <typename T, typename Iterator, typename... CompatibleIterators>
-	class any_iterator_bi_wrapper : public any_iterator_bi_wrapper_implementation<T, any_iterator_bi_base, Iterator, CompatibleIterators...>
+	template <typename C, typename T, typename Iterator, typename... CompatibleIterators>
+	class any_iterator_wrapper<value_t<iterator_category::bi>, C, T, Iterator, CompatibleIterators...>
+		: public any_iterator_wrapper_implementation<value_t<iterator_category::bi>, C, T, Iterator, CompatibleIterators...>
 	{
 	public:
-		using any_iterator_bi_wrapper_implementation<T, any_iterator_bi_base, Iterator, CompatibleIterators...>::
-			any_iterator_bi_wrapper_implementation;
+		using any_iterator_wrapper_implementation<value_t<iterator_category::bi>, C, T, Iterator, CompatibleIterators...>::
+			any_iterator_wrapper_implementation;
 
-		constexpr any_iterator_unique_pointer<any_iterator_bi_base, T> copy_bi() const override final
+		constexpr any_iterator_unique_pointer<value_t<iterator_category::bi>, T> copy_bi() const override final
 		{
-			return std::make_unique<any_iterator_bi_wrapper>(this->i);
+			return make_unique_pointer(unique_tag_stack, type<any_iterator_wrapper>, this->i);
 		}
 	};
 
-	template <typename T, template <typename> typename Base, typename Iterator, typename... CompatibleIterators>
-	class any_iterator_ra_wrapper_implementation : public any_iterator_bi_wrapper_implementation<T, Base, Iterator, CompatibleIterators...>
+	template <typename C, typename T, typename Iterator, typename... CompatibleIterators>
+	class any_iterator_wrapper_implementation<value_t<iterator_category::ra>, C, T, Iterator, CompatibleIterators...>
+		: public any_iterator_wrapper_implementation<value_t<iterator_category::bi>, C, T, Iterator, CompatibleIterators...>
 	{
 	public:
-		using any_iterator_bi_wrapper_implementation<T, Base, Iterator, CompatibleIterators...>::
-			any_iterator_bi_wrapper_implementation;
+		using any_iterator_wrapper_implementation<value_t<iterator_category::bi>, C, T, Iterator, CompatibleIterators...>::
+			any_iterator_wrapper_implementation;
 
-		constexpr void advance(std::ptrdiff_t offset) override final
+		constexpr void advance(ptrdiff_t offset) override final
 		{
 			this->i += offset;
 		}
-		constexpr T index(std::ptrdiff_t offset) override final
+		constexpr T index(ptrdiff_t offset) override final
 		{
 			return this->i[offset];
 		}
 
-		constexpr std::ptrdiff_t difference(const any_iterator_ra_base<T>& other) const override final
+		constexpr ptrdiff_t difference(const any_iterator_base<value_t<iterator_category::ra>, T>& other) const override final
 		{
-			auto ptr = find_valid<Iterator, CompatibleIterators...>(other);
-			return ptr && ptr->difference_sentinel(this->i);
+			return invoke_on_first_valid<Iterator, CompatibleIterators...>([this]
+			(auto* ptr)
+				{
+					return ptr->difference_sentinel(this->i);
+				}, (ptrdiff_t)0, other);
 		}
 	};
 
-	template <typename T, typename Iterator, typename... CompatibleIterators>
-	class any_iterator_ra_wrapper : public any_iterator_ra_wrapper_implementation<T, any_iterator_ra_base, Iterator, CompatibleIterators...>
+	template <typename C, typename T, typename Iterator, typename... CompatibleIterators>
+	class any_iterator_wrapper<value_t<iterator_category::ra>, C, T, Iterator, CompatibleIterators...>
+		: public any_iterator_wrapper_implementation<value_t<iterator_category::ra>, C, T, Iterator, CompatibleIterators...>
 	{
 	public:
-		using any_iterator_ra_wrapper_implementation<T, any_iterator_ra_base, Iterator, CompatibleIterators...>::
-			any_iterator_ra_wrapper_implementation;
+		using any_iterator_wrapper_implementation<value_t<iterator_category::ra>, C, T, Iterator, CompatibleIterators...>::
+			any_iterator_wrapper_implementation;
 
-		constexpr any_iterator_unique_pointer<any_iterator_ra_base, T> copy_ra() const override final
+		constexpr any_iterator_unique_pointer<value_t<iterator_category::ra>, T> copy_ra() const override final
 		{
-			return std::make_unique<any_iterator_ra_wrapper>(this->i);
+			return make_unique_pointer(unique_tag_stack, type<any_iterator_wrapper>, this->i);
 		}
 	};
 
-	template <template <typename> typename Base, typename T>
-	class any_iterator_forward_implementation
-	{
-		template <template <typename> typename P, typename U>
-		friend class any_iterator_forward_implementation;
+	template <typename Category, typename C, typename T>
+	class any_iterator_implementation {};
 
-		using pointer_type = any_iterator_unique_pointer<Base, T>;
+	template <typename C, typename T>
+	class any_iterator_implementation<value_t<iterator_category::forward>, C, T>
+	{
+		template <typename, typename, typename>
+		friend class any_iterator_implementation;
+
+		using pointer_type = any_iterator_unique_pointer<C, T>;
 
 	protected:
 		pointer_type p;
 
-		explicit constexpr any_iterator_forward_implementation(pointer_type&& p)
-			: p(std::move(p))
-		{}
-
 	public:
-		any_iterator_forward_implementation() = default;
-
-		constexpr any_iterator_forward_implementation(const any_iterator_forward_implementation& other) noexcept
-			: p(other.p->copy_forward())
+		constexpr any_iterator_implementation(placeholder_t, auto&& p)
+			: p(move(p))
 		{}
 
-		constexpr any_iterator_forward_implementation(any_iterator_forward_implementation&& other) noexcept
-			: p(std::move(other.p))
+		any_iterator_implementation() = default;
+
+		//template <template <typename> typename BaseOther>
+		constexpr any_iterator_implementation(const any_iterator_implementation/*<BaseOther, T>*/& other) noexcept
+			: any_iterator_implementation(placeholder, other.p->copy_forward())
+		{}
+		//template <template <typename> typename BaseOther>
+		constexpr any_iterator_implementation(any_iterator_implementation/*<BaseOther, T>*/&& other) noexcept
+			: any_iterator_implementation(placeholder, move(other.p))
 		{}
 
-		constexpr T operator*() const
+		constexpr decltype(auto) operator*() const
 		{
 			return p->dereference();
 		}
@@ -231,15 +269,15 @@ namespace PP
 			return &**this;
 		}
 
-		constexpr any_iterator_forward_implementation& operator++()
+		constexpr auto& operator++()
 		{
 			p->increment();
 			return *this;
 		}
-		constexpr any_iterator_forward_implementation operator++(int)
+		constexpr auto operator++(int)
 		{
 			auto copy = *this;
-			operator++();
+			++copy;
 			return copy;
 		}
 
@@ -249,96 +287,150 @@ namespace PP
 		}
 	};
 
-	template <template <typename> typename Base, typename T>
-	class any_iterator_bi_implementation : public any_iterator_forward_implementation<Base, T>
+	template <typename C, typename T>
+	class any_iterator_implementation<value_t<iterator_category::bi>, C, T>
+		: public any_iterator_implementation<value_t<iterator_category::forward>, C, T>
 	{
-	public:
-		using any_iterator_forward_implementation<Base, T>::
-			any_iterator_forward_implementation;
+		template <typename, typename, typename>
+		friend class any_iterator_implementation;
 
-		constexpr any_iterator_bi_implementation& operator--()
+	public:
+		constexpr any_iterator_implementation(placeholder_t, auto&& p)
+			: any_iterator_implementation<value_t<iterator_category::forward>, C, T>(placeholder, move(p))
+		{}
+
+		any_iterator_implementation() = default;
+
+		//template <template <typename> typename BaseOther>
+		constexpr any_iterator_implementation(const any_iterator_implementation/*<BaseOther, T>*/& other) noexcept
+			: any_iterator_implementation(placeholder, other.p->copy_bi())
+		{}
+		//template <template <typename> typename BaseOther>
+		constexpr any_iterator_implementation(any_iterator_implementation/*<BaseOther, T>*/&& other) noexcept
+			: any_iterator_implementation<value_t<iterator_category::forward>, C, T>(move(other))
+		{}
+
+		constexpr auto& operator--()
 		{
 			this->p->decrement();
 			return *this;
 		}
-		constexpr any_iterator_bi_implementation operator--(int)
+		constexpr auto operator--(int)
 		{
 			auto copy = *this;
-			operator--();
+			--copy;
 			return copy;
 		}
 	};
 
-	template <template <typename> typename Base, typename T>
-	class any_iterator_ra_implementation : public any_iterator_bi_implementation<Base, T>
+	template <typename C, typename T>
+	class any_iterator_implementation<value_t<iterator_category::ra>, C, T>
+		: public any_iterator_implementation<value_t<iterator_category::bi>, C, T>
 	{
-	public:
-		using any_iterator_bi_implementation<Base, T>::
-			any_iterator_bi_implementation;
+		template <typename, typename, typename>
+		friend class any_iterator_implementation;
 
-		constexpr std::ptrdiff_t operator-(const auto& other) const
+	public:
+		constexpr any_iterator_implementation(placeholder_t, auto&& p)
+			: any_iterator_implementation<value_t<iterator_category::bi>, C, T>(placeholder, move(p))
+		{}
+
+		any_iterator_implementation() = default;
+
+		//template <template <typename> typename BaseOther>
+		constexpr any_iterator_implementation(const any_iterator_implementation/*<BaseOther, T>*/& other) noexcept
+			: any_iterator_implementation(placeholder, other.p->copy_ra())
+		{}
+		//template <template <typename> typename BaseOther>
+		constexpr any_iterator_implementation(any_iterator_implementation/*<BaseOther, T>*/&& other) noexcept
+			: any_iterator_implementation<value_t<iterator_category::bi>, C, T>(move(other))
+		{}
+
+		constexpr decltype(auto) operator-(const any_iterator_implementation<value_t<iterator_category::forward>, C, T>& other) const
 		{
 			return this->p->difference(*other.p);
 		}
 
-		constexpr auto& operator+=(std::ptrdiff_t offset)
+		constexpr auto& operator+=(ptrdiff_t offset)
 		{
 			this->p->advance(offset);
 			return *this;
 		}
-		constexpr auto operator+(std::ptrdiff_t offset) const
+		constexpr auto operator+(ptrdiff_t offset) const
 		{
 			auto copy = *this;
-			operator+=(offset);
+			copy += offset;
 			return copy;
+		}
+		constexpr auto& operator-=(ptrdiff_t offset)
+		{
+			return operator+=(-offset);
+		}
+		constexpr auto operator-(ptrdiff_t offset) const
+		{
+			return *this + -offset;
+		}
+		constexpr decltype(auto) operator[](ptrdiff_t offset) const
+		{
+			return this->p->index(offset);
 		}
 	};
 
-	template <typename T, template <typename> typename Base, template <typename, typename, typename...> typename Wrapper>
-	class any_iterator_helper : public Base<T>
+	namespace detail
 	{
-	public:
-		using Base<T>::Base;
+		constexpr auto get_iterator_category_value_t(concepts::type auto i)
+		{
+			constexpr auto I = PP_COPY_TYPE(i);
 
-		template <typename Iterator, typename... CompatibleIterators>
-		constexpr any_iterator_helper(Iterator&& i, PP::type_tuple_t<CompatibleIterators...> = {})
-			: Base<T>(std::make_unique<Wrapper<T, std::remove_cvref_t<Iterator>, CompatibleIterators...>>
-				(std::forward<Iterator>(i)))
-		{}
-	};
+			if constexpr (is_iterator_ra(I))
+				return value<iterator_category::ra>;
+			else if constexpr (is_iterator_bi(I))
+				return value<iterator_category::bi>;
+			else
+				return value<iterator_category::forward>;
+		}
 
-	template <typename T>
-	using any_iterator_forward_helper = any_iterator_forward_implementation<any_iterator_forward_base, T>;
-	template <typename T>
-	using any_iterator_bi_helper = any_iterator_bi_implementation<any_iterator_bi_base, T>;
-	template <typename T>
-	using any_iterator_ra_helper = any_iterator_ra_implementation<any_iterator_ra_base, T>;
+		constexpr auto make_any_iterator_implementation_type(concepts::value auto category, concepts::type auto dereference_type)
+		{
+			auto category_type = PP_DECLTYPE(to_value_t(category));
 
-	template <typename T>
-	using any_iterator_forward = any_iterator_helper<T, any_iterator_forward_helper, any_iterator_forward_wrapper>;
-	template <typename T>
-	using any_iterator_bi = any_iterator_helper<T, any_iterator_bi_helper, any_iterator_bi_wrapper>;
-	template <typename T>
-	using any_iterator_ra = any_iterator_helper<T, any_iterator_ra_helper, any_iterator_ra_wrapper>;
+			return Template<any_iterator_implementation>(category_type, category_type, dereference_type);
+		}
+		constexpr auto make_any_iterator_wrapper_type(
+			concepts::value auto category,
+			concepts::type  auto dereference_type,
+			concepts::type  auto iterator_type,
+			concepts::tuple auto compatible_iterators)
+		{
+			auto category_type = PP_DECLTYPE(to_value_t(category));
+
+			return Template<any_iterator_wrapper>[category_type += category_type += dereference_type += iterator_type += compatible_iterators];
+		}
+
+		constexpr auto make_any_iterator(concepts::iterator auto i, concepts::tuple auto compatible_iterators)
+		{
+			auto iterator_type = PP_DECLTYPE(i);
+			auto dereference_type = PP_DECLTYPE(*i);
+			auto category = get_iterator_category_value_t(iterator_type);
+
+			return make_any_iterator_implementation_type(category, dereference_type)(
+				placeholder,
+				make_unique_pointer(
+					unique_tag_stack,
+					make_any_iterator_wrapper_type(category, dereference_type, iterator_type, compatible_iterators),
+					move(i)));
+		}
+	}
+
+	constexpr inline functor make_any_iterator{ overloaded {
+		[](concepts::iterator auto i, concepts::tuple auto compatible_iterators) { return detail::make_any_iterator(i, compatible_iterators); },
+		[](concepts::iterator auto i)											 { return detail::make_any_iterator(i, empty_tuple{}); },
+	}};
 	
-
-	template <template <typename> typename Type, typename T>
-	class any_view : public simple_view<Type<T>>
-	{
-	public:
-		any_view() = default;
-
-		constexpr any_view(const simple_view<Type<T>>& v)
-			: simple_view<Type<T>>(v)
-		{}
-		constexpr any_view(simple_view<Type<T>>&& v)
-			: simple_view<Type<T>>(std::move(v))
-		{}
-		constexpr any_view(concepts::view auto&& v)
-		requires (!same_except_cvref(type<any_view>, PP_DECLTYPE(v)) && !same_except_cvref(type<simple_view<Type<T>>>, PP_DECLTYPE(v)))
-			: simple_view<Type<T>>(
-				Type<T>(begin(PP_FORWARD(v)),   view_end_iterator(PP_DECLTYPE(v))),
-				Type<T>(  end(PP_FORWARD(v)), view_begin_iterator(PP_DECLTYPE(v))))
-		{}
-	};
+	template <typename T>
+	using any_iterator_forward = PP_GET_TYPE(detail::make_any_iterator_implementation_type(value<iterator_category::forward>, type<T>));
+	template <typename T>
+	using any_iterator_bi = PP_GET_TYPE(detail::make_any_iterator_implementation_type(value<iterator_category::bi>, type<T>));
+	template <typename T>
+	using any_iterator_ra = PP_GET_TYPE(detail::make_any_iterator_implementation_type(value<iterator_category::ra>, type<T>));
 }

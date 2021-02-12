@@ -1,15 +1,15 @@
 #pragma once
-#include "type_t.hpp"
+#include "functional/functor.hpp"
 #include "get_type.hpp"
+#include "type_t.hpp"
 
 namespace PP
 {
-	constexpr inline auto conditional =
-		[]<auto Condition>(PP::value_t<Condition> condition, auto true_value, auto false_value)
+	PP_FUNCTOR(conditional, concepts::value auto condition, auto&& true_value, auto&& false_value) -> decltype(auto)
 	{
-		if constexpr (Condition)
-			return true_value;
+		if constexpr (PP_GET_VALUE(condition))
+			return PP_FORWARD(true_value);
 		else
-			return false_value;
-	};
+			return PP_FORWARD(false_value);
+	}};
 }

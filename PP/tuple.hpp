@@ -1,138 +1,114 @@
 #pragma once
-#include "decompose_template.hpp"
 #include "concepts/same_except_cvref.hpp"
+#include "construct_pack.hpp"
+#include "copy_cvref.hpp"
+#include "decompose_template.hpp"
 #include "get_value.hpp"
-#include "tuple_head_no_get.hpp"
-#include "tuple_recursive.hpp"
+#include "placeholder.hpp"
+#include "type_tuple.hpp"
+#include "value_sequence.hpp"
 
 namespace PP
 {
-	template <typename...>
-	struct tuple {};
-
+	template <typename...> struct tuple;
 	namespace concepts
 	{
 		template <typename T>
 		concept PPtuple = PP::type<T>->Template == Template<PP::tuple>;
 	}
 
-	template <typename H>
-	struct tuple<H>
+	namespace detail
 	{
-		H internal_head;
+		template <typename, typename T>
+		struct tuple_wrap
+		{
+			T obj;
+		};
 
-		tuple() = default;
-		tuple(const tuple&) = default;
-		tuple(tuple&&) = default;
+		template <typename, typename... T>
+		class tuple_impl {};
+		template <size_t... I, typename... T>
+		class tuple_impl<value_sequence<I...>, T...> : tuple_wrap<value_t<I>, T>...
+		{
+			friend class tuple_helper;
+			
+			static constexpr auto types = type_tuple<T...>;
+			static constexpr auto wrap_types = type_tuple<tuple_wrap<value_t<I>, T>&...>;
 
-		constexpr tuple(concepts::different_except_cvref<tuple> auto&& h)
-			: internal_head(PP_FORWARD(h))
-		{}
+		public:
+			constexpr tuple_impl(placeholder_t, auto&&... args)
+				: tuple_wrap<value_t<I>, T>(PP_FORWARD(args))...
+			{}
+			constexpr tuple_impl(concepts::PPtuple auto&& t)
+				: tuple_wrap<value_t<I>, T>(PP_FORWARD(t)[value<I>])...
+			{}
+		};
 
-		constexpr decltype(auto) operator[](concepts::value auto i) & noexcept;
-		constexpr decltype(auto) operator[](concepts::value auto i) const& noexcept;
-		constexpr decltype(auto) operator[](concepts::value auto i) && noexcept;
-		constexpr decltype(auto) operator[](concepts::value auto i) const&& noexcept;
-	};
-	template <typename H, typename R, typename... Rest>
-	struct tuple<H, R, Rest...>
+		struct tuple_helper
+		{
+			static constexpr auto&& get(concepts::value auto i, concepts::PPtuple auto&& t) noexcept
+			{
+				auto& wrap = t.wrap_types[i](t);
+				return copy_cvref(PP_DECLTYPE(t), PP_DECLTYPE(wrap.obj))(wrap.obj);
+			}
+			static constexpr auto element(concepts::value auto i, concepts::PPtuple auto&& t) noexcept
+			{
+				return copy_cv(PP_DECLTYPE(t), t.types[i]);
+			}
+		};
+		template <typename...T>
+		using tuple_base = tuple_impl<decltype(make_value_sequence(PP_SIZEOF___(T))), T...>;
+	}
+	template <typename... T>
+	struct tuple : public detail::tuple_base<T...>
 	{
-		H internal_head;
-		tuple<R, Rest...> internal_rest;
+		using detail::tuple_base<T...>::tuple_base;
 
-		tuple() = default;
-		tuple(const tuple&) = default;
-		tuple(tuple&&) = default;
-
-		constexpr tuple(concepts::different_except_cvref<tuple> auto&& h, auto&&... r)
-			: internal_head(PP_FORWARD(h))
-			, internal_rest(PP_FORWARD(r)...)
-		{}
-
-		constexpr decltype(auto) operator[](concepts::value auto i) & noexcept;
-		constexpr decltype(auto) operator[](concepts::value auto i) const& noexcept;
-		constexpr decltype(auto) operator[](concepts::value auto i) && noexcept;
-		constexpr decltype(auto) operator[](concepts::value auto i) const&& noexcept;
+		constexpr auto&& operator[](concepts::value auto i) & noexcept;
+		constexpr auto&& operator[](concepts::value auto i) const& noexcept;
+		constexpr auto&& operator[](concepts::value auto i) && noexcept;
+		constexpr auto&& operator[](concepts::value auto i) const&& noexcept;
 	};
+	template <typename... T>
+	tuple(placeholder_t, T...) -> tuple<T...>;
 
 	template <typename... T>
-	tuple(T...) -> tuple<T...>;
-
-	constexpr auto& head_implementation(concepts::PPtuple auto& t) noexcept
-	{
-		return t.internal_head;
-	}
-	constexpr auto&& head_implementation(concepts::PPtuple auto&& t) noexcept
-	{
-		return PP_FORWARD(t.internal_head);
-	}
-	constexpr auto head_element_implementation(concepts::PPtuple auto&& t) noexcept
-	{
-		return PP_DECLTYPE(t.internal_head);
-	}
-	constexpr auto&& pred_implementation(concepts::PPtuple auto&& t) noexcept
-	{
-		return PP_FORWARD(t).internal_rest;
-	}
-
-	template <typename... T>
-	constexpr auto tuple_count_implementation(const tuple<T...>& t) noexcept
+	constexpr auto tuple_count_implementation(const tuple<T...>&) noexcept
 	{
 		return value<sizeof...(T)>;
 	}
-
-	constexpr decltype(auto) get(concepts::value auto i, concepts::PPtuple auto&& t) noexcept
+	constexpr auto element_implementation(concepts::value auto i, concepts::PPtuple auto&& t) noexcept
 	{
-		return tuple_recursive(tuple_head_no_get, i, PP_FORWARD(t));
-	}
-
-	template <typename H>
-	constexpr decltype(auto) tuple<H>::operator[](concepts::value auto i) & noexcept
-	{
-		return get(i, *this);
-	}
-	template <typename H>
-	constexpr decltype(auto) tuple<H>::operator[](concepts::value auto i) && noexcept
-	{
-		return get(i, move(*this));
-	}
-	template <typename H>
-	constexpr decltype(auto) tuple<H>::operator[](concepts::value auto i) const& noexcept
-	{
-		return get(i, *this);
-	}
-	template <typename H>
-	constexpr decltype(auto) tuple<H>::operator[](concepts::value auto i) const&& noexcept
-	{
-		return get(i, move(*this));
-	}
-	template <typename H, typename R, typename... Rest>
-	constexpr decltype(auto) tuple<H, R, Rest...>::operator[](concepts::value auto i) & noexcept
-	{
-		return get(i, *this);
-	}
-	template <typename H, typename R, typename... Rest>
-	constexpr decltype(auto) tuple<H, R, Rest...>::operator[](concepts::value auto i) && noexcept
-	{
-		return get(i, move(*this));
-	}
-	template <typename H, typename R, typename... Rest>
-	constexpr decltype(auto) tuple<H, R, Rest...>::operator[](concepts::value auto i) const& noexcept
-	{
-		return get(i, *this);
-	}
-	template <typename H, typename R, typename... Rest>
-	constexpr decltype(auto) tuple<H, R, Rest...>::operator[](concepts::value auto i) const&& noexcept
-	{
-		return get(i, move(*this));
+		return detail::tuple_helper::element(i, PP_FORWARD(t));
 	}
 
 	PP_FUNCTOR(make_tuple, auto&&... x)
 	{
-		return tuple<PP_GET_TYPE(~PP_DECLTYPE(x))...>(PP_FORWARD(x)...);
+		return tuple(placeholder, PP_FORWARD(x)...);
 	}};
 	PP_FUNCTOR(forward_as_tuple, auto&&... x)
 	{
-		return tuple<decltype(x)...>(PP_FORWARD(x)...);
+		return tuple<decltype(x)...>(placeholder, PP_FORWARD(x)...);
 	}};
+}
+
+template <typename... T>
+constexpr auto&& PP::tuple<T...>::operator[](concepts::value auto i) & noexcept
+{
+	return detail::tuple_helper::get(i, *this);
+}
+template <typename... T>
+constexpr auto&& PP::tuple<T...>::operator[](concepts::value auto i) && noexcept
+{
+	return detail::tuple_helper::get(i, move(*this));
+}
+template <typename... T>
+constexpr auto&& PP::tuple<T...>::operator[](concepts::value auto i) const& noexcept
+{
+	return detail::tuple_helper::get(i, *this);
+}
+template <typename... T>
+constexpr auto&& PP::tuple<T...>::operator[](concepts::value auto i) const&& noexcept
+{
+	return detail::tuple_helper::get(i, move(*this));
 }

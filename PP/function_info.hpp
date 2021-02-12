@@ -1,7 +1,7 @@
 #pragma once
 #include "cv_qualifier.hpp"
 #include "ref_qualifier.hpp"
-#include "type_t.hpp"
+#include "get_type.hpp"
 #include "type_tuple.hpp"
 
 namespace PP
@@ -11,7 +11,7 @@ namespace PP
 	{
 	public:
 		[[no_unique_address]] type_t<R> return_type;
-		[[no_unique_address]] type_tuple<P...> parameter_types;
+		[[no_unique_address]] type_tuple_t<P...> parameter_types;
 		bool Noexcept;
 		cv_qualifier cv;
 		ref_qualifier ref;
@@ -60,5 +60,5 @@ namespace PP
 		constexpr function_info(type_t<R(P...) const volatile && noexcept>) noexcept : function_info(cv_qualifier::const_volatile, ref_qualifier::rvalue, true ) {}
 	};
 
-	constexpr inline auto get_function_info = [](auto t) { return function_info(t); };
+	constexpr inline auto get_function_info = functor{ [](auto t) { return function_info(t); }} | to_type_t;
 }

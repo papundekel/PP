@@ -33,4 +33,9 @@ namespace PP
 	{
 		return apply_template(*this, PP_FORWARD(types));
 	}
+	template <template <typename...> typename Template>
+	constexpr auto template_t<Template>::operator()(auto... types) const noexcept
+	{
+		return apply_template_pack(*this, types...);
+	}
 }

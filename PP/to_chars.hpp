@@ -1,14 +1,17 @@
 #pragma once
-#include <cstddef>
-#include <algorithm>
+#include "simple_view.hpp"
+#include "unbounded.hpp"
+#include "view_move.hpp"
 
 namespace PP
 {
-	constexpr std::size_t to_chars(char* begin, char* end, std::size_t value) noexcept
+	constexpr size_t to_chars(concepts::view auto&& v, auto value) noexcept
 	{
+		auto [begin, end] = PP::view_begin_end(PP_FORWARD(v));
+
 		if (value == 0)
 		{
-			if (begin != end)
+			if (begin == end)
 			{
 				*begin = '0';
 				return 1;
@@ -26,7 +29,7 @@ namespace PP
 			*(--i) = char('0' + digit);
 		}
 
-		std::move(i, end, begin);
+		view_move(begin ^ unbounded, simple_view(i, end));
 
 		return end - i;
 	}

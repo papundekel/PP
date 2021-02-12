@@ -9,7 +9,7 @@ namespace PP
 	constexpr inline auto is_pointer = functor{ overloaded
 	{
 		[] <typename T>(type_t<T*>) { return true; },
-		[](auto t) { return false; }
+		[](auto) { return false; }
 	}} | remove_cv;
 
 	PP_CONCEPT1(pointer)

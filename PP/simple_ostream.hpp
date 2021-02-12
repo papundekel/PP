@@ -1,7 +1,8 @@
 #pragma once
-#include <ostream>
-#include <string_view>
-#include <array>
+#include <iosfwd>
+
+#include "any_iterator.hpp"
+#include "array.hpp"
 #include "to_chars.hpp"
 
 namespace PP
@@ -9,13 +10,13 @@ namespace PP
 	class simple_ostream
 	{
 	public:
-		constexpr virtual void write(std::string_view) noexcept = 0;
+		constexpr virtual void write(any_view_ra<const char&> view) noexcept = 0;
 		void virtual write_to_ostream(std::ostream&) noexcept = 0;
 
-		constexpr void write(std::size_t number) noexcept
+		constexpr void write(size_t number) noexcept
 		{
-			std::array<char, 32> buffer;
-			auto count = to_chars(buffer.data(), buffer.data() + buffer.size(), number);
+			array<char, 32> buffer;
+			auto count = to_chars(buffer, number);
 			write(std::string_view(buffer.data(), count));
 		}
 	};

@@ -32,16 +32,16 @@ namespace PP
 	template <typename F>
 	constexpr auto functor<F>::operator()(partial_tag_t, auto i, auto&& arg) const& noexcept
 	{
-		return apply_partially(this->f, i, PP_FORWARD(arg));
+		return apply_partially(unwrap_functor(this->f), i, PP_FORWARD(arg));
 	}
 	template <typename F>
 	constexpr auto functor<F>::operator()(partial_tag_t, auto i, auto&& arg) const&& noexcept
 	{
-		return apply_partially(move(this->f), i, PP_FORWARD(arg));
+		return apply_partially(unwrap_functor(move(this->f)), i, PP_FORWARD(arg));
 	}
 
 	constexpr auto operator*(concepts::functor auto&& f, auto&& arg) noexcept
 	{
-		return apply_partially(PP_FORWARD(f).f, value_0, PP_FORWARD(arg));
+		return apply_partially(unwrap_functor(PP_FORWARD(f)), value_0, PP_FORWARD(arg));
 	}
 }

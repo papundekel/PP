@@ -13,4 +13,9 @@ namespace PP
 				return forward_as_tuple(PP_FORWARD(head), PP_FORWARD(elements)...);
 			}}[PP_FORWARD(t)];
 	}};
+
+	constexpr auto operator+=(auto&& x, concepts::tuple auto&& t) noexcept
+	{
+		return tuple_prepend(PP_FORWARD(x), PP_FORWARD(t));
+	}
 }

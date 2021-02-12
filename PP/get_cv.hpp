@@ -8,7 +8,7 @@
 
 namespace PP
 {
-	constexpr inline auto get_cv = functor{ []
+	constexpr inline auto get_cv_value_t = functor{ []
 	(concepts::type auto t)
 	{
 		constexpr auto T = PP_COPY_TYPE(t);

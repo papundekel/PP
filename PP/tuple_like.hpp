@@ -3,6 +3,7 @@
 #include "get_type.hpp"
 #include "macros/simple_concept.hpp"
 #include "tuple_count.hpp"
+#include "tuple_get.hpp"
 #include "tuple_element.hpp"
 #include "tuple_value_sequence_for.hpp"
 #include "value_t.hpp"
@@ -15,7 +16,7 @@ namespace PP
 		constexpr void tuple_like_helper(concepts::type auto t, value_sequence<I...>) noexcept
 		requires requires
 		{
-			((void)declval(t)[value<I>], ...);
+			((void)tuple_get    (value<I>, declval(t)), ...);
 			((void)tuple_element(value<I>, declval(t)), ...);
 		};
 	}

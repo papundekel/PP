@@ -1,12 +1,13 @@
 #pragma once
-#include "../../functional/functor.hpp"
-#include "../../functional/negate.hpp"
-#include "../../macros/simple_concept.hpp"
-#include "../void.hpp"
-#include "complete_object.hpp"
-#include "returnable.hpp"
+#include "../../add_reference.hpp"
+#include "../same.hpp"
+#include "referencable.hpp"
 
 namespace PP
 {
-	constexpr inline auto is_reference = is_returnable && !is_void && !is_complete_object;
+	constexpr inline auto is_reference = is_referencable && functor{ []
+		(concepts::type auto t)
+		{
+			return t + add_rvalue_tag == t;
+		}};
 }

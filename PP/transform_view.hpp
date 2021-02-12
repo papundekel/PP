@@ -2,84 +2,72 @@
 #include "apply_template.hpp"
 #include "apply_transform.hpp"
 #include "arrow_operator_wrapper.hpp"
+#include "compressed_pair.hpp"
 #include "concepts/pointer.hpp"
 #include "decompose_template.hpp"
 #include "get_type.hpp"
 #include "iterator_inner.hpp"
+#include "ptrdiff_t.hpp"
 #include "remove_cvref.hpp"
 #include "simple_view.hpp"
 
 namespace PP
 {
-	namespace detail
-	{
-		template <typename T>
-		struct transform_iterator_pointer_base
-		{
-			T ptr;
-		};
-
-		constexpr auto&& transform_iterator_base_get(auto&& i) noexcept
-		{
-			if constexpr (PP_DECLTYPE(i)->Template == template_v<transform_iterator_pointer_base>)
-				return i.ptr;
-			else
-				return PP_FORWARD(i);
-		}
-
-		constexpr inline auto x = [](concepts::type auto t)
-		{
-			if constexpr (is_pointer(PP_COPY_TYPE(t)))
-				return template_v<transform_iterator_pointer_base>[t];
-			else
-				return t;
-		};
-
-		template <typename Transform>
-		using transform_iterator_base_t = apply_transform_t<x, Transform>;
-	}
-
 	template <typename BaseIterator, typename Transform>
 	class transform_iterator
 	{
-		BaseIterator i;
-		Transform t;
+		compressed_pair<BaseIterator, Transform> iterator_transform;
 
 	public:
-		constexpr transform_iterator(BaseIterator i, Transform t)
-			: i(std::move(i))
-			, t(std::move(t))
+		constexpr transform_iterator(concepts::iterator auto&& iterator, auto&& transform)
+			: iterator_transform(PP_FORWARD(iterator), PP_FORWARD(transform))
 		{}
 
 		constexpr decltype(auto) operator*() const
 		{
-			return t(*i);
+			return iterator_transform.second(*iterator_transform.first);
 		}
 		constexpr auto operator->() const
 		{
 			return arrow_operator_wrapper(**this);
 		}
-		constexpr auto operator+(size_t offset)
+		constexpr auto& operator+=(ptrdiff_t offset)
 		{
-			return transform_iterator(i + offset, t);
+			iterator_transform.first += offset;
+			return *this;
 		}
-		constexpr auto operator==(concepts::iterator auto other) const
+		constexpr auto& operator-=(ptrdiff_t offset)
 		{
-			return i == PP::iterator_base(other);
+			iterator_transform.first -= offset;
+			return *this;
 		}
-		constexpr auto operator-(concepts::iterator auto other) const
+		constexpr auto operator==(const transform_iterator& other) const
 		{
-			return i - PP::iterator_base(other);
+			return iterator_transform.first == other.iterator_transform.first;
 		}
-		constexpr decltype(auto) operator[](std::size_t index) const
+		constexpr auto operator==(const auto& other) const
 		{
-			return t(i[index]);
+			return iterator_transform.first == PP::iterator_inner(other);
 		}
-		constexpr BaseIterator inner() const
+		constexpr auto operator-(const transform_iterator& other) const
 		{
-			return i;
+			return iterator_transform.first - other.iterator_transform.first;
+		}
+		constexpr auto operator-(const auto& other) const
+		{
+			return iterator_transform.first - PP::iterator_inner(other);
+		}
+		constexpr decltype(auto) operator[](ptrdiff_t offset) const
+		{
+			return iterator_transform.second(iterator_transform.first[offset]);
+		}
+		constexpr auto inner_iterator() const
+		{
+			return iterator_transform.first;
 		}
 	};
+	template <typename I, typename T>
+	transform_iterator(I&& i, T&& t)->transform_iterator<PP_GET_TYPE(~type<I>), PP_GET_TYPE(~type<T>)>;
 
 	template <typename Functor>
 	struct transform
@@ -90,22 +78,22 @@ namespace PP
 	constexpr auto transform_view(concepts::view auto&& v, auto&& f)
 	{
 		return
-			transform_iterator(begin(PP_FORWARD(v)), PP_FORWARD(f))	^
-			transform_iterator(  end(PP_FORWARD(v)), PP_FORWARD(f));
+			transform_iterator(view_begin(PP_FORWARD(v)), PP_FORWARD(f)) ^
+			transform_iterator(view_end  (PP_FORWARD(v)), PP_FORWARD(f));
 	}
 
-	constexpr auto operator&(concepts::iterator auto i, transform<auto> t)
+	constexpr auto operator&(concepts::iterator auto&& i, transform<auto> t)
 	{
-		return transform_iterator(i, std::move(t).functor);
+		return transform_iterator(PP_FORWARD(i), PP_FORWARD(t.functor));
 	}
 
 	constexpr auto operator||(concepts::view auto&& v, transform<auto> t)
 	{
-		return begin(PP_FORWARD(v)) & std::move(t) ^ end(PP_FORWARD(v));
+		return begin(PP_FORWARD(v)) & move(t) ^ end(PP_FORWARD(v));
 	}
 
 	constexpr auto operator|(concepts::view auto&& v, transform<auto> t)
 	{
-		return transform_view(PP_FORWARD(v), std::move(t).functor);
+		return transform_view(PP_FORWARD(v), PP_FORWARD(t.functor));
 	}
 }

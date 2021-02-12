@@ -51,16 +51,39 @@ namespace PP
 		--t;
 		return x;
 	}
-	
-	PP_FUNCTOR(is_iterator, auto t)
+
+	namespace concepts
 	{
-		return requires (PP_GET_TYPE(t) i)
+		template <typename T>
+		concept iterator = requires (T i)
 		{
 			++i;
 			{ *i } -> concepts::nonvoid;
-		};
-	}};
-	PP_CONCEPT1(iterator)
+		} && equatable<T, T>;
+	}
+	PP_CONCEPT_FUNCTOR(iterator)
+
+	namespace concepts
+	{
+		template <typename T>
+		concept iterator_bi = requires (T i)
+		{
+			--i;
+		} && iterator<T>;
+	}
+	PP_CONCEPT_FUNCTOR(iterator_bi)
+
+	namespace concepts
+	{
+		template <typename T>
+		concept iterator_ra = requires (T i)
+		{
+			i += ptrdiff_t(0);
+			{ i[ptrdiff_t(0)] } -> nonvoid;
+			i - i;
+		} && iterator_bi<T>;
+	}
+	PP_CONCEPT_FUNCTOR(iterator_ra)
 
 	namespace concepts
 	{

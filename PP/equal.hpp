@@ -3,14 +3,15 @@
 
 namespace PP
 {
-	template <view View1, view View2>
-	constexpr bool equal(View1&& v1, View2&& v2)
+	constexpr bool equal(concepts::view auto&& a, concepts::view auto&& b)
 	{
-		auto i = begin(std::forward<View1>(v1));
-		auto j = begin(std::forward<View2>(v2));
-		for (; i != end(std::forward<View1>(v1)) && j != end(std::forward<View2>(v2)); ++i, ++j)
-			if (*i != *j)
+		auto [ai, ae] = view_begin_end(PP_FORWARD(a));
+		auto [bi, be] = view_begin_end(PP_FORWARD(b));
+
+		for (; ai != ae && bi != be; ++ai, ++bi)
+			if (*ai != *bi)
 				return false;
-		return i == end(std::forward<View1>(v1)) && j == end(std::forward<View2>(v2));
+
+		return ai == ae && bi == be;
 	}
 }

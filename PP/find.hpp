@@ -3,10 +3,10 @@
 
 namespace PP
 {
-	constexpr iterator auto find(view auto&& v, auto p)
+	constexpr auto find(concepts::view auto&& v, auto&& p)
 	{
-		auto i = begin(v);
-		for (; i != end(v) && !p(*i); ++i);
+		auto i = view_begin(v);
+		for (; i != view_end(v) && !PP_FORWARD(p)(*i); ++i);
 		return i;
 	}
 }

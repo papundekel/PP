@@ -1,20 +1,10 @@
 #pragma once
 #include "compressed_pair.hpp"
 #include "placeholder.hpp"
+#include "utility/move.hpp"
 
 namespace PP
 {
-	template <typename T, typename Destructor>
-	class scoped;
-	
-	namespace detail
-	{
-		template <typename T>
-		constexpr inline bool is_scoped = false;
-		template <typename T, typename Destructor>
-		constexpr inline bool is_scoped<scoped<T, Destructor>> = true;
-	}
-
 	template <typename T, typename Destructor>
 	class scoped
 	{
@@ -32,10 +22,12 @@ namespace PP
 		{}
 		template <typename U, typename D>
 		constexpr scoped(scoped<U, D>&& other)
-			: pair(std::move(other).pair.first, std::move(other).pair.second)
+			: pair(move(other).pair.first, move(other).pair.second)
 		{}
 
-		constexpr scoped& operator=(const scoped&) = default;
+		constexpr scoped(auto&& value, auto&& destructor)
+			: pair(PP_FORWARD(value), PP_FORWARD(destructor))
+		{}
 
 		constexpr T& inner()
 		{
@@ -62,7 +54,7 @@ namespace PP
 		constexpr scoped& operator=(scoped&& other)
 		{
 			destroy();
-			pair = std::move(other).pair;
+			pair = move(other).pair;
 			return *this;
 		}
 
@@ -70,20 +62,6 @@ namespace PP
 		{
 			destroy();
 		}
-
-		template <typename U>
-		requires (!detail::is_scoped<std::remove_cvref_t<U>>)
-		constexpr scoped(U&& value)
-			: pair(std::forward<U>(value), {})
-		{}
-		template <typename U, typename D>
-		requires (!detail::is_scoped<std::remove_cvref_t<U>>)
-		constexpr scoped(U&& value, D&& destructor)
-			: pair(std::forward<U>(value), std::forward<D>(destructor))
-		{}
-		template <typename D>
-		constexpr scoped(placeholder_t, D&& destructor)
-			: pair({}, std::forward<D>(destructor))
-		{}
 	};
+	scoped(auto&& v, auto&& d) -> scoped<PP_GET_TYPE(~PP_DECLTYPE(v)), PP_GET_TYPE(~PP_DECLTYPE(d))>;
 }
