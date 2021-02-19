@@ -1,7 +1,7 @@
 #pragma once
-#include <cstddef>
-#include <type_traits>
+#include "get_type.hpp"
 #include "pointer_new_base.hpp"
+#include "size_t.hpp"
 
 namespace PP
 {
@@ -11,21 +11,17 @@ namespace PP
 	public:
 		using pointer_new_base<T>::pointer_new_base;
 
-		template <concepts::type Type = type_t<void>>
-		constexpr pointer_new_array(std::size_t count, Type t = {})
+		constexpr pointer_new_array(size_t count)
 			: pointer_new_base<T>(new T[count])
 		{}
 
-		constexpr pointer_new_array(const pointer_new_array<pointer_new_compatible<T> auto>& other) noexcept
-		{
-			this->ptr = other.ptr;
-		}
+		constexpr pointer_new_array(const pointer_new_array<detail::pointer_new_compatible<T> auto>& other) noexcept
+			: pointer_new_base<T>(other.ptr)
+		{}
 
-		constexpr void destroy() const
+		constexpr void destroy()
 		{
 			delete[] this->ptr;
 		}
 	};
-
-	pointer_new_array(std::size_t, concepts::type auto t)->pointer_new_array<PP_GET_TYPE(t)>;
 }

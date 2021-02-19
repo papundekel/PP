@@ -12,12 +12,12 @@ namespace PP
 		template <typename T>
 		concept tuple_concept_count_value_t_member = requires
 		{
-			{ declval(type<T>).tuple_count() } -> concepts::value;
+			{ ::PP::declval(::PP::type<T>).tuple_count() } -> concepts::value;
 		};
 		template <typename T>
 		concept tuple_concept_count_value_t_any = tuple_concept_count_value_t_member<T> || requires
 		{
-			{ tuple_count_implementation(declval(type<T>)) } -> concepts::value;
+			{ tuple_count_implementation(::PP::declval(::PP::type<T>)) } -> concepts::value;
 		};
 	}
 

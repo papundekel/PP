@@ -3,8 +3,11 @@
 
 namespace PP
 {
-	template <typename U, typename T>
-	concept pointer_new_compatible = concepts::convertible_to<U*, T*>;
+	namespace detail
+	{
+		template <typename U, typename T>
+		concept pointer_new_compatible = concepts::convertible_to<U*, T*>;
+	}
 	
 	template <typename T>
 	class pointer_new_base
@@ -17,7 +20,7 @@ namespace PP
 		T* ptr;
 
 	public:
-		constexpr pointer_new_base(T* ptr) noexcept
+		explicit constexpr pointer_new_base(T* ptr) noexcept
 			: ptr(ptr)
 		{}
 

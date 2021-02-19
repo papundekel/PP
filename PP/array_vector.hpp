@@ -1,26 +1,18 @@
 #pragma once
-#include <cstddef>
-#include <type_traits>
-#include <memory>
-#include <utility>
+#include <exception>
+
+#include "construct_at_pack.hpp"
+#include "destroy_at.hpp"
+#include "view_destroy.hpp"
+#include "zero_initialized.hpp"
 
 namespace PP
 {
-	template <typename T, std::size_t capacity_, bool looping = false>
+	template <typename T, size_t capacity_, bool looping = false>
 	class array_vector
 	{
-		template <typename U>
-		struct zero_initialized
-		{
-			U value;
-
-			zero_initialized()
-				: value()
-			{}
-		};
-
-		std::byte buffer[capacity_ * sizeof(T)];
-		zero_initialized<std::size_t> count_;
+		char buffer[capacity_ * sizeof(T)];
+		zero_initialized<size_t> count_;
 
 		constexpr T* begin_helper() noexcept
 		{
@@ -33,19 +25,19 @@ namespace PP
 
 		constexpr void destroy_all() noexcept
 		{
-			std::destroy(begin(), end());
+			view_destroy(*this);
 		}
 
 	public:
 		array_vector() = default;
 
-		constexpr array_vector(const array_vector& other) noexcept(std::is_nothrow_copy_constructible_v<T>)
+		constexpr array_vector(const array_vector& other)
 		{
-			std::uninitialized_copy(other.begin(), other.end(), begin());
+			view_copy_uninitialized(*this, other);
 		}
-		constexpr array_vector(array_vector&& other) noexcept(std::is_nothrow_move_constructible_v<T>)
+		constexpr array_vector(array_vector&& other)
 		{
-			std::uninitialized_move(other.begin(), other.end(), begin());
+			view_move_uninitialized(*this, other);
 		}
 		constexpr ~array_vector()
 		{
@@ -85,8 +77,7 @@ namespace PP
 			count_.value = 0;
 		}
 
-		template <typename U>
-		constexpr void push_back(U&& object) noexcept(std::is_nothrow_constructible_v<T, U>)
+		constexpr void push_back(auto&& object)
 		{
 			if (count() == capacity_)
 			{
@@ -96,7 +87,7 @@ namespace PP
 					clear();
 			}
 
-			std::construct_at(end(), std::forward<U>(object));
+			construct_at_pack(end(), PP_FORWARD(object));
 			++count_.value;
 		}
 
@@ -105,7 +96,7 @@ namespace PP
 			if (!empty())
 			{
 				--count_.value;
-				std::destroy_at(end());
+				destroy_at(end());
 			}
 			else
 			{

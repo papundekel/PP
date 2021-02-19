@@ -8,6 +8,9 @@ namespace PP
 	{
 		using type = T;
 
+		type_t() = default;
+		type_t(const type_t&) = default;
+
 		constexpr auto operator->() const noexcept;
 		constexpr decltype(auto) operator()(auto&&...) const;
 	};

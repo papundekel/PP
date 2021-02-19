@@ -9,11 +9,7 @@ namespace PP
 	namespace concepts
 	{
 		template <typename T>
-		concept functor_call_not_partial =
-			!requires (T t)
-			{
-				partial_tag_t{ t };
-			};
+		concept functor_call_not_partial = !requires (T t) { partial_tag_t{ t }; };
 	}
 
 	template <typename F>
@@ -21,25 +17,15 @@ namespace PP
 	{
 		F f;
 
-		constexpr decltype(auto) operator()() const&
-		requires requires { f(); }
+		constexpr decltype(auto) operator()(auto&&... args) const&
+		requires (concepts::functor_call_not_partial<decltype(args)> && ...) && requires { f(PP_FORWARD(args)...); }
 		{
-			return f();
+			return f(PP_FORWARD(args)...);
 		}
-		constexpr decltype(auto) operator()() const&&
-		requires requires { move(f)(); }
+		constexpr decltype(auto) operator()(auto&&... args) const&&
+		requires (concepts::functor_call_not_partial<decltype(args)> && ...) && requires { move(f)(PP_FORWARD(args)...); }
 		{
-			return move(f)();
-		}
-		constexpr decltype(auto) operator()(auto&& arg, auto&&... args) const&
-		requires concepts::functor_call_not_partial<decltype(arg)> && requires { f(PP_FORWARD(arg), PP_FORWARD(args)...); }
-		{
-			return f(PP_FORWARD(arg), PP_FORWARD(args)...);
-		}
-		constexpr decltype(auto) operator()(auto&& arg, auto&&... args) const&&
-		requires concepts::functor_call_not_partial<decltype(arg)> && requires { move(f)(PP_FORWARD(arg), PP_FORWARD(args)...); }
-		{
-			return move(f)(PP_FORWARD(arg), PP_FORWARD(args)...);
+			return move(f)(PP_FORWARD(args)...);
 		}
 
 		constexpr auto operator()(partial_tag_t, auto i, auto&& arg) const&  noexcept;
@@ -65,7 +51,7 @@ namespace PP
 		return PP_FORWARD(f)(PP_FORWARD(arg));
 	}
 
-	constexpr decltype(auto) unwrap_functor(auto&& f)
+	constexpr auto&& unwrap_functor(auto&& f)
 	{
 		if constexpr (concepts::functor<decltype(f)>)
 			return PP_FORWARD(f).f;

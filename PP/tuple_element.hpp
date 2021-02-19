@@ -15,17 +15,17 @@ namespace PP
 		template <typename I, typename T>
 		concept tuple_concept_element_member = requires
 		{
-			{ declval(type<T>).element(declval(type<I>)) } -> concepts::type;
+			{ ::PP::declval(::PP::type<T>).element(::PP::declval(::PP::type<I>)) } -> concepts::type;
 		};
 		template <typename I, typename T>
 		concept tuple_concept_element_nonmember = tuple_concept_element_member<I, T> || requires
 		{
-			{ element_implementation(declval(type<I>), declval(type<T>)) } -> concepts::type;
+			{ element_implementation(::PP::declval(::PP::type<I>), ::PP::declval(::PP::type<T>)) } -> concepts::type;
 		};
 		template <typename I, typename T>
 		concept tuple_concept_element_recursive = tuple_concept_element_nonmember<I, T> || requires
 		{
-			{ tuple_recursive(tuple_head_element, declval(type<I>), declval(type<T>)) } -> concepts::type;
+			{ tuple_recursive(tuple_head_element, ::PP::declval(::PP::type<I>), ::PP::declval(::PP::type<T>)) } -> concepts::type;
 		};
 
 		constexpr auto tuple_element_helper(concepts::value auto i, auto&& t)

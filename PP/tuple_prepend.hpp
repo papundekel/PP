@@ -7,7 +7,7 @@ namespace PP
 {
 	PP_FUNCTOR(tuple_prepend, auto&& head, concepts::tuple auto&& t)
 	{
-		return functor{ [&head]
+		return functor{[&head]
 			(auto&&... elements)
 			{
 				return forward_as_tuple(PP_FORWARD(head), PP_FORWARD(elements)...);

@@ -1,4 +1,5 @@
 #pragma once
+#include "../../functional/functor.hpp"
 #include "complete_object.hpp"
 #include "returnable.hpp"
 

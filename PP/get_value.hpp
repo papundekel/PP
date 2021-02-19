@@ -29,7 +29,7 @@ namespace PP
 
 	constexpr inline functor get_type_value{ overloaded
 	{
-		[] (auto t) -> decltype(auto)
+		[](auto t) -> decltype(auto)
 		requires detail::has_value_f<PP_GET_TYPE(t)>
 		{
 			return PP_GET_TYPE(t)::value_f();
@@ -39,7 +39,7 @@ namespace PP
 		{
 			return (PP_GET_TYPE(t)::value);
 		}
-	} };
+	}};
 
 	constexpr inline auto get_value = get_type_value | decl_type_copy;
 
@@ -64,15 +64,27 @@ namespace PP
 	}
 	constexpr auto operator<(concepts::value auto x, concepts::value auto y)
 	{
-		return value < PP_GET_VALUE(x) < PP_GET_VALUE(y) > ;
+		return value<PP_GET_VALUE(x) <  PP_GET_VALUE(y)>;
+	}
+	constexpr auto operator<=(concepts::value auto x, concepts::value auto y)
+	{
+		return value<PP_GET_VALUE(x) <= PP_GET_VALUE(y)>;
+	}
+	constexpr auto operator>(concepts::value auto x, concepts::value auto y)
+	{
+		return value<(PP_GET_VALUE(x) >  PP_GET_VALUE(y))>;
+	}
+	constexpr auto operator>=(concepts::value auto x, concepts::value auto y)
+	{
+		return value<(PP_GET_VALUE(x) >= PP_GET_VALUE(y))>;
 	}
 	constexpr auto operator+(concepts::value auto x, concepts::value auto y)
 	{
-		return value<PP_GET_VALUE(x) + PP_GET_VALUE(y)>;
+		return value<PP_GET_VALUE(x) +  PP_GET_VALUE(y)>;
 	}
 	constexpr auto operator-(concepts::value auto x, concepts::value auto y)
 	{
-		return value<PP_GET_VALUE(x) - PP_GET_VALUE(y)>;
+		return value<PP_GET_VALUE(x) -  PP_GET_VALUE(y)>;
 	}
 	constexpr auto operator-(concepts::value auto x)
 	{

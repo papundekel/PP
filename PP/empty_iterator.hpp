@@ -18,7 +18,11 @@ namespace PP
 		{
 			return reinterpret_cast<T&&>(const_cast<empty_iterator&>(*this));
 		}
-		constexpr auto& operator+=(ptrdiff_t) const noexcept
+		constexpr auto& operator+=(ptrdiff_t) noexcept
+		{
+			return *this;
+		}
+		constexpr auto operator+(ptrdiff_t) const noexcept
 		{
 			return *this;
 		}

@@ -16,8 +16,8 @@ namespace PP
 		constexpr void tuple_like_helper(concepts::type auto t, value_sequence<I...>) noexcept
 		requires requires
 		{
-			((void)tuple_get    (value<I>, declval(t)), ...);
-			((void)tuple_element(value<I>, declval(t)), ...);
+			((void)::PP::tuple_get    (::PP::value<I>, ::PP::declval(t)), ...);
+			((void)::PP::tuple_element(::PP::value<I>, ::PP::declval(t)), ...);
 		};
 	}
 
@@ -25,8 +25,8 @@ namespace PP
 	{
 		return requires
 		{
-			tuple_count_value_t(declval(t));
-			detail::tuple_like_helper(t, tuple_value_sequence_for(declval(t)));
+			::PP::tuple_count_value_t(declval(t));
+			::PP::detail::tuple_like_helper(t, tuple_value_sequence_for(declval(t)));
 		};
 	}};
 

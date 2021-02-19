@@ -1,8 +1,9 @@
 #pragma once
 #include "decompose_template.hpp"
-#include "utility/forward.hpp"
 #include "get_type.hpp"
 #include "get_value.hpp"
+#include "placeholder.hpp"
+#include "utility/forward.hpp"
 
 namespace PP
 {
@@ -12,7 +13,7 @@ namespace PP
 	public:
 		T obj;
 
-		constexpr singular_tuple(auto&& obj)
+		constexpr singular_tuple(placeholder_t, auto&& obj)
 			: obj(PP_FORWARD(obj))
 		{}
 
@@ -20,7 +21,7 @@ namespace PP
 		{
 			return value_1;
 		}
-		constexpr auto element(concepts::value auto i) const noexcept
+		constexpr auto element(concepts::value auto) const noexcept
 		{
 			return type<T>;
 		}
@@ -30,7 +31,7 @@ namespace PP
 		constexpr decltype(auto) operator[](concepts::value auto i) const&& noexcept;
 	};
 	template <typename T>
-	singular_tuple(T)->singular_tuple<T>;
+	singular_tuple(T) -> singular_tuple<T>;
 
 	namespace concepts
 	{
@@ -72,10 +73,10 @@ namespace PP
 
 	constexpr auto make_singular_tuple(auto&& x)
 	{
-		return singular_tuple<PP_GET_TYPE(~PP_DECLTYPE(x))>(PP_FORWARD(x));
+		return singular_tuple<PP_GET_TYPE(~PP_DECLTYPE(x))>(placeholder, PP_FORWARD(x));
 	}
 	constexpr auto forward_as_singular_tuple(auto&& x) noexcept
 	{
-		return singular_tuple<decltype(x)>(PP_FORWARD(x));
+		return singular_tuple<decltype(x)>(placeholder, PP_FORWARD(x));
 	}
 }

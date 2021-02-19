@@ -4,7 +4,7 @@
 
 namespace PP
 {
-	PP_FUNCTOR(tuple_all, auto&& predicate, concepts::tuple auto&& t)
+	PP_FUNCTOR(tuple_all, auto&& predicate, concepts::tuple auto&& t) -> decltype(auto)
 	{
 		return tuple_apply(
 			[&predicate](auto&&... elements) -> decltype(auto)

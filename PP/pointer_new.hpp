@@ -1,8 +1,7 @@
 #pragma once
-#include "type_t.hpp"
-#include <type_traits>
-#include "pointer_new_base.hpp"
+#include "get_type.hpp"
 #include "placeholder.hpp"
+#include "pointer_new_base.hpp"
 
 namespace PP
 {
@@ -12,21 +11,15 @@ namespace PP
 	public:
 		using pointer_new_base<T>::pointer_new_base;
 
-		template <typename... Args>
-		constexpr pointer_new(PP::type_t<T>, Args&&... args) // TODO noexcept(?)
-			: pointer_new_base<T>(new T(std::forward<Args>(args)...))
+		constexpr pointer_new(placeholder_t, auto&&... args)
+			: pointer_new_base<T>(new T(PP_FORWARD(args)...))
 		{}
 
-		constexpr pointer_new(placeholder_t, auto&& value)
-			: pointer_new(PP::type<std::remove_cvref_t<decltype(value)	>>, PP_FORWARD(value))
+		constexpr pointer_new(const pointer_new<detail::pointer_new_compatible<T> auto>& other) noexcept
+			: pointer_new_base<T>(other.ptr)
 		{}
 
-		constexpr pointer_new(const pointer_new<pointer_new_compatible<T> auto>& other) noexcept
-		{
-			this->ptr = other.ptr;
-		}
-
-		constexpr void destroy() const
+		constexpr void destroy()
 		{
 			delete this->ptr;
 		}

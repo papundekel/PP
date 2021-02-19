@@ -1,37 +1,36 @@
 #pragma once
-#include <cstddef>
-#include <utility>
-#include <algorithm>
-#include <memory>
+#include "construct_at_pack.hpp"
 #include "dynamic_block.hpp"
 #include "view.hpp"
+#include "view_destroy.hpp"
 
 namespace PP
 {
-	template <typename T>
+	template <typename T, typename Allocator>
 	class simple_vector
 	{
 		static constexpr size_t default_capacity = 16;
 
-		dynamic_block<T> block;
+		dynamic_block<T, Allocator> block;
 		size_t count_;
 
 		constexpr void destroy_all() noexcept
 		{
-			std::destroy(begin(), end());
+			view_destroy(*this);
 		}
 
 	public:
-		explicit constexpr simple_vector(concepts::view auto&& v)
-			: block(PP_FORWARD(v))
-			, count_(block.count())
-		{}
-		explicit constexpr simple_vector(std::size_t capacity) noexcept
-			: block(capacity)
+		explicit constexpr simple_vector(auto&& allocator, size_t capacity) noexcept
+			: block(PP_FORWARD(allocator), capacity)
 			, count_(0)
 		{}
-		constexpr simple_vector() noexcept
-			: simple_vector(default_capacity)
+		explicit constexpr simple_vector(auto&& allocator, concepts::view auto&& v)
+			: block(PP_FORWARD(allocator), PP_FORWARD(v))
+			, count_(block.count())
+		{}
+
+		explicit constexpr simple_vector(auto&& allocator) noexcept
+			: simple_vector(PP_FORWARD(allocator), default_capacity)
 		{}
 
 		constexpr ~simple_vector()
@@ -39,21 +38,20 @@ namespace PP
 			destroy_all();
 		}
 
-		template <typename U>
-		constexpr void push_back(U&& value)
+		constexpr void push_back(auto&& value)
 		{
 			if (count() == capacity())
 			{
 				dynamic_block<T> new_block(2 * capacity());
 
-				std::uninitialized_move(begin(), end(), new_block.begin());
+				view_move_uninitialized(new_block, *this);
 
 				destroy_all();
 
-				block = std::move(new_block);
+				block = move(new_block);
 			}
 
-			std::construct_at(end(), std::forward<U>(value));
+			construct_at_pack(end(), PP_FORWARD(value));
 
 			++count_;
 		}
@@ -82,11 +80,11 @@ namespace PP
 			return begin() + count_;
 		}
 
-		constexpr std::size_t count() const noexcept
+		constexpr size_t count() const noexcept
 		{
 			return count_;
 		}
-		constexpr std::size_t capacity() const noexcept
+		constexpr size_t capacity() const noexcept
 		{
 			return block.count();
 		}

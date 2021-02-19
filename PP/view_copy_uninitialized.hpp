@@ -7,5 +7,9 @@
 
 namespace PP
 {
-	constexpr inline auto view_copy = view_for_each * *asg | zip_view_pack;
+	constexpr inline auto view_copy_uninitialized = view_for_each * *functor{ []
+		(auto&& to, auto&& from)
+		{
+			construct_at_pack(&to, PP_FORWARD(from));
+		}} | zip_view_pack;
 }

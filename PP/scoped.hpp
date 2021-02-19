@@ -3,8 +3,12 @@
 #include "placeholder.hpp"
 #include "utility/move.hpp"
 
+#include <iostream>
+
 namespace PP
 {
+	constexpr inline struct scoped_in_place_tag_t {} scoped_in_place_tag;
+
 	template <typename T, typename Destructor>
 	class scoped
 	{
@@ -14,26 +18,35 @@ namespace PP
 		compressed_pair<T, Destructor> pair;
 
 	public:
-		constexpr scoped() = default;
+		scoped() = default;
 
+		constexpr scoped(const scoped& other)
+			: pair(other.pair.first, other.pair.second)
+		{}
 		template <typename U, typename D>
 		constexpr scoped(const scoped<U, D>& other)
 			: pair(other.pair.first, other.pair.second)
+		{}
+		constexpr scoped(scoped&& other)
+			: pair(move(other).pair.first, move(other).pair.second)
 		{}
 		template <typename U, typename D>
 		constexpr scoped(scoped<U, D>&& other)
 			: pair(move(other).pair.first, move(other).pair.second)
 		{}
 
-		constexpr scoped(auto&& value, auto&& destructor)
+		constexpr scoped(placeholder_t, auto&& value, auto&& destructor)
 			: pair(PP_FORWARD(value), PP_FORWARD(destructor))
 		{}
+		constexpr scoped(scoped_in_place_tag_t, auto&&... args)
+			: pair(T(PP_FORWARD(args)...), Destructor())
+		{}
 
-		constexpr T& inner()
+		constexpr T& get_object()
 		{
 			return pair.first;
 		}
-		constexpr const T& inner() const
+		constexpr const T& get_object() const
 		{
 			return pair.first;
 		}
@@ -48,16 +61,25 @@ namespace PP
 	private:
 		constexpr void destroy()
 		{
-			get_destructor()(inner());
+			get_destructor()(get_object());
 		}
 	public:
-		constexpr scoped& operator=(scoped&& other)
+		template <typename U, typename D>
+		constexpr scoped& operator=(const scoped<U, D>& other)
 		{
 			destroy();
-			pair = move(other).pair;
+			pair.first = other.pair.first;
+			pair.second = other.pair.second;
 			return *this;
 		}
-
+		template <typename U, typename D>
+		constexpr scoped& operator=(scoped<U, D>&& other)
+		{
+			destroy();
+			pair.first = move(other).pair.first;
+			pair.second = move(other).pair.second;
+			return *this;
+		}
 		constexpr ~scoped()
 		{
 			destroy();

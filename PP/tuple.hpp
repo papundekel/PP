@@ -5,6 +5,7 @@
 #include "decompose_template.hpp"
 #include "get_value.hpp"
 #include "placeholder.hpp"
+#include "tuple_like.hpp"
 #include "type_tuple.hpp"
 #include "value_sequence.hpp"
 
@@ -36,12 +37,24 @@ namespace PP
 			static constexpr auto wrap_types = type_tuple<tuple_wrap<value_t<I>, T>&...>;
 
 		public:
+			tuple_impl() = default;
+
 			constexpr tuple_impl(placeholder_t, auto&&... args)
 				: tuple_wrap<value_t<I>, T>(PP_FORWARD(args))...
 			{}
 			constexpr tuple_impl(concepts::PPtuple auto&& t)
 				: tuple_wrap<value_t<I>, T>(PP_FORWARD(t)[value<I>])...
 			{}
+			/*constexpr tuple_impl(auto&& t)
+			requires (!concepts::PPtuple<decltype(t)>) && concepts::tuple<decltype(t)>
+				: tuple_wrap<value_t<I>, T>(PP_FORWARD(t)[value<I>])...
+			{}*/
+
+			constexpr auto& operator=(concepts::tuple auto&& t)
+			{
+				(((tuple_wrap<value_t<I>, T>&)*this = PP_FORWARD(t)[value<I>]), ...);
+				return *this;
+			}
 		};
 
 		struct tuple_helper

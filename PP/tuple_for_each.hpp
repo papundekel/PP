@@ -5,7 +5,7 @@ namespace PP
 {
 	PP_FUNCTOR(tuple_for_each, concepts::value auto left, auto&& f, concepts::tuple auto&& t)
 	{
-		tuple_fold(left, [&a, &f]
+		tuple_fold(left, [&f]
 			(auto, auto&& element)
 			{
 				PP_FORWARD(f)(PP_FORWARD(element));

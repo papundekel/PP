@@ -1,11 +1,11 @@
 #pragma once
-#include <utility>
 #include <initializer_list>
-#include "view.hpp"
+
 #include "compressed_pair.hpp"
-#include "unbounded.hpp"
-#include "size_t.hpp"
 #include "concepts/same_except_cvref.hpp"
+#include "ptrdiff_t.hpp"
+#include "unbounded.hpp"
+#include "view.hpp"
 
 namespace PP
 {
@@ -36,7 +36,7 @@ namespace PP
 		{
 			return pair.second;
 		}
-		constexpr decltype(auto) operator[](size_t index) const
+		constexpr decltype(auto) operator[](ptrdiff_t index) const
 		{
 			return begin()[index];
 		}
@@ -45,17 +45,20 @@ namespace PP
 	template <typename T>
 	simple_view(const std::initializer_list<T>&) -> simple_view<const T*, const T*>;
 
-	constexpr concepts::view auto operator^(concepts::iterator auto begin, concepts::sentinel<decltype(begin)> auto end)
+	template <typename T>
+	using pointer_view = simple_view<T*>;
+
+	constexpr auto operator^(concepts::iterator auto begin, concepts::sentinel<decltype(begin)> auto end)
 	{
 		return simple_view(begin, end);
 	}
 
-	constexpr concepts::view auto operator|(concepts::view auto&& v, unbounded_t)
+	constexpr auto operator|(concepts::view auto&& v, unbounded_t)
 	{
 		return view_begin(PP_FORWARD(v)) ^ unbounded;
 	}
 
-	constexpr concepts::view auto operator>>(std::size_t offset, concepts::view auto&& v)
+	constexpr auto operator>>(ptrdiff_t offset, concepts::view auto&& v)
 	{
 		return simple_view(view_begin(PP_FORWARD(v)) + offset, view_end(PP_FORWARD(v)));
 	}

@@ -1,19 +1,18 @@
 #pragma once
-#include <type_traits>
+#include "concepts/empty.hpp"
+#include "template_t.hpp"
 
 namespace PP
 {
 	namespace detail
 	{
-		struct empty {};
-
 		// saves memory when one type from the pair is empty
 		//
 		// useful in simple_view with unbounded, where the only
 		// information is the type of its end iterator, not data
 		//
 		// for the same reason also in transform_iterator,
-		// if the transform is a captureless lambda or other empty functor
+		// if the transform is a capture-less lambda or other empty functor
 
 		template <typename First, typename Second>
 		struct compressed_pair_nonempty
@@ -35,21 +34,24 @@ namespace PP
 			First first;
 
 			[[no_unique_address]]
-			Empty second{};
+			Empty second;
 		};
 
-		template <typename First, typename Second>
-		constexpr auto compressed_pair_dispatch()
+		constexpr auto compressed_pair_dispatch_template(concepts::type auto first, concepts::type auto second)
 		{
-			if constexpr (std::is_empty_v<First>)
-				return std::type_identity<compressed_pair_empty_first<First, Second>>{};
-			else if constexpr (std::is_empty_v<Second>)
-				return std::type_identity<compressed_pair_empty_second<First, Second>>{};
+			if constexpr (is_empty(PP_COPY_TYPE(first)))
+				return Template<compressed_pair_empty_first>;
+			else if constexpr (is_empty(PP_COPY_TYPE(second)))
+				return Template<compressed_pair_empty_second>;
 			else
-				return std::type_identity<compressed_pair_nonempty<First, Second>>{};
+				return Template<compressed_pair_nonempty>;
+		}
+		constexpr auto compressed_pair_dispatch(concepts::type auto first, concepts::type auto second)
+		{
+			return compressed_pair_dispatch_template(first, second)(first, second);
 		}
 	}
 
 	template <typename First, typename Second>
-	using compressed_pair = typename decltype(detail::compressed_pair_dispatch<First, Second>())::type;
+	using compressed_pair = PP_GET_TYPE(detail::compressed_pair_dispatch(type<First>, type<Second>));
 }

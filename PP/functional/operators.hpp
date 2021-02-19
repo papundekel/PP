@@ -3,10 +3,6 @@
 
 namespace PP
 {
-	PP_FUNCTOR(neg, auto&& x) -> decltype(auto)
-	{
-		return !PP_FORWARD(x);
-	}};
 	PP_FUNCTOR(eql, auto&& x, auto&& y) -> decltype(auto)
 	{
 		return PP_FORWARD(x) == PP_FORWARD(y);
@@ -31,20 +27,36 @@ namespace PP
 	{
 		return PP_FORWARD(x) && PP_FORWARD(y);
 	}};
-	PP_FUNCTOR(cal, auto&& f, auto&&... args) -> decltype(auto)
+	PP_FUNCTOR(pls, auto&& x, auto&& y) -> decltype(auto)
 	{
-		return PP_FORWARD(f)(PP_FORWARD(args)...);
-	}};
-	PP_FUNCTOR(ipr, auto&& x) -> decltype(auto)
-	{
-		return ++x;
-	}};
-	PP_FUNCTOR(der, auto&& x) -> decltype(auto)
-	{
-		return *x;
+		return PP_FORWARD(x) +  PP_FORWARD(y);
 	}};
 	PP_FUNCTOR(asg, auto&& x, auto&& y) -> decltype(auto)
 	{
-		return PP_FORWARD(x) = PP_FORWARD(y);
+		return PP_FORWARD(x) =  PP_FORWARD(y);
+	}};
+	PP_FUNCTOR(pas, auto&& x, auto&& y) -> decltype(auto)
+	{
+		return PP_FORWARD(x) += PP_FORWARD(y);
+	}};
+	PP_FUNCTOR(mas, auto&& x, auto&& y) -> decltype(auto)
+	{
+		return PP_FORWARD(x) -= PP_FORWARD(y);
+	}};
+	PP_FUNCTOR(ipr, auto&& x) -> decltype(auto)
+	{
+		return ++PP_FORWARD(x);
+	}};
+	PP_FUNCTOR(der, auto&& x) -> decltype(auto)
+	{
+		return  *PP_FORWARD(x);
+	}};
+	PP_FUNCTOR(neg, auto&& x) -> decltype(auto)
+	{
+		return  !PP_FORWARD(x);
+	}};
+	PP_FUNCTOR(cal, auto&& f, auto&&... args) -> decltype(auto)
+	{
+		return PP_FORWARD(f)(PP_FORWARD(args)...);
 	}};
 }

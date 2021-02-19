@@ -1,34 +1,33 @@
 #pragma once
-#include "uninitialized_copy.hpp"
 #include "unique_pointer.hpp"
+#include "pointer_allocate.hpp"
 #include "view.hpp"
+#include "view_copy_uninitialized.hpp"
 
 namespace PP
 {
-	template <typename T>
+	template <typename T, typename Allocator>
 	class dynamic_block
 	{
-		size_t count_;
-		unique_pointer<pointer_new_array<std::byte>> buffer;
+		unique_pointer<pointer_allocate<T, Allocator>> buffer;
 
 		constexpr T* begin_helper() const noexcept
 		{
-			return reinterpret_cast<T*>(buffer.get());
+			return buffer.get();
 		}
 		constexpr T* end_helper() const noexcept
 		{
-			return begin_helper() + count_;
+			return begin_helper() + count();
 		}
 
 	public:
-		explicit constexpr dynamic_block(std::size_t count) noexcept
-			: count_(count)
-			, buffer(pointer_new_array<std::byte>(count_))
+		constexpr dynamic_block(auto&& allocator, size_t count) noexcept
+			: buffer(placeholder, PP_FORWARD(allocator), count)
 		{}
-		explicit constexpr dynamic_block(concepts::view auto&& v)
-			: dynamic_block(PP::view_count(PP_FORWARD(v)))
+		constexpr dynamic_block(auto&& allocator, concepts::view auto&& v)
+			: dynamic_block(PP_FORWARD(allocator), view_count(PP_FORWARD(v)))
 		{
-			uninitialized_copy(*this, PP_FORWARD(v));
+			view_copy_uninitialized(*this, PP_FORWARD(v));
 		}
 
 		constexpr T* begin() noexcept
@@ -48,9 +47,9 @@ namespace PP
 			return end_helper();
 		}
 
-		constexpr std::size_t count() const noexcept
+		constexpr size_t count() const noexcept
 		{
-			return count_;
+			return buffer.get_object().count();
 		}
 	};
 }

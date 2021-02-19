@@ -5,19 +5,19 @@
 
 namespace PP
 {
-	constexpr size_t to_chars(concepts::view auto&& v, auto value) noexcept
+	constexpr auto to_chars(concepts::view auto&& v, auto value) noexcept
 	{
 		auto [begin, end] = PP::view_begin_end(PP_FORWARD(v));
 
 		if (value == 0)
 		{
-			if (begin == end)
+			if (begin != end)
 			{
 				*begin = '0';
-				return 1;
+				return ++begin;
 			}
 			else
-				return 0;
+				return begin;
 		}
 
 		auto i = end;
@@ -26,11 +26,10 @@ namespace PP
 		{
 			auto digit = value % 10;
 			value /= 10;
-			*(--i) = char('0' + digit);
+			--i;
+			*i = char('0' + digit);
 		}
 
-		view_move(begin ^ unbounded, simple_view(i, end));
-
-		return end - i;
+		return view_move(begin ^ unbounded, i ^ end)[value_0];
 	}
 }

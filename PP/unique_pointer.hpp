@@ -1,10 +1,15 @@
 #pragma once
+#include "always_false.hpp"
+#include "apply_template.hpp"
 #include "placeholder.hpp"
+#include "pointer_allocate.hpp"
 #include "pointer_new.hpp"
 #include "pointer_new_array.hpp"
 #include "pointer_stack.hpp"
 #include "remove_cvref.hpp"
 #include "scoped.hpp"
+#include "size_t.hpp"
+#include "template_t.hpp"
 #include "type_t.hpp"
 #include "unique.hpp"
 
@@ -15,9 +20,9 @@ namespace PP
 		struct unique_pointer_deleter
 		{
 			template <typename Pointer>
-			constexpr void operator()(const unique<Pointer>& ptr) const
+			constexpr void operator()(unique<Pointer>& ptr) const
 			{
-				ptr.inner().destroy();
+				ptr.get_object().destroy();
 			}
 		};
 	}
@@ -28,38 +33,51 @@ namespace PP
 		template <typename>
 		friend class unique_pointer;
 
-		scoped<unique<Pointer>, detail::unique_pointer_deleter> ptr;
+		scoped<unique<Pointer>, detail::unique_pointer_deleter> p;
 
 	public:
-		constexpr unique_pointer(placeholder_t, const auto& ptr)
-			: ptr(make_unique_default(ptr), detail::unique_pointer_deleter{})
+		unique_pointer() = default;
+
+		constexpr unique_pointer(placeholder_t, auto&&... args)
+			: p(scoped_in_place_tag, unique_in_place_tag, PP_FORWARD(args)..., unique_in_place_delimiter)
 		{}
 
+		constexpr unique_pointer(unique_pointer&& other) = default;
 		template <typename PointerOther>
 		constexpr unique_pointer(unique_pointer<PointerOther>&& other)
-			: ptr(move(other).ptr)
+			: p(move(other).p)
 		{}
-		
+
+		constexpr unique_pointer& operator=(unique_pointer&& other) = default;
 		template <typename PointerOther>
 		constexpr unique_pointer& operator=(unique_pointer<PointerOther>&& other)
 		{
-			ptr = move(other).ptr;
+			p = move(other).p;
 			return *this;
 		}
 
 		template <typename PointerOther>
-		constexpr unique_pointer(const unique_pointer<PointerOther>&) = delete;
+		unique_pointer(const unique_pointer<PointerOther>&) = delete;
 		template <typename PointerOther>
-		constexpr unique_pointer& operator=(const unique_pointer<PointerOther>&) = delete;
+		unique_pointer& operator=(const unique_pointer<PointerOther>&) = delete;
+
+		constexpr auto& get_object() noexcept
+		{
+			return p.get_object().get_object();
+		}
+		constexpr auto& get_object() const noexcept
+		{
+			return p.get_object().get_object();
+		}
 
 		constexpr auto get() const noexcept
 		{
-			return ptr.inner().inner().get_ptr();
+			return get_object().get_ptr();
 		}
 
 		constexpr auto release() noexcept
 		{
-			return ptr.inner().release();
+			return p.get_object().release().get_ptr();
 		}
 
 		constexpr explicit operator bool() const noexcept
@@ -76,29 +94,64 @@ namespace PP
 			return get();
 		}
 
-		constexpr decltype(auto) operator[](std::size_t index) const noexcept
+		constexpr decltype(auto) operator[](size_t index) const noexcept
 		{
 			return get()[index];
 		}
 	};
-	template <typename Pointer>
-	unique_pointer(placeholder_t, const Pointer&) -> unique_pointer<Pointer>;
 
 	constexpr inline struct unique_tag_stack_t		{} unique_tag_stack;
 	constexpr inline struct unique_tag_new_t		{} unique_tag_new;
 	constexpr inline struct unique_tag_new_array_t	{} unique_tag_new_array;
+	constexpr inline struct unique_tag_allocate_t	{} unique_tag_allocate;
 
-	constexpr auto make_unique_pointer(unique_tag_stack_t, concepts::type auto t, auto&&... args)
+	namespace detail
 	{
-		return unique_pointer(placeholder, make_pointer_stack(t, PP_FORWARD(args)...));
+		constexpr auto make_unique_pointer_template(auto tag)
+		{
+			constexpr auto tag_t = PP_DECLTYPE(tag);
+
+			if constexpr (tag_t == type<unique_tag_new_t>)
+				return Template<pointer_new>;
+			else if constexpr (tag_t == type<unique_tag_new_array_t>)
+				return Template<pointer_new_array>;
+			else if constexpr (tag_t == type<unique_tag_new_array_t>)
+				return Template<pointer_allocate>;
+			else
+				static_assert(always_false<decltype(tag)>, "invalid tag type");
+		}
+		constexpr auto make_unique_pointer_type(auto tag, concepts::type auto t)
+		{
+			return make_unique_pointer_template(tag)(t);
+		}
+		constexpr auto make_unique_pointer_get_maker_helper(auto tag)
+		{
+			if constexpr (PP_DECLTYPE(tag) == type<unique_tag_new_t>)
+				return [](concepts::type auto t, auto&&... args) { return t(placeholder, PP_FORWARD(args)...); };
+			else
+				return [](concepts::type auto t, auto&&... args) { return t(PP_FORWARD(args)...); };
+		}
+		constexpr auto make_unique_pointer_get_maker(auto tag)
+		{
+			if constexpr (PP_DECLTYPE(tag) == type<unique_tag_stack_t>)
+				return make_pointer_stack;
+			else
+				return [tag]
+				(concepts::type auto t, auto&&... args)
+				{
+					return make_unique_pointer_get_maker_helper(tag)(make_unique_pointer_type(tag, t), PP_FORWARD(args)...);
+				};
+		}
+		constexpr auto make_unique_pointer_helper(auto&& maker, concepts::type auto t, auto&&... args)
+		{
+			auto p = PP_FORWARD(maker)(t, PP_FORWARD(args)...);
+			return Template<unique_pointer>(PP_DECLTYPE(p))(placeholder, move(p));
+		}
 	}
-	constexpr auto make_unique_pointer(unique_tag_new_t, concepts::type auto t, auto&&... args)
+
+	constexpr auto make_unique_pointer(auto tag, concepts::type auto t, auto&&... args)
 	{
-		return unique_pointer(placeholder, pointer_new(t, PP_FORWARD(args)...));
-	}
-	constexpr auto make_unique_pointer(unique_tag_new_array_t, concepts::type auto t, std::size_t count)
-	{
-		return unique_pointer(placeholder, pointer_new_array(count, t));
+		return detail::make_unique_pointer_helper(detail::make_unique_pointer_get_maker(tag), t, PP_FORWARD(args)...);
 	}
 
 	constexpr auto make_unique_copy(auto tag, auto&& value)

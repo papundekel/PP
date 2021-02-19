@@ -1,18 +1,46 @@
 #include <iostream>
 #include <vector>
 
-#include "any_iterator.hpp"
-#include "unbounded.hpp"
+#include "dynamic_block.hpp"
+#include "tuple_apply.hpp"
+#include "tuple_fold.hpp"
+#include "tuple_map.hpp"
+#include "tuple_zip_indices.hpp"
+#include "tuple_prepend.hpp"
+#include "tuple_make.hpp"
+#include "tuple_splits.hpp"
+#include "unique_pointer.hpp"
+
+struct Abstract
+{
+	virtual void f() const = 0;
+
+	virtual ~Abstract()
+	{
+		std::cout << "som umar\n";
+	}
+};
+
+struct Derived : public Abstract
+{
+	int x;
+
+	constexpr Derived(int x)
+		: x(x)
+	{}
+
+	void f() const override final
+	{
+		std::cout << x << '\n';
+	}
+};
 
 int main()
 {
-	int arr[] = { 1, 2 };
-	auto begin = PP::make_any_iterator(PP::view_begin(arr));
-	auto end = PP::make_any_iterator(PP::view_end(arr));
-
-	for (auto i = begin; i != end; ++i)
 	{
-		std::cout << *i << '\n';
+		PP::unique_pointer<PP::pointer_new<Abstract>> p = PP::make_unique_pointer(PP::unique_tag_new, PP::type<Derived>, 5);
+
+		p->f();
 	}
 
 	std::cout.flush();

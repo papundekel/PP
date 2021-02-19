@@ -2,5 +2,9 @@
 
 namespace PP
 {
-	struct empty{};
+	struct empty
+	{
+		constexpr empty(auto&&...) noexcept
+		{}
+	};
 }
