@@ -75,11 +75,11 @@ namespace PP
 			return x.get();
 		else
 			return PP_FORWARD(x);
-	}};
+	});
 
-	constexpr inline auto ref = functor{ []
+	constexpr inline auto ref = functor([]
 	(auto&& x)
 	{
 		return reference_wrapper(PP_FORWARD(x));
-	}} | unref;
+	}) | unref;
 }

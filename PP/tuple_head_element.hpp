@@ -26,5 +26,5 @@ namespace PP
 			return detail::tuple_head_element_member(PP_FORWARD(t));
 		else
 			return detail::tuple_head_element_nonmember(PP_FORWARD(t));
-	}};
+	});
 }

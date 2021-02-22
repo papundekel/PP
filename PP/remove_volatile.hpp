@@ -6,9 +6,9 @@
 
 namespace PP
 {
-	constexpr inline auto remove_volatile = functor{ overloaded
-	{
+	constexpr inline auto remove_volatile = make_overloaded_pack
+	(
 		[]<typename T>(type_t<volatile T>) { return type<T>; },
 		[](auto t) { return t; }
-	}} | to_type_t;
+	) | to_type_t;
 }

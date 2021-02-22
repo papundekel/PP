@@ -9,47 +9,41 @@
 #include "tuple_for_each.hpp"
 #include "tuple_map.hpp"
 #include "tuple_std.hpp"
+#include "tuple_zip_with.hpp"
 #include "view.hpp"
 
 namespace PP
 {
 	template <typename... Iterators>
-	class zip_iterator
+	class zip_iterator : public tuple<Iterators...>
 	{
 		template <typename...>
 		friend class zip_iterator;
 
-		tuple<Iterators...> iterators;
-
 	public:
 		constexpr zip_iterator(placeholder_t, auto&&... iterators)
-			: iterators(placeholder, PP_FORWARD(iterators)...)
+			: tuple<Iterators...>(placeholder, PP_FORWARD(iterators)...)
 		{}
 
 		constexpr auto operator*() const
 		{
-			return der + iterators;
+			return der + *this;
 		}
 		constexpr auto& operator+=(ptrdiff_t offset)
 		{
-			tuple_for_each(value_true, pas(partial_tag, value_1, offset), iterators);
+			tuple_for_each(value_true, pas(partial_tag, value_1, offset), *this);
 			return *this;
 		}
 		constexpr auto& operator-=(ptrdiff_t offset)
 		{
-			tuple_for_each(value_true, mas(partial_tag, value_1, offset), iterators);
+			tuple_for_each(value_true, mas(partial_tag, value_1, offset), *this);
 			return *this;
 		}
 		template <typename... IteratorsOther>
 		requires (sizeof...(Iterators) == sizeof...(IteratorsOther))
 		constexpr bool operator==(const zip_iterator<IteratorsOther...>& other) const noexcept
 		{
-			return *eql || iterators ^ other.iterators;
-		}
-
-		constexpr auto operator[](concepts::value auto i) const
-		{
-			return iterators[i];
+			return *eql || tuple_zip_pack(*this, other);
 		}
 	};
 	template <typename... Iterators>
@@ -58,12 +52,14 @@ namespace PP
 	PP_FUNCTOR(make_zip_iterator, auto&&... iterators)
 	{
 		return zip_iterator(placeholder, PP_FORWARD(iterators)...);
-	}};
+	});
 
 	PP_FUNCTOR(zip_view_pack, concepts::view auto&&... views)
 	{
-		return
-			make_zip_iterator(view_begin(PP_FORWARD(views))...) ^
-			make_zip_iterator(view_end  (PP_FORWARD(views))...);
-	}};
+		return simple_view
+		(
+			make_zip_iterator(view_begin(PP_FORWARD(views))...),
+			make_zip_iterator(view_end  (PP_FORWARD(views))...)
+		);
+	});
 }

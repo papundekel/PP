@@ -84,7 +84,7 @@ namespace PP
 				return is_valid() ? get_ptr_impl() : nullptr;
 			}
 
-			constexpr void destroy() const
+			constexpr void deallocate() const
 			{
 				if (auto ptr = get_ptr(); ptr)
 					ptr->~T();
@@ -100,9 +100,9 @@ namespace PP
 		constexpr auto T = PP_COPY_TYPE(t);
 
 		return pointer_stack<PP_GET_TYPE(T), size_of(T), alignment_of(T)>(placeholder, PP_FORWARD(args)...);
-	}};
+	});
 	PP_FUNCTOR(make_pointer_stack_copy, auto&& value)
 	{
 		return make_pointer_stack(~PP_DECLTYPE(value), PP_FORWARD(value));
-	}};
+	});
 }

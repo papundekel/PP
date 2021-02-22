@@ -33,7 +33,7 @@ namespace PP
 		
 			return make_tuple(move(i), move(init));
 		}
-	}};
+	});
 
 	constexpr inline auto view_foldl = view_fold * value_true;
 	constexpr inline auto view_foldr = view_fold * value_false;

@@ -7,7 +7,7 @@ namespace PP
 	PP_FUNCTOR(applier, auto&& f)
 	{
 		return tuple_apply * PP_FORWARD(f);
-	}};
+	});
 
 	constexpr auto operator*(concepts::functor auto&& f)
 	{

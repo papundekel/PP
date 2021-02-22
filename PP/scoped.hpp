@@ -1,25 +1,37 @@
 #pragma once
+#include "arg_splitter.hpp"
 #include "compressed_pair.hpp"
+#include "in_place_tag.hpp"
 #include "placeholder.hpp"
+#include "type_tuple.hpp"
 #include "utility/move.hpp"
 
 #include <iostream>
 
 namespace PP
 {
-	constexpr inline struct scoped_in_place_tag_t {} scoped_in_place_tag;
+	constexpr inline struct scoped_in_place_delimiter_t {} scoped_in_place_delimiter;
 
 	template <typename T, typename Destructor>
 	class scoped
 	{
+		static constexpr auto unique_splitter = arg_splitter * type<scoped_in_place_delimiter_t> * type_tuple<T, Destructor>;
+
 		template <typename U, typename D>
 		friend class scoped;
 
 		compressed_pair<T, Destructor> pair;
 
 	public:
+		constexpr scoped(in_place_tag_t, auto&&... args)
+			: pair(
+				unique_splitter(value_0, PP_FORWARD(args)...),
+				unique_splitter(value_1, PP_FORWARD(args)...))
+		{}
+		constexpr scoped(placeholder_t, auto&& value, auto&& destructor)
+			: pair(PP_FORWARD(value), PP_FORWARD(destructor))
+		{}
 		scoped() = default;
-
 		constexpr scoped(const scoped& other)
 			: pair(other.pair.first, other.pair.second)
 		{}
@@ -33,13 +45,6 @@ namespace PP
 		template <typename U, typename D>
 		constexpr scoped(scoped<U, D>&& other)
 			: pair(move(other).pair.first, move(other).pair.second)
-		{}
-
-		constexpr scoped(placeholder_t, auto&& value, auto&& destructor)
-			: pair(PP_FORWARD(value), PP_FORWARD(destructor))
-		{}
-		constexpr scoped(scoped_in_place_tag_t, auto&&... args)
-			: pair(T(PP_FORWARD(args)...), Destructor())
 		{}
 
 		constexpr T& get_object()

@@ -19,5 +19,5 @@ namespace PP
 	(concepts::value auto i, auto&&... pack) -> decltype(auto)
 	{
 		return detail::pack_get_implementation(i, PP_FORWARD(pack)...);
-	}};
+	});
 }

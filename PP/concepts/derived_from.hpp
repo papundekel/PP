@@ -15,5 +15,5 @@ namespace PP
 	PP_FUNCTOR(is_derived_from, concepts::type auto d, concepts::type auto b)
 	{
 		return concepts::derived_from<PP_GET_TYPE(d), PP_GET_TYPE(b)>;
-	}};
+	});
 }

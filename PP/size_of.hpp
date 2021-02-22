@@ -6,5 +6,5 @@ namespace PP
 	PP_FUNCTOR(size_of, concepts::type auto t)
 	{
 		return sizeof(PP_GET_TYPE(t));
-	}};
+	});
 }

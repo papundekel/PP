@@ -11,7 +11,7 @@ namespace PP
 		{
 			[](PP_GET_TYPE(to)){}(declval(from));
 		};
-	}};
+	});
 
 	namespace concepts
 	{

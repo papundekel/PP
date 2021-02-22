@@ -47,5 +47,5 @@ namespace PP
 	PP_FUNCTOR(make_type_tuple, concepts::type auto... t)
 	{
 		return type_tuple_t(to_type_t(t)...);
-	}};
+	});
 }

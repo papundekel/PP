@@ -3,10 +3,17 @@
 #include "dynamic_block.hpp"
 #include "view.hpp"
 #include "view_destroy.hpp"
+#include "view_move_uninitialized.hpp"
+
+namespace std
+{
+	template <typename T>
+	struct allocator;
+}
 
 namespace PP
 {
-	template <typename T, typename Allocator>
+	template <typename T, typename Allocator = std::allocator<T>>
 	class simple_vector
 	{
 		static constexpr size_t default_capacity = 16;
@@ -20,17 +27,25 @@ namespace PP
 		}
 
 	public:
-		explicit constexpr simple_vector(auto&& allocator, size_t capacity) noexcept
+		constexpr simple_vector(auto&& allocator, size_t capacity) noexcept
 			: block(PP_FORWARD(allocator), capacity)
 			, count_(0)
 		{}
-		explicit constexpr simple_vector(auto&& allocator, concepts::view auto&& v)
+		constexpr simple_vector(auto&& allocator, concepts::view auto&& v)
 			: block(PP_FORWARD(allocator), PP_FORWARD(v))
 			, count_(block.count())
 		{}
-
-		explicit constexpr simple_vector(auto&& allocator) noexcept
+		explicit constexpr simple_vector(size_t capacity) noexcept
+			: simple_vector(Allocator(), capacity)
+		{}
+		explicit constexpr simple_vector(concepts::view auto&& v)
+			: simple_vector(Allocator(), PP_FORWARD(v))
+		{}
+		constexpr simple_vector(placeholder_t, auto&& allocator) noexcept
 			: simple_vector(PP_FORWARD(allocator), default_capacity)
+		{}
+		constexpr simple_vector() noexcept
+			: simple_vector(Allocator(), default_capacity)
 		{}
 
 		constexpr ~simple_vector()
@@ -38,11 +53,11 @@ namespace PP
 			destroy_all();
 		}
 
-		constexpr void push_back(auto&& value)
+		constexpr void push_back(auto&&... args)
 		{
 			if (count() == capacity())
 			{
-				dynamic_block<T> new_block(2 * capacity());
+				auto new_block = block.spawn_new(2 * capacity());
 
 				view_move_uninitialized(new_block, *this);
 
@@ -51,7 +66,7 @@ namespace PP
 				block = move(new_block);
 			}
 
-			construct_at_pack(end(), PP_FORWARD(value));
+			construct_at_pack(end(), PP_FORWARD(args)...);
 
 			++count_;
 		}
@@ -59,7 +74,7 @@ namespace PP
 		constexpr void clear() noexcept
 		{
 			destroy_all();
-			block = dynamic_block<T>(default_capacity);
+			block = block.spawn_new(default_capacity);
 			count_ = 0;
 		}
 

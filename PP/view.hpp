@@ -47,7 +47,7 @@ namespace PP
 			return v + 0;
 		else
 			return begin(PP_FORWARD(v));
-	}};
+	});
 	PP_FUNCTOR(view_end, detail::view_concept_end_any auto&& v) -> decltype(auto)
 	{
 		if constexpr (detail::view_concept_end_member<decltype(v)>)
@@ -56,14 +56,14 @@ namespace PP
 			return v + sizeof(v) / sizeof(*v);
 		else
 			return end(PP_FORWARD(v));
-	}};
+	});
 
 	namespace detail
 	{
 		PP_FUNCTOR(view_begin_iterator_pure, concepts::type auto v)
 		{
 			return PP_DECLTYPE(view_begin(declval(v)));
-		}};
+		});
 	}
 	
 	PP_FUNCTOR(is_view, concepts::type auto t)
@@ -73,7 +73,7 @@ namespace PP
 			{ view_begin(declval(t)) } -> concepts::iterator;
 			{ view_end(declval(t)) } -> concepts::sentinel<PP_APPLY_TRANSFORM(detail::view_begin_iterator_pure, t)>;
 		};
-	}};
+	});
 
 	PP_CONCEPT1(view)
 	
@@ -94,12 +94,12 @@ namespace PP
 	requires concepts::view<PP_GET_TYPE(v)>
 	{
 		return detail::view_begin_iterator_pure(v);
-	}};
+	});
 	PP_FUNCTOR(view_end_iterator, auto v)
 	requires concepts::view<PP_GET_TYPE(v)>
 	{
 		return PP_DECLTYPE(view_end(declval(v)));
-	} };
+	});
 	constexpr inline auto view_base = iterator_base | view_begin_iterator;
 
 	namespace detail
@@ -117,5 +117,5 @@ namespace PP
 	PP_FUNCTOR(view_begin_end, concepts::view auto&& v)
 	{
 		return make_tuple(view_begin(PP_FORWARD(v)), view_end(PP_FORWARD(v)));
-	}};
+	});
 }

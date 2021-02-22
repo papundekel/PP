@@ -16,13 +16,13 @@ namespace PP
 	
 	PP_FUNCTOR(compose, auto&& f, auto&& g)
 	{
-		return functor{	[f = PP_FORWARD(f), g = PP_FORWARD(g)]
+		return functor([f = PP_FORWARD(f), g = PP_FORWARD(g)]
 			(auto&&... args) -> decltype(auto)
 			requires detail::compose_concept<decltype(f), decltype(g), decltype(args)...>
 			{
 				return f(g(PP_FORWARD(args)...));
-			}};
-	}};
+			});
+	});
 
 	constexpr auto operator|(concepts::functor auto&& f, concepts::functor auto&& g)
 	{

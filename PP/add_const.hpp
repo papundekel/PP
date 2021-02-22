@@ -4,5 +4,5 @@
 
 namespace PP
 {
-	constexpr inline auto add_const = functor{[]<typename T>(type_t<T>) { return type<const T>; }} | to_type_t;
+	constexpr inline auto add_const = functor([]<typename T>(type_t<T>) { return type<const T>; }) | to_type_t;
 }

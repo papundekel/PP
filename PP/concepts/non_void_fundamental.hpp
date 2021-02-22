@@ -11,10 +11,10 @@
 namespace PP
 {
 	constexpr inline auto is_non_void_fundamental =
-		functor{ [](concepts::type auto t)
+		functor([](concepts::type auto t)
 		{
 			return tuple_contains(eql * t, non_void_fundamental_types);
-		}} | remove_cv;
+		}) | remove_cv;
 
 	PP_CONCEPT1(non_void_fundamental)
 }

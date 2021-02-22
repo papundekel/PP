@@ -3,32 +3,52 @@
 #include "concepts/same.hpp"
 #include "concepts/void.hpp"
 #include "functional/functor.hpp"
-#include "size_t.hpp"
+#include "ptrdiff_t.hpp"
 
 namespace PP
 {
 	namespace detail
 	{
 		template <typename T>
-		concept has_operator_advance = requires (T t, size_t n)
+		concept has_member_advance = requires (T t, ptrdiff_t n)
+		{
+			t.advance(n);
+		};
+	}
+
+	constexpr auto& operator+=(detail::has_member_advance auto&& t, ptrdiff_t offset)
+	{
+		t.advance(offset);
+		return t;
+	}
+	constexpr auto& operator-=(detail::has_member_advance auto&& t, ptrdiff_t offset)
+	{
+		t.advance(-offset);
+		return t;
+	}
+
+	namespace detail
+	{
+		template <typename T>
+		concept has_operator_advance = requires (T t, ptrdiff_t n)
 		{
 			{ t += n } -> concepts::same<T&>;
 		};
 		template <typename T>
-		concept has_operator_back = requires (T t, size_t n)
+		concept has_operator_back = requires (T t, ptrdiff_t n)
 		{
 			{ t -= n } -> concepts::same<T&>;
 		};
 	}
 
-	constexpr auto operator+(detail::has_operator_advance auto t, size_t u)
+	constexpr auto operator+(detail::has_operator_advance auto t, ptrdiff_t offset)
 	{
-		t += u;
+		t += offset;
 		return t;
 	}
-	constexpr auto operator-(detail::has_operator_back auto t, size_t u)
+	constexpr auto operator-(detail::has_operator_back auto t, ptrdiff_t offset)
 	{
-		t -= u;
+		t -= offset;
 		return t;
 	}
 	constexpr auto& operator++(detail::has_operator_advance auto& t)
@@ -93,10 +113,10 @@ namespace PP
 	PP_FUNCTOR(is_sentinel, auto s, auto i)
 	{
 		return concepts::sentinel<PP_GET_TYPE(s), PP_GET_TYPE(i)>;
-	}};
+	});
 
 	PP_FUNCTOR(iterator_base, auto i)
 	{
 		return PP_DECLTYPE(*declval(i));
-	}};
+	});
 }

@@ -23,7 +23,7 @@ namespace PP
 		}
 		else
 			return t;
-	}};
+	});
 
 	template <ref_qualifier ref> struct add_reference_tag_t : public value_t<ref> {};
 

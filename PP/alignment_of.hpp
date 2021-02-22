@@ -6,5 +6,5 @@ namespace PP
 	PP_FUNCTOR(alignment_of, concepts::type auto t)
 	{
 		return alignof(PP_GET_TYPE(t));
-	}};
+	});
 }

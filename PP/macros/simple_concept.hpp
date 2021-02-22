@@ -15,4 +15,4 @@
 	PP_FUNCTOR(is_##name, ::PP::concepts::type auto t)						   \
 	{																		   \
 		return ::PP::concepts::name<PP_GET_TYPE(t)>;						   \
-	}};
+	});

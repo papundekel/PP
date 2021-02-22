@@ -16,5 +16,5 @@ namespace PP
 		{
 			detail::templated_return_dummy_function(to_type_t(t));
 		};
-	}};
+	});
 }

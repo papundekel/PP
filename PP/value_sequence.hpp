@@ -26,5 +26,5 @@ namespace PP
 	PP_FUNCTOR(make_value_sequence, concepts::value auto i)
 	{
 		return detail::make_value_sequence(i);
-	}};
+	});
 }

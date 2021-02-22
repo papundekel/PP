@@ -24,7 +24,7 @@ namespace PP
 				return size_of(Template<empty_helper>(member_t, t)) == size_of(member_t);
 			else
 				return false;
-		}};
+		});
 	}
 
 	constexpr inline auto is_empty = detail::is_empty_helper * type_char;

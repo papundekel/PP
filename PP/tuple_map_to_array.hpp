@@ -11,7 +11,7 @@ namespace PP
 	PP_FUNCTOR(tuple_map_to_array, concepts::type auto t, auto&& map, concepts::tuple auto&& tuple)
 	{
 		return tuple_to_array(t, tuple_map(PP_FORWARD(map), PP_FORWARD(tuple)));
-	}};
+	});
 
 	constexpr auto operator<(concepts::functor auto&& f, concepts::tuple auto&& tuple)
 	{

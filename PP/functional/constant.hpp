@@ -5,10 +5,10 @@ namespace PP
 {
 	PP_FUNCTOR(constant, auto&& c)
 	{
-		return functor{
+		return functor(
 			[c = PP_FORWARD(c)](auto&&...)
 			{
 				return c;
-			}};
-	}};
+			});
+	});
 }

@@ -100,21 +100,26 @@ namespace PP
 		PP_FUNCTOR(make_function_type_impl,
 			concepts::type auto return_type,
 			concepts::tuple auto parameter_types,
-			concepts::value auto N,
-			concepts::value auto C,
-			concepts::value auto R)
+			concepts::value auto Noexcept,
+			concepts::value auto cv,
+			concepts::value auto ref)
 		{
-			return make_function_type_helper(return_type, make_type_tuple[parameter_types], N, C, R);
-		}};
+			return make_function_type_helper(return_type, make_type_tuple[parameter_types], Noexcept, cv, ref);
+		});
 
-		PP_FUNCTOR(make_function_type_from_type, concepts::type auto t, concepts::value auto Noexcept, concepts::value auto cv, concepts::value auto ref)
+		PP_FUNCTOR(make_function_type_from_type,
+			concepts::type auto t,
+			concepts::value auto Noexcept,
+			concepts::value auto cv,
+			concepts::value auto ref)
 		{
 			auto info = get_function_info(t);
-			return make_function_type(info.return_type, info.parameter_types, Noexcept, cv, ref);
-		}};
+			return make_function_type_impl(info.return_type, info.parameter_types, Noexcept, cv, ref);
+		});
 	}
 	
-	constexpr inline functor make_function_type{ overloaded{
+	constexpr inline auto make_function_type = make_overloaded_pack
+	(
 		detail::make_function_type_impl,
 		detail::make_function_type_from_type,
 		[](concepts::value auto info)
@@ -122,10 +127,11 @@ namespace PP
 			constexpr auto INFO = PP_COPY_VALUE(info);
 
 			return detail::make_function_type_impl(INFO.return_type, INFO.parameter_types, value<INFO.Noexcept>, value<INFO.cv>, value<INFO.ref>);
-		}}};
+		}
+	);
 
 	PP_FUNCTOR(make_function_type_no_cvref, concepts::type auto return_type, concepts::tuple auto parameter_types, concepts::value auto N)
 	{
 		return make_function_type(return_type, parameter_types, N, value_false, value<cv_qualifier::none>, value<ref_qualifier::none>);
-	}};
+	});
 }

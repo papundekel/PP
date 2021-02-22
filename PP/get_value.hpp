@@ -27,8 +27,8 @@ namespace PP
 		concept value = detail::has_value_f<T> || detail::has_value<T>;
 	}
 
-	constexpr inline functor get_type_value{ overloaded
-	{
+	constexpr inline auto get_type_value = make_overloaded_pack
+	(
 		[](auto t) -> decltype(auto)
 		requires detail::has_value_f<PP_GET_TYPE(t)>
 		{
@@ -39,7 +39,7 @@ namespace PP
 		{
 			return (PP_GET_TYPE(t)::value);
 		}
-	}};
+	);
 
 	constexpr inline auto get_value = get_type_value | decl_type_copy;
 
@@ -49,13 +49,14 @@ namespace PP
 	}
 
 	constexpr decltype(auto) operator-(concepts::type auto t) noexcept
-		requires requires { get_type_value(t); }
+	requires requires { get_type_value(t); }
 	{
 		return get_type_value(t);
 	}
 
 	#define PP_GET_VALUE(x) (-PP_DECLTYPE(x))
 	#define PP_COPY_VALUE(x) (::PP::value<PP_GET_VALUE(x)>)
+	#define PP_COPY_VALUE_MEMBER(x, member) (::PP::value<PP_GET_VALUE(x).member>)
 	#define PP_GET_VALUE_TYPE(x) PP_DECLTYPE(PP_GET_VALUE(x))
 
 	constexpr auto operator==(concepts::value auto x, concepts::value auto y)
@@ -108,5 +109,5 @@ namespace PP
 	PP_FUNCTOR(to_value_t, concepts::value auto x)
 	{
 		return value<PP_GET_VALUE(x)>;
-	}};
+	});
 }

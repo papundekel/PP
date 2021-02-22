@@ -11,5 +11,5 @@ namespace PP
 		{
 			typename detail::templated_dummy<int PP_GET_TYPE(t)::*>;
 		};
-	}};
+	});
 }

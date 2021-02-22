@@ -18,7 +18,7 @@ namespace PP
 {
 	PP_FUNCTOR(tuple_zip, concepts::tuple auto&& tuples)
 	{
-		if constexpr (tuple_all(neg | eql * 0u | tuple_type_count, tuple_types(PP_DECLTYPE(tuples))))
+		if constexpr (tuple_all(neq * 0u | tuple_type_count, tuple_types(PP_DECLTYPE(tuples))))
 		{
 			auto splits = tuple_split + PP_FORWARD(tuples);
 
@@ -28,15 +28,16 @@ namespace PP
 		}
 		else
 			return empty_tuple{};
-	}};
+	});
+	constexpr inline auto tuple_zip_pack = tuple_zip | forward_as_tuple;
 
 	PP_FUNCTOR(tuple_zip_with, auto&& f, concepts::tuple auto&& tuples)
 	{
 		return tuple_apply * ref(PP_FORWARD(f)) + tuple_zip(PP_FORWARD(tuples));
-	}};
+	});
 
 	constexpr auto operator^(concepts::tuple auto&& a, concepts::tuple auto&& b)
 	{
-		return tuple_zip(forward_as_tuple(PP_FORWARD(a), PP_FORWARD(b)));
+		return tuple_zip_pack(PP_FORWARD(a), PP_FORWARD(b));
 	}
 }

@@ -9,10 +9,10 @@ namespace PP
 		using Ts::operator()...;
 	};
 	template <typename... Ts>
-	overloaded(Ts...)->overloaded<Ts...>;
+	overloaded(Ts...) -> overloaded<Ts...>;
 
 	PP_FUNCTOR(make_overloaded_pack, auto&&... functors)
 	{
-		return functor{ overloaded{ PP_FORWARD(functors)... } };
-	}};
+		return functor(overloaded(unwrap_functor(PP_FORWARD(functors))...));
+	});
 }

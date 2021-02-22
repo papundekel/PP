@@ -1,37 +1,27 @@
 #pragma once
+#include "shift_view.hpp"
+#include "simple_view.hpp"
 #include "size_t.hpp"
+#include "view.hpp"
 
 namespace PP
 {
-	template <typename CharT>
-	class basic_string_view
-	{
-		const CharT* begin_;
-		const CharT* end_;
+	using namespace PP::literals;
 
+	template <typename CharT>
+	class basic_string_view : public pointer_view<const CharT>
+	{
 	public:
 		constexpr basic_string_view(const CharT* begin, const CharT* end) noexcept
-			: begin_(begin)
-			, end_(end)
+			: pointer_view<const CharT>(begin, end)
+		{}
+		constexpr basic_string_view(concepts::view auto&& v) noexcept
+			: basic_string_view(view_begin(PP_FORWARD(v)), view_end(PP_FORWARD(v)))
 		{}
 		template <size_t N>
 		constexpr basic_string_view(const CharT(&arr)[N]) noexcept
-			: basic_string_view(arr, arr + N - 1)
+			: basic_string_view(arr << 1_s)
 		{}
-
-		constexpr auto begin() const noexcept
-		{
-			return begin_;
-		}
-		constexpr auto end() const noexcept
-		{
-			return end_;
-		}
-
-		constexpr auto substr(size_t index) const noexcept
-		{
-			return basic_string_view(begin_ + index, end_);
-		}
 	};
 
 	using string_view = basic_string_view<char>;

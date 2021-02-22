@@ -9,9 +9,9 @@
 
 namespace PP
 {
-	constexpr inline auto view_move = view_for_each * *functor{ []
+	constexpr inline auto view_move = view_for_each * *functor([]
 		(auto&& to, auto&& from)
 		{
 			PP_FORWARD(to) = move(from);
-		}} | zip_view_pack;
+		}) | zip_view_pack;
 }

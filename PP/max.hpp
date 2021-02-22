@@ -22,5 +22,5 @@ namespace PP
 		}
 
 		return max_i;
-	}};
+	});
 }

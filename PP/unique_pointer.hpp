@@ -19,10 +19,9 @@ namespace PP
 	{
 		struct unique_pointer_deleter
 		{
-			template <typename Pointer>
-			constexpr void operator()(unique<Pointer>& ptr) const
+			constexpr void operator()(auto& ptr) const
 			{
-				ptr.get_object().destroy();
+				ptr.get_object().deallocate();
 			}
 		};
 	}
@@ -39,7 +38,16 @@ namespace PP
 		unique_pointer() = default;
 
 		constexpr unique_pointer(placeholder_t, auto&&... args)
-			: p(scoped_in_place_tag, unique_in_place_tag, PP_FORWARD(args)..., unique_in_place_delimiter)
+			: p
+			(
+				in_place_tag,
+					in_place_tag,
+						PP_FORWARD(args)...,
+					unique_in_place_delimiter,
+						// {}
+				scoped_in_place_delimiter
+					// {}
+			)
 		{}
 
 		constexpr unique_pointer(unique_pointer&& other) = default;

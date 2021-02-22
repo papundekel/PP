@@ -23,7 +23,7 @@ namespace PP
 		}
 		else
 			return false;
-	}};
+	});
 
 	namespace concepts
 	{

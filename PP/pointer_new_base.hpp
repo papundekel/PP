@@ -1,5 +1,7 @@
 #pragma once
 #include "concepts/convertible_to.hpp"
+#include "exchange.hpp"
+#include "unique.hpp"
 
 namespace PP
 {
@@ -12,10 +14,15 @@ namespace PP
 	template <typename T>
 	class pointer_new_base
 	{
-		template <typename U>
+		template <typename>
+		friend class pointer_new_base;
+
+		template <typename>
 		friend class pointer_new;
-		template <typename U>
+		template <typename>
 		friend class pointer_new_array;
+		template <typename, typename>
+		friend class pointer_allocate;
 
 		T* ptr;
 
@@ -28,6 +35,23 @@ namespace PP
 			: ptr(nullptr)
 		{}
 
+		template <detail::pointer_new_compatible<T> U>
+		constexpr pointer_new_base(pointer_new_base<U>&& other) noexcept
+			: ptr(PP::exchange(other.ptr, nullptr))
+		{}
+
+		constexpr pointer_new_base& operator=(pointer_new_base&& other) noexcept
+		{
+			ptr = PP::exchange(other.ptr, nullptr);
+			return *this;
+		}
+		template <detail::pointer_new_compatible<T> U>
+		constexpr pointer_new_base& operator=(pointer_new_base<U>&& other) noexcept
+		{
+			ptr = PP::exchange(other.ptr, nullptr);
+			return *this;
+		}
+		
 		constexpr T* get_ptr() const noexcept
 		{
 			return ptr;

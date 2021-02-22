@@ -24,5 +24,5 @@ namespace PP
 			return PP_FORWARD(t)[value<i>][value_1];
 		else
 			return d;
-	}};
+	});
 }

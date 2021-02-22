@@ -19,7 +19,7 @@ namespace PP
 			: pointer_new_base<T>(other.ptr)
 		{}
 
-		constexpr void destroy()
+		constexpr void deallocate()
 		{
 			delete this->ptr;
 		}

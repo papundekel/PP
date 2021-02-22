@@ -23,18 +23,18 @@ namespace PP
 			if constexpr (PP_COPY_TYPE(t) == type_void)
 				return tuple_to_array_implementation(tuple_first_element_or(type_char, PP_FORWARD(tuple)), PP_FORWARD(tuple));
 			else
-				return functor{ []
+				return functor([]
 					(auto&&... args)
 					{
 						return PP::array<PP_GET_TYPE(t), tuple_type_count(PP_DECLTYPE(tuple))>{ PP_FORWARD(args)... };
-					}}[PP_FORWARD(tuple)];
+					})[PP_FORWARD(tuple)];
 		}
 	}
 	
 	PP_FUNCTOR(tuple_to_array, concepts::type auto t, concepts::tuple auto&& tuple)
 	{
 		return detail::tuple_to_array_implementation(t, PP_FORWARD(tuple));
-	}};
+	});
 
 	constexpr auto operator&(concepts::type auto t, concepts::tuple auto&& tuple)
 	{

@@ -19,7 +19,7 @@ namespace PP
 			: pair()
 		{}
 		constexpr simple_view(Iterator begin, Sentinel end)
-			: pair{ begin, end }
+			: pair(begin, end)
 		{}
 		constexpr simple_view(concepts::view auto&& v)
 		requires (!same_except_cvref(type<simple_view>, PP_DECLTYPE(v)))
@@ -56,10 +56,5 @@ namespace PP
 	constexpr auto operator|(concepts::view auto&& v, unbounded_t)
 	{
 		return view_begin(PP_FORWARD(v)) ^ unbounded;
-	}
-
-	constexpr auto operator>>(ptrdiff_t offset, concepts::view auto&& v)
-	{
-		return simple_view(view_begin(PP_FORWARD(v)) + offset, view_end(PP_FORWARD(v)));
 	}
 }

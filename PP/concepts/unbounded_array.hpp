@@ -5,11 +5,11 @@
 
 namespace PP
 {
-	constexpr inline auto is_unbounded_array = functor{ overloaded
-	{
-		[] <typename T>(type_t<T[]>) { return true; },
+	constexpr inline auto is_unbounded_array = make_overloaded_pack
+	(
+		[]<typename T>(type_t<T[]>) { return true; },
 		[](auto) { return false; }
-	}} | to_type_t;
+	) | to_type_t;
 
 	PP_CONCEPT1(unbounded_array)
 }

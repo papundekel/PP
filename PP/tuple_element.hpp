@@ -49,10 +49,10 @@ namespace PP
 	requires detail::tuple_concept_element_recursive<decltype(i), decltype(t)>
 	{
 		return copy_cv(PP_DECLTYPE(t), detail::tuple_element_helper(i, PP_FORWARD(t)));
-	}};
+	});
 	
 	PP_FUNCTOR(tuple_type_element, concepts::value auto i, concepts::type auto t)
 	{
 		return PP_COPY_TYPE(tuple_element(i, declval(t)));
-	}};
+	});
 }

@@ -60,5 +60,5 @@ namespace PP
 		constexpr function_info(type_t<R(P...) const volatile && noexcept>) noexcept : function_info(cv_qualifier::const_volatile, ref_qualifier::rvalue, true ) {}
 	};
 
-	constexpr inline auto get_function_info = functor{ [](auto t) { return function_info(t); }} | to_type_t;
+	constexpr inline auto get_function_info = functor([](auto t) { return function_info(t); }) | to_type_t;
 }

@@ -12,5 +12,5 @@ namespace PP
 				PP_FORWARD(f)(PP_FORWARD(x));
 				return empty{};
 			}, empty{}, PP_FORWARD(v))[value_0];
-	}};
+	});
 }

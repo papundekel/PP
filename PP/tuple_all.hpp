@@ -11,7 +11,7 @@ namespace PP
 			{
 				return (PP_FORWARD(predicate)(PP_FORWARD(elements)) && ...);
 			}, PP_FORWARD(t));
-	}};
+	});
 
 	constexpr decltype(auto) operator&&(concepts::functor auto&& f, concepts::tuple auto&& tuple)
 	{

@@ -11,7 +11,7 @@
 
 namespace PP
 {
-	constexpr inline auto is_std_integer_sequence = functor{ overloaded
+	constexpr inline auto is_std_integer_sequence = functor(overloaded
 	{
 		[]<typename T, T... Values>(type_t<std::integer_sequence<T, Values...>>) { return true; },
 		[](auto t) { return false; }

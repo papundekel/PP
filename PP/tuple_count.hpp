@@ -27,12 +27,12 @@ namespace PP
 			return PP_FORWARD(t).tuple_count();
 		else
 			return tuple_count_implementation(PP_FORWARD(t));
-	}};
+	});
 
 	PP_FUNCTOR(tuple_type_count_value_t, concepts::type auto t)
 	{
 		return PP_COPY_VALUE(tuple_count_value_t(declval(t)));
-	}};
+	});
 
 	constexpr inline auto tuple_count	   = get_value | tuple_count_value_t;
 	constexpr inline auto tuple_type_count = get_value | tuple_type_count_value_t;

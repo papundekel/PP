@@ -28,7 +28,7 @@ namespace PP
 			::PP::tuple_count_value_t(declval(t));
 			::PP::detail::tuple_like_helper(t, tuple_value_sequence_for(declval(t)));
 		};
-	}};
+	});
 
 	PP_CONCEPT1(tuple)
 }

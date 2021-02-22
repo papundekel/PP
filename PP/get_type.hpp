@@ -18,7 +18,7 @@ namespace PP
 	PP_FUNCTOR(get_type, concepts::type auto t)
 	{
 		return type<PP_TYPE_UNSAFE(t)::type>;
-	}};
+	});
 
 	template <typename T>
 	using get_type_t = PP_TYPE_UNSAFE(get_type(type<T>));

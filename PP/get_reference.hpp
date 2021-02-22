@@ -17,5 +17,5 @@ namespace PP
 			return value<ref_qualifier::rvalue>;
 		else
 			return value<ref_qualifier::none>;
-	}};
+	});
 }

@@ -10,38 +10,64 @@
 #include "tuple_make.hpp"
 #include "tuple_splits.hpp"
 #include "unique_pointer.hpp"
+#include "singular_tuple.hpp"
+#include "tuple_concat.hpp"
+#include "tuple_find_get.hpp"
+#include "view_equal.hpp"
+#include "simple_vector.hpp"
+#include "string_view.hpp"
 
 struct Abstract
 {
 	virtual void f() const = 0;
 
 	virtual ~Abstract()
-	{
-		std::cout << "som umar\n";
-	}
+	{}
 };
 
 struct Derived : public Abstract
 {
 	int x;
+	bool zivy;
 
-	constexpr Derived(int x)
+	Derived(int x)
 		: x(x)
+		, zivy(true)
 	{}
+	Derived(Derived&& other)
+		: x(other.x)
+		, zivy(other.zivy)
+	{
+		other.zivy = false;
+	}
 
 	void f() const override final
 	{
 		std::cout << x << '\n';
 	}
+
+
+	~Derived()
+	{
+		if (zivy)
+			std::cout << "som umar " << x << "\n";
+	}
 };
+
+PP::string_view f(const PP::simple_vector<char>& v)
+{
+	return v;
+}
 
 int main()
 {
-	{
-		PP::unique_pointer<PP::pointer_new<Abstract>> p = PP::make_unique_pointer(PP::unique_tag_new, PP::type<Derived>, 5);
+	using namespace PP::literals;
 
-		p->f();
-	}
+	[[maybe_unused]] auto v = "operator int"_sv;
+
+	[[maybe_unused]] PP::simple_vector<char> s(v);
+
+	[[maybe_unused]] auto x = f(s);
 
 	std::cout.flush();
 	return 0;

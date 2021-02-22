@@ -19,5 +19,5 @@ namespace PP
 					return tail;
 			},
 			empty_tuple{}, PP_FORWARD(t));
-	}};
+	});
 }

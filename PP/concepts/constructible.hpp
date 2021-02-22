@@ -21,12 +21,12 @@ namespace PP
 				{
 					PP_GET_TYPE(t)(declval(arg_types)...);
 				});
-		}};
+		});
 
 		PP_FUNCTOR(is_constructible_impl, concepts::value auto Noexcept, concepts::type auto t, concepts::tuple auto arg_tuple)
 		{
 			return (is_constructible_pack_impl * Noexcept * t)[arg_tuple];
-		}};
+		});
 	}
 
 	constexpr inline auto is_constructible_pack = detail::is_constructible_pack_impl * value_false;

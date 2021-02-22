@@ -27,20 +27,18 @@ namespace PP
 		struct decompose_dummy {};
 	}
 	
-	constexpr inline auto decompose = functor{ overloaded
-	{
+	constexpr inline auto decompose = make_overloaded_pack(
 		[] <template <typename...> typename T, typename... Types>(type_t<T<Types...>>)
 		{
-			return detail::decompose_pair{ Template<T>, type_tuple<Types...> };
+			return detail::decompose_pair(Template<T>, type_tuple<Types...>);
 		},
 		[](auto&&)
 		{
-			return detail::decompose_pair{ Template<detail::decompose_dummy>, type_tuple<> };
-		}
-	}} | remove_cvref;
+			return detail::decompose_pair(Template<detail::decompose_dummy>, type_tuple<>);
+		}) | remove_cvref;
 
-	constexpr inline auto decompose_template = functor{ [](auto p) { return p.Template; } } | decompose;
-	constexpr inline auto decompose_types = functor{ [](auto p) { return p.types; } } | decompose;
+	constexpr inline auto decompose_template = functor([](auto p) { return p.Template; }) | decompose;
+	constexpr inline auto decompose_types = functor([](auto p) { return p.types; }) | decompose;
 
 	constexpr auto operator*(concepts::type auto t) noexcept
 	{

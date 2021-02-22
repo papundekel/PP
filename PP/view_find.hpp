@@ -10,5 +10,5 @@ namespace PP
 		for (; i != view_end(PP_FORWARD(v)) && !PP_FORWARD(predicate)(*i); ++i);
 
 		return move(i);
-	}};
+	});
 }

@@ -11,5 +11,5 @@ namespace PP
 			if (!PP_FORWARD(p)(e))
 				return false;
 		return true;
-	}};
+	});
 }

@@ -7,5 +7,5 @@ namespace PP
 	PP_FUNCTOR(is_volatile, concepts::type auto t)
 	{
 		return remove_volatile(t) != t;
-	}};
+	});
 }

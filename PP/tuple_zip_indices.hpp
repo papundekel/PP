@@ -9,10 +9,10 @@ namespace PP
 {
 	PP_FUNCTOR(tuple_zip_indices, concepts::tuple auto&& t)
 	{
-		return *functor{ []
+		return *functor([]
 			(auto i, auto&& element)
 			{
 				return tuple<decltype(i), decltype(element)>(placeholder, i, PP_FORWARD(element));
-			}} + (make_id_tuple(tuple_count_value_t(t)) ^ PP_FORWARD(t));
-	}};
+			}) + (make_id_tuple(tuple_count_value_t(t)) ^ PP_FORWARD(t));
+	});
 }

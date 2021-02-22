@@ -28,7 +28,7 @@ namespace PP
 
 	PP_FUNCTOR(map_arguments, auto&& f, auto&&... maps)
 	{
-		return functor{
+		return functor(
 			[f = PP_FORWARD(f), ...maps = PP_FORWARD(maps)](auto&&... args) -> decltype(auto)
 			{
 				return detail::map_arguments_helper
@@ -36,6 +36,6 @@ namespace PP
 					, forward_as_tuple(maps...)
 					, make_value_sequence(value<sizeof...(args)>)
 					, PP_FORWARD(args)...);
-			}};
-	}};
+			});
+	});
 }

@@ -10,5 +10,5 @@ namespace PP
 			return type<reference_wrapper<PP_GET_TYPE(t)>>;
 		else
 			return t;
-	}};
+	});
 }

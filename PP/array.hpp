@@ -51,9 +51,9 @@ namespace PP
 			{
 				return PP::value<value>;
 			}
-			constexpr auto&& operator[](size_t i) &;
+			constexpr auto&& operator[](size_t i)      &;
 			constexpr auto&& operator[](size_t i) const&;
-			constexpr auto&& operator[](size_t i) &&;
+			constexpr auto&& operator[](size_t i)      &&;
 			constexpr auto&& operator[](size_t i) const&&;
 			constexpr auto&& operator[](concepts::value auto i) &
 			{
@@ -90,6 +90,35 @@ namespace PP
 		template <typename T>
 		concept PParray = type<T>->Template == Template<array>;
 
+		template <typename ResultType>
+		struct array_iterator_transform
+		{
+			constexpr auto&& operator()(auto&& wrap) const
+			{
+				return ResultType(wrap.obj);
+			}
+		};
+
+		template <typename T, typename ResultType>
+		struct array_iterator : public transform_iterator<T*, array_iterator_transform<ResultType>>
+		{
+			using base = transform_iterator<T*, array_iterator_transform<ResultType>>;
+
+			constexpr array_iterator(T* p) noexcept
+				: base(p, array_iterator_transform<ResultType>{})
+			{}
+			constexpr array_iterator(T* p, concepts::type auto) noexcept
+				: array_iterator(p)
+			{}
+
+			constexpr operator auto()
+			{
+				return &this->inner_iterator()->obj;
+			}
+		};
+		template <typename T>
+		array_iterator(T* p, concepts::type auto t) -> array_iterator<T, PP_GET_TYPE(t)>;
+
 		constexpr auto begin(PParray auto&& a) noexcept
 		{
 			constexpr auto array_type = PP_DECLTYPE(a);
@@ -97,7 +126,7 @@ namespace PP
 			constexpr auto result_type = copy_cvref(array_type, get_type(array_type_no_cvref));
 
 			if constexpr (-array_type_no_cvref != 0)
-				return +a.buffer & transform([](auto&& wrap) -> auto&& { return PP_COPY_TYPE(result_type)(wrap.obj); });
+				return array_iterator(+a.buffer, result_type);
 			else
 				return Template<empty_iterator>(result_type)();
 		}
@@ -115,8 +144,8 @@ namespace PP
 	template <typename T, size_t count>
 	using array = detail::array<T, value_t<count>>;
 
-	PP_FUNCTOR(make_array_pack, auto&&... args)
+	PP_FUNCTOR(make_array, auto&&... args)
 	{
 		return detail::array{ PP_FORWARD(args)... };
-	}};
+	});
 }

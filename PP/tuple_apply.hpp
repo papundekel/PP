@@ -14,7 +14,7 @@ namespace PP
 	PP_FUNCTOR(tuple_apply, auto&& f, concepts::tuple auto&& t) -> decltype(auto)
 	{
 		return apply_pack(PP_FORWARD(f), tuple_get(partial_tag, value_1, ref(PP_FORWARD(t))), tuple_value_sequence_for(PP_FORWARD(t)));
-	}};
+	});
 
 	template <typename F>
 	constexpr decltype(auto) functor<F>::operator[](auto&& t) const&

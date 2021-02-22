@@ -17,5 +17,5 @@ namespace PP
 	PP_FUNCTOR(is_same_except_cvref, concepts::type auto t, concepts::type auto u)
 	{
 		return concepts::same_except_cvref<PP_GET_TYPE(t), PP_GET_TYPE(u)>;
-	}};
+	});
 }

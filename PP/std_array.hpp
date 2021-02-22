@@ -10,7 +10,7 @@
 
 namespace PP
 {
-	constexpr inline auto is_std_array = functor{ overloaded
+	constexpr inline auto is_std_array = functor(overloaded
 	{
 		[]<typename T, std::size_t N>(type_t<std::array<T, N>>) { return true; },
 		[](auto t) { return false; }

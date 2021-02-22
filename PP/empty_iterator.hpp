@@ -38,5 +38,10 @@ namespace PP
 		{
 			return 0;
 		}
+
+		constexpr operator T*() const
+		{
+			return nullptr;
+		}
 	};
 }

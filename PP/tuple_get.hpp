@@ -10,5 +10,5 @@ namespace PP
 	requires requires { PP_FORWARD(tuple)[i]; }
 	{
 		return PP_FORWARD(tuple)[i];
-	}};
+	});
 }

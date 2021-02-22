@@ -10,5 +10,5 @@ namespace PP
 			{
 				return PP_FORWARD(predicate)(PP_FORWARD(element)) ? counter + 1 : counter;
 			}, size_t(0), PP_FORWARD(t));
-	}};
+	});
 }

@@ -23,5 +23,5 @@ namespace PP
 			return PP_FORWARD(t).pred();
 		else
 			return pred_implementation(PP_FORWARD(t));
-	}};
+	});
 }

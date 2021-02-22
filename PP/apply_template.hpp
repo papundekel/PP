@@ -13,17 +13,17 @@
 
 namespace PP
 {
-	constexpr inline functor apply_template_pack{ []
+	constexpr inline functor apply_template_pack([]
 	<template <typename...> typename Template>
 	(template_t<Template>, concepts::type auto... types)
 	{
 		return type<Template<PP_GET_TYPE(types)...>>;
-	}};
+	});
 
 	PP_FUNCTOR(apply_template, auto Template, concepts::tuple auto&& types)
 	{
 		return (apply_template_pack * Template)[PP_FORWARD(types)];
-	}};
+	});
 
 	constexpr inline auto apply_template_type = get_type | apply_template;
 	constexpr inline auto apply_template_value = get_type_value | apply_template;

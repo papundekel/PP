@@ -1,5 +1,6 @@
 #pragma once
 #include "forward_as.hpp"
+#include "forward_wrap.hpp"
 #include "functional/apply_partially.hpp"
 #include "tuple_apply.hpp"
 #include "utility/move.hpp"
@@ -31,15 +32,15 @@ namespace PP
 
 	PP_FUNCTOR(tuple_fold, concepts::value auto left, auto&& f, auto&& init, concepts::tuple auto&& tuple)
 	{
-		return functor{ [left, &f, &init]
+		return functor([left, f_wrap = PP_FORWARD_WRAP(f), init_wrap = PP_FORWARD_WRAP(init)]
 			(auto&&... elements) -> decltype(auto)
 			{
 				if constexpr (PP_GET_VALUE(left))
-					return (PP_FORWARD_AS_FOLD_WRAPPER(PP_FORWARD(f), PP_FORWARD(init)) || ... || PP_FORWARD(elements)).init;
+					return (PP_FORWARD_AS_FOLD_WRAPPER(f_wrap.unwrap(), init_wrap.unwrap()) || ... || PP_FORWARD(elements)).init;
 				else
-					return (PP_FORWARD(elements) || ... || PP_FORWARD_AS_FOLD_WRAPPER(PP_FORWARD(f), PP_FORWARD(init))).init;
-			}}[PP_FORWARD(tuple)];
-	}};
+					return (PP_FORWARD(elements) || ... || PP_FORWARD_AS_FOLD_WRAPPER(f_wrap.unwrap(), init_wrap.unwrap())).init;
+			})[PP_FORWARD(tuple)];
+	});
 
 	constexpr inline auto tuple_foldl = tuple_fold * value_true;
 	constexpr inline auto tuple_foldr = tuple_fold * value_false;

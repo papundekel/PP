@@ -18,7 +18,7 @@ namespace PP
 			return add_volatile(t);
 		else
 			return add_const(add_volatile(t));
-	}};
+	});
 
 	template <cv_qualifier cv> struct add_cv_tag_t : public value_t<cv> {};
 

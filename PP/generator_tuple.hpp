@@ -28,5 +28,5 @@ namespace PP
 	PP_FUNCTOR(make_id_tuple, concepts::value auto count)
 	{
 		return generator_tuple_t<id_copy, PP_GET_VALUE(count)>{};
-	}};
+	});
 }

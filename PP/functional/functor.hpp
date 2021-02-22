@@ -61,20 +61,20 @@ namespace PP
 
 	constexpr auto operator&&(concepts::functor auto&& f, concepts::functor auto&& g)
 	{
-		return functor{ [f = unwrap_functor(PP_FORWARD(f)), g = unwrap_functor(PP_FORWARD(g))]
+		return functor([f = unwrap_functor(PP_FORWARD(f)), g = unwrap_functor(PP_FORWARD(g))]
 			(auto&&... args) -> decltype(auto)
 			{
 				return f(PP_FORWARD(args)...) && g(PP_FORWARD(args)...);
-			}};
+			});
 	}
 	constexpr auto operator||(concepts::functor auto&& f, concepts::functor auto&& g) -> decltype(auto)
 	{
-		return functor{ [f = unwrap_functor(PP_FORWARD(f)), g = unwrap_functor(PP_FORWARD(g))]
+		return functor([f = unwrap_functor(PP_FORWARD(f)), g = unwrap_functor(PP_FORWARD(g))]
 			(auto&&... args) -> decltype(auto)
 			{
 				return f(PP_FORWARD(args)...) || g(PP_FORWARD(args)...);
-			}};
+			});
 	}
 
-	#define PP_FUNCTOR(name, ...) constexpr inline ::PP::functor name{[](__VA_ARGS__)
+	#define PP_FUNCTOR(name, ...) constexpr inline auto name = ::PP::functor([](__VA_ARGS__)
 }

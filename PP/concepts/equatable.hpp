@@ -11,7 +11,7 @@ namespace PP
 		{
 			{ PP::declval(a) == PP::declval(b) } -> concepts::convertible_to<bool>;
 		};
-	}};
+	});
 
 	namespace concepts
 	{	

@@ -10,7 +10,7 @@
 #include "get_reference.hpp"
 #include "ptrdiff_t.hpp"
 #include "simple_view.hpp"
-#include "tuple_find_index.hpp"
+#include "tuple_find_dynamic.hpp"
 #include "tuple_get_dynamic.hpp"
 #include "tuple_prepend.hpp"
 #include "tuple_std.hpp"
@@ -39,7 +39,7 @@ namespace PP
 	PP_FUNCTOR(add_cv_reference, concepts::value auto cv, concepts::type auto t)
 	{
 		return add_reference(get_reference_value_t(t), add_cv(cv, !t));
-	}};
+	});
 
 	PP_FUNCTOR(remove_cvref_or_empty, concepts::type auto t)
 	{
@@ -47,7 +47,7 @@ namespace PP
 			return remove_cvref(t);
 		else
 			return type<empty>;
-	}};
+	});
 
 	namespace detail
 	{
@@ -185,7 +185,7 @@ namespace PP
 	constexpr auto invoke_on_first_valid(auto&& f, auto def, const auto& other)
 	{
 		auto ptrs = make_tuple(dynamic_cast<const any_iterator_wrap<OtherIterators>*>(&other)...);
-		auto i = tuple_find_index([](auto* p) { return p != nullptr; }, ptrs);
+		auto i = tuple_find_dynamic([](auto* p) { return p != nullptr; }, ptrs);
 
 		if (i != sizeof...(OtherIterators))
 			return variant_visit(PP_FORWARD(f), tuple_get_dynamic(i, ptrs));
@@ -525,11 +525,11 @@ namespace PP
 		}
 	}
 
-	constexpr inline functor make_any_iterator{ overloaded
-	{
+	constexpr inline auto make_any_iterator = make_overloaded_pack
+	(
 		[](concepts::iterator auto i, concepts::tuple auto compatible_iterators) { return detail::make_any_iterator(i, compatible_iterators); },
-		[](concepts::iterator auto i)											 { return detail::make_any_iterator(i, empty_tuple{}); },
-	}};
+		[](concepts::iterator auto i)											 { return detail::make_any_iterator(i, empty_tuple{}); }
+	);
 	
 	template <iterator_category Category, typename T>
 	using any_iterator = PP_GET_TYPE(detail::make_any_iterator_implementation_type(value<Category>, type<T>));

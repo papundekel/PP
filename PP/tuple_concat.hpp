@@ -1,8 +1,12 @@
 #pragma once
-#include "tuple_foldr.hpp"
+#include "functional/apply_partially.hpp"
+#include "tuple_fold.hpp"
 #include "tuple_prepend.hpp"
 
 namespace PP
 {
-	constexpr inline auto tuple_concat = apply_partially<false, false>(tuple_foldr, tuple_prepend);
+	PP_FUNCTOR(tuple_concat, concepts::tuple auto&& l, concepts::tuple auto&& r)
+	{
+		return tuple_foldr(tuple_prepend, PP_FORWARD(r), PP_FORWARD(l));
+	});
 }

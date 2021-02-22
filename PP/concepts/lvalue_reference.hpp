@@ -6,11 +6,11 @@
 
 namespace PP
 {
-	constexpr inline auto is_lvalue_reference = is_referencable && functor{ []
+	constexpr inline auto is_lvalue_reference = is_referencable && functor([]
 		(concepts::type auto t)
 		{
 			return t + add_lvalue_tag == t;
-		}};
+		});
 
 	PP_CONCEPT1(lvalue_reference)
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "view_first_difference.hpp"
+#include "zip_iterator_std.hpp"
 
 namespace PP
 {

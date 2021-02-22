@@ -18,5 +18,5 @@ namespace PP
 		}
 	}
 
-	constexpr inline auto remove_all_extents = functor{[](auto t) { return detail::remove_all_extents_helper(t); }} | to_type_t;
+	constexpr inline auto remove_all_extents = functor([](auto t) { return detail::remove_all_extents_helper(t); }) | to_type_t;
 }
