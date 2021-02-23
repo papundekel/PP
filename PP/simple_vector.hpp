@@ -38,7 +38,7 @@ namespace PP
 		explicit constexpr simple_vector(size_t capacity) noexcept
 			: simple_vector(Allocator(), capacity)
 		{}
-		explicit constexpr simple_vector(concepts::view auto&& v)
+		explicit constexpr simple_vector(concepts::view auto &&v)
 			: simple_vector(Allocator(), PP_FORWARD(v))
 		{}
 		constexpr simple_vector(placeholder_t, auto&& allocator) noexcept
@@ -93,6 +93,15 @@ namespace PP
 		constexpr const T* end() const noexcept
 		{
 			return begin() + count_;
+		}
+
+		constexpr T& operator[](ptrdiff_t i) noexcept
+		{
+			return begin()[i];
+		}
+		constexpr const T& operator[](ptrdiff_t i) const noexcept
+		{
+			return begin()[i];
 		}
 
 		constexpr size_t count() const noexcept

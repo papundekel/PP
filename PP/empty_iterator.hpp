@@ -1,4 +1,6 @@
 #pragma once
+#include "add_pointer.hpp"
+#include "construct_pack.hpp"
 #include "ptrdiff_t.hpp"
 
 namespace PP
@@ -39,9 +41,9 @@ namespace PP
 			return 0;
 		}
 
-		constexpr operator T*() const
+		constexpr operator auto() const
 		{
-			return nullptr;
+			return (add_pointer <<= type<T>)(nullptr);
 		}
 	};
 }
