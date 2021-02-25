@@ -7,13 +7,13 @@
 
 namespace PP
 {
-	template <concepts::iterator Iterator>
+	template <concepts::iterator Iterator, size_t Count>
 	class view_tuple
 	{
 		Iterator begin;
 
 	public:
-		explicit constexpr view_tuple(Iterator begin) noexcept
+		constexpr view_tuple(concepts::value auto, Iterator begin) noexcept
 			: begin(move(begin))
 		{}
 
@@ -27,11 +27,18 @@ namespace PP
 		}
 		constexpr auto tuple_count() const noexcept
 		{
-			return value<std::size_t(0) - 1>;
+			return value<Count>;
 		}
 	};
-	constexpr auto make_view_tuple(concepts::view auto&& v) noexcept
+	template <typename Iterator>
+	view_tuple(concepts::value auto count, Iterator) -> view_tuple<Iterator, *PP_COPY_VALUE(count)>;
+
+	constexpr auto make_view_tuple(concepts::value auto count, const concepts::iterator auto& i) noexcept
 	{
-		return view_tuple(view_begin(PP_FORWARD(v)));
+		return view_tuple(count, i);
+	}
+	constexpr auto make_view_tuple(concepts::value auto count, concepts::view auto&& v) noexcept
+	{
+		return make_view_tuple(count, view_begin(PP_FORWARD(v)));
 	}
 }

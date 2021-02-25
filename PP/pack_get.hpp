@@ -15,8 +15,7 @@ namespace PP
 		}
 	}
 
-	constexpr inline functor pack_get{ []
-	(concepts::value auto i, auto&&... pack) -> decltype(auto)
+	PP_FUNCTOR(pack_get, concepts::value auto i, auto&&... pack) -> decltype(auto)
 	{
 		return detail::pack_get_implementation(i, PP_FORWARD(pack)...);
 	});

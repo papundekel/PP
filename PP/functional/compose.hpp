@@ -16,7 +16,7 @@ namespace PP
 	
 	PP_FUNCTOR(compose, auto&& f, auto&& g)
 	{
-		return functor([f = PP_FORWARD(f), g = PP_FORWARD(g)]
+		return functor([f = unwrap_functor(PP_FORWARD(f)), g = unwrap_functor(PP_FORWARD(g))]
 			(auto&&... args) -> decltype(auto)
 			requires detail::compose_concept<decltype(f), decltype(g), decltype(args)...>
 			{

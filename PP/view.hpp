@@ -1,4 +1,6 @@
 #pragma once
+//#include <bit>
+
 #include "apply_transform.hpp"
 #include "concepts/array.hpp"
 #include "declval.hpp"
@@ -111,6 +113,7 @@ namespace PP
 		constexpr decltype(auto) wrap_initializer_list(const std::initializer_list<T>& l)
 		{
 			return reinterpret_cast<const initializer_list_wrapper<T>&>(l);
+			//return std::bit_cast<initializer_list_wrapper<T>>(l);
 		}
 	}
 

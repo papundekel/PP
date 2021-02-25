@@ -1,5 +1,6 @@
 #pragma once
 #include "empty_tuple.hpp"
+#include "forward_wrap.hpp"
 #include "functional/apply_partially.hpp"
 #include "functional/operators.hpp"
 #include "functional/negate.hpp"
@@ -33,7 +34,11 @@ namespace PP
 
 	PP_FUNCTOR(tuple_zip_with, auto&& f, concepts::tuple auto&& tuples)
 	{
-		return tuple_apply * ref(PP_FORWARD(f)) + tuple_zip(PP_FORWARD(tuples));
+		return tuple_apply * forward_wrap(PP_FORWARD(f)) + tuple_zip(PP_FORWARD(tuples));
+	});
+	PP_FUNCTOR(tuple_zip_with_pack, auto&& f, concepts::tuple auto&&... tuples)
+	{
+		return tuple_zip_with(PP_FORWARD(f), forward_as_tuple(PP_FORWARD(tuples)...));
 	});
 
 	constexpr auto operator^(concepts::tuple auto&& a, concepts::tuple auto&& b)

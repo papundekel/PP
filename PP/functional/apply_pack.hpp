@@ -9,6 +9,6 @@ namespace PP
 		<auto... I>
 		(auto&& packer, auto&& selector, value_sequence<I...>) -> decltype(auto)
 		{
-			return PP_FORWARD(packer)(PP_FORWARD(selector)(value<I>)...);
+			return unwrap_functor(PP_FORWARD(packer))(unwrap_functor(PP_FORWARD(selector))(value<I>)...);
 		});
 }

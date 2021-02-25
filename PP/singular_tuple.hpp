@@ -13,11 +13,6 @@ namespace PP
 		constexpr singular_tuple(placeholder_t, concepts::type auto, auto&& value)
 			: singular_tuple(placeholder, PP_FORWARD(value))
 		{}
-
-		constexpr auto tuple_count() const noexcept
-		{
-			return value_1;
-		}
 	};
 	template <typename T>
 	singular_tuple(placeholder_t, T) -> singular_tuple<T>;

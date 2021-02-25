@@ -2,6 +2,7 @@
 #include <ostream>
 
 #include "simple_ostream.hpp"
+#include "view.hpp"
 
 namespace PP
 {

@@ -57,6 +57,6 @@ namespace PP
 	});
 	PP_FUNCTOR(cal, auto&& f, auto&&... args) -> decltype(auto)
 	{
-		return PP_FORWARD(f)(PP_FORWARD(args)...);
+		return unwrap_functor(PP_FORWARD(f))(PP_FORWARD(args)...);
 	});
 }

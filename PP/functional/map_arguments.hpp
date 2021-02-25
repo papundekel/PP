@@ -28,8 +28,8 @@ namespace PP
 
 	PP_FUNCTOR(map_arguments, auto&& f, auto&&... maps)
 	{
-		return functor(
-			[f = PP_FORWARD(f), ...maps = PP_FORWARD(maps)](auto&&... args) -> decltype(auto)
+		return functor([f = unwrap_functor(PP_FORWARD(f)), ...maps = unwrap_functor(PP_FORWARD(maps))]
+			(auto&&... args) -> decltype(auto)
 			{
 				return detail::map_arguments_helper
 					( f

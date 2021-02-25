@@ -21,6 +21,6 @@ namespace PP
 	namespace concepts
 	{
 		template <typename F, typename... Args>
-		concept invocable = is_invocable_pack(type<F>, type<Args>...);
+		concept invocable = is_invocable_pack(PP::type<F>, PP::type<Args>...);
 	}
 }

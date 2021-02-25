@@ -13,12 +13,12 @@ namespace PP::concepts
 
 namespace std
 {
-	constexpr decltype(auto) get(auto i, PP::concepts::std_tuple auto&& t) noexcept
+	constexpr decltype(auto) get(PP::concepts::value auto i, PP::concepts::std_tuple auto&& t) noexcept
 	{
-		return std::get<(std::size_t)-PP_DECLTYPE(i)>(PP_FORWARD(t));
+		return std::get<(size_t)*PP_COPY_VALUE(i)>(PP_FORWARD(t));
 	}
 	constexpr decltype(auto) size_implementation(auto t) noexcept
-		requires PP::concepts::std_tuple<PP_GET_TYPE(t)>
+	requires PP::concepts::std_tuple<PP_GET_TYPE(t)>
 	{
 		return std::tuple_size_v<~PP_GET_TYPE(t)>;
 	}

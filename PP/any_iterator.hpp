@@ -1,5 +1,8 @@
 #pragma once
+#include <memory>
+
 #include "apply_transform.hpp"
+#include "arrow_operator_wrapper.hpp"
 #include "concepts/atomic/returnable.hpp"
 #include "concepts/convertible_to.hpp"
 #include "concepts/same_except_cvref.hpp"
@@ -181,16 +184,32 @@ namespace PP
 		}
 	};
 
-	template <typename... OtherIterators>
+	//template <typename... OtherIterators>
+	//constexpr auto invoke_on_first_valid(auto&& f, auto def, const auto& other)
+	//{
+	//	auto ptrs = make_tuple(dynamic_cast<const any_iterator_wrap<OtherIterators>*>(&other)...);
+	//	auto i = tuple_find_dynamic([](auto* p) { return p != nullptr; }, ptrs);
+	//
+	//	if (i != sizeof...(OtherIterators))
+	//		return variant_visit(PP_FORWARD(f), tuple_get_dynamic(i, ptrs));
+	//	else
+	//		return def;
+	//}
+
+	template <typename OtherIterator, typename... OtherIterators>
 	constexpr auto invoke_on_first_valid(auto&& f, auto def, const auto& other)
 	{
-		auto ptrs = make_tuple(dynamic_cast<const any_iterator_wrap<OtherIterators>*>(&other)...);
-		auto i = tuple_find_dynamic([](auto* p) { return p != nullptr; }, ptrs);
-
-		if (i != sizeof...(OtherIterators))
-			return variant_visit(PP_FORWARD(f), tuple_get_dynamic(i, ptrs));
-		else
+		auto ptr = dynamic_cast<const any_iterator_wrap<OtherIterator>*>(&other);
+	
+		if constexpr (sizeof...(OtherIterators) == 0)
 			return def;
+		else
+		{
+			if (ptr)
+				return PP_FORWARD(f)(ptr);
+			else
+				return invoke_on_first_valid<OtherIterators...>(PP_FORWARD(f), def, other);
+		}
 	}
 
 	template <iterator_category Category, iterator_category C, typename T, typename Iterator, typename... CompatibleIterators>
@@ -297,7 +316,7 @@ namespace PP
 		constexpr ptrdiff_t difference(const any_iterator_base<iterator_category::ra, T>& other) const override final
 		{
 			return invoke_on_first_valid<Iterator, CompatibleIterators...>([this]
-			(auto* ptr)
+				(auto* ptr)
 				{
 					return ptr->difference_sentinel(this->i);
 				}, (ptrdiff_t)0, other);
@@ -362,11 +381,7 @@ namespace PP
 
 		constexpr bool operator==(const auto& other) const
 		{
-			auto a = !p && !other.p;
-			auto& b = *other.p;
-			auto& c = *p;
-			auto d = c.equal(b);
-			return a || d;
+			return !p && !other.p || p->equal(*other.p);
 		}
 	};
 

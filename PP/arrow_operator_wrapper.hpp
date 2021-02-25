@@ -18,4 +18,6 @@ namespace PP
 			return &obj;
 		}
 	};
+	template <typename T>
+	arrow_operator_wrapper(T&&) -> arrow_operator_wrapper<T>;
 }

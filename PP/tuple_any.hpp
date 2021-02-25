@@ -9,12 +9,12 @@ namespace PP
 		return functor([&predicate]
 			(auto&&... elements) -> decltype(auto)
 			{
-				return (PP_FORWARD(predicate)(PP_FORWARD(elements)) || ...);
+				return (unwrap_functor(PP_FORWARD(predicate))(PP_FORWARD(elements)) || ...);
 			})[PP_FORWARD(t)];
 	});
 
 	constexpr decltype(auto) operator||(concepts::functor auto&& f, concepts::tuple auto&& tuple)
 	{
-		return tuple_any(PP_FORWARD(f).f, PP_FORWARD(tuple));
+		return tuple_any(unwrap_functor(PP_FORWARD(f)), PP_FORWARD(tuple));
 	}
 }

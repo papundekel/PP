@@ -15,10 +15,10 @@ namespace PP
 
 	constexpr auto operator<(concepts::functor auto&& f, concepts::tuple auto&& tuple)
 	{
-		return tuple_map_make_array(PP_FORWARD(f).f, PP_FORWARD(tuple));
+		return tuple_map_make_array(unwrap_functor(PP_FORWARD(f)), PP_FORWARD(tuple));
 	}
 	constexpr auto operator<<(concepts::functor auto&& f, concepts::tuple auto&& tuple) noexcept
 	{
-		return tuple_map_forward_array(PP_FORWARD(f).f, PP_FORWARD(tuple));
+		return tuple_map_forward_array(unwrap_functor(PP_FORWARD(f)), PP_FORWARD(tuple));
 	}
 }

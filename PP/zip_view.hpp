@@ -21,6 +21,8 @@ namespace PP
 		friend class zip_iterator;
 
 	public:
+		static constexpr char dont_make_array_star_operator{};
+
 		constexpr zip_iterator(placeholder_t, auto&&... iterators)
 			: tuple<Iterators...>(placeholder, PP_FORWARD(iterators)...)
 		{}

@@ -46,17 +46,17 @@ namespace PP
 		};
 	}
 
-	constexpr decltype(auto) operator<<=(concepts::functor auto&& f, auto&& arg)
-	{
-		return PP_FORWARD(f)(PP_FORWARD(arg));
-	}
-
 	constexpr auto&& unwrap_functor(auto&& f)
 	{
 		if constexpr (concepts::functor<decltype(f)>)
-			return PP_FORWARD(f).f;
+			return unwrap_functor(PP_FORWARD(f).f);
 		else
 			return PP_FORWARD(f);
+	}
+
+	constexpr decltype(auto) operator<<=(concepts::functor auto&& f, auto&& arg)
+	{
+		return unwrap_functor(PP_FORWARD(f))(PP_FORWARD(arg));
 	}
 
 	constexpr auto operator&&(concepts::functor auto&& f, concepts::functor auto&& g)

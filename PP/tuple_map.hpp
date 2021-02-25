@@ -11,13 +11,13 @@ namespace PP
 		return functor([&map]
 			(auto&&... elements)
 			{
-				return tuple<decltype(declval(PP_DECLTYPE(map))(declval(PP_DECLTYPE(elements))))...>
-					(placeholder, PP_FORWARD(map)(PP_FORWARD(elements))...);
+				return tuple<decltype(declval(PP_DECLTYPE(unwrap_functor(PP_FORWARD(map))))(declval(PP_DECLTYPE(elements))))...>
+					(placeholder, unwrap_functor(PP_FORWARD(map))(PP_FORWARD(elements))...);
 			})[PP_FORWARD(t)];
 	});
 
 	constexpr auto operator+(concepts::functor auto&& f, concepts::tuple auto&& tuple)
 	{
-		return tuple_map(PP_FORWARD(f).f, PP_FORWARD(tuple));
+		return tuple_map(unwrap_functor(PP_FORWARD(f)), PP_FORWARD(tuple));
 	}
 }

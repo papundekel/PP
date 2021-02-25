@@ -1,6 +1,6 @@
 #pragma once
+#include "../forward_wrap.hpp"
 #include "../get_value.hpp"
-#include "../reference_wrapper.hpp"
 #include "../tuple.hpp"
 #include "../utility/move.hpp"
 #include "apply_pack.hpp"
@@ -9,7 +9,7 @@ namespace PP
 {
 	PP_FUNCTOR(apply_partially, auto&& f, concepts::value auto i, auto&& arg)
 	{
-		return functor([f = PP_FORWARD(f), arg = PP_FORWARD(arg)]
+		return functor([f = unwrap_functor(PP_FORWARD(f)), arg = PP_FORWARD(arg)]
 			(auto&&... other_args) -> decltype(auto)
 			{
 				return apply_pack(f, [&arg, args = forward_as_tuple(PP_FORWARD(other_args)...)]
@@ -19,7 +19,7 @@ namespace PP
 						constexpr auto  I = PP_COPY_VALUE(i);
 
 						if constexpr (CI == I)
-							return unref(arg);
+							return unwrap(arg);
 						else if constexpr (CI < I)
 							return move(args)[current_i];
 						else
@@ -31,12 +31,12 @@ namespace PP
 	template <typename F>
 	constexpr auto functor<F>::operator()(partial_tag_t, auto i, auto&& arg) const& noexcept
 	{
-		return apply_partially(unwrap_functor(this->f), i, PP_FORWARD(arg));
+		return apply_partially(unwrap_functor(*this), i, PP_FORWARD(arg));
 	}
 	template <typename F>
 	constexpr auto functor<F>::operator()(partial_tag_t, auto i, auto&& arg) const&& noexcept
 	{
-		return apply_partially(unwrap_functor(move(this->f)), i, PP_FORWARD(arg));
+		return apply_partially(unwrap_functor(move(*this)), i, PP_FORWARD(arg));
 	}
 
 	constexpr auto operator*(concepts::functor auto&& f, auto&& arg) noexcept

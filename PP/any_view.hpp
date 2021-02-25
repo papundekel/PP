@@ -62,9 +62,9 @@ namespace PP
 		}
 	};
 	template <typename T>
-	any_view_implementation(const std::initializer_list<T>&) ->any_view_implementation<value_t<iterator_category::ra>, const T&>;
+	any_view_implementation(const std::initializer_list<T>&) -> any_view_implementation<value_t<iterator_category::ra>, const T&>;
 	template <typename T, size_t N>
-	any_view_implementation(T(&)[N]) ->any_view_implementation< value_t<iterator_category::ra>, T&>;
+	any_view_implementation(T(&)[N]) -> any_view_implementation<value_t<iterator_category::ra>, T&>;
 
 	template <iterator_category Category, typename T>
 	using any_view = any_view_implementation<value_t<Category>, T>;
@@ -98,3 +98,5 @@ namespace PP
 		[](concepts::view auto&& v)									   { return detail::make_any_view(view_begin(PP_FORWARD(v)), view_end(PP_FORWARD(v))); }
 	);
 }
+
+extern template class PP::any_view_implementation<PP::value_t<PP::iterator_category::forward>, const char&>;

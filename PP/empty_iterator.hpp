@@ -16,9 +16,10 @@ namespace PP
 		{
 			return *this;
 		}
-		constexpr auto&& operator*() const noexcept
+		constexpr T&& operator*() const noexcept
 		{
-			return reinterpret_cast<T&&>(const_cast<empty_iterator&>(*this));
+			PP_GET_TYPE(add_pointer <<= type<T>) p = nullptr;
+			return static_cast<T&&>(*p);
 		}
 		constexpr auto& operator+=(ptrdiff_t) noexcept
 		{

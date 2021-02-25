@@ -21,14 +21,14 @@ namespace PP
 		{
 			return PP_FORWARD(args)[applied_indices[current_index]];
 		}
-		template <std::size_t... I>
+		template <size_t... I>
 		constexpr decltype(auto) reorder_helper(auto&& f, auto&& args, auto applied_indices, std::index_sequence<I...>)
 		{
 			return PP_FORWARD(args), value<I>, applied_indices)...);
 		}
 	}
 
-	template <bool copy, std::size_t... I>
+	template <bool copy, size_t... I>
 	constexpr inline auto reorder =
 		[](auto& f)
 		{
@@ -41,7 +41,7 @@ namespace PP
 					, std::make_index_sequence<sizeof...(args)>{});
 			};
 		};
-	template <std::size_t... I>
+	template <size_t... I>
 	constexpr inline auto reorder<true, I...> =
 		[](auto&& f)
 		{

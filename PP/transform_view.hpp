@@ -87,7 +87,7 @@ namespace PP
 
 	constexpr auto operator&(concepts::iterator auto&& i, transform<auto> t)
 	{
-		return transform_iterator(PP_FORWARD(i), PP_FORWARD(t.functor));
+		return transform_iterator(PP_FORWARD(i), move(t).functor);
 	}
 
 	constexpr auto operator||(concepts::view auto&& v, transform<auto> t)
@@ -97,6 +97,6 @@ namespace PP
 
 	constexpr auto operator|(concepts::view auto&& v, transform<auto> t)
 	{
-		return transform_view(PP_FORWARD(v), PP_FORWARD(t.functor));
+		return transform_view(PP_FORWARD(v), move(t).functor);
 	}
 }

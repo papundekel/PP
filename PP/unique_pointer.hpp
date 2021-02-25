@@ -38,16 +38,7 @@ namespace PP
 		unique_pointer() = default;
 
 		constexpr unique_pointer(placeholder_t, auto&&... args)
-			: p
-			(
-				in_place_tag,
-					in_place_tag,
-						PP_FORWARD(args)...,
-					unique_in_place_delimiter,
-						// {}
-				scoped_in_place_delimiter
-					// {}
-			)
+			: p(scoped_default_destructor_tag, unique_default_releaser_tag,	PP_FORWARD(args)...)
 		{}
 
 		constexpr unique_pointer(unique_pointer&& other) = default;
