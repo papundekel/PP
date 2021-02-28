@@ -63,6 +63,10 @@ namespace PP
 	{
 		return value<PP_GET_VALUE(x) == PP_GET_VALUE(y)>;
 	}
+	constexpr auto operator!=(concepts::value auto x, concepts::value auto y)
+	{
+		return value<PP_GET_VALUE(x) != PP_GET_VALUE(y)>;
+	}
 	constexpr auto operator<(concepts::value auto x, concepts::value auto y)
 	{
 		return value<PP_GET_VALUE(x) <  PP_GET_VALUE(y)>;
@@ -87,9 +91,25 @@ namespace PP
 	{
 		return value<PP_GET_VALUE(x) -  PP_GET_VALUE(y)>;
 	}
+	constexpr auto operator*(concepts::value auto x, concepts::value auto y)
+	{
+		return value<PP_GET_VALUE(x) *  PP_GET_VALUE(y)>;
+	}
+	constexpr auto operator/(concepts::value auto x, concepts::value auto y)
+	{
+		return value<PP_GET_VALUE(x) /  PP_GET_VALUE(y)>;
+	}
+	constexpr auto operator%(concepts::value auto x, concepts::value auto y)
+	{
+		return value<PP_GET_VALUE(x) %  PP_GET_VALUE(y)>;
+	}
 	constexpr auto operator-(concepts::value auto x)
 	{
 		return value<-PP_GET_VALUE(x)>;
+	}
+	constexpr auto operator!(concepts::value auto x)
+	{
+		return value<!PP_GET_VALUE(x)>;
 	}
 	constexpr auto operator&&(concepts::value auto x, concepts::value auto y)
 	{

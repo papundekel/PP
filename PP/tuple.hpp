@@ -22,7 +22,7 @@ namespace PP
 
 		template <typename, typename... T>
 		class tuple_impl;
-		template <size_t... I, typename... T>
+		template <auto... I, typename... T>
 		class tuple_impl<value_sequence<I...>, T...> : tuple_wrap<value_t<I>, T>...
 		{
 			friend class tuple_helper;

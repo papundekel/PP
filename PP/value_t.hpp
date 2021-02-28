@@ -11,7 +11,7 @@ namespace PP
 			return V;
 		}
 
-		constexpr operator decltype(V)() noexcept
+		constexpr operator decltype(V)() const noexcept
 		{
 			return V;
 		}

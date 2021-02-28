@@ -1,19 +1,19 @@
 #include <iostream>
 #include <vector>
 
-#include "zip_view.hpp"
-#include "array.hpp"
-#include "simple_vector.hpp"
-#include "array_ostream.hpp"
+#include "value_sequence.hpp"
+
+template <auto... I>
+void f(PP::value_sequence<I...>)
+{
+	((std::cout << I), ...);
+}
 
 int main()
 {
-	PP::array_ostream<32> stream;
-	PP::simple_ostream& out = stream;
+	[[maybe_unused]] auto x = PP::make_value_sequence(PP::value<11>);
 
-	out.write("cigi");
-
-	out.write_to_ostream(std::cout);
+	f(x);
 
 	std::cout.flush();
 	return 0;
