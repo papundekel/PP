@@ -22,6 +22,14 @@ namespace PP
 			return exchange(x, T());
 		}
 	};
+	struct pointer_releaser
+	{
+		template <typename T>
+		constexpr auto operator()(T*& x)
+		{
+			return exchange(x, nullptr);
+		}
+	};
 	struct move_releaser
 	{
 		constexpr auto operator()(auto& x)

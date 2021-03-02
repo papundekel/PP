@@ -60,6 +60,12 @@ namespace PP
 		{
 			return end_;
 		}
+
+		constexpr decltype(auto) operator[](ptrdiff_t index) const
+		requires (-type<CategoryT> == iterator_category::ra)
+		{
+			return begin()[index];
+		}
 	};
 	template <typename T>
 	any_view_implementation(const std::initializer_list<T>&) -> any_view_implementation<value_t<iterator_category::ra>, const T&>;

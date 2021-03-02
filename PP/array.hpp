@@ -1,4 +1,6 @@
 #pragma once
+#include <type_traits>
+
 #include "apply_template.hpp"
 #include "apply_transform.hpp"
 #include "concepts/reference.hpp"
@@ -6,6 +8,7 @@
 #include "decompose_template.hpp"
 #include "empty.hpp"
 #include "empty_iterator.hpp"
+#include "functional/id.hpp"
 #include "get_value.hpp"
 #include "remove_cvref.hpp"
 #include "remove_pointer.hpp"
@@ -144,8 +147,22 @@ namespace PP
 	template <typename T, size_t count>
 	using array = detail::array<T, value_t<count>>;
 
+	constexpr inline auto first_or = PP::make_overloaded_pack
+	(
+		id_forward,
+		[](auto&&, auto&& head, auto&&...) -> decltype(auto)
+		{
+			return PP_FORWARD(head);
+		}
+	);
+
 	PP_FUNCTOR(make_array, auto&&... args)
 	{
 		return detail::array{ PP_FORWARD(args)... };
+	});
+	PP_FUNCTOR(forward_as_array, auto&&... args)
+	{
+		constexpr auto t = first_or(PP::type<char>, PP_DECLTYPE(args)...);
+		return array<PP_GET_TYPE(t), sizeof...(args)>{ PP_FORWARD(args)... };
 	});
 }

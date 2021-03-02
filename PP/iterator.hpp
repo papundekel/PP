@@ -119,4 +119,15 @@ namespace PP
 	{
 		return PP_DECLTYPE(*declval(i));
 	});
+
+	PP_FUNCTOR(iterator_prev, concepts::iterator_bi auto i)
+	{
+		--i;
+		return i;
+	});
+	PP_FUNCTOR(iterator_next, concepts::iterator auto i)
+	{
+		++i;
+		return i;
+	});
 }

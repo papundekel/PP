@@ -1,8 +1,9 @@
 #pragma once
+#include <iosfwd>
+
 #include "shift_view.hpp"
 #include "simple_view.hpp"
 #include "size_t.hpp"
-#include "view.hpp"
 
 namespace PP
 {
@@ -33,4 +34,6 @@ namespace PP
 			return string_view(s, s + l);
 		}
 	}
+
+	std::ostream& operator<<(std::ostream& out, string_view sv);
 }

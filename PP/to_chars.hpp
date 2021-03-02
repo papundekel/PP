@@ -9,18 +9,29 @@ namespace PP
 	{
 		auto [begin, end] = PP::view_begin_end(PP_FORWARD(v));
 
-		if (value == 0)
+		if (begin == end)
+			return begin;
+
+		if (value == 0 && begin != end)
 		{
-			if (begin != end)
-			{
-				*begin = '0';
-				return ++begin;
-			}
-			else
-				return begin;
+			*begin = '0';
+			return ++begin;
 		}
 
 		auto i = end;
+
+		bool was_negative = false;
+
+		constexpr bool signed_type = decltype(value)(-1) < decltype(value)(0);
+
+		if constexpr (signed_type)
+		{
+			if (value < 0)
+			{
+				was_negative = true;
+				value = -value;
+			}
+		}
 
 		while (i != begin && value != 0)
 		{
@@ -28,6 +39,15 @@ namespace PP
 			value /= 10;
 			--i;
 			*i = char('0' + digit);
+		}
+
+		if constexpr (signed_type)
+		{
+			if (was_negative && i != begin)
+			{
+				--i;
+				*i = '-';
+			}
 		}
 
 		return view_move(begin ^ unbounded, i ^ end)[value_0];

@@ -1,12 +1,13 @@
 cmake_minimum_required (VERSION 3.8)
 
-add_compile_options(-Wall -Wextra -pedantic -Werror)
+add_library(PP
+"any_view.cpp"
+"string_view.cpp"
+)
+target_compile_features(PP PUBLIC cxx_std_20)
+set_target_properties(PP PROPERTIES COMPILE_FLAGS "-ftemplate-backtrace-limit=0 -fconcepts-diagnostics-depth=4")
 
-add_library(PPlib "any_view.cpp")
-add_executable(PP "PP.cpp")
-target_link_libraries(PP PPlib)
-
-target_precompile_headers(PPlib PUBLIC
+target_precompile_headers(PP PUBLIC
 <iostream>
 <vector>
 <list>
