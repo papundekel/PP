@@ -32,7 +32,7 @@ namespace PP
 		//{}
 
 		constexpr scoped(in_place_tag_t, auto&& destructor, auto&&... args)
-			: pair(T(PP_FORWARD(args)...), PP_FORWARD(destructor))
+			: pair(T(PP_FORWARD(args)...), Destructor(PP_FORWARD(destructor)))
 		{}
 		constexpr scoped(scoped_default_destructor_tag_t, auto&&... args)
 			: scoped(in_place_tag, Destructor(), PP_FORWARD(args)...)

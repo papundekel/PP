@@ -18,6 +18,7 @@ namespace PP
 	constexpr inline type_t<T> type{};
 
 	constexpr inline type_t<void> type_void{};
+	constexpr inline type_t<int> type_int{};
 	constexpr inline type_t<char> type_char{};
 	constexpr inline type_t<size_t> type_size_t{};
 

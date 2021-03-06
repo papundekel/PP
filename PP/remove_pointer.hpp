@@ -1,6 +1,7 @@
 #pragma once
 #include "get_type.hpp"
 #include "overloaded.hpp"
+#include "remove_cv.hpp"
 #include "type_t.hpp"
 
 namespace PP
@@ -9,5 +10,5 @@ namespace PP
 	(
 		[]<typename T>(type_t<T*>) { return type<T>; },
 		[](auto t) { return t; }
-	) | to_type_t;
+	) | remove_cv;
 }

@@ -7,7 +7,7 @@ namespace PP
 		none = 0b00,
 		Const = 0b01,
 		Volatile = 0b10,
-		const_volatile = 0b11,
+		const_volatile = 0b11
 	};
 
 	constexpr bool operator&(cv_qualifier a, cv_qualifier b) noexcept

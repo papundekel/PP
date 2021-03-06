@@ -58,7 +58,14 @@ namespace PP
 		constexpr function_info(type_t<R(P...) const		  && noexcept>) noexcept : function_info(cv_qualifier::Const		 , ref_qualifier::rvalue, true ) {}
 		constexpr function_info(type_t<R(P...)		 volatile && noexcept>) noexcept : function_info(cv_qualifier::		 Volatile, ref_qualifier::rvalue, true ) {}
 		constexpr function_info(type_t<R(P...) const volatile && noexcept>) noexcept : function_info(cv_qualifier::const_volatile, ref_qualifier::rvalue, true ) {}
+
+		template <typename T>
+		constexpr function_info(type_t<T>) noexcept
+			: function_info(cv_qualifier::none, ref_qualifier::none, false)
+		{}
 	};
+	template <typename T>
+	function_info(type_t<T>) -> function_info<void>;
 
 	constexpr inline auto get_function_info = functor([](auto t) { return function_info(t); }) | to_type_t;
 }

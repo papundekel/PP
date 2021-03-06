@@ -1,20 +1,25 @@
 #pragma once
-#include "../functional/apply_partially.hpp"
-#include "../functional/operators.hpp"
-#include "../functional/compose.hpp"
-#include "../macros/simple_concept.hpp"
-#include "../remove_cv.hpp"
+#include "../functional/functor.hpp"
+#include "../get_type.hpp"
 #include "same.hpp"
 
 namespace PP
 {
-	constexpr inline auto is_void = eql * type_void | remove_cv;
-
-	PP_CONCEPT(void_type, void)
-
 	namespace concepts
 	{
 		template <typename T>
+		concept void_type =
+			same<T, 			   void> ||
+			same<T, const 		   void> ||
+			same<T, 	  volatile void> ||
+			same<T, const volatile void>;
+
+		template <typename T>
 		concept nonvoid = !void_type<T>;
 	}
+
+	PP_FUNCTOR(is_void, concepts::type auto t)
+	{
+		return concepts::void_type<PP_GET_TYPE(t)>;
+	});
 }
