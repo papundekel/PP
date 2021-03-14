@@ -1,6 +1,7 @@
 #pragma once
 #include "../functional/functor.hpp"
 #include "../get_type.hpp"
+#include "../macros/simple_concept.hpp"
 
 namespace PP
 {

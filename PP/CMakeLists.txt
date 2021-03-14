@@ -5,7 +5,10 @@ add_library(PP
 "string_view.cpp"
 )
 target_compile_features(PP PUBLIC cxx_std_20)
+
+if(CMAKE_COMPILER_IS_GNUCXX)
 set_target_properties(PP PROPERTIES COMPILE_FLAGS "-ftemplate-backtrace-limit=0 -fconcepts-diagnostics-depth=4")
+endif()
 
 target_precompile_headers(PP PUBLIC
 <iostream>

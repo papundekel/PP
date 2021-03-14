@@ -55,11 +55,20 @@ int main()
 	[[maybe_unused]] PP::type_t<void> a = PP::get_promotion_type(PP::type<int>);
 	[[maybe_unused]] PP::type_t<void> b = PP::get_promotion_type(PP::type<short>);
 	[[maybe_unused]] PP::type_t<void> c = PP::get_promotion_type(PP::type<bool>);
-	[[maybe_unused]] PP::type_t<void> d = PP::get_promotion_type(PP::type<decltype(nullptr)>);
 	[[maybe_unused]] PP::type_t<void> e = PP::get_promotion_type(PP::type<long>);
 	[[maybe_unused]] PP::type_t<void> f = PP::get_promotion_type(PP::type<long long>);
-	[[maybe_unused]] PP::type_t<void> g = PP::get_promotion_type(PP::type<char>);
-	[[maybe_unused]] PP::type_t<void> h = PP::get_promotion_type(PP::type<wchar_t>);
+	[[maybe_unused]] PP::type_t<void> g = PP::get_promotion_type(PP::type<signed char>);
+	[[maybe_unused]] PP::type_t<void> h = PP::get_promotion_type(PP::type<unsigned int>);
+	[[maybe_unused]] PP::type_t<void> i = PP::get_promotion_type(PP::type<unsigned short>);
+	[[maybe_unused]] PP::type_t<void> j = PP::get_promotion_type(PP::type<unsigned bool>);
+	[[maybe_unused]] PP::type_t<void> k = PP::get_promotion_type(PP::type<unsigned long>);
+	[[maybe_unused]] PP::type_t<void> l = PP::get_promotion_type(PP::type<unsigned long long>);
+	[[maybe_unused]] PP::type_t<void> m = PP::get_promotion_type(PP::type<unsigned char>);
+	[[maybe_unused]] PP::type_t<void> n = PP::get_promotion_type(PP::type<char>);
+	[[maybe_unused]] PP::type_t<void> o = PP::get_promotion_type(PP::type<wchar_t>);
+	[[maybe_unused]] PP::type_t<void> p = PP::get_promotion_type(PP::type<float>);
+	[[maybe_unused]] PP::type_t<void> q = PP::get_promotion_type(PP::type<double>);
+	[[maybe_unused]] PP::type_t<void> r = PP::get_promotion_type(PP::type<long double>);
 
 	std::cout.flush();
 	return 0;
