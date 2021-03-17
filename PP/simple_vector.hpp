@@ -112,5 +112,11 @@ namespace PP
 		{
 			return block.count();
 		}
+
+		constexpr void erase_until_end(const T* i) noexcept
+		{
+			view_destroy(simple_view(i, end()));
+			count_ = i - begin();
+		}
 	};
 }

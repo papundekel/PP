@@ -10,20 +10,50 @@ namespace PP
 	namespace detail
 	{
 		template <typename T>
-		concept has_member_advance = requires (T t, ptrdiff_t n)
+		concept has_step = requires (T t)
+		{
+			t.step();
+		};
+		template <typename T>
+		concept has_step_back = requires (T t)
+		{
+			t.step_back();
+		};
+
+		template <typename T>
+		concept has_advance = requires (T t, ptrdiff_t n)
 		{
 			t.advance(n);
 		};
+
+		template <typename T>
+		concept has_step_or_advance = has_step<T> || has_advance<T>;
+		template <typename T>
+		concept has_step_back_or_advance = has_step_back<T> || has_advance<T>;
 	}
 
-	constexpr auto& operator+=(detail::has_member_advance auto&& t, ptrdiff_t offset)
+	constexpr auto& operator+=(detail::has_step_or_advance auto&& t, ptrdiff_t offset)
 	{
-		t.advance(offset);
+		if constexpr (detail::has_advance<decltype(t)>)
+			t.advance(offset);
+		else
+		{
+			for (ptrdiff_t i = 0; i != offset; ++i)
+				t.step();
+		}
+
 		return t;
 	}
-	constexpr auto& operator-=(detail::has_member_advance auto&& t, ptrdiff_t offset)
+	constexpr auto& operator-=(detail::has_step_back_or_advance auto&& t, ptrdiff_t offset)
 	{
-		t.advance(-offset);
+		if constexpr (detail::has_advance<decltype(t)>)
+			t.advance(-offset);
+		else
+		{
+			for (ptrdiff_t i = 0; i != offset; ++i)
+				t.step_back();
+		}
+
 		return t;
 	}
 
@@ -51,11 +81,16 @@ namespace PP
 		t -= offset;
 		return t;
 	}
-	constexpr auto& operator++(detail::has_operator_advance auto& t)
+	constexpr auto& operator++(detail::has_step_or_advance auto& t)
 	{
-		return t += 1;
+		if constexpr (detail::has_advance<decltype(t)>)
+			t += 1;
+		else
+			t.step();
+
+		return t;
 	}
-	constexpr auto operator++(detail::has_operator_advance auto& t, int)
+	constexpr auto operator++(detail::has_step_or_advance auto& t, int)
 	{
 		auto x = t;
 		++t;
@@ -63,7 +98,12 @@ namespace PP
 	}
 	constexpr auto& operator--(detail::has_operator_back auto& t)
 	{
-		return t -= 1;
+		if constexpr (detail::has_advance<decltype(t)>)
+			t -= 1;
+		else
+			t.step_back();
+
+		return t;
 	}
 	constexpr auto operator--(detail::has_operator_back auto& t, int)
 	{

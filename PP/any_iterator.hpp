@@ -367,16 +367,9 @@ namespace PP
 			return &**this;
 		}
 
-		constexpr auto& operator++()
+		constexpr void step()
 		{
 			p->increment();
-			return *this;
-		}
-		constexpr auto operator++(int)
-		{
-			auto copy = *this;
-			++copy;
-			return copy;
 		}
 
 		constexpr bool operator==(const auto& other) const
@@ -413,16 +406,9 @@ namespace PP
 			: any_iterator_implementation<value_t<iterator_category::forward>, C, T>(move(other))
 		{}
 
-		constexpr auto& operator--()
+		constexpr void step_back()
 		{
 			this->p->decrement();
-			return *this;
-		}
-		constexpr auto operator--(int)
-		{
-			auto copy = *this;
-			--copy;
-			return copy;
 		}
 	};
 
@@ -459,24 +445,9 @@ namespace PP
 			return this->p->difference(*other.p);
 		}
 
-		constexpr auto& operator+=(ptrdiff_t offset)
+		constexpr void advance(ptrdiff_t offset)
 		{
 			this->p->advance(offset);
-			return *this;
-		}
-		constexpr auto operator+(ptrdiff_t offset) const
-		{
-			auto copy = *this;
-			copy += offset;
-			return copy;
-		}
-		constexpr auto& operator-=(ptrdiff_t offset)
-		{
-			return operator+=(-offset);
-		}
-		constexpr auto operator-(ptrdiff_t offset) const
-		{
-			return *this + -offset;
 		}
 		constexpr decltype(auto) operator[](ptrdiff_t offset) const
 		{

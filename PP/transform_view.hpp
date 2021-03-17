@@ -1,7 +1,7 @@
 #pragma once
 #include "apply_template.hpp"
 #include "apply_transform.hpp"
-#include "arg_splitter.hpp"
+//#include "arg_splitter.hpp"
 #include "arrow_operator_wrapper.hpp"
 #include "compressed_pair.hpp"
 #include "concepts/pointer.hpp"
@@ -20,7 +20,7 @@ namespace PP
 	template <typename BaseIterator, typename Transform>
 	class transform_iterator
 	{
-		static constexpr auto splitter = arg_splitter * type<transform_iterator_in_place_delimiter_t> * type_tuple<BaseIterator, Transform>;
+		//static constexpr auto splitter = arg_splitter * type<transform_iterator_in_place_delimiter_t> * type_tuple<BaseIterator, Transform>;
 
 		compressed_pair<BaseIterator, Transform> iterator_transform;
 
@@ -28,13 +28,13 @@ namespace PP
 		constexpr transform_iterator(concepts::iterator auto&& iterator, auto&& transform)
 			: iterator_transform(PP_FORWARD(iterator), PP_FORWARD(transform))
 		{}
-		constexpr transform_iterator(in_place_tag_t, auto&&... args)
-			: iterator_transform
-			(
-				splitter(value_0, PP_FORWARD(args)...),
-				splitter(value_1, PP_FORWARD(args)...)
-			)
-		{}
+		//constexpr transform_iterator(in_place_tag_t, auto&&... args)
+		//	: iterator_transform
+		//	(
+		//		splitter(value_0, PP_FORWARD(args)...),
+		//		splitter(value_1, PP_FORWARD(args)...)
+		//	)
+		//{}
 
 		constexpr decltype(auto) operator*() const
 		{
@@ -44,9 +44,13 @@ namespace PP
 		{
 			return arrow_operator_wrapper(**this);
 		}
-		constexpr void advance(ptrdiff_t offset)
+		constexpr void step()
 		{
-			iterator_transform.first += offset;
+			++iterator_transform.first;
+		}
+		constexpr void step_back()
+		{
+			--iterator_transform.first;
 		}
 		constexpr auto operator==(const auto& other) const
 		{

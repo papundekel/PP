@@ -31,15 +31,9 @@ namespace PP
 		{
 			return der + *this;
 		}
-		constexpr auto& operator+=(ptrdiff_t offset)
+		constexpr void advance(ptrdiff_t offset)
 		{
 			tuple_for_each(value_true, pas(partial_tag, value_1, offset), *this);
-			return *this;
-		}
-		constexpr auto& operator-=(ptrdiff_t offset)
-		{
-			tuple_for_each(value_true, mas(partial_tag, value_1, offset), *this);
-			return *this;
 		}
 		template <typename... IteratorsOther>
 		requires (sizeof...(Iterators) == sizeof...(IteratorsOther))

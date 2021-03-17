@@ -4,7 +4,10 @@
 #include "PP/cv_decomposition.hpp"
 #include "PP/promotion_type.hpp"
 #include "PP/value_sequence.hpp"
+#include "PP/view_remove.hpp"
+#include "PP/simple_vector.hpp"
 
+[[maybe_unused]]
 std::ostream& print_cv(PP::cv_decomposition_element e, std::ostream& out)
 {
 	switch (e.cv)
@@ -38,37 +41,25 @@ std::ostream& print_cv(PP::cv_decomposition_element e, std::ostream& out)
 	return out << " " << e.extent;
 }
 
-using U = int;
-
-template <typename T>
-using ptr = T*;
-template <typename T>
-using unknown_bound = T[];
-template <typename T>
-using known_bound = T[1];
-
-using From = ptr<known_bound<const volatile ptr<const U>>>;
-using To = ptr<unknown_bound<const volatile ptr<const U>>>;
-
 int main()
 {
-	[[maybe_unused]] PP::type_t<void> a = PP::get_promotion_type(PP::type<int>);
-	[[maybe_unused]] PP::type_t<void> b = PP::get_promotion_type(PP::type<short>);
-	[[maybe_unused]] PP::type_t<void> c = PP::get_promotion_type(PP::type<bool>);
-	[[maybe_unused]] PP::type_t<void> e = PP::get_promotion_type(PP::type<long>);
-	[[maybe_unused]] PP::type_t<void> f = PP::get_promotion_type(PP::type<long long>);
-	[[maybe_unused]] PP::type_t<void> g = PP::get_promotion_type(PP::type<signed char>);
-	[[maybe_unused]] PP::type_t<void> h = PP::get_promotion_type(PP::type<unsigned int>);
-	[[maybe_unused]] PP::type_t<void> i = PP::get_promotion_type(PP::type<unsigned short>);
-	[[maybe_unused]] PP::type_t<void> j = PP::get_promotion_type(PP::type<unsigned bool>);
-	[[maybe_unused]] PP::type_t<void> k = PP::get_promotion_type(PP::type<unsigned long>);
-	[[maybe_unused]] PP::type_t<void> l = PP::get_promotion_type(PP::type<unsigned long long>);
-	[[maybe_unused]] PP::type_t<void> m = PP::get_promotion_type(PP::type<unsigned char>);
-	[[maybe_unused]] PP::type_t<void> n = PP::get_promotion_type(PP::type<char>);
-	[[maybe_unused]] PP::type_t<void> o = PP::get_promotion_type(PP::type<wchar_t>);
-	[[maybe_unused]] PP::type_t<void> p = PP::get_promotion_type(PP::type<float>);
-	[[maybe_unused]] PP::type_t<void> q = PP::get_promotion_type(PP::type<double>);
-	[[maybe_unused]] PP::type_t<void> r = PP::get_promotion_type(PP::type<long double>);
+	PP::simple_vector<int> a;
+	a.push_back(1);
+	a.push_back(2);
+	a.push_back(3);
+	a.push_back(4);
+	a.push_back(5);
+	a.push_back(6);
+	a.push_back(7);
+
+	a.erase_until_end(PP::view_remove([]
+		(int a)
+		{
+			return a % 2 == 0;
+		}, a));
+
+	for (int x : a)
+		std::cout << x << '\n';
 
 	std::cout.flush();
 	return 0;
