@@ -1,5 +1,4 @@
 #pragma once
-#include "functional/apply_partially.hpp"
 #include "tuple_fold.hpp"
 #include "tuple_prepend.hpp"
 

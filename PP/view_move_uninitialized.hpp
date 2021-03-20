@@ -1,5 +1,5 @@
 #pragma once
-#include "functional/apply_partially.hpp"
+#include "functional/apply_partially_simple.hpp"
 #include "functional/applier.hpp"
 #include "functional/operators.hpp"
 #include "utility/move.hpp"

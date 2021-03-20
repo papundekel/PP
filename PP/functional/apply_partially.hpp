@@ -1,9 +1,9 @@
 #pragma once
-#include "../forward_wrap.hpp"
 #include "../get_value.hpp"
 #include "../tuple.hpp"
 #include "../utility/move.hpp"
 #include "apply_pack.hpp"
+#include "apply_partially_simple.hpp"
 
 namespace PP
 {
@@ -37,10 +37,5 @@ namespace PP
 	constexpr auto functor<F>::operator()(partial_tag_t, auto i, auto&& arg) const&& noexcept
 	{
 		return apply_partially(unwrap_functor(move(*this)), i, PP_FORWARD(arg));
-	}
-
-	constexpr auto operator*(concepts::functor auto&& f, auto&& arg) noexcept
-	{
-		return apply_partially(unwrap_functor(PP_FORWARD(f)), value_0, PP_FORWARD(arg));
 	}
 }

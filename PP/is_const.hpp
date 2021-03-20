@@ -1,11 +1,9 @@
 #pragma once
-#include "remove_const.hpp"
-#include "same.hpp"
+#include "functional/compose.hpp"
+#include "get_const.hpp"
+#include "get_value.hpp"
 
 namespace PP
 {
-	PP_FUNCTOR(is_const, concepts::type auto t)
-	{
-		return remove_const(t) != t;
-	});
+	constexpr inline auto is_const = cv_is_const | get_value | get_const;
 }

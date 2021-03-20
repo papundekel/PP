@@ -5,6 +5,7 @@
 #include "functional/apply_partially.hpp"
 #include "functional/operators.hpp"
 #include "simple_view.hpp"
+#include "tuple.hpp"
 #include "tuple_any.hpp"
 #include "tuple_for_each.hpp"
 #include "tuple_map.hpp"
@@ -31,9 +32,16 @@ namespace PP
 		{
 			return der + *this;
 		}
-		constexpr void advance(ptrdiff_t offset)
+		constexpr void step()
 		{
-			tuple_for_each(value_true, pas(partial_tag, value_1, offset), *this);
+			tuple_for_each(value_true, ipr, *this);
+		}
+		constexpr auto advance(ptrdiff_t offset)
+		{
+			if constexpr (is_iterator_ra && type_tuple<Iterators...>)
+				tuple_for_each(value_true, pas(partial_tag, value_1, offset), *this);
+			else
+				return 0;
 		}
 		template <typename... IteratorsOther>
 		requires (sizeof...(Iterators) == sizeof...(IteratorsOther))

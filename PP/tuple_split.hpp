@@ -1,6 +1,6 @@
 #pragma once
 #include "functional/applier.hpp"
-#include "functional/apply_partially.hpp"
+#include "functional/apply_partially_simple.hpp"
 #include "functional/compose.hpp"
 #include "overloaded.hpp"
 #include "tuple.hpp"

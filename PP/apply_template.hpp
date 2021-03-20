@@ -1,6 +1,6 @@
 #pragma once
 #include "functional/functor.hpp"
-#include "functional/apply_partially.hpp"
+#include "functional/apply_partially_simple.hpp"
 #include "get_type.hpp"
 #include "get_value.hpp"
 #include "template_t.hpp"

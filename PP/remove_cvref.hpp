@@ -1,7 +1,7 @@
 #pragma once
+#include "functional/compose.hpp"
 #include "remove_cv.hpp"
 #include "remove_reference.hpp"
-#include "functional/compose.hpp"
 
 namespace PP
 {

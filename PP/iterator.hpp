@@ -12,18 +12,17 @@ namespace PP
 		template <typename T>
 		concept has_step = requires (T t)
 		{
-			t.step();
+			{ t.step() } -> concepts::same<void>;
 		};
 		template <typename T>
 		concept has_step_back = requires (T t)
 		{
-			t.step_back();
+			{ t.step_back() } -> concepts::same<void>;
 		};
-
 		template <typename T>
 		concept has_advance = requires (T t, ptrdiff_t n)
 		{
-			t.advance(n);
+			{ t.advance(n) } -> concepts::same<void>;
 		};
 
 		template <typename T>
@@ -118,7 +117,7 @@ namespace PP
 		concept iterator = requires (T i)
 		{
 			++i;
-			{ *i } -> concepts::nonvoid;
+			{ *i } -> nonvoid;
 		} && equatable<T, T>;
 	}
 	PP_CONCEPT_FUNCTOR(iterator)

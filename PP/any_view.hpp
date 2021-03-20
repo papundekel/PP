@@ -5,7 +5,6 @@
 #include "empty_view.hpp"
 #include "singular_tuple.hpp"
 #include "tuple_std.hpp"
-#include "unsupported.hpp"
 #include "view.hpp"
 
 namespace PP
@@ -66,8 +65,6 @@ namespace PP
 		{
 			if constexpr (-type<CategoryT> == iterator_category::ra)
 				return begin()[index];
-			else
-				return unsupported;
 		}
 	};
 	template <typename T>

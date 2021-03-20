@@ -1,11 +1,9 @@
 #pragma once
-#include "remove_volatile.hpp"
-#include "same.hpp"
+#include "functional/compose.hpp"
+#include "get_value.hpp"
+#include "get_volatile.hpp"
 
 namespace PP
 {
-	PP_FUNCTOR(is_volatile, concepts::type auto t)
-	{
-		return remove_volatile(t) != t;
-	});
+	constexpr inline auto is_volatile = cv_is_volatile | get_value | get_volatile;
 }

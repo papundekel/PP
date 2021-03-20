@@ -1,7 +1,7 @@
 #pragma once
 #include "forward_as.hpp"
 #include "forward_wrap.hpp"
-#include "functional/apply_partially.hpp"
+#include "functional/apply_partially_simple.hpp"
 #include "tuple_apply.hpp"
 #include "utility/move.hpp"
 

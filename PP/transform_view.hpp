@@ -66,7 +66,8 @@ namespace PP
 		}
 		constexpr decltype(auto) operator[](ptrdiff_t offset) const
 		{
-			return iterator_transform.second(iterator_transform.first[offset]);
+			if constexpr (requires { iterator_transform.first[offset]; })
+				return iterator_transform.second(iterator_transform.first[offset]);
 		}
 		constexpr auto inner_iterator() const
 		{
