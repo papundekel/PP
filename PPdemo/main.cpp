@@ -43,23 +43,7 @@ std::ostream& print_cv(PP::cv_decomposition_element e, std::ostream& out)
 
 int main()
 {
-	PP::simple_vector<int> a;
-	a.push_back(1);
-	a.push_back(2);
-	a.push_back(3);
-	a.push_back(4);
-	a.push_back(5);
-	a.push_back(6);
-	a.push_back(7);
-
-	a.erase_until_end(PP::view_remove([]
-		(int a)
-		{
-			return a % 2 == 0;
-		}, a));
-
-	for (int x : a)
-		std::cout << x << '\n';
+	
 
 	std::cout.flush();
 	return 0;

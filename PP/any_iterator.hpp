@@ -4,6 +4,7 @@
 #include "apply_transform.hpp"
 #include "arrow_operator_wrapper.hpp"
 #include "concepts/atomic/returnable.hpp"
+#include "concepts/constructible.hpp"
 #include "concepts/convertible_to.hpp"
 #include "concepts/same_except_cvref.hpp"
 #include "construct_pack.hpp"
@@ -46,8 +47,10 @@ namespace PP
 
 	PP_FUNCTOR(remove_cvref_or_empty, concepts::type auto t)
 	{
-		if constexpr (is_returnable(PP_COPY_TYPE(~t)))
-			return remove_cvref(t);
+		constexpr auto T = PP_COPY_TYPE(t);
+
+		if constexpr (is_constructible_pack(remove_cvref(T), T))
+			return remove_cvref(T);
 		else
 			return type<empty>;
 	});

@@ -35,4 +35,12 @@ namespace PP
 	{
 		return ((!cv_is_const(b) || cv_is_const(a)) && (!cv_is_volatile(b) || cv_is_volatile(a)));
 	}
+	constexpr bool operator==(cv_qualifier a, cv_qualifier b) noexcept
+	{
+		return (unsigned int)a == (unsigned int)b;
+	}
+	constexpr bool operator>(cv_qualifier a, cv_qualifier b) noexcept
+	{
+		return a >= b && a != b;
+	}
 }

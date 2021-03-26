@@ -17,7 +17,7 @@ namespace PP
 		type_disjunction_reference(const type_disjunction_reference&) = default;
 		
 		constexpr type_disjunction_reference(const auto& t) noexcept
-			: v(ref_wrap(t))
+			: v(t)
 		{}
 
 		constexpr bool holds_alternative(concepts::type auto t) const noexcept

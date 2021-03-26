@@ -3,9 +3,14 @@
 namespace PP
 {
 	template <typename T>
-	struct ref_wrap
+	class ref_wrap
 	{
 		T& ref;
+
+	public:
+		constexpr ref_wrap(T& ref) noexcept
+			: ref(ref)
+		{}
 
 		constexpr operator T&() const noexcept
 		{

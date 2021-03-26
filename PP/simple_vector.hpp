@@ -4,6 +4,7 @@
 #include "view.hpp"
 #include "view_destroy.hpp"
 #include "view_move_uninitialized.hpp"
+#include "view_remove.hpp"
 
 namespace std
 {
@@ -44,9 +45,17 @@ namespace PP
 		constexpr simple_vector(placeholder_t, auto&& allocator) noexcept
 			: simple_vector(PP_FORWARD(allocator), default_capacity)
 		{}
+		constexpr simple_vector(placeholder_t, size_t count) noexcept
+			: simple_vector(count)
+		{
+			view_for_each([](T& t) { construct_at_pack(&t); }, *this);
+		}
 		constexpr simple_vector() noexcept
 			: simple_vector(Allocator(), default_capacity)
 		{}
+
+		simple_vector(simple_vector&&) = default;
+		simple_vector& operator=(simple_vector&&) = default;
 
 		constexpr ~simple_vector()
 		{
@@ -55,9 +64,11 @@ namespace PP
 
 		constexpr void push_back(auto&&... args)
 		{
-			if (count() == capacity())
+			auto c = capacity();
+
+			if (count() == c)
 			{
-				auto new_block = block.spawn_new(2 * capacity());
+				auto new_block = block.spawn_new(c != 0 ? 2 * c : 2);
 
 				view_move_uninitialized(new_block, *this);
 
@@ -69,6 +80,22 @@ namespace PP
 			construct_at_pack(end(), PP_FORWARD(args)...);
 
 			++count_;
+		}
+
+		constexpr T pop_back()
+		{
+			if (count_ == 0)
+				throw 0;
+
+			--count_;
+
+			auto& back = *end();
+
+			auto temp = PP::move(back);
+
+			back.~T();
+
+			return PP::move(temp);
 		}
 
 		constexpr void clear() noexcept
@@ -104,6 +131,10 @@ namespace PP
 			return begin()[i];
 		}
 
+		constexpr bool empty() const noexcept
+		{
+			return count_ == 0;
+		}
 		constexpr size_t count() const noexcept
 		{
 			return count_;
@@ -117,6 +148,11 @@ namespace PP
 		{
 			view_destroy(simple_view(i, end()));
 			count_ = i - begin();
+		}
+
+		constexpr void remove(auto&& predicate)
+		{
+			erase_until_end(view_remove(PP_FORWARD(predicate), *this));
 		}
 	};
 }

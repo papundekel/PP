@@ -1,6 +1,7 @@
 #pragma once
 #include "functional/functor.hpp"
 #include "get_type.hpp"
+#include "get_value.hpp"
 #include "type_t.hpp"
 
 namespace PP

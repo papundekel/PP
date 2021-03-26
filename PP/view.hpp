@@ -79,7 +79,7 @@ namespace PP
 
 	PP_CONCEPT1(view)
 	
-	constexpr decltype(auto) view_count(concepts::view auto&& v)
+	constexpr size_t view_count(concepts::view auto&& v)
 	{
 		if constexpr (requires { PP_FORWARD(v).count(); })
 			return PP_FORWARD(v).count();
