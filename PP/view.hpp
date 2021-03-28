@@ -30,14 +30,14 @@ namespace PP
 		template <typename T>
 		concept view_concept_end_member = requires
 		{
-			{ declval(type<T>).end() } -> concepts::nonvoid;
+			{ declval(type<T>).end() } -> concepts::non_void;
 		};
 		template <typename T>
 		concept view_concept_end_bounded_array_reference = view_concept_end_member<T> || (is_bounded_array | remove_reference <<= type<T>);
 		template <typename T>
 		concept view_concept_end_any = view_concept_end_bounded_array_reference<T> || requires
 		{
-			{ end(declval(type<T>)) } -> concepts::nonvoid;
+			{ end(declval(type<T>)) } -> concepts::non_void;
 		};
 	}
 	

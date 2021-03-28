@@ -12,5 +12,5 @@ namespace PP
 		concept function = function_pure<T> || function_cvref<T>;
 	}
 
-	PP_CONCEPT_FUNCTOR(function)
+	PP_CONCEPT_FUNCTOR1(function);
 }

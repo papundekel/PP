@@ -11,8 +11,10 @@
 
 #define PP_CONCEPT1(name) PP_CONCEPT(name, name)
 
-#define PP_CONCEPT_FUNCTOR(name)											   \
-	PP_FUNCTOR(is_##name, ::PP::concepts::type auto t)						   \
+#define PP_CONCEPT_FUNCTOR(concept_name, functor_name)						   \
+	PP_FUNCTOR(is_##functor_name, ::PP::concepts::type auto t)				   \
 	{																		   \
-		return ::PP::concepts::name<PP_GET_TYPE(t)>;						   \
-	});
+		return ::PP::concepts::concept_name<PP_GET_TYPE(t)>;				   \
+	})
+
+#define PP_CONCEPT_FUNCTOR1(name) PP_CONCEPT_FUNCTOR(name, name)

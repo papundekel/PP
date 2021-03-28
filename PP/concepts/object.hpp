@@ -12,5 +12,5 @@ namespace PP
 		concept object = complete_object<T> || unbounded_array<T>;
 	}
 
-	PP_CONCEPT_FUNCTOR(object)
+	PP_CONCEPT_FUNCTOR1(object);
 }

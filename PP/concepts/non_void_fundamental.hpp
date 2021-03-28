@@ -1,20 +1,15 @@
 #pragma once
-#include "../functional/compose.hpp"
-#include "../functional/operators.hpp"
-#include "../non_void_fundamental_types.hpp"
-#include "../get_type.hpp"
-#include "../overloaded.hpp"
-#include "../remove_cv.hpp"
-#include "../tuple_contains.hpp"
-#include "../type_tuple.hpp"
+#include "../macros/simple_concept.hpp"
+#include "arithmetic.hpp"
+#include "fundamental_types.hpp"
 
 namespace PP
 {
-	constexpr inline auto is_non_void_fundamental =
-		functor([](concepts::type auto t)
-		{
-			return tuple_contains(eql * t, non_void_fundamental_types);
-		}) | remove_cv;
+	namespace concepts
+	{
+		template <typename T>
+		concept non_void_fundamental = arithmetic<T> || null<T>;
+	}
 
-	PP_CONCEPT1(non_void_fundamental)
+	PP_CONCEPT_FUNCTOR1(non_void_fundamental);
 }

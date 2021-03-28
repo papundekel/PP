@@ -1,7 +1,7 @@
 #pragma once
 #include "atomic/pointable.hpp"
 #include "referencable.hpp"
-#include "void.hpp"
+#include "fundamental_types.hpp"
 
 namespace PP
 {

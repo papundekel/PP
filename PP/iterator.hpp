@@ -1,7 +1,8 @@
 #pragma once
 #include "concepts/equatable.hpp"
+#include "concepts/fundamental_types.hpp"
+#include "concepts/non_void.hpp"
 #include "concepts/same.hpp"
-#include "concepts/void.hpp"
 #include "functional/functor.hpp"
 #include "ptrdiff_t.hpp"
 
@@ -12,17 +13,17 @@ namespace PP
 		template <typename T>
 		concept has_step = requires (T t)
 		{
-			{ t.step() } -> concepts::same<void>;
+			{ t.step() } -> concepts::void_type;
 		};
 		template <typename T>
 		concept has_step_back = requires (T t)
 		{
-			{ t.step_back() } -> concepts::same<void>;
+			{ t.step_back() } -> concepts::void_type;
 		};
 		template <typename T>
 		concept has_advance = requires (T t, ptrdiff_t n)
 		{
-			{ t.advance(n) } -> concepts::same<void>;
+			{ t.advance(n) } -> concepts::void_type;
 		};
 
 		template <typename T>
@@ -117,10 +118,10 @@ namespace PP
 		concept iterator = requires (T i)
 		{
 			++i;
-			{ *i } -> nonvoid;
+			{ *i } -> concepts::different_except_cv<void>;
 		} && equatable<T, T>;
 	}
-	PP_CONCEPT_FUNCTOR(iterator)
+	PP_CONCEPT_FUNCTOR1(iterator);
 
 	namespace concepts
 	{
@@ -130,7 +131,7 @@ namespace PP
 			--i;
 		} && iterator<T>;
 	}
-	PP_CONCEPT_FUNCTOR(iterator_bi)
+	PP_CONCEPT_FUNCTOR1(iterator_bi);
 
 	namespace concepts
 	{
@@ -138,11 +139,11 @@ namespace PP
 		concept iterator_ra = requires (T i)
 		{
 			i += ptrdiff_t(0);
-			{ i[ptrdiff_t(0)] } -> nonvoid;
+			{ i[ptrdiff_t(0)] } -> non_void;
 			i - i;
 		} && iterator_bi<T>;
 	}
-	PP_CONCEPT_FUNCTOR(iterator_ra)
+	PP_CONCEPT_FUNCTOR1(iterator_ra);
 
 	namespace concepts
 	{

@@ -12,5 +12,5 @@ namespace PP
 		concept array = bounded_array<T> || unbounded_array<T>;
 	}
 
-	PP_CONCEPT_FUNCTOR(array)
+	PP_CONCEPT_FUNCTOR1(array);
 }

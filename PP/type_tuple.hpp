@@ -48,4 +48,10 @@ namespace PP
 	{
 		return type_tuple_t(to_type_t(t)...);
 	});
+
+	template <typename... T, typename... U>
+	constexpr auto type_tuple_concat(type_tuple_t<T...>, type_tuple_t<U...>) noexcept
+	{
+		return type_tuple<T..., U...>;
+	}
 }

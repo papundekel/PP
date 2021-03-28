@@ -3,7 +3,6 @@
 #include "complete_object.hpp"
 #include "function.hpp"
 #include "reference.hpp"
-#include "void.hpp"
 
 namespace PP
 {

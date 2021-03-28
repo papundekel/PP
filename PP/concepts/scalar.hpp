@@ -12,5 +12,5 @@ namespace PP
 		concept scalar = non_void_fundamental<T> || pointer<T> || pointer_to_member<T> || enum_type<T>;
 	}
 
-	PP_CONCEPT_FUNCTOR(scalar)
+	PP_CONCEPT_FUNCTOR1(scalar);
 }
