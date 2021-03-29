@@ -154,5 +154,14 @@ namespace PP
 		{
 			erase_until_end(view_remove(PP_FORWARD(predicate), *this));
 		}
+
+		constexpr T& back() noexcept
+		{
+			return end()[-1];
+		}
+		constexpr const T& back() const noexcept
+		{
+			return end()[-1];
+		}
 	};
 }

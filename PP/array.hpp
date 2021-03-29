@@ -75,12 +75,12 @@ namespace PP
 				return move(*this)[*i];
 			}
 
-			constexpr auto data()
+			constexpr auto* data()
 			requires (!concepts::reference<T>)
 			{
 				return &this->buffer->obj;
 			}
-			constexpr auto data() const
+			constexpr auto* data() const
 			requires (!concepts::reference<T>)
 			{
 				return (const T*)&this->buffer->obj;

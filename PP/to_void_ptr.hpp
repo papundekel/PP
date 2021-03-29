@@ -12,6 +12,14 @@ namespace PP
 		[](const auto* p) -> const void*
 		{
 			return p;
+		},
+		[](volatile auto* p) -> volatile void*
+		{
+			return p;
+		},
+		[](const volatile auto* p) -> const volatile void*
+		{
+			return p;
 		}
 	);
 
