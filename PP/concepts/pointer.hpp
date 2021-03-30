@@ -8,7 +8,7 @@ namespace PP
 {
 	constexpr inline auto is_pointer = make_overloaded_pack
 	(
-		[] <typename T>(type_t<T*>) { return true; },
+		[]<typename T>(type_t<T*>) { return true; },
 		[](auto) { return false; }
 	) | remove_cv;
 

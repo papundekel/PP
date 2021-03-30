@@ -22,6 +22,7 @@ namespace PP
 			constexpr void operator()(auto& ptr) const
 			{
 				ptr.get_object().deallocate();
+				[[maybe_unused]] auto x = PP::move(ptr);
 			}
 		};
 	}

@@ -46,6 +46,7 @@ namespace PP
 		{
 			if (ptr)
 				ptr->~T();
+			ptr = nullptr;
 		}
 	};
 }

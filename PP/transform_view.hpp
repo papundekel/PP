@@ -42,7 +42,7 @@ namespace PP
 		}
 		constexpr auto operator->() const
 		{
-			return arrow_operator_wrapper(**this);
+			return make_arrow_operator_wrapper([this](){ return **this; });
 		}
 		constexpr void step()
 		{

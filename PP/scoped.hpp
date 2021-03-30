@@ -81,17 +81,24 @@ namespace PP
 		template <typename U, typename D>
 		constexpr scoped& operator=(const scoped<U, D>& other)
 		{
-			destroy();
-			pair.first = other.pair.first;
-			pair.second = other.pair.second;
+			if (this != &other)
+			{
+				destroy();
+				pair.first = other.pair.first;
+				pair.second = other.pair.second;
+			}
+
 			return *this;
 		}
 		template <typename U, typename D>
 		constexpr scoped& operator=(scoped<U, D>&& other)
 		{
-			destroy();
-			pair.first = move(other).pair.first;
-			pair.second = move(other).pair.second;
+			if (this != &other)
+			{
+				destroy();
+				pair.first = move(other).pair.first;
+				pair.second = move(other).pair.second;
+			}
 			return *this;
 		}
 		constexpr ~scoped()

@@ -1,23 +1,20 @@
 #pragma once
-#include "utility/forward.hpp"
 
 namespace PP
 {
 	template <typename T>
-	class arrow_operator_wrapper
+	struct arrow_operator_wrapper
 	{
-		T&& obj;
-
-	public:
-		constexpr arrow_operator_wrapper(T&& obj) noexcept
-			: obj(PP_FORWARD(obj))
-		{}
+		T obj;
 
 		constexpr auto operator->() const
 		{
 			return &obj;
 		}
 	};
-	template <typename T>
-	arrow_operator_wrapper(T&&) -> arrow_operator_wrapper<T>;
+
+	constexpr auto make_arrow_operator_wrapper(auto initializer)
+	{
+		return arrow_operator_wrapper<decltype(initializer())>{ initializer() };
+	}
 }

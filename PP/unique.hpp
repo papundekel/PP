@@ -87,8 +87,12 @@ namespace PP
 
 		constexpr unique& operator=(unique&& other)
 		{
-			pair.first = other.release();
-			pair.second = move(other).pair.second;
+			if (this != &other)
+			{
+				pair.first = other.release();
+				pair.second = move(other).pair.second;
+			}
+			
 			return *this;
 		}
 		template <typename U, typename D>

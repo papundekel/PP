@@ -152,7 +152,8 @@ namespace PP
 
 		constexpr void remove(auto&& predicate)
 		{
-			erase_until_end(view_remove(PP_FORWARD(predicate), *this));
+			auto i = view_remove(PP_FORWARD(predicate), *this);
+			erase_until_end(i);
 		}
 
 		constexpr T& back() noexcept

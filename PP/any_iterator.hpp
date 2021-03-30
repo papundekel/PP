@@ -1,11 +1,13 @@
 #pragma once
 #include <memory>
 
+#include "always_false.hpp"
 #include "apply_transform.hpp"
 #include "arrow_operator_wrapper.hpp"
 #include "concepts/atomic/returnable.hpp"
 #include "concepts/constructible.hpp"
 #include "concepts/convertible_to.hpp"
+#include "concepts/reference.hpp"
 #include "concepts/same_except_cvref.hpp"
 #include "construct_pack.hpp"
 #include "empty.hpp"
@@ -45,14 +47,20 @@ namespace PP
 		return add_reference(get_reference_value_t(t), add_cv(cv, !t));
 	});
 
-	PP_FUNCTOR(remove_cvref_or_empty, concepts::type auto t)
+	struct any_iterator_cant_copy_construct
+	{
+		constexpr any_iterator_cant_copy_construct(auto&&) noexcept
+		{}
+	};
+
+	PP_FUNCTOR(remove_cvref_if_constructible, concepts::type auto t)
 	{
 		constexpr auto T = PP_COPY_TYPE(t);
 
 		if constexpr (is_constructible_pack(remove_cvref(T), T))
 			return remove_cvref(T);
 		else
-			return type<empty>;
+			return type<any_iterator_cant_copy_construct>;
 	});
 
 	namespace detail
@@ -64,7 +72,7 @@ namespace PP
 		using any_iterator_const_type = apply_transform_t<add_cv_reference * value<cv_qualifier::Const>, T>;
 
 		template <typename T>
-		using any_iterator_value_type = apply_transform_t<remove_cvref_or_empty, T>;
+		using any_iterator_value_type = apply_transform_t<remove_cvref_if_constructible, T>;
 	}
 
 	template <iterator_category Category, typename T>
@@ -367,7 +375,7 @@ namespace PP
 		}
 		constexpr auto operator->() const
 		{
-			return &**this;
+			return make_arrow_operator_wrapper([this](){ return **this; });
 		}
 
 		constexpr void step()
@@ -377,7 +385,7 @@ namespace PP
 
 		constexpr bool operator==(const auto& other) const
 		{
-			return !p && !other.p || p->equal(*other.p);
+			return (!p && !other.p) || (p && other.p && p->equal(*other.p));
 		}
 	};
 

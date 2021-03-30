@@ -11,7 +11,7 @@ namespace PP
 	template <typename T>
 	constexpr auto type_t<T>::operator->() const noexcept
 	{
-		return arrow_operator_wrapper(**this);
+		return make_arrow_operator_wrapper([this](){ return **this; });
 	}
 
 	namespace detail
