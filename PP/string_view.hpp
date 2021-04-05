@@ -4,11 +4,10 @@
 #include "shift_view.hpp"
 #include "simple_view.hpp"
 #include "size_t.hpp"
+#include "view_equal.hpp"
 
 namespace PP
 {
-	using namespace PP::literals;
-
 	template <typename CharT>
 	class basic_string_view : public pointer_view<const CharT>
 	{
