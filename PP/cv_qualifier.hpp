@@ -1,9 +1,13 @@
 #pragma once
+#include <compare>
+
 #include "functional/functor.hpp"
 
 namespace PP
 {
-	enum class cv_qualifier : unsigned int
+	using cv_qualifier_underlying = unsigned int;
+
+	enum class cv_qualifier : cv_qualifier_underlying
 	{
 		none = 0b00,
 		Const = 0b01,
@@ -13,12 +17,12 @@ namespace PP
 
 	constexpr bool operator&(cv_qualifier a, cv_qualifier b) noexcept
 	{
-		return (unsigned int)a & (unsigned int)b;
+		return (cv_qualifier_underlying)a & (cv_qualifier_underlying)b;
 	}
 
 	constexpr auto operator|(cv_qualifier a, cv_qualifier b) noexcept
 	{
-		return cv_qualifier((unsigned int)a | (unsigned int)b);
+		return cv_qualifier((cv_qualifier_underlying)a | (cv_qualifier_underlying)b);
 	}
 
 	PP_FUNCTOR(cv_is_const, cv_qualifier q)
@@ -31,16 +35,18 @@ namespace PP
 		return q & cv_qualifier::Volatile;
 	});
 
-	constexpr bool operator>=(cv_qualifier a, cv_qualifier b) noexcept
+	constexpr std::partial_ordering operator<=>(cv_qualifier a, cv_qualifier b) noexcept
 	{
-		return ((!cv_is_const(b) || cv_is_const(a)) && (!cv_is_volatile(b) || cv_is_volatile(a)));
-	}
-	constexpr bool operator==(cv_qualifier a, cv_qualifier b) noexcept
-	{
-		return (unsigned int)a == (unsigned int)b;
-	}
-	constexpr bool operator>(cv_qualifier a, cv_qualifier b) noexcept
-	{
-		return a >= b && a != b;
+		auto ai = (cv_qualifier_underlying)a;
+		auto bi = (cv_qualifier_underlying)b;
+
+		if (ai == bi)
+			return std::partial_ordering::equivalent;
+		else if (ai == 0 || bi == 3)
+			return std::partial_ordering::less;
+		else if (bi == 0 || ai == 3)
+			return std::partial_ordering::greater;
+		else
+			return std::partial_ordering::unordered;
 	}
 }

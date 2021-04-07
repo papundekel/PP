@@ -119,7 +119,7 @@ namespace PP
 		{
 			++i;
 			{ *i } -> concepts::different_except_cv<void>;
-		} && equatable<T, T>;
+		};
 	}
 	PP_CONCEPT_FUNCTOR1(iterator);
 
