@@ -6,14 +6,13 @@
 #include "PP/any_iterator.hpp"
 #include "PP/concepts/fundamental.hpp"
 #include "PP/view_subsequence.hpp"
+#include "PP/tuple_concat.hpp"
 
 int main()
 {
-	int a[] = {1, 2, 3, 4, 5};
-	int b[] = {1, 4, 5};
-	int c[] = {2, 3, 4, 5};
+	auto x = PP::tuple_concats(PP::make_tuple(PP::type_tuple<int>, PP::type_tuple<double, char>));
 
-	std::cout << PP::view_subsequence(b, a) << PP::view_subsequence(c, a);
+	[[maybe_unused]] int a = !x;
 
 	std::cout.flush();
 	return 0;

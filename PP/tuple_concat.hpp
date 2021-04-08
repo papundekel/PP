@@ -8,4 +8,9 @@ namespace PP
 	{
 		return tuple_foldr(tuple_prepend, PP_FORWARD(r), PP_FORWARD(l));
 	});
+
+	PP_FUNCTOR(tuple_concats, concepts::tuple auto&& l)
+	{
+		return tuple_foldl(tuple_concat, empty_tuple{}, PP_FORWARD(l));
+	});
 }

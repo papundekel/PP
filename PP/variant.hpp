@@ -1,29 +1,44 @@
 #pragma once
-#include <memory>
+#include <variant>
 
-#include "alignment_of.hpp"
-#include "array.hpp"
-#include "functional/operators.hpp"
-#include "max_default.hpp"
-#include "size_of.hpp"
-#include "tuple_map_to_array.hpp"
+#include "functional/compose.hpp"
+#include "ref_wrap.hpp"
 
 namespace PP
 {
-	template <typename... T>
+	namespace detail
+	{
+		class visit_helper;
+	}
+
+	template <typename... TypeClasses>
 	class variant
 	{
-		static constexpr auto find_max(auto parameter_map) noexcept
-		{
-			return *max_default(parameter_map < type_tuple<T...>);
-		}
+		friend detail::visit_helper;
 
-		static constexpr auto alignment = find_max(alignment_of);
-		static constexpr auto size = find_max(size_of);
-
-		alignas(alignment) array<char, size> buffer;
+		std::variant<wrap_ref_t<TypeClasses>...> v;
 
 	public:
-		
+		constexpr variant(placeholder_t, auto&& x) noexcept
+			: v(PP_FORWARD(x))
+		{}
+
+		constexpr bool holds_alternative(concepts::type auto t) const noexcept
+		{
+			return std::holds_alternative<wrap_ref_t<PP_GET_TYPE(t)>>(v);
+		}
 	};
+
+	namespace detail
+	{
+		struct visit_helper
+		{
+			static PP_FUNCTOR(visit, auto&& visitor, auto&&... variants) -> decltype(auto)
+			{
+				return std::visit(compose(PP_REF_WRAP(visitor), unwrap_ref), PP_FORWARD(variants).v...);
+			});
+		};
+	}
+
+	constexpr inline auto visit = detail::visit_helper::visit;
 }

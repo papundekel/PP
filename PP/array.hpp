@@ -85,6 +85,11 @@ namespace PP
 			{
 				return (const T*)&this->buffer->obj;
 			}
+
+			constexpr auto count() const noexcept
+			{
+				return value;
+			}
 		};
 		array() -> array<char, value_t<0>>;
 		template <typename T, typename... U>
