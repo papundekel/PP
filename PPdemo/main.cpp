@@ -10,9 +10,7 @@
 
 int main()
 {
-	auto x = PP::tuple_concats(PP::make_tuple(PP::type_tuple<int>, PP::type_tuple<double, char>));
 
-	[[maybe_unused]] int a = !x;
 
 	std::cout.flush();
 	return 0;
