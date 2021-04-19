@@ -1,0 +1,173 @@
+#pragma once
+#include "default_initialized.hpp"
+#include "dynamic_block.hpp"
+#include "static_block.hpp"
+#include "view_destroy.hpp"
+#include "view_move_uninitialized.hpp"
+#include "view_remove.hpp"
+
+namespace PP
+{
+	template <typename T, size_t StaticCapacity, typename Allocator = std::allocator<T>>
+	class small_optimized_vector
+	{
+		static constexpr size_t default_capacity = 16;
+
+		static_block<T, StaticCapacity> block_s;
+		dynamic_block<T, Allocator> block_d;
+		default_initialized<size_t> count_;
+
+		constexpr small_optimized_vector(placeholder_t, auto&& allocator)
+			: block_s()
+			, block_d(PP_FORWARD(allocator), 0)
+			, count_()
+		{}
+
+	public:
+		constexpr small_optimized_vector()
+			: small_optimized_vector(placeholder, Allocator())
+		{}
+
+		small_optimized_vector(small_optimized_vector&&)
+			= default;
+
+		static constexpr auto create(auto&& allocator)
+		{
+			return small_optimized_vector(placeholder, PP_FORWARD(allocator));
+		}
+
+		constexpr ~small_optimized_vector()
+		{
+			destroy_all();
+		}
+
+		small_optimized_vector& operator=(small_optimized_vector&&)
+			= default;
+
+		constexpr void push_back(auto&&... args)
+		{
+			auto c = capacity();
+
+			if (count() == c)
+			{
+				auto new_block_d = block_d.spawn_new(c != 0 ? 2 * c : 2);
+
+				view_move_uninitialized(new_block_d, *this);
+
+				destroy_all();
+
+				block_d = move(new_block_d);
+			}
+
+			construct_at_pack(end(), PP_FORWARD(args)...);
+
+			++count_.value;
+		}
+
+		constexpr T pop_back()
+		{
+			if (count() == 0)
+				throw 0;
+
+			--count_.value;
+
+			T& back = *end();
+
+			auto temp = PP::move(back);
+
+			back.~T();
+
+			return PP::move(temp);
+		}
+
+		constexpr void clear() noexcept
+		{
+			destroy_all();
+
+			if (!uses_static_block())
+				block_d = block_d.spawn_new(0);
+
+			count_.value = 0;
+		}
+
+		constexpr T* begin() noexcept
+		{
+			if (uses_static_block())
+				return block_s.begin();
+			else
+				return block_d.begin();
+		}
+		constexpr const T* begin() const noexcept
+		{
+			if (uses_static_block())
+				return block_s.begin();
+			else
+				return block_d.begin();
+		}
+		constexpr T* end() noexcept
+		{
+			return begin() + count();
+		}
+		constexpr const T* end() const noexcept
+		{
+			return begin() + count();
+		}
+
+		constexpr T& operator[](ptrdiff_t i) noexcept
+		{
+			return begin()[i];
+		}
+		constexpr const T& operator[](ptrdiff_t i) const noexcept
+		{
+			return begin()[i];
+		}
+
+		constexpr bool empty() const noexcept
+		{
+			return count() == 0;
+		}
+		constexpr size_t count() const noexcept
+		{
+			return count_.value;
+		}
+		constexpr size_t capacity() const noexcept
+		{
+			if (uses_static_block())
+				return StaticCapacity;
+			else
+				return block_d.count();
+		}
+
+		constexpr void erase_until_end(const T* i) noexcept
+		{
+			view_destroy(simple_view(i, end()));
+			count_.value = i - begin();
+		}
+
+		constexpr void remove(auto&& predicate)
+		{
+			auto i = view_remove(PP_FORWARD(predicate), *this);
+			erase_until_end(i);
+		}
+
+		constexpr T& back() noexcept
+		{
+			return end()[-1];
+		}
+		constexpr const T& back() const noexcept
+		{
+			return end()[-1];
+		}
+
+	private:
+		constexpr bool uses_static_block() const noexcept
+		{
+			return block_d.count() == 0;
+		}
+
+		constexpr void destroy_all() noexcept
+		{
+			view_destroy(*this);
+		}
+	};
+}

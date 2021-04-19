@@ -9,6 +9,6 @@ namespace PP
 			(auto counter, auto&& element)
 			{
 				return PP_FORWARD(predicate)(PP_FORWARD(element)) ? counter + 1 : counter;
-			}, size_t(0), PP_FORWARD(t));
+			}, 0_z, PP_FORWARD(t));
 	});
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "size_t.hpp"
 
 namespace PP
 {
@@ -6,7 +7,7 @@ namespace PP
 	{
 		static constexpr auto value_f() noexcept
 		{
-			return 0;
+			return 0_z;
 		}
 	};
 

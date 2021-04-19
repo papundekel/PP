@@ -10,6 +10,6 @@ namespace PP
 	constexpr inline auto extent = make_overloaded_pack
 	(
 		[]<typename T, size_t N>(type_t<T[N]>) { return N; },
-		[](auto) { return size_t(0); }
+		[](auto) { return 0_z; }
 	) | to_type_t;
 }

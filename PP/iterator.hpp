@@ -118,7 +118,7 @@ namespace PP
 		concept iterator = requires (T i)
 		{
 			++i;
-			{ *i } -> concepts::different_except_cv<void>;
+			{ *i } -> non_void;
 		};
 	}
 	PP_CONCEPT_FUNCTOR1(iterator);

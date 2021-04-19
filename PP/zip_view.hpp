@@ -6,6 +6,7 @@
 #include "functional/operators.hpp"
 #include "simple_view.hpp"
 #include "tuple.hpp"
+#include "tuple_all.hpp"
 #include "tuple_any.hpp"
 #include "tuple_for_each.hpp"
 #include "tuple_map.hpp"
@@ -30,15 +31,19 @@ namespace PP
 
 		constexpr auto operator*() const
 		{
-			return der + *this;
+			if constexpr ((concepts::iterator<Iterators> && ...))
+				return der + *this;
+			else
+				return 0;
 		}
 		constexpr void step()
 		{
-			tuple_for_each(value_true, ipr, *this);
+			if constexpr ((concepts::iterator<Iterators> && ...))
+				tuple_for_each(value_true, ipr, *this);
 		}
 		constexpr auto advance(ptrdiff_t offset)
 		{
-			if constexpr (is_iterator_ra && type_tuple<Iterators...>)
+			if constexpr ((concepts::iterator_ra<Iterators> && ...))
 				tuple_for_each(value_true, pas(partial_tag, value_1, offset), *this);
 			else
 				return 0;

@@ -1,9 +1,11 @@
 #pragma once
+#include <memory>
 #include <type_traits>
 
 #include "apply_template.hpp"
 #include "apply_transform.hpp"
 #include "concepts/reference.hpp"
+#include "construct_pack.hpp"
 #include "copy_cvref.hpp"
 #include "decompose_template.hpp"
 #include "empty.hpp"
@@ -78,12 +80,12 @@ namespace PP
 			constexpr auto* data()
 			requires (!concepts::reference<T>)
 			{
-				return &this->buffer->obj;
+				return std::addressof(this->buffer->obj);
 			}
 			constexpr auto* data() const
 			requires (!concepts::reference<T>)
 			{
-				return (const T*)&this->buffer->obj;
+				return (const T*)std::addressof(this->buffer->obj);
 			}
 
 			constexpr auto count() const noexcept
@@ -91,9 +93,9 @@ namespace PP
 				return value;
 			}
 		};
-		array() -> array<char, value_t<0>>;
+		array() -> array<char, value_t<0_z>>;
 		template <typename T, typename... U>
-		array(T, U...) -> array<T, value_t<sizeof...(U) + 1>>;
+		array(T, U...) -> array<T, value_t<sizeof...(U) + 1_z>>;
 
 		template <typename T>
 		concept PParray = type<T>->Template == Template<array>;
@@ -121,7 +123,7 @@ namespace PP
 
 			constexpr operator auto()
 			{
-				return &this->inner_iterator()->obj;
+				return std::addressof(this->inner_iterator()->obj);
 			}
 		};
 		template <typename T>

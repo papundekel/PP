@@ -25,12 +25,42 @@ namespace PP
 				return *j;
 		}
 
+		constexpr decltype(auto) operator[](ptrdiff_t offset) const
+		{
+			if constexpr (PP::concepts::iterator_ra<I> && PP::concepts::iterator_ra<J>)
+			{
+				if (i != e)
+					return i[offset];
+				else
+					return j[offset];
+			}
+		}
+
 		constexpr void step()
 		{
 			if (i != e)
 				++i;
 			else
 				++j;
+		}
+
+		constexpr auto advance(ptrdiff_t offset)
+		{
+			if constexpr (PP::concepts::iterator_ra<I> && PP::concepts::iterator_ra<J>)
+			{
+				auto first_sequence_diff = e - i;
+				if (first_sequence_diff < offset)
+				{
+					i += first_sequence_diff;
+					j += offset - first_sequence_diff;
+				}
+				else
+				{
+					i += offset;
+				}
+			}
+			else
+				return 0;
 		}
 
 		constexpr bool operator==(const view_chain_iterator& other) const
@@ -43,6 +73,14 @@ namespace PP
 				return false;
 			else
 				return j == other;
+		}
+
+		constexpr ptrdiff_t operator-(const view_chain_iterator& other) const
+		{
+			if (e == other.e)
+				return (i - other.i) + (j - other.j);
+			else
+				return 0;
 		}
 	};
 

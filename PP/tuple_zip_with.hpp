@@ -19,7 +19,7 @@ namespace PP
 {
 	PP_FUNCTOR(tuple_zip, concepts::tuple auto&& tuples)
 	{
-		if constexpr (tuple_all(neq * 0u | tuple_type_count, tuple_types(PP_DECLTYPE(tuples))))
+		if constexpr (tuple_all(neq * 0_z | tuple_type_count, tuple_types(PP_DECLTYPE(tuples))))
 		{
 			auto splits = tuple_split + PP_FORWARD(tuples);
 

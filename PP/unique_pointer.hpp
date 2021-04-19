@@ -5,7 +5,6 @@
 #include "pointer_allocate.hpp"
 #include "pointer_new.hpp"
 #include "pointer_new_array.hpp"
-#include "pointer_stack.hpp"
 #include "remove_cvref.hpp"
 #include "scoped.hpp"
 #include "size_t.hpp"
@@ -100,7 +99,6 @@ namespace PP
 		}
 	};
 
-	constexpr inline struct unique_tag_stack_t		{} unique_tag_stack;
 	constexpr inline struct unique_tag_new_t		{} unique_tag_new;
 	constexpr inline struct unique_tag_new_array_t	{} unique_tag_new_array;
 	constexpr inline struct unique_tag_allocate_t	{} unique_tag_allocate;
@@ -115,7 +113,7 @@ namespace PP
 				return Template<pointer_new>;
 			else if constexpr (tag_t == type<unique_tag_new_array_t>)
 				return Template<pointer_new_array>;
-			else if constexpr (tag_t == type<unique_tag_new_array_t>)
+			else if constexpr (tag_t == type<unique_tag_allocate_t>)
 				return Template<pointer_allocate>;
 			else
 				static_assert(always_false<decltype(tag)>, "invalid tag type");
@@ -133,14 +131,11 @@ namespace PP
 		}
 		constexpr auto make_unique_pointer_get_maker(auto tag)
 		{
-			if constexpr (PP_DECLTYPE(tag) == type<unique_tag_stack_t>)
-				return make_pointer_stack;
-			else
-				return [tag]
-				(concepts::type auto t, auto&&... args)
-				{
-					return make_unique_pointer_get_maker_helper(tag)(make_unique_pointer_type(tag, t), PP_FORWARD(args)...);
-				};
+			return [tag]
+			(concepts::type auto t, auto&&... args)
+			{
+				return make_unique_pointer_get_maker_helper(tag)(make_unique_pointer_type(tag, t), PP_FORWARD(args)...);
+			};
 		}
 		constexpr auto make_unique_pointer_helper(auto&& maker, concepts::type auto t, auto&&... args)
 		{

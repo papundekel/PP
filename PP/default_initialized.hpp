@@ -3,11 +3,11 @@
 namespace PP
 {
 	template <typename T>
-	struct zero_initialized
+	struct default_initialized
 	{
 		T value;
 
-		constexpr zero_initialized() noexcept(noexcept(T()))
+		constexpr default_initialized() noexcept(noexcept(T()))
 			: value()
 		{}
 	};

@@ -16,7 +16,7 @@ namespace PP
 			: c(&c)
 		{}
 
-		constexpr push_back_iterator& operator*() noexcept
+		constexpr const push_back_iterator& operator*() const noexcept
 		{
 			return *this;
 		}
@@ -28,7 +28,7 @@ namespace PP
 		{
 			return *this;
 		}
-		constexpr push_back_iterator& operator=(auto&& value)
+		constexpr const push_back_iterator& operator=(auto&& value) const
 		{
 			c->push_back(PP_FORWARD(value));
 

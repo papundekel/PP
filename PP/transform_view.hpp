@@ -48,9 +48,19 @@ namespace PP
 		{
 			++iterator_transform.first;
 		}
-		constexpr void step_back()
+		constexpr auto step_back()
 		{
-			--iterator_transform.first;
+			if constexpr (PP::concepts::iterator_bi<BaseIterator>)
+				--iterator_transform.first;
+			else
+				return 0;
+		}
+		constexpr auto advance(ptrdiff_t offset)
+		{
+			if constexpr (PP::concepts::iterator_ra<BaseIterator>)
+				iterator_transform.first += offset;
+			else
+				return 0;
 		}
 		constexpr auto operator==(const auto& other) const
 		{
@@ -58,7 +68,10 @@ namespace PP
 		}
 		constexpr auto operator-(const transform_iterator& other) const
 		{
-			return iterator_transform.first - other.iterator_transform.first;
+			if constexpr (PP::concepts::iterator_ra<BaseIterator>)
+				return iterator_transform.first - other.iterator_transform.first;
+			else
+				return ptrdiff_t(0);
 		}
 		constexpr auto operator-(const auto& other) const
 		{
@@ -66,7 +79,7 @@ namespace PP
 		}
 		constexpr decltype(auto) operator[](ptrdiff_t offset) const
 		{
-			if constexpr (requires { iterator_transform.first[offset]; })
+			if constexpr (PP::concepts::iterator_ra<BaseIterator>)
 				return iterator_transform.second(iterator_transform.first[offset]);
 		}
 		constexpr auto inner_iterator() const

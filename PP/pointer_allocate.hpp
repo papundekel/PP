@@ -16,7 +16,7 @@ namespace PP
 
 	public:
 		constexpr pointer_allocate(auto&& allocator, size_t count)
-			: pointer_new_base<T>(allocator.allocate(count))
+			: pointer_new_base<T>(count != 0 ? PP_FORWARD(allocator).allocate(count) : nullptr)
 			, count_allocator(count, PP_FORWARD(allocator))
 		{}
 

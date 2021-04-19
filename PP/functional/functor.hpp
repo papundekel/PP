@@ -36,11 +36,6 @@ namespace PP
 
 		static constexpr char arbitrary_concept_tag_functor = {};
 	};
-
-#ifndef __GNUG__
-	template <typename F>
-	functor(F) -> functor<F>;
-#endif
 	
 	namespace concepts
 	{
