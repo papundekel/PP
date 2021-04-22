@@ -10,7 +10,7 @@ namespace PP
 	public:
 		no_default_initialized() = delete;
 
-		constexpr no_default_initialized(T value) noexcept
+		explicit constexpr no_default_initialized(T value) noexcept
 			: value(value)
 		{}
 
@@ -39,5 +39,10 @@ namespace PP
 			--value;
 			return *this;
 		}
+
+		//constexpr bool operator==(T other_value) const noexcept
+		//{
+		//	return value == other_value;
+		//}
 	};
 }

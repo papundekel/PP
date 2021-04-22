@@ -67,7 +67,7 @@ namespace PP
 		{
 			auto c = capacity();
 
-			if (count() == c)
+			if (count_ == c)
 			{
 				auto new_block_d = block_d.spawn_new(c != 0 ? 2 * c : 2);
 
@@ -85,7 +85,7 @@ namespace PP
 
 		constexpr T pop_back()
 		{
-			if (count() == 0)
+			if (count_ == 0)
 				throw 0;
 
 			--count_;
