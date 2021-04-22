@@ -3,7 +3,7 @@
 #include "../tuple.hpp"
 #include "../utility/move.hpp"
 #include "apply_pack.hpp"
-#include "apply_partially_simple.hpp"
+#include "apply_partially_first.hpp"
 
 namespace PP
 {

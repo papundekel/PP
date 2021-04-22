@@ -2,8 +2,8 @@
 #include <exception>
 
 #include "construct_at_pack.hpp"
-#include "default_initialized.hpp"
 #include "destroy_at.hpp"
+#include "no_default_initialized.hpp"
 #include "static_block.hpp"
 #include "view_copy_uninitialized.hpp"
 #include "view_destroy.hpp"
@@ -18,7 +18,7 @@ namespace PP
 	class array_vector
 	{
 		static_block<T, Capacity> block;
-		default_initialized<size_t> count_;
+		no_default_initialized<size_t> count_;
 
 		constexpr void destroy_all() noexcept
 		{
@@ -27,6 +27,8 @@ namespace PP
 
 	public:
 		constexpr array_vector() noexcept
+			: block()
+			, count_(0)
 		{}
 
 		constexpr array_vector(const array_vector& other)
@@ -56,32 +58,32 @@ namespace PP
 		}
 		constexpr T* end() noexcept
 		{
-			return block.begin() + count();
+			return block.begin() + count_;
 		}
 		constexpr const T* end() const noexcept
 		{
-			return block.begin() + count();
+			return block.begin() + count_;
 		}
 
 		constexpr bool empty() const noexcept
 		{
-			return count() == 0;
+			return count_ == 0;
 		}
 
-		constexpr auto count() const noexcept
+		constexpr size_t count() const noexcept
 		{
-			return count_.value;
+			return count_;
 		}
 
 		constexpr void clear() noexcept
 		{
 			destroy_all();
-			count_.value = 0;
+			count_ = 0;
 		}
 
 		constexpr void push_back(auto&& object)
 		{
-			if (count() == Capacity)
+			if (count_ == Capacity)
 			{
 				if constexpr (!looping)
 					std::terminate();
@@ -90,14 +92,14 @@ namespace PP
 			}
 
 			construct_at_pack(end(), PP_FORWARD(object));
-			++count_.value;
+			++count_;
 		}
 
 		constexpr void pop_back() noexcept
 		{
 			if (!empty())
 			{
-				--count_.value;
+				--count_;
 				destroy_at(end());
 			}
 			else

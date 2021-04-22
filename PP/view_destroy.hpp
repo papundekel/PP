@@ -1,5 +1,5 @@
 #pragma once
-#include "functional/apply_partially_simple.hpp"
+#include "functional/apply_partially_first.hpp"
 #include "get_type.hpp"
 #include "view_for_each.hpp"
 

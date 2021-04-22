@@ -33,9 +33,9 @@ namespace PP
 	template <typename Iterator>
 	view_tuple(concepts::value auto count, Iterator) -> view_tuple<Iterator, *PP_COPY_VALUE(count)>;
 
-	constexpr auto make_view_tuple(concepts::value auto count, const concepts::iterator auto& i) noexcept
+	constexpr auto make_view_tuple(concepts::value auto count, concepts::iterator auto&& i) noexcept
 	{
-		return view_tuple(count, i);
+		return view_tuple(count, PP_FORWARD(i));
 	}
 	constexpr auto make_view_tuple(concepts::value auto count, concepts::view auto&& v) noexcept
 	{

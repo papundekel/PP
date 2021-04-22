@@ -1,6 +1,6 @@
 #pragma once
 #include "functional/applier.hpp"
-#include "functional/apply_partially_simple.hpp"
+#include "functional/apply_partially_first.hpp"
 #include "functional/negate.hpp"
 #include "functional/operators.hpp"
 #include "view_find.hpp"

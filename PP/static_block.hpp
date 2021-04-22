@@ -14,23 +14,29 @@ namespace PP
 			alignas(T) char buffer[Count * sizeof(T)];
 			T* constexpr_ptr;
 		};
+		bool constant_created;
 		
 	public:
 		constexpr static_block() noexcept
+			: buffer()
+			, constant_created(false)
 		{
 			if (std::is_constant_evaluated())
+			{
 				constexpr_ptr = std::allocator<T>().allocate(Count);
+				constant_created = true;
+			}
 		}
 
 		constexpr ~static_block() noexcept
 		{
-			if (std::is_constant_evaluated())
+			if (constant_created)
 				std::allocator<T>().deallocate(constexpr_ptr, Count);
 		}
 
 		constexpr T* begin() noexcept
 		{
-			if (std::is_constant_evaluated())
+			if (constant_created)
 				return constexpr_ptr;
 			else
 				return reinterpret_cast<T*>(buffer);
@@ -38,7 +44,7 @@ namespace PP
 
 		constexpr const T* begin() const noexcept
 		{
-			if (std::is_constant_evaluated())
+			if (constant_created)
 				return constexpr_ptr;
 			else
 				return reinterpret_cast<const T*>(buffer);

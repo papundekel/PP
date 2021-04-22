@@ -104,5 +104,3 @@ namespace PP
 		[](concepts::view auto&& v)									   { return detail::make_any_view(view_begin(PP_FORWARD(v)), view_end(PP_FORWARD(v))); }
 	);
 }
-
-extern template class PP::any_view_implementation<PP::value_t<PP::iterator_category::forward>, const char&>;

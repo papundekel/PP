@@ -1,5 +1,5 @@
 #pragma once
-#include "functional/apply_partially_simple.hpp"
+#include "functional/apply_partially_first.hpp"
 #include "tuple.hpp"
 #include "tuple_apply.hpp"
 #include "tuple_like.hpp"
