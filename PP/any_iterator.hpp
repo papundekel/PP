@@ -158,8 +158,6 @@ namespace PP
 	{
 	public:
 		constexpr virtual void decrement() = 0;
-
-		constexpr virtual ~any_iterator_base() {}
 	};
 
 	template <typename T>
@@ -170,8 +168,6 @@ namespace PP
 		constexpr virtual void advance(ptrdiff_t offset) = 0;
 		constexpr virtual T index(ptrdiff_t offset) const = 0;
 		constexpr virtual ptrdiff_t difference(const any_iterator_base& other) const = 0;
-
-		constexpr virtual ~any_iterator_base() {}
 	};
 
 	template <typename Iterator>

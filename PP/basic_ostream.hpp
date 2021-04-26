@@ -12,15 +12,10 @@ namespace PP
 		Buffer<char> buffer;
 
 	public:
-		constexpr void write(any_view<iterator_category::forward, const char&> view) noexcept override final
+		constexpr void write(any_view<iterator_category::forward, char> view) noexcept override final
 		{
-			for (const char& c : view)
+			for (char c : view)
 				buffer.push_back(c);
-		}
-		void write_to_ostream(std::ostream& out) noexcept override final
-		{
-			out.write(&*view_begin(buffer), view_count(buffer));
-			buffer.clear();
 		}
 	};
 }

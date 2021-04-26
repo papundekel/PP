@@ -118,14 +118,10 @@ namespace PP
 			else
 				static_assert(always_false<decltype(tag)>, "invalid tag type");
 		}
-		constexpr auto make_unique_pointer_type(auto tag, concepts::type auto t)
-		{
-			return make_unique_pointer_template(tag)(t);
-		}
 		constexpr auto make_unique_pointer_get_maker_helper(auto tag)
 		{
 			if constexpr (PP_DECLTYPE(tag) == type<unique_tag_new_t>)
-				return [](concepts::type auto t, auto&&... args) { return t(placeholder, PP_FORWARD(args)...); };
+				return [](concepts::type auto t, auto&&... args) { return PP_GET_TYPE(t)::create(PP_FORWARD(args)...); };
 			else
 				return [](concepts::type auto t, auto&&... args) { return t(PP_FORWARD(args)...); };
 		}
@@ -134,7 +130,7 @@ namespace PP
 			return [tag]
 			(concepts::type auto t, auto&&... args)
 			{
-				return make_unique_pointer_get_maker_helper(tag)(make_unique_pointer_type(tag, t), PP_FORWARD(args)...);
+				return make_unique_pointer_get_maker_helper(tag)(make_unique_pointer_template(tag)(t), PP_FORWARD(args)...);
 			};
 		}
 		constexpr auto make_unique_pointer_helper(auto&& maker, concepts::type auto t, auto&&... args)

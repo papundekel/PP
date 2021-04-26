@@ -11,7 +11,7 @@ namespace PP
 	public:
 		using pointer_new_base<T>::pointer_new_base;
 
-		constexpr pointer_new_array(size_t count)
+		explicit constexpr pointer_new_array(size_t count)
 			: pointer_new_base<T>(new T[count])
 		{}
 

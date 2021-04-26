@@ -9,7 +9,7 @@ namespace PP
 {
 	constexpr auto make_any_view_chars(const char* b, const char* e)
 	{
-		return any_view<iterator_category::forward, const char&>(b, e);
+		return any_view<iterator_category::forward, char>(b, e);
 	}
 
 	class simple_ostream
@@ -22,8 +22,7 @@ namespace PP
 		}
 
 	public:
-		constexpr virtual void write(any_view<iterator_category::forward, const char&> view) noexcept = 0;
-		void virtual write_to_ostream(std::ostream&) noexcept = 0;
+		constexpr virtual void write(any_view<iterator_category::forward, char> view) noexcept = 0;
 
 		template <size_t N>
 		constexpr void write(const char(&arr)[N]) noexcept
