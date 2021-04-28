@@ -2,7 +2,7 @@
 
 namespace PP
 {
-	using size_t = decltype(sizeof 0);
+	using size_t = decltype(sizeof(0));
 
 	inline namespace literals
 	{
