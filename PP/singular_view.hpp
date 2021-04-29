@@ -1,8 +1,10 @@
 #pragma once
-#include "array.hpp"
+#include "simple_view.hpp"
 
 namespace PP
 {
-	template <typename T>
-	using singular_view = array<T, 1>;
+	PP_FUNCTOR(make_singular_view, auto& object)
+	{
+		return simple_view(&object, &object + 1);
+	});
 }

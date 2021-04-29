@@ -37,6 +37,10 @@ namespace PP
 	public:
 		unique_pointer() = default;
 
+		constexpr unique_pointer(decltype(nullptr)) noexcept
+			: unique_pointer()
+		{}
+
 		constexpr unique_pointer(placeholder_t, auto&&... args)
 			: p(scoped_default_destructor_tag, unique_default_releaser_tag,	PP_FORWARD(args)...)
 		{}

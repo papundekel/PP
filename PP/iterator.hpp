@@ -150,12 +150,12 @@ namespace PP
 		template <typename S, typename I>
 		concept sentinel = iterator<I> && equatable<I, S>;
 	}
-	PP_FUNCTOR(is_sentinel, auto s, auto i)
+	PP_FUNCTOR(is_sentinel, concepts::type auto s, concepts::type auto i)
 	{
 		return concepts::sentinel<PP_GET_TYPE(s), PP_GET_TYPE(i)>;
 	});
 
-	PP_FUNCTOR(iterator_base, auto i)
+	PP_FUNCTOR(iterator_base, concepts::type auto i)
 	{
 		return PP_DECLTYPE(*declval(i));
 	});
