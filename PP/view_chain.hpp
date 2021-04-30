@@ -27,7 +27,8 @@ namespace PP
 
 		constexpr decltype(auto) operator[](ptrdiff_t offset) const
 		{
-			if constexpr (PP::concepts::iterator_ra<I> && PP::concepts::iterator_ra<J>)
+			if constexpr (PP::concepts::iterator_ra<I> &&
+						  PP::concepts::iterator_ra<J>)
 			{
 				if (i != e)
 					return i[offset];
@@ -46,20 +47,19 @@ namespace PP
 
 		constexpr auto advance(ptrdiff_t offset)
 		{
-			if constexpr (PP::concepts::iterator_ra<I> && PP::concepts::iterator_ra<J>)
+			if constexpr (PP::concepts::iterator_ra<I> &&
+						  PP::concepts::iterator_ra<J>)
 			{
 				auto first_sequence_diff = e - i;
 				if (first_sequence_diff < offset)
 				{
 					i += first_sequence_diff;
 					j += offset - first_sequence_diff;
-				}
-				else
+				} else
 				{
 					i += offset;
 				}
-			}
-			else
+			} else
 				return 0;
 		}
 
@@ -106,12 +106,16 @@ namespace PP
 
 	constexpr auto view_chain(concepts::view auto&& v)
 	{
-		return view_chain_wrap(view_begin(PP_FORWARD(v)), view_end(PP_FORWARD(v)));
+		return view_chain_wrap(view_begin(PP_FORWARD(v)),
+							   view_end(PP_FORWARD(v)));
 	}
 
 	template <typename I, typename E>
 	constexpr auto operator^(view_chain_wrap<I, E> vc, concepts::view auto&& v)
 	{
-		return view_chain_wrap(view_chain_iterator(vc.begin(), vc.end(), view_begin(PP_FORWARD(v))), view_end(PP_FORWARD(v)));
+		return view_chain_wrap(view_chain_iterator(vc.begin(),
+												   vc.end(),
+												   view_begin(PP_FORWARD(v))),
+							   view_end(PP_FORWARD(v)));
 	}
 }

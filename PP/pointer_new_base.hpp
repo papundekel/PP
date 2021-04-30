@@ -10,7 +10,7 @@ namespace PP
 		template <typename U, typename T>
 		concept pointer_new_compatible = concepts::convertible_to<U*, T*>;
 	}
-	
+
 	template <typename T>
 	class pointer_new_base
 	{
@@ -46,12 +46,13 @@ namespace PP
 			return *this;
 		}
 		template <detail::pointer_new_compatible<T> U>
-		constexpr pointer_new_base& operator=(pointer_new_base<U>&& other) noexcept
+		constexpr pointer_new_base& operator=(
+			pointer_new_base<U>&& other) noexcept
 		{
 			ptr = PP::exchange(other.ptr, nullptr);
 			return *this;
 		}
-		
+
 		constexpr T* get_ptr() const noexcept
 		{
 			return ptr;

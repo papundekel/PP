@@ -6,7 +6,9 @@
 
 namespace PP
 {
-	constexpr inline struct nullopt_t {} nullopt{};
+	constexpr inline struct nullopt_t
+	{
+	} nullopt{};
 
 	template <typename T>
 	class optional
@@ -14,7 +16,7 @@ namespace PP
 		friend struct optional_creator;
 
 		static_block<T, 1> block;
-		bool valid;
+		bool			   valid;
 
 	public:
 		constexpr optional(nullopt_t) noexcept
@@ -29,7 +31,7 @@ namespace PP
 			if (other)
 				construct(*other);
 		}
-		
+
 		constexpr optional(optional&& other)
 			: block()
 			, valid(other)
@@ -56,7 +58,7 @@ namespace PP
 		{
 			return optional(placeholder, PP_FORWARD(args)...);
 		}
-	
+
 		constexpr explicit operator bool() const noexcept
 		{
 			return valid;
@@ -128,6 +130,7 @@ namespace PP
 
 	PP_FUNCTOR(make_optional_copy, auto&& arg)
 	{
-		return optional<PP_GET_TYPE(~PP_DECLTYPE(arg))>::create(PP_FORWARD(arg));
+		return optional<PP_GET_TYPE(~PP_DECLTYPE(arg))>::create(
+			PP_FORWARD(arg));
 	});
 }

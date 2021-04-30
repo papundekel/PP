@@ -23,18 +23,19 @@ namespace PP
 		pointer_to_member,
 		array_known,
 		array_unknown,
-		
+
 		none
 	};
 
 	struct cv_decomposition_element
 	{
-		cv_qualifier cv;
+		cv_qualifier		  cv;
 		cv_decomposition_type type;
-		size_t extent;
+		size_t				  extent;
 	};
 
-	constexpr cv_decomposition_type get_cv_decomposition_type(concepts::type auto t) noexcept
+	constexpr cv_decomposition_type get_cv_decomposition_type(
+		concepts::type auto t) noexcept
 	{
 		if (is_pointer(t))
 			return cv_decomposition_type::pointer;
@@ -48,9 +49,10 @@ namespace PP
 			return cv_decomposition_type::none;
 	}
 
-	PP_FUNCTOR(get_cv_decomposition_element, concepts::type auto t) -> cv_decomposition_element
+	PP_FUNCTOR(get_cv_decomposition_element, concepts::type auto t)
+		-> cv_decomposition_element
 	{
-		return {*get_cv_value_t(t), get_cv_decomposition_type(t), extent(t)};
+		return { *get_cv_value_t(t), get_cv_decomposition_type(t), extent(t) };
 	});
 
 	constexpr auto shed_pointer(concepts::type auto t)
@@ -81,16 +83,19 @@ namespace PP
 		return shed_pointers_helper(t);
 	});
 
-	constexpr inline PP::functor array_tail_value([]
-	<typename T, size_t N>
-	(PP::array<T, N> arr)
-	{
-		using namespace PP::literals;
+	constexpr inline PP::functor array_tail_value(
+		[]<typename T, size_t N>(PP::array<T, N> arr)
+		{
+			using namespace PP::literals;
 
-		PP::array<T, N - 1> result;
-		PP::view_copy(result, 1_s >> arr);
-		return result;
-	});
-	
-	constexpr inline auto cv_decomposition = array_tail_value | tuple_map_to_array * type<cv_decomposition_element> * get_cv_decomposition_element | shed_pointers;
+			PP::array<T, N - 1> result;
+			PP::view_copy(result, 1_s >> arr);
+			return result;
+		});
+
+	constexpr inline auto cv_decomposition =
+		array_tail_value |
+		tuple_map_to_array * type<cv_decomposition_element> *
+			get_cv_decomposition_element |
+		shed_pointers;
 }

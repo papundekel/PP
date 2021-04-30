@@ -5,5 +5,6 @@
 
 namespace PP
 {
-	constexpr inline auto is_volatile = cv_is_volatile | get_value | get_volatile;
+	constexpr inline auto is_volatile =
+		cv_is_volatile | get_value | get_volatile;
 }

@@ -8,5 +8,10 @@ namespace PP
 		using type = T;
 	};
 
-	#define PP_NEW_TYPE(o, T) decltype(o){ ::PP::type_identity<T>{} }
+#define PP_NEW_TYPE(o, T)                                                      \
+	decltype(o)                                                                \
+	{                                                                          \
+		::PP::type_identity<T>                                                 \
+		{}                                                                     \
+	}
 }

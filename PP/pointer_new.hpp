@@ -11,7 +11,9 @@ namespace PP
 	public:
 		using pointer_new_base<T>::pointer_new_base;
 
-		constexpr pointer_new(const pointer_new<detail::pointer_new_compatible<T> auto>& other) noexcept
+		constexpr pointer_new(
+			const pointer_new<detail::pointer_new_compatible<T> auto>&
+				other) noexcept
 			: pointer_new_base<T>(other.ptr)
 		{}
 

@@ -6,11 +6,17 @@
 
 namespace PP
 {
-	constexpr inline auto is_pointer_to_member = make_overloaded_pack
-	(
-		[]<typename T, typename Class>(type_t<T Class::*>) { return true; },
-		[](auto) { return false; }
-	) | remove_cv;
+	constexpr inline auto is_pointer_to_member =
+		make_overloaded_pack(
+			[]<typename T, typename Class>(type_t<T Class::*>)
+			{
+				return true;
+			},
+			[](auto)
+			{
+				return false;
+			}) |
+		remove_cv;
 
 	PP_CONCEPT1(pointer_to_member)
 }

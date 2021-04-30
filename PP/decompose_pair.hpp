@@ -33,7 +33,9 @@ namespace PP
 		}
 	};
 
-	PP_FUNCTOR(make_decompose_pair, concepts::type auto t, concepts::value auto v)
+	PP_FUNCTOR(make_decompose_pair,
+			   concepts::type auto	t,
+			   concepts::value auto v)
 	{
 		return decompose_pair<PP_GET_TYPE(t), PP_GET_VALUE(v)>();
 	});

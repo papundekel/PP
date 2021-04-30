@@ -5,18 +5,18 @@ namespace PP
 	template <typename T>
 	class no_default_initialized
 	{
-		T value;
+		T val;
 
 	public:
 		no_default_initialized() = delete;
 
 		explicit constexpr no_default_initialized(T value) noexcept
-			: value(value)
+			: val(value)
 		{}
 
 		constexpr auto get() const noexcept
 		{
-			return value;
+			return val;
 		}
 		constexpr operator T() const noexcept
 		{
@@ -25,24 +25,19 @@ namespace PP
 
 		constexpr auto& operator=(T new_value) noexcept
 		{
-			value = new_value;
+			val = new_value;
 			return *this;
 		}
-		
+
 		constexpr auto& operator++() noexcept
 		{
-			++value;
+			++val;
 			return *this;
 		}
 		constexpr auto& operator--() noexcept
 		{
-			--value;
+			--val;
 			return *this;
 		}
-
-		//constexpr bool operator==(T other_value) const noexcept
-		//{
-		//	return value == other_value;
-		//}
 	};
 }

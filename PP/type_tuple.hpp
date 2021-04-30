@@ -1,19 +1,21 @@
 #pragma once
 #include "get_type.hpp"
-#include "tuple_recursive.hpp"
 #include "tuple_head_no_get.hpp"
+#include "tuple_recursive.hpp"
 #include "type_t.hpp"
 #include "value_t.hpp"
 
 namespace PP
 {
 	template <typename...>
-	struct type_tuple_t {};
+	struct type_tuple_t
+	{};
 	template <typename Head, typename... Rest>
 	struct type_tuple_t<Head, Rest...>
 	{
 		type_tuple_t() = default;
-		constexpr type_tuple_t(auto, auto...) noexcept {}
+		constexpr type_tuple_t(auto, auto...) noexcept
+		{}
 
 		constexpr auto head() const noexcept
 		{
@@ -50,7 +52,8 @@ namespace PP
 	});
 
 	template <typename... T, typename... U>
-	constexpr auto type_tuple_concat(type_tuple_t<T...>, type_tuple_t<U...>) noexcept
+	constexpr auto type_tuple_concat(type_tuple_t<T...>,
+									 type_tuple_t<U...>) noexcept
 	{
 		return type_tuple<T..., U...>;
 	}

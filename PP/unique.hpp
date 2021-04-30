@@ -38,14 +38,18 @@ namespace PP
 		}
 	};
 
-	//constexpr inline struct unique_in_place_delimiter_t {} unique_in_place_delimiter;
+	// constexpr inline struct unique_in_place_delimiter_t {}
+	// unique_in_place_delimiter;
 
-	constexpr inline struct unique_default_releaser_tag_t {} unique_default_releaser_tag;
+	constexpr inline struct unique_default_releaser_tag_t
+	{
+	} unique_default_releaser_tag;
 
 	template <typename T, typename Releaser = move_releaser>
 	class unique
 	{
-		//static constexpr auto splitter = arg_splitter * type<unique_in_place_delimiter_t> * type_tuple<T, Releaser>;
+		// static constexpr auto splitter = arg_splitter *
+		// type<unique_in_place_delimiter_t> * type_tuple<T, Releaser>;
 
 		template <typename, typename>
 		friend class unique;
@@ -53,7 +57,7 @@ namespace PP
 		compressed_pair<T, Releaser> pair;
 
 	public:
-		//constexpr unique(in_place_tag_t, auto&&... args)
+		// constexpr unique(in_place_tag_t, auto&&... args)
 		//	: pair
 		//	(
 		//		splitter(value_0, PP_FORWARD(args)...),
@@ -92,7 +96,7 @@ namespace PP
 				pair.first = other.release();
 				pair.second = move(other).pair.second;
 			}
-			
+
 			return *this;
 		}
 		template <typename U, typename D>
@@ -130,6 +134,7 @@ namespace PP
 	{
 		constexpr auto value_type = ~PP_DECLTYPE(value);
 
-		return Template<unique>(value_type)(unique_default_releaser_tag, PP_FORWARD(value));
+		return Template<unique>(value_type)(unique_default_releaser_tag,
+											PP_FORWARD(value));
 	});
 }

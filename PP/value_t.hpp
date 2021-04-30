@@ -34,12 +34,12 @@ namespace PP
 	constexpr inline value_t<7u> value_7 = {};
 	constexpr inline value_t<8u> value_8 = {};
 	constexpr inline value_t<9u> value_9 = {};
-	
-	constexpr inline value_t<true> value_true = {};
+
+	constexpr inline value_t<true>	value_true = {};
 	constexpr inline value_t<false> value_false = {};
 
 	constexpr inline value_t<nullptr> value_nullptr = {};
 
-	#define PP_SIZEOF(x) (::PP::value<sizeof(x)>)
-	#define PP_SIZEOF___(x) (::PP::value<sizeof...(x)>)
+#define PP_SIZEOF(x) (::PP::value<sizeof(x)>)
+#define PP_SIZEOF___(x) (::PP::value<sizeof...(x)>)
 }

@@ -4,12 +4,17 @@
 
 namespace PP
 {
-	constexpr inline struct partial_tag_t {} partial_tag;
-	
+	constexpr inline struct partial_tag_t
+	{
+	} partial_tag;
+
 	namespace concepts
 	{
 		template <typename T>
-		concept functor_call_not_partial = !requires (T t) { partial_tag_t{ t }; };
+		concept functor_call_not_partial = !requires(T t)
+		{
+			partial_tag_t{ t };
+		};
 	}
 
 	template <typename F>
@@ -17,26 +22,38 @@ namespace PP
 	{
 		F f;
 
-		constexpr decltype(auto) operator()(auto&&... args) const&
-		requires (concepts::functor_call_not_partial<decltype(args)> && ...) && requires { f(PP_FORWARD(args)...); }
+		constexpr decltype(auto) operator()(auto&&... args) const& requires(
+			concepts::functor_call_not_partial<decltype(args)>&&...) &&
+			requires
+		{
+			f(PP_FORWARD(args)...);
+		}
 		{
 			return f(PP_FORWARD(args)...);
 		}
-		constexpr decltype(auto) operator()(auto&&... args) const&&
-		requires (concepts::functor_call_not_partial<decltype(args)> && ...) && requires { move(f)(PP_FORWARD(args)...); }
+		constexpr decltype(auto) operator()(auto&&... args) const&& requires(
+			concepts::functor_call_not_partial<decltype(args)>&&...) &&
+			requires
+		{
+			move(f)(PP_FORWARD(args)...);
+		}
 		{
 			return move(f)(PP_FORWARD(args)...);
 		}
 
-		constexpr auto operator()(partial_tag_t, auto i, auto&& arg) const&  noexcept;
-		constexpr auto operator()(partial_tag_t, auto i, auto&& arg) const&& noexcept;
+		constexpr auto operator()(partial_tag_t,
+								  auto	 i,
+								  auto&& arg) const& noexcept;
+		constexpr auto operator()(partial_tag_t,
+								  auto	 i,
+								  auto&& arg) const&& noexcept;
 
 		constexpr decltype(auto) operator[](auto&& tuple) const&;
 		constexpr decltype(auto) operator[](auto&& tuple) const&&;
 
 		static constexpr char arbitrary_concept_tag_functor = {};
 	};
-	
+
 	namespace concepts
 	{
 		template <typename F>
@@ -59,22 +76,28 @@ namespace PP
 		return unwrap_functor(PP_FORWARD(f))(PP_FORWARD(arg));
 	}
 
-	constexpr auto operator&&(concepts::functor auto&& f, concepts::functor auto&& g)
+	constexpr auto operator&&(concepts::functor auto&& f,
+							  concepts::functor auto&& g)
 	{
-		return functor([f = unwrap_functor(PP_FORWARD(f)), g = unwrap_functor(PP_FORWARD(g))]
-			(auto&&... args) -> decltype(auto)
+		return functor(
+			[f = unwrap_functor(PP_FORWARD(f)),
+			 g = unwrap_functor(PP_FORWARD(g))](
+				auto&&... args) -> decltype(auto)
 			{
 				return f(PP_FORWARD(args)...) && g(PP_FORWARD(args)...);
 			});
 	}
-	constexpr auto operator||(concepts::functor auto&& f, concepts::functor auto&& g) -> decltype(auto)
+	constexpr auto operator||(concepts::functor auto&& f,
+							  concepts::functor auto&& g) -> decltype(auto)
 	{
-		return functor([f = unwrap_functor(PP_FORWARD(f)), g = unwrap_functor(PP_FORWARD(g))]
-			(auto&&... args) -> decltype(auto)
+		return functor(
+			[f = unwrap_functor(PP_FORWARD(f)),
+			 g = unwrap_functor(PP_FORWARD(g))](
+				auto&&... args) -> decltype(auto)
 			{
 				return f(PP_FORWARD(args)...) || g(PP_FORWARD(args)...);
 			});
 	}
 
-	#define PP_FUNCTOR(name, ...) constexpr inline auto name = ::PP::functor([](__VA_ARGS__)
+#define PP_FUNCTOR(name, ...) constexpr inline auto name = ::PP::functor([](__VA_ARGS__)
 }

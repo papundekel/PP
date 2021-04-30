@@ -16,8 +16,7 @@ namespace PP
 			{
 				for (auto& x : *p)
 					destroy_at_impl(std::addressof(x));
-			}
-			else
+			} else
 				p->~T();
 		}
 	}

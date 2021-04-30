@@ -1,7 +1,7 @@
 #pragma once
-#include <utility>
-#include "view.hpp"
 #include "functional/id.hpp"
+#include "view.hpp"
+#include <utility>
 
 namespace PP
 {

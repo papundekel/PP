@@ -12,14 +12,16 @@ namespace PP
 	class basic_string_view : public pointer_view<const CharT>
 	{
 	public:
-		constexpr basic_string_view(const CharT* begin, const CharT* end) noexcept
+		constexpr basic_string_view(const CharT* begin,
+									const CharT* end) noexcept
 			: pointer_view<const CharT>(begin, end)
 		{}
 		constexpr basic_string_view(concepts::view auto&& v) noexcept
-			: basic_string_view(view_begin(PP_FORWARD(v)), view_end(PP_FORWARD(v)))
+			: basic_string_view(view_begin(PP_FORWARD(v)),
+								view_end(PP_FORWARD(v)))
 		{}
 		template <size_t N>
-		constexpr basic_string_view(const CharT(&arr)[N]) noexcept
+		constexpr basic_string_view(const CharT (&arr)[N]) noexcept
 			: basic_string_view(arr << 1_s)
 		{}
 	};

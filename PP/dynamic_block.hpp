@@ -1,6 +1,6 @@
 #pragma once
-#include "unique_pointer.hpp"
 #include "pointer_allocate.hpp"
+#include "unique_pointer.hpp"
 #include "view.hpp"
 #include "view_copy_uninitialized.hpp"
 
@@ -62,7 +62,8 @@ namespace PP
 
 		constexpr auto spawn_new(size_t count)
 		{
-			return dynamic_block<T, Allocator&>(ptr.get_object().get_allocator(), count);
+			return dynamic_block<T, Allocator&>(
+				ptr.get_object().get_allocator(), count);
 		}
 	};
 }

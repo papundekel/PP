@@ -3,8 +3,7 @@
 
 namespace PP
 {
-	constexpr inline auto to_void_ptr = make_overloaded_pack
-	(
+	constexpr inline auto to_void_ptr = make_overloaded_pack(
 		[](auto* p) -> void*
 		{
 			return p;
@@ -20,8 +19,7 @@ namespace PP
 		[](const volatile auto* p) -> const volatile void*
 		{
 			return p;
-		}
-	);
+		});
 
 	constexpr auto* to_void_address(auto& o) noexcept
 	{

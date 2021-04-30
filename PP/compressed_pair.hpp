@@ -17,14 +17,13 @@ namespace PP
 		template <typename First, typename Second>
 		struct compressed_pair_nonempty
 		{
-			First first;
+			First  first;
 			Second second;
 		};
 		template <typename Empty, typename Second>
 		struct compressed_pair_empty_first
 		{
-			[[no_unique_address]]
-			Empty first;
+			[[no_unique_address]] Empty first;
 
 			Second second;
 		};
@@ -33,11 +32,12 @@ namespace PP
 		{
 			First first;
 
-			[[no_unique_address]]
-			Empty second;
+			[[no_unique_address]] Empty second;
 		};
 
-		constexpr auto compressed_pair_dispatch_template(concepts::type auto first, concepts::type auto second)
+		constexpr auto compressed_pair_dispatch_template(
+			concepts::type auto first,
+			concepts::type auto second)
 		{
 			if constexpr (is_empty(PP_COPY_TYPE(first)))
 				return Template<compressed_pair_empty_first>;
@@ -46,12 +46,15 @@ namespace PP
 			else
 				return Template<compressed_pair_nonempty>;
 		}
-		constexpr auto compressed_pair_dispatch(concepts::type auto first, concepts::type auto second)
+		constexpr auto compressed_pair_dispatch(concepts::type auto first,
+												concepts::type auto second)
 		{
-			return compressed_pair_dispatch_template(first, second)(first, second);
+			return compressed_pair_dispatch_template(first, second)(first,
+																	second);
 		}
 	}
 
 	template <typename First, typename Second>
-	using compressed_pair = PP_GET_TYPE(detail::compressed_pair_dispatch(type<First>, type<Second>));
+	using compressed_pair = PP_GET_TYPE(
+		detail::compressed_pair_dispatch(type<First>, type<Second>));
 }

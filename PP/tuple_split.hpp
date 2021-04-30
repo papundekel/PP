@@ -10,16 +10,19 @@
 
 namespace PP
 {
-	constexpr inline auto tuple_splitter = make_overloaded_pack
-	(
+	constexpr inline auto tuple_splitter = make_overloaded_pack(
 		[](auto&& head, auto&&... tail)
 		{
-			return tuple<decltype(head), tuple<decltype(tail)...>>
-				(placeholder, PP_FORWARD(head), forward_as_tuple(PP_FORWARD(tail)...));
+			return tuple<decltype(head), tuple<decltype(tail)...>>(
+				placeholder,
+				PP_FORWARD(head),
+				forward_as_tuple(PP_FORWARD(tail)...));
 		},
-		[]() { return make_tuple(0, 0); }
-	);
-	
+		[]()
+		{
+			return make_tuple(0, 0);
+		});
+
 	constexpr inline auto tuple_split = *tuple_splitter;
 
 	constexpr inline auto tuple_head = tuple_get * value_0;

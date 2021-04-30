@@ -4,7 +4,8 @@
 
 namespace PP
 {
-	PP_FUNCTOR(reinterpret__cast, concepts::type auto t, auto&& value) -> decltype(auto)
+	PP_FUNCTOR(reinterpret__cast, concepts::type auto t, auto&& value)
+		-> decltype(auto)
 	{
 		return reinterpret_cast<PP_GET_TYPE(t)>(PP_FORWARD(value));
 	});

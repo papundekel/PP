@@ -7,9 +7,7 @@ namespace PP
 	{
 		template <typename T>
 		concept floating_point =
-			float_type<T> ||
-			double_type<T> ||
-			long_double<T>;
+			float_type<T> || double_type<T> || long_double<T>;
 	}
 
 	PP_CONCEPT_FUNCTOR1(floating_point);

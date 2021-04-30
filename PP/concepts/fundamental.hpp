@@ -1,6 +1,6 @@
 #pragma once
-#include "non_void_fundamental.hpp"
 #include "fundamental_types.hpp"
+#include "non_void_fundamental.hpp"
 
 namespace PP
 {

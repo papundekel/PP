@@ -27,19 +27,16 @@ namespace PP
 		concept value = detail::has_value_f<T> || detail::has_value<T>;
 	}
 
-	constexpr inline auto get_type_value = make_overloaded_pack
-	(
-		[](auto t) -> decltype(auto)
-		requires detail::has_value_f<PP_GET_TYPE(t)>
+	constexpr inline auto get_type_value = make_overloaded_pack(
+		[](auto t) -> decltype(
+					   auto) requires detail::has_value_f<PP_GET_TYPE(t)>
 		{
 			return PP_GET_TYPE(t)::value_f();
 		},
-		[](auto t) -> decltype(auto)
-		requires detail::has_value<PP_GET_TYPE(t)>
+		[](auto t) -> decltype(auto) requires detail::has_value<PP_GET_TYPE(t)>
 		{
 			return (PP_GET_TYPE(t)::value);
-		}
-	);
+		});
 
 	constexpr inline auto get_value = get_type_value | decl_type_copy;
 
@@ -49,15 +46,18 @@ namespace PP
 	}
 
 	constexpr decltype(auto) operator-(concepts::type auto t) noexcept
-	requires requires { get_type_value(t); }
+		requires requires
+	{
+		get_type_value(t);
+	}
 	{
 		return get_type_value(t);
 	}
 
-	#define PP_GET_VALUE(x) (-PP_DECLTYPE(x))
-	#define PP_COPY_VALUE(x) (::PP::value<PP_GET_VALUE(x)>)
-	#define PP_COPY_VALUE_MEMBER(x, member) (::PP::value<PP_GET_VALUE(x).member>)
-	#define PP_GET_VALUE_TYPE(x) PP_DECLTYPE(PP_GET_VALUE(x))
+#define PP_GET_VALUE(x) (-PP_DECLTYPE(x))
+#define PP_COPY_VALUE(x) (::PP::value<PP_GET_VALUE(x)>)
+#define PP_COPY_VALUE_MEMBER(x, member) (::PP::value<PP_GET_VALUE(x).member>)
+#define PP_GET_VALUE_TYPE(x) PP_DECLTYPE(PP_GET_VALUE(x))
 
 	constexpr auto operator==(concepts::value auto x, concepts::value auto y)
 	{
@@ -69,7 +69,7 @@ namespace PP
 	}
 	constexpr auto operator<(concepts::value auto x, concepts::value auto y)
 	{
-		return value<PP_GET_VALUE(x) <  PP_GET_VALUE(y)>;
+		return value<PP_GET_VALUE(x) < PP_GET_VALUE(y)>;
 	}
 	constexpr auto operator<=(concepts::value auto x, concepts::value auto y)
 	{
@@ -77,7 +77,7 @@ namespace PP
 	}
 	constexpr auto operator>(concepts::value auto x, concepts::value auto y)
 	{
-		return value<(PP_GET_VALUE(x) >  PP_GET_VALUE(y))>;
+		return value<(PP_GET_VALUE(x) > PP_GET_VALUE(y))>;
 	}
 	constexpr auto operator>=(concepts::value auto x, concepts::value auto y)
 	{
@@ -85,23 +85,23 @@ namespace PP
 	}
 	constexpr auto operator+(concepts::value auto x, concepts::value auto y)
 	{
-		return value<PP_GET_VALUE(x) +  PP_GET_VALUE(y)>;
+		return value<PP_GET_VALUE(x) + PP_GET_VALUE(y)>;
 	}
 	constexpr auto operator-(concepts::value auto x, concepts::value auto y)
 	{
-		return value<PP_GET_VALUE(x) -  PP_GET_VALUE(y)>;
+		return value<PP_GET_VALUE(x) - PP_GET_VALUE(y)>;
 	}
 	constexpr auto operator*(concepts::value auto x, concepts::value auto y)
 	{
-		return value<PP_GET_VALUE(x) *  PP_GET_VALUE(y)>;
+		return value<PP_GET_VALUE(x) * PP_GET_VALUE(y)>;
 	}
 	constexpr auto operator/(concepts::value auto x, concepts::value auto y)
 	{
-		return value<PP_GET_VALUE(x) /  PP_GET_VALUE(y)>;
+		return value<PP_GET_VALUE(x) / PP_GET_VALUE(y)>;
 	}
 	constexpr auto operator%(concepts::value auto x, concepts::value auto y)
 	{
-		return value<PP_GET_VALUE(x) %  PP_GET_VALUE(y)>;
+		return value<PP_GET_VALUE(x) % PP_GET_VALUE(y)>;
 	}
 	constexpr auto operator&(concepts::value auto x, concepts::value auto y)
 	{
@@ -121,15 +121,19 @@ namespace PP
 	}
 	constexpr auto operator&&(concepts::value auto x, concepts::value auto y)
 	{
-		return value<PP_GET_VALUE(x) && PP_GET_VALUE(y)>;
+		return value < PP_GET_VALUE(x) && PP_GET_VALUE(y) > ;
 	}
 	constexpr auto operator||(concepts::value auto x, concepts::value auto y)
 	{
-		return value<PP_GET_VALUE(x) || PP_GET_VALUE(y)>;
+		return value < PP_GET_VALUE(x) || PP_GET_VALUE(y) > ;
 	}
 
-	constexpr auto operator<=(concepts::type auto x, concepts::type auto y)
-	requires requires { -x; -y; }
+	constexpr auto operator<=(concepts::type auto x,
+							  concepts::type auto y) requires requires
+	{
+		-x;
+		-y;
+	}
 	{
 		return -x <= -y;
 	}

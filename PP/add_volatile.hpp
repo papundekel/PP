@@ -4,5 +4,10 @@
 
 namespace PP
 {
-	constexpr inline auto add_volatile = functor([]<typename T>(type_t<T>) { return type<volatile T>; }) | to_type_t;
+	constexpr inline auto add_volatile = functor(
+											 []<typename T>(type_t<T>)
+											 {
+												 return type<volatile T>;
+											 }) |
+										 to_type_t;
 }

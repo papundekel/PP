@@ -17,15 +17,16 @@ namespace PP
 		constexpr void write_num(auto number) noexcept
 		{
 			array<char, 32> buffer;
-			auto end = to_chars(buffer, number);
+			auto			end = to_chars(buffer, number);
 			write(make_any_view_chars(view_begin(buffer), end));
 		}
 
 	public:
-		constexpr virtual void write(any_view<iterator_category::forward, char> view) noexcept = 0;
+		constexpr virtual void write(
+			any_view<iterator_category::forward, char> view) noexcept = 0;
 
 		template <size_t N>
-		constexpr void write(const char(&arr)[N]) noexcept
+		constexpr void write(const char (&arr)[N]) noexcept
 		{
 			write(make_any_view_chars(arr, arr + N - 1));
 		}

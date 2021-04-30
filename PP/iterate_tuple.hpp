@@ -19,7 +19,10 @@ namespace PP
 		constexpr iterate_tuple(placeholder_t, concepts::value auto, auto&& obj)
 			: iterate_tuple(placeholder, PP_FORWARD(obj))
 		{}
-		constexpr iterate_tuple(placeholder_t, concepts::value auto, concepts::type auto, auto&& obj)
+		constexpr iterate_tuple(placeholder_t,
+								concepts::value auto,
+								concepts::type auto,
+								auto&& obj)
 			: iterate_tuple(placeholder, PP_FORWARD(obj))
 		{}
 
@@ -31,32 +34,43 @@ namespace PP
 		{
 			return type<T>;
 		}
-		constexpr decltype(auto) operator[](concepts::value auto i)      &  noexcept;
-		constexpr decltype(auto) operator[](concepts::value auto i) const&  noexcept;
-		constexpr decltype(auto) operator[](concepts::value auto i)      && noexcept;
-		constexpr decltype(auto) operator[](concepts::value auto i) const&& noexcept;
+		constexpr decltype(auto) operator[](concepts::value auto i) & noexcept;
+		constexpr decltype(auto) operator[](
+			concepts::value auto i) const& noexcept;
+		constexpr decltype(auto) operator[](concepts::value auto i) && noexcept;
+		constexpr decltype(auto) operator[](
+			concepts::value auto i) const&& noexcept;
 	};
 	template <typename T>
-	iterate_tuple(placeholder_t, concepts::value auto count, T) -> iterate_tuple<decltype(to_value_t(count)), T>;
-	iterate_tuple(placeholder_t, concepts::value auto count, concepts::type auto t, auto&&) -> iterate_tuple<decltype(to_value_t(count)), PP_GET_TYPE(t)>;
+	iterate_tuple(placeholder_t, concepts::value auto count, T)
+		-> iterate_tuple<decltype(to_value_t(count)), T>;
+	iterate_tuple(placeholder_t,
+				  concepts::value auto count,
+				  concepts::type auto  t,
+				  auto&&)
+		-> iterate_tuple<decltype(to_value_t(count)), PP_GET_TYPE(t)>;
 
 	template <typename Count, typename T>
-	constexpr auto& get(concepts::value auto, iterate_tuple<Count, T>& t) noexcept
+	constexpr auto& get(concepts::value auto,
+						iterate_tuple<Count, T>& t) noexcept
 	{
 		return t.obj;
 	}
 	template <typename Count, typename T>
-	constexpr const auto& get(concepts::value auto, const iterate_tuple<Count, T>& t) noexcept
+	constexpr const auto& get(concepts::value auto,
+							  const iterate_tuple<Count, T>& t) noexcept
 	{
 		return t.obj;
 	}
 	template <typename Count, typename T>
-	constexpr auto&& get(concepts::value auto, iterate_tuple<Count, T>&& t) noexcept
+	constexpr auto&& get(concepts::value auto,
+						 iterate_tuple<Count, T>&& t) noexcept
 	{
 		return PP_FORWARD(t.obj);
 	}
 	template <typename Count, typename T>
-	constexpr const auto&& get(concepts::value auto, const iterate_tuple<Count, T>&& t) noexcept
+	constexpr const auto&& get(concepts::value auto,
+							   const iterate_tuple<Count, T>&& t) noexcept
 	{
 		return static_cast<const decltype(t.obj)&&>(t.obj);
 	}
@@ -65,29 +79,34 @@ namespace PP
 	{
 		return iterate_tuple(placeholder, count, PP_FORWARD(x));
 	});
-	PP_FUNCTOR(forward_as_iterate_tuple, concepts::value auto count, auto&& x) noexcept
+	PP_FUNCTOR(forward_as_iterate_tuple, concepts::value auto count, auto&& x)
+	noexcept
 	{
 		return iterate_tuple(placeholder, count, PP_DECLTYPE(x), PP_FORWARD(x));
 	});
 }
 
 template <typename Count, typename T>
-constexpr decltype(auto) PP::iterate_tuple<Count, T>::operator[](concepts::value auto i) & noexcept
+constexpr decltype(auto)
+PP::iterate_tuple<Count, T>::operator[](concepts::value auto i) & noexcept
 {
 	return get(i, *this);
 }
 template <typename Count, typename T>
-constexpr decltype(auto) PP::iterate_tuple<Count, T>::operator[](concepts::value auto i) const& noexcept
+constexpr decltype(auto)
+PP::iterate_tuple<Count, T>::operator[](concepts::value auto i) const& noexcept
 {
 	return get(i, *this);
 }
 template <typename Count, typename T>
-constexpr decltype(auto) PP::iterate_tuple<Count, T>::operator[](concepts::value auto i) && noexcept
+constexpr decltype(auto)
+PP::iterate_tuple<Count, T>::operator[](concepts::value auto i) && noexcept
 {
 	return get(i, move(*this));
 }
 template <typename Count, typename T>
-constexpr decltype(auto) PP::iterate_tuple<Count, T>::operator[](concepts::value auto i) const&& noexcept
+constexpr decltype(auto)
+PP::iterate_tuple<Count, T>::operator[](concepts::value auto i) const&& noexcept
 {
 	return get(i, move(*this));
 }

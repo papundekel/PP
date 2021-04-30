@@ -22,11 +22,13 @@ namespace PP
 		template <typename, typename... T>
 		class tuple_impl;
 		template <auto... I, typename... T>
-		class tuple_impl<value_sequence<I...>, T...> : tuple_wrap<value_t<I>, T>...
+		class tuple_impl<value_sequence<I...>, T...>
+			: tuple_wrap<value_t<I>, T>...
 		{
 			friend class tuple_helper;
-			
-			static constexpr auto wrap_types = type_tuple<tuple_wrap<value_t<I>, T>&...>;
+
+			static constexpr auto wrap_types =
+				type_tuple<tuple_wrap<value_t<I>, T>&...>;
 			static constexpr auto types = type_tuple<T...>;
 
 		public:
@@ -43,37 +45,43 @@ namespace PP
 
 			constexpr auto& operator=(concepts::tuple auto&& t)
 			{
-				(((tuple_wrap<value_t<I>, T>&)*this = PP_FORWARD(t)[value<I>]), ...);
+				(((tuple_wrap<value_t<I>, T>&)* this = PP_FORWARD(t)[value<I>]),
+				 ...);
 				return *this;
 			}
 		};
 
 		struct tuple_helper
 		{
-			static constexpr auto&& get(concepts::value auto i, auto&& t) noexcept
+			static constexpr auto&& get(concepts::value auto i,
+										auto&&				 t) noexcept
 			{
 				auto& wrap = t.wrap_types[i](t);
-				return copy_cvref(PP_DECLTYPE(t), PP_DECLTYPE(wrap.obj))(wrap.obj);
+				return copy_cvref(PP_DECLTYPE(t),
+								  PP_DECLTYPE(wrap.obj))(wrap.obj);
 			}
-			static constexpr auto element(concepts::value auto i, auto& t) noexcept
+			static constexpr auto element(concepts::value auto i,
+										  auto&				   t) noexcept
 			{
 				return copy_cv(PP_DECLTYPE(t), t.types[i]);
 			}
 		};
-		template <typename...T>
-		using tuple_base = tuple_impl<decltype(make_value_sequence(PP_SIZEOF___(T))), T...>;
+		template <typename... T>
+		using tuple_base =
+			tuple_impl<decltype(make_value_sequence(PP_SIZEOF___(T))), T...>;
 	}
 	template <typename... T>
-	struct tuple : public detail::tuple_base<T...>
+	struct tuple
+		: public detail::tuple_base<T...>
 	{
 		using detail::tuple_base<T...>::tuple_base;
 
-		constexpr auto&& operator[](concepts::value auto i)      &  noexcept;
-		constexpr auto&& operator[](concepts::value auto i) const&  noexcept;
-		constexpr auto&& operator[](concepts::value auto i)      && noexcept;
+		constexpr auto&& operator[](concepts::value auto i) & noexcept;
+		constexpr auto&& operator[](concepts::value auto i) const& noexcept;
+		constexpr auto&& operator[](concepts::value auto i) && noexcept;
 		constexpr auto&& operator[](concepts::value auto i) const&& noexcept;
 
-		constexpr auto element(concepts::value auto i)       noexcept;
+		constexpr auto element(concepts::value auto i) noexcept;
 		constexpr auto element(concepts::value auto i) const noexcept;
 	};
 	template <typename... T>
@@ -96,32 +104,38 @@ namespace PP
 }
 
 template <typename... T>
-constexpr auto&& PP::tuple<T...>::operator[](concepts::value auto i) & noexcept
+constexpr auto&&
+PP::tuple<T...>::operator[](concepts::value auto i) & noexcept
 {
 	return detail::tuple_helper::get(i, *this);
 }
 template <typename... T>
-constexpr auto&& PP::tuple<T...>::operator[](concepts::value auto i) && noexcept
+constexpr auto&&
+PP::tuple<T...>::operator[](concepts::value auto i) && noexcept
 {
 	return detail::tuple_helper::get(i, move(*this));
 }
 template <typename... T>
-constexpr auto&& PP::tuple<T...>::operator[](concepts::value auto i) const& noexcept
+constexpr auto&&
+PP::tuple<T...>::operator[](concepts::value auto i) const& noexcept
 {
 	return detail::tuple_helper::get(i, *this);
 }
 template <typename... T>
-constexpr auto&& PP::tuple<T...>::operator[](concepts::value auto i) const&& noexcept
+constexpr auto&&
+PP::tuple<T...>::operator[](concepts::value auto i) const&& noexcept
 {
 	return detail::tuple_helper::get(i, move(*this));
 }
 template <typename... T>
-constexpr auto PP::tuple<T...>::element(concepts::value auto i) noexcept
+constexpr auto
+PP::tuple<T...>::element(concepts::value auto i) noexcept
 {
 	return detail::tuple_helper::element(i, *this);
 }
 template <typename... T>
-constexpr auto PP::tuple<T...>::element(concepts::value auto i) const noexcept
+constexpr auto
+PP::tuple<T...>::element(concepts::value auto i) const noexcept
 {
 	return detail::tuple_helper::element(i, *this);
 }

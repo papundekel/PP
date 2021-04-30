@@ -15,20 +15,25 @@
 
 namespace PP
 {
-	constexpr inline struct transform_iterator_in_place_delimiter_t {} transform_iterator_in_place_delimiter;
+	constexpr inline struct transform_iterator_in_place_delimiter_t
+	{
+	} transform_iterator_in_place_delimiter;
 
 	template <typename BaseIterator, typename Transform>
 	class transform_iterator
 	{
-		//static constexpr auto splitter = arg_splitter * type<transform_iterator_in_place_delimiter_t> * type_tuple<BaseIterator, Transform>;
+		// static constexpr auto splitter = arg_splitter *
+		// type<transform_iterator_in_place_delimiter_t> *
+		// type_tuple<BaseIterator, Transform>;
 
 		compressed_pair<BaseIterator, Transform> iterator_transform;
 
 	public:
-		constexpr transform_iterator(concepts::iterator auto&& iterator, auto&& transform)
+		constexpr transform_iterator(concepts::iterator auto&& iterator,
+									 auto&&					   transform)
 			: iterator_transform(PP_FORWARD(iterator), PP_FORWARD(transform))
 		{}
-		//constexpr transform_iterator(in_place_tag_t, auto&&... args)
+		// constexpr transform_iterator(in_place_tag_t, auto&&... args)
 		//	: iterator_transform
 		//	(
 		//		splitter(value_0, PP_FORWARD(args)...),
@@ -42,7 +47,11 @@ namespace PP
 		}
 		constexpr auto operator->() const
 		{
-			return make_arrow_operator_wrapper([this](){ return **this; });
+			return make_arrow_operator_wrapper(
+				[this]()
+				{
+					return **this;
+				});
 		}
 		constexpr void step()
 		{
@@ -69,7 +78,8 @@ namespace PP
 		constexpr auto operator-(const transform_iterator& other) const
 		{
 			if constexpr (PP::concepts::iterator_ra<BaseIterator>)
-				return iterator_transform.first - other.iterator_transform.first;
+				return iterator_transform.first -
+					   other.iterator_transform.first;
 			else
 				return ptrdiff_t(0);
 		}
@@ -80,7 +90,8 @@ namespace PP
 		constexpr decltype(auto) operator[](ptrdiff_t offset) const
 		{
 			if constexpr (PP::concepts::iterator_ra<BaseIterator>)
-				return iterator_transform.second(iterator_transform.first[offset]);
+				return iterator_transform.second(
+					iterator_transform.first[offset]);
 		}
 		constexpr auto inner_iterator() const
 		{
@@ -88,7 +99,8 @@ namespace PP
 		}
 	};
 	template <typename I, typename T>
-	transform_iterator(I&& i, T&& t)->transform_iterator<PP_GET_TYPE(~type<I>), PP_GET_TYPE(~type<T>)>;
+	transform_iterator(I&& i, T&& t)
+		-> transform_iterator<PP_GET_TYPE(~type<I>), PP_GET_TYPE(~type<T>)>;
 
 	template <typename Functor>
 	struct transform
@@ -98,9 +110,8 @@ namespace PP
 
 	constexpr auto transform_view(concepts::view auto&& v, auto&& f)
 	{
-		return
-			transform_iterator(view_begin(PP_FORWARD(v)), PP_FORWARD(f)) ^
-			transform_iterator(view_end  (PP_FORWARD(v)), PP_FORWARD(f));
+		return transform_iterator(view_begin(PP_FORWARD(v)), PP_FORWARD(f)) ^
+			   transform_iterator(view_end(PP_FORWARD(v)), PP_FORWARD(f));
 	}
 
 	constexpr auto operator&(concepts::iterator auto&& i, transform<auto> t)

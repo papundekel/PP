@@ -15,7 +15,9 @@ namespace PP
 			: pointer_new_base<T>(new T[count])
 		{}
 
-		constexpr pointer_new_array(const pointer_new_array<detail::pointer_new_compatible<T> auto>& other) noexcept
+		constexpr pointer_new_array(
+			const pointer_new_array<detail::pointer_new_compatible<T> auto>&
+				other) noexcept
 			: pointer_new_base<T>(other.ptr)
 		{}
 

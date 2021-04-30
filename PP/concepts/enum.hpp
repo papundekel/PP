@@ -7,6 +7,6 @@
 namespace PP
 {
 	constexpr inline auto is_enum = is_user_defined && !is_class;
-	
+
 	PP_CONCEPT(enum_type, enum)
 }

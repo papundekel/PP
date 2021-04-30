@@ -33,9 +33,11 @@ namespace PP
 	{
 		struct visit_helper
 		{
-			static PP_FUNCTOR(visit, auto&& visitor, auto&&... variants) -> decltype(auto)
+			static PP_FUNCTOR(visit, auto&& visitor, auto&&... variants)
+				-> decltype(auto)
 			{
-				return std::visit(compose(PP_REF_WRAP(visitor), unwrap_ref), PP_FORWARD(variants).v...);
+				return std::visit(compose(PP_REF_WRAP(visitor), unwrap_ref),
+								  PP_FORWARD(variants).v...);
 			});
 		};
 	}

@@ -11,19 +11,28 @@ namespace PP
 	namespace detail
 	{
 		template <typename T>
-		concept has_step = requires (T t)
+		concept has_step = requires(T t)
 		{
-			{ t.step() } -> concepts::void_type;
+			{
+				t.step()
+			}
+			->concepts::void_type;
 		};
 		template <typename T>
-		concept has_step_back = requires (T t)
+		concept has_step_back = requires(T t)
 		{
-			{ t.step_back() } -> concepts::void_type;
+			{
+				t.step_back()
+			}
+			->concepts::void_type;
 		};
 		template <typename T>
-		concept has_advance = requires (T t, ptrdiff_t n)
+		concept has_advance = requires(T t, ptrdiff_t n)
 		{
-			{ t.advance(n) } -> concepts::void_type;
+			{
+				t.advance(n)
+			}
+			->concepts::void_type;
 		};
 
 		template <typename T>
@@ -32,7 +41,8 @@ namespace PP
 		concept has_step_back_or_advance = has_step_back<T> || has_advance<T>;
 	}
 
-	constexpr auto& operator+=(detail::has_step_or_advance auto&& t, ptrdiff_t offset)
+	constexpr auto& operator+=(detail::has_step_or_advance auto&& t,
+							   ptrdiff_t						  offset)
 	{
 		if constexpr (detail::has_advance<decltype(t)>)
 			t.advance(offset);
@@ -44,7 +54,8 @@ namespace PP
 
 		return t;
 	}
-	constexpr auto& operator-=(detail::has_step_back_or_advance auto&& t, ptrdiff_t offset)
+	constexpr auto& operator-=(detail::has_step_back_or_advance auto&& t,
+							   ptrdiff_t							   offset)
 	{
 		if constexpr (detail::has_advance<decltype(t)>)
 			t.advance(-offset);
@@ -60,18 +71,25 @@ namespace PP
 	namespace detail
 	{
 		template <typename T>
-		concept has_operator_advance = requires (T t, ptrdiff_t n)
+		concept has_operator_advance = requires(T t, ptrdiff_t n)
 		{
-			{ t += n } -> concepts::same<T&>;
+			{
+				t += n
+			}
+			->concepts::same<T&>;
 		};
 		template <typename T>
-		concept has_operator_back = requires (T t, ptrdiff_t n)
+		concept has_operator_back = requires(T t, ptrdiff_t n)
 		{
-			{ t -= n } -> concepts::same<T&>;
+			{
+				t -= n
+			}
+			->concepts::same<T&>;
 		};
 	}
 
-	constexpr auto operator+(detail::has_operator_advance auto t, ptrdiff_t offset)
+	constexpr auto operator+(detail::has_operator_advance auto t,
+							 ptrdiff_t						   offset)
 	{
 		t += offset;
 		return t;
@@ -115,10 +133,13 @@ namespace PP
 	namespace concepts
 	{
 		template <typename T>
-		concept iterator = requires (T i)
+		concept iterator = requires(T i)
 		{
 			++i;
-			{ *i } -> non_void;
+			{
+				*i
+			}
+			->non_void;
 		};
 	}
 	PP_CONCEPT_FUNCTOR1(iterator);
@@ -126,29 +147,34 @@ namespace PP
 	namespace concepts
 	{
 		template <typename T>
-		concept iterator_bi = requires (T i)
+		concept iterator_bi = requires(T i)
 		{
 			--i;
-		} && iterator<T>;
+		}
+		&&iterator<T>;
 	}
 	PP_CONCEPT_FUNCTOR1(iterator_bi);
 
 	namespace concepts
 	{
 		template <typename T>
-		concept iterator_ra = requires (T i)
+		concept iterator_ra = requires(T i)
 		{
 			i += ptrdiff_t(0);
-			{ i[ptrdiff_t(0)] } -> non_void;
+			{
+				i[ptrdiff_t(0)]
+			}
+			->non_void;
 			i - i;
-		} && iterator_bi<T>;
+		}
+		&&iterator_bi<T>;
 	}
 	PP_CONCEPT_FUNCTOR1(iterator_ra);
 
 	namespace concepts
 	{
 		template <typename S, typename I>
-		concept sentinel = iterator<I> && equatable<I, S>;
+		concept sentinel = iterator<I>&& equatable<I, S>;
 	}
 	PP_FUNCTOR(is_sentinel, concepts::type auto s, concepts::type auto i)
 	{

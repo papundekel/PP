@@ -11,19 +11,44 @@ namespace PP
 {
 	namespace detail
 	{
-		constexpr auto promotion_type_convertor(int x) { return x; }
-		constexpr auto promotion_type_convertor(unsigned int x) { return x; }
-		constexpr auto promotion_type_convertor(long x) { return x; }
-		constexpr auto promotion_type_convertor(unsigned long x) { return x; }
-		constexpr auto promotion_type_convertor(long long x) { return x; }
-		constexpr auto promotion_type_convertor(unsigned long long x) { return x; }
-		constexpr auto promotion_type_convertor(double x) { return x; }
-		constexpr auto promotion_type_convertor(long double x) { return x; }
+		constexpr auto promotion_type_convertor(int x)
+		{
+			return x;
+		}
+		constexpr auto promotion_type_convertor(unsigned int x)
+		{
+			return x;
+		}
+		constexpr auto promotion_type_convertor(long x)
+		{
+			return x;
+		}
+		constexpr auto promotion_type_convertor(unsigned long x)
+		{
+			return x;
+		}
+		constexpr auto promotion_type_convertor(long long x)
+		{
+			return x;
+		}
+		constexpr auto promotion_type_convertor(unsigned long long x)
+		{
+			return x;
+		}
+		constexpr auto promotion_type_convertor(double x)
+		{
+			return x;
+		}
+		constexpr auto promotion_type_convertor(long double x)
+		{
+			return x;
+		}
 	}
 
-	PP_FUNCTOR(has_implicit_conversion_to_arithmetic_type, PP::concepts::type auto t)
+	PP_FUNCTOR(has_implicit_conversion_to_arithmetic_type,
+			   PP::concepts::type auto t)
 	{
-		return requires (PP_GET_TYPE(t) x)
+		return requires(PP_GET_TYPE(t) x)
 		{
 			promotion_type_convertor(x);
 		};
@@ -31,6 +56,10 @@ namespace PP
 
 	constexpr inline auto promotion_type =
 		decl_type_copy |
-		PP::functor([](auto x){ return detail::promotion_type_convertor(x); }) |
+		PP::functor(
+			[](auto x)
+			{
+				return detail::promotion_type_convertor(x);
+			}) |
 		construct_pack;
 }

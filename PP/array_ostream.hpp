@@ -16,5 +16,6 @@ namespace PP
 	}
 
 	template <size_t count>
-	using array_ostream = basic_ostream<detail::array_ostream_helper<count>::template help>;
+	using array_ostream =
+		basic_ostream<detail::array_ostream_helper<count>::template help>;
 }

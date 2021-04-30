@@ -1,6 +1,6 @@
 #pragma once
-#include "simple_vector.hpp"
 #include "basic_ostream.hpp"
+#include "simple_vector.hpp"
 
 namespace PP
 {

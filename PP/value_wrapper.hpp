@@ -4,5 +4,8 @@
 namespace PP
 {
 	template <auto f>
-	constexpr inline auto concepts::valueper = []<typename T>(T) { return PP::value<f(T{})>; };
+	constexpr inline auto concepts::valueper = []<typename T>(T)
+	{
+		return PP::value<f(T{})>;
+	};
 }

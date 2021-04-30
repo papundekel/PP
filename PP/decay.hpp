@@ -9,15 +9,18 @@
 
 namespace PP
 {
-	constexpr inline auto decay = caller([](concepts::type auto type)
-	{
-		constexpr auto T = PP_COPY_TYPE(type);
+	constexpr inline auto decay =
+		caller(
+			[](concepts::type auto type)
+			{
+				constexpr auto T = PP_COPY_TYPE(type);
 
-		if constexpr (is_array(T))
-			return add_pointer | remove_extent;
-		else if constexpr (is_function(T))
-			return add_pointer;
-		else
-			return remove_cv;
-	}) | remove_reference;
+				if constexpr (is_array(T))
+					return add_pointer | remove_extent;
+				else if constexpr (is_function(T))
+					return add_pointer;
+				else
+					return remove_cv;
+			}) |
+		remove_reference;
 }

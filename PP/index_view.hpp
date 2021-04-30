@@ -38,12 +38,8 @@ namespace PP
 		{}
 
 		constexpr auto begin() const
-		{
-
-		}
+		{}
 		constexpr auto end() const
-		{
-
-		}
+		{}
 	};
 }

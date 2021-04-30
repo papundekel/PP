@@ -15,7 +15,7 @@ namespace PP
 			T* constexpr_ptr;
 		};
 		bool constant_created;
-		
+
 	public:
 		constexpr static_block() noexcept
 			: buffer()

@@ -5,7 +5,8 @@
 
 namespace PP
 {
-	PP_FUNCTOR(construct_pack, concepts::type auto t, auto&&... args) -> decltype(auto)
+	PP_FUNCTOR(construct_pack, concepts::type auto t, auto&&... args)
+		-> decltype(auto)
 	{
 		return PP_GET_TYPE(t)(PP_FORWARD(args)...);
 	});

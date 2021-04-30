@@ -10,7 +10,8 @@
 
 namespace PP
 {
-	template <typename Iterator, concepts::sentinel<Iterator> Sentinel = Iterator>
+	template <typename Iterator,
+			  concepts::sentinel<Iterator> Sentinel = Iterator>
 	class simple_view
 	{
 		compressed_pair<Iterator, Sentinel> pair;
@@ -22,11 +23,14 @@ namespace PP
 		constexpr simple_view(Iterator begin, Sentinel end)
 			: pair(begin, end)
 		{}
-		constexpr simple_view(concepts::view auto&& v)
-		requires concepts::different_except_cvref<simple_view, decltype(v)>
+		constexpr simple_view(concepts::view auto&& v) requires concepts::
+			different_except_cvref<simple_view, decltype(v)>
 			: simple_view(view_begin(PP_FORWARD(v)), view_end(PP_FORWARD(v)))
 		{}
-		constexpr simple_view(const std::initializer_list<apply_transform_t<remove_reference | iterator_base, Iterator>>& l)
+		constexpr simple_view(
+			const std::initializer_list<
+				apply_transform_t<remove_reference | iterator_base, Iterator>>&
+				l)
 			: simple_view(l.begin(), l.end())
 		{}
 		constexpr auto begin() const
@@ -42,14 +46,18 @@ namespace PP
 			return begin()[index];
 		}
 	};
-	simple_view(concepts::view auto&& v) -> simple_view<PP_APPLY_TRANSFORM(view_type_begin_iterator, PP_DECLTYPE(v)), PP_APPLY_TRANSFORM(view_type_end_iterator, PP_DECLTYPE(v))>;
+	simple_view(concepts::view auto&& v) -> simple_view<
+		PP_APPLY_TRANSFORM(view_type_begin_iterator, PP_DECLTYPE(v)),
+		PP_APPLY_TRANSFORM(view_type_end_iterator, PP_DECLTYPE(v))>;
 	template <typename T>
-	simple_view(const std::initializer_list<T>&) -> simple_view<const T*, const T*>;
+	simple_view(const std::initializer_list<T>&)
+		-> simple_view<const T*, const T*>;
 
 	template <typename T>
 	using pointer_view = simple_view<T*>;
 
-	constexpr auto operator^(concepts::iterator auto begin, concepts::sentinel<decltype(begin)> auto end)
+	constexpr auto operator^(concepts::iterator auto				  begin,
+							 concepts::sentinel<decltype(begin)> auto end)
 	{
 		return simple_view(begin, end);
 	}

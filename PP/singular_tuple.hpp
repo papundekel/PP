@@ -10,13 +10,16 @@ namespace PP
 		constexpr singular_tuple(placeholder_t, auto&& value)
 			: iterate_tuple<value_t<1>, T>(placeholder, PP_FORWARD(value))
 		{}
-		constexpr singular_tuple(placeholder_t, concepts::type auto, auto&& value)
+		constexpr singular_tuple(placeholder_t,
+								 concepts::type auto,
+								 auto&& value)
 			: singular_tuple(placeholder, PP_FORWARD(value))
 		{}
 	};
 	template <typename T>
 	singular_tuple(placeholder_t, T) -> singular_tuple<T>;
-	singular_tuple(placeholder_t, concepts::type auto t, auto&&) -> singular_tuple<PP_GET_TYPE(t)>;
+	singular_tuple(placeholder_t, concepts::type auto t, auto&&)
+		-> singular_tuple<PP_GET_TYPE(t)>;
 
 	PP_FUNCTOR(make_singular_tuple, auto&& x)
 	{

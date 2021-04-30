@@ -31,7 +31,11 @@ namespace PP
 		return x.unwrap();
 	}
 
-	#define PP_FORWARD_WRAP(x) ::PP::forward_wrap{PP_FORWARD(x)}
+#define PP_FORWARD_WRAP(x)                                                     \
+	::PP::forward_wrap                                                         \
+	{                                                                          \
+		PP_FORWARD(x)                                                          \
+	}
 
 	PP_FUNCTOR(fwrap, auto&& x)
 	{

@@ -5,5 +5,6 @@
 
 namespace PP
 {
-	constexpr inline auto is_non_array_object = is_complete_object && is_returnable;
+	constexpr inline auto is_non_array_object =
+		is_complete_object && is_returnable;
 }

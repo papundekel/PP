@@ -3,7 +3,9 @@
 
 namespace PP
 {
-	constexpr inline struct unbounded_t{} unbounded{};
+	constexpr inline struct unbounded_t
+	{
+	} unbounded{};
 
 	constexpr bool operator==(concepts::iterator auto, unbounded_t) noexcept
 	{

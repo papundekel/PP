@@ -10,14 +10,18 @@
 
 namespace PP
 {
-	//constexpr inline struct scoped_in_place_delimiter_t {} scoped_in_place_delimiter;
+	// constexpr inline struct scoped_in_place_delimiter_t {}
+	// scoped_in_place_delimiter;
 
-	constexpr inline struct scoped_default_destructor_tag_t {} scoped_default_destructor_tag;
+	constexpr inline struct scoped_default_destructor_tag_t
+	{
+	} scoped_default_destructor_tag;
 
 	template <typename T, typename Destructor>
 	class scoped
 	{
-		//static constexpr auto splitter = arg_splitter * type<scoped_in_place_delimiter_t> * type_tuple<T, Destructor>;
+		// static constexpr auto splitter = arg_splitter *
+		// type<scoped_in_place_delimiter_t> * type_tuple<T, Destructor>;
 
 		template <typename U, typename D>
 		friend class scoped;
@@ -25,7 +29,7 @@ namespace PP
 		compressed_pair<T, Destructor> pair;
 
 	public:
-		//constexpr scoped(in_place_tag_t, auto&&... args)
+		// constexpr scoped(in_place_tag_t, auto&&... args)
 		//	: pair(
 		//		splitter(value_0, PP_FORWARD(args)...),
 		//		splitter(value_1, PP_FORWARD(args)...))
@@ -72,11 +76,13 @@ namespace PP
 		{
 			return pair.second;
 		}
+
 	private:
 		constexpr void destroy()
 		{
 			get_destructor()(get_object());
 		}
+
 	public:
 		template <typename U, typename D>
 		constexpr scoped& operator=(const scoped<U, D>& other)
@@ -106,5 +112,6 @@ namespace PP
 			destroy();
 		}
 	};
-	scoped(auto&& v, auto&& d) -> scoped<PP_GET_TYPE(~PP_DECLTYPE(v)), PP_GET_TYPE(~PP_DECLTYPE(d))>;
+	scoped(auto&& v, auto&& d)
+		-> scoped<PP_GET_TYPE(~PP_DECLTYPE(v)), PP_GET_TYPE(~PP_DECLTYPE(d))>;
 }

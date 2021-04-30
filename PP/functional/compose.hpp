@@ -13,19 +13,25 @@ namespace PP
 			declval_<F>()(declval_<G>()(declval_<Args>()...));
 		};
 	}
-	
+
 	PP_FUNCTOR(compose, auto&& f, auto&& g)
 	{
-		return functor([f = unwrap_functor(PP_FORWARD(f)), g = unwrap_functor(PP_FORWARD(g))]
-			(auto&&... args) -> decltype(auto)
-			requires detail::compose_concept<decltype(f), decltype(g), decltype(args)...>
+		return functor(
+			[
+				f = unwrap_functor(PP_FORWARD(f)),
+				g = unwrap_functor(PP_FORWARD(g))
+			](auto&&... args)
+				-> decltype(auto) requires detail::
+					compose_concept<decltype(f), decltype(g), decltype(args)...>
 			{
 				return f(g(PP_FORWARD(args)...));
 			});
 	});
 
-	constexpr auto operator|(concepts::functor auto&& f, concepts::functor auto&& g)
+	constexpr auto operator|(concepts::functor auto&& f,
+							 concepts::functor auto&& g)
 	{
-		return compose(unwrap_functor(PP_FORWARD(f)), unwrap_functor(PP_FORWARD(g)));
+		return compose(unwrap_functor(PP_FORWARD(f)),
+					   unwrap_functor(PP_FORWARD(g)));
 	}
 }

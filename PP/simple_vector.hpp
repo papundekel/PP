@@ -20,7 +20,7 @@ namespace PP
 		static constexpr size_t default_capacity = 16;
 
 		dynamic_block<T, Allocator> block;
-		size_t count_;
+		size_t						count_;
 
 		constexpr void destroy_all() noexcept
 		{
@@ -39,7 +39,7 @@ namespace PP
 		explicit constexpr simple_vector(size_t capacity) noexcept
 			: simple_vector(Allocator(), capacity)
 		{}
-		explicit constexpr simple_vector(concepts::view auto &&v)
+		explicit constexpr simple_vector(concepts::view auto&& v)
 			: simple_vector(Allocator(), PP_FORWARD(v))
 		{}
 		constexpr simple_vector(placeholder_t, auto&& allocator) noexcept
@@ -48,7 +48,12 @@ namespace PP
 		constexpr simple_vector(placeholder_t, size_t count) noexcept
 			: simple_vector(count)
 		{
-			view_for_each([](T& t) { construct_at_pack(&t); }, *this);
+			view_for_each(
+				[](T& t)
+				{
+					construct_at_pack(&t);
+				},
+				*this);
 		}
 		constexpr simple_vector() noexcept
 			: simple_vector(Allocator(), default_capacity)

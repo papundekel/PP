@@ -9,7 +9,8 @@ namespace PP
 	class generator_tuple_t
 	{
 	public:
-		constexpr decltype(auto) operator[](concepts::value auto i) const noexcept
+		constexpr decltype(auto) operator[](
+			concepts::value auto i) const noexcept
 		{
 			return generator(i);
 		}

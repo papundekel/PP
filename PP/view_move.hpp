@@ -1,6 +1,6 @@
 #pragma once
-#include "functional/apply_partially_first.hpp"
 #include "functional/applier.hpp"
+#include "functional/apply_partially_first.hpp"
 #include "functional/compose.hpp"
 #include "functional/operators.hpp"
 #include "move_assign.hpp"
@@ -10,5 +10,6 @@
 
 namespace PP
 {
-	constexpr inline auto view_move = view_for_each * *move_assign | zip_view_pack;
+	constexpr inline auto view_move =
+		view_for_each * *move_assign | zip_view_pack;
 }

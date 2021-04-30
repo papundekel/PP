@@ -1,7 +1,7 @@
 #pragma once
 #include "../tuple.hpp"
-#include "../tuple_fold.hpp"
 #include "../tuple_apply.hpp"
+#include "../tuple_fold.hpp"
 #include "apply_partially.hpp"
 #include "compose.hpp"
 #include "constant.hpp"

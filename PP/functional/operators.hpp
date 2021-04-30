@@ -13,7 +13,7 @@ namespace PP
 	});
 	PP_FUNCTOR(lst, auto&& x, auto&& y) -> decltype(auto)
 	{
-		return PP_FORWARD(x) <  PP_FORWARD(y);
+		return PP_FORWARD(x) < PP_FORWARD(y);
 	});
 	PP_FUNCTOR(lte, auto&& x, auto&& y) -> decltype(auto)
 	{
@@ -29,11 +29,11 @@ namespace PP
 	});
 	PP_FUNCTOR(pls, auto&& x, auto&& y) -> decltype(auto)
 	{
-		return PP_FORWARD(x) +  PP_FORWARD(y);
+		return PP_FORWARD(x) + PP_FORWARD(y);
 	});
 	PP_FUNCTOR(asg, auto&& x, auto&& y) -> decltype(auto)
 	{
-		return PP_FORWARD(x) =  PP_FORWARD(y);
+		return PP_FORWARD(x) = PP_FORWARD(y);
 	});
 	PP_FUNCTOR(pas, auto&& x, auto&& y) -> decltype(auto)
 	{
@@ -49,11 +49,11 @@ namespace PP
 	});
 	PP_FUNCTOR(der, auto&& x) -> decltype(auto)
 	{
-		return  *PP_FORWARD(x);
+		return *PP_FORWARD(x);
 	});
 	PP_FUNCTOR(neg, auto&& x) -> decltype(auto)
 	{
-		return  !PP_FORWARD(x);
+		return !PP_FORWARD(x);
 	});
 	PP_FUNCTOR(cal, auto&& f, auto&&... args) -> decltype(auto)
 	{

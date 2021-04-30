@@ -44,13 +44,15 @@ namespace PP
 		constexpr auto advance(ptrdiff_t offset)
 		{
 			if constexpr ((concepts::iterator_ra<Iterators> && ...))
-				tuple_for_each(value_true, pas(partial_tag, value_1, offset), *this);
+				tuple_for_each(
+					value_true, pas(partial_tag, value_1, offset), *this);
 			else
 				return 0;
 		}
 		template <typename... IteratorsOther>
-		requires (sizeof...(Iterators) == sizeof...(IteratorsOther))
-		constexpr bool operator==(const zip_iterator<IteratorsOther...>& other) const noexcept
+		requires(sizeof...(Iterators) ==
+				 sizeof...(IteratorsOther)) constexpr bool
+		operator==(const zip_iterator<IteratorsOther...>& other) const noexcept
 		{
 			return *eql || tuple_zip_pack(*this, other);
 		}
@@ -65,10 +67,7 @@ namespace PP
 
 	PP_FUNCTOR(zip_view_pack, concepts::view auto&&... views)
 	{
-		return simple_view
-		(
-			make_zip_iterator(view_begin(PP_FORWARD(views))...),
-			make_zip_iterator(view_end  (PP_FORWARD(views))...)
-		);
+		return simple_view(make_zip_iterator(view_begin(PP_FORWARD(views))...),
+						   make_zip_iterator(view_end(PP_FORWARD(views))...));
 	});
 }

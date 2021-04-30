@@ -1,7 +1,7 @@
 #pragma once
 #include "character.hpp"
-#include "integer.hpp"
 #include "fundamental_types.hpp"
+#include "integer.hpp"
 
 namespace PP
 {

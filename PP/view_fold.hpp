@@ -7,7 +7,11 @@
 
 namespace PP
 {
-	PP_FUNCTOR(view_fold, concepts::value auto left, auto&& f, auto init, concepts::view auto&& v)
+	PP_FUNCTOR(view_fold,
+			   concepts::value auto	 left,
+			   auto&&				 f,
+			   auto					 init,
+			   concepts::view auto&& v)
 	{
 		if constexpr (PP_GET_VALUE(left))
 		{
@@ -17,8 +21,7 @@ namespace PP
 				init = PP_FORWARD(f)(move(init), *i);
 
 			return make_tuple(move(i), move(init));
-		}
-		else
+		} else
 		{
 			auto [begin, i] = view_begin_end(PP_FORWARD(v));
 
@@ -30,7 +33,7 @@ namespace PP
 					init = PP_FORWARD(f)(*i, move(init));
 				} while (i != begin);
 			}
-		
+
 			return make_tuple(move(i), move(init));
 		}
 	});

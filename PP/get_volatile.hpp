@@ -7,5 +7,6 @@
 
 namespace PP
 {
-	constexpr inline auto get_volatile_value_t = tuple_get * value_1 | decompose_volatile;
+	constexpr inline auto get_volatile_value_t =
+		tuple_get * value_1 | decompose_volatile;
 }

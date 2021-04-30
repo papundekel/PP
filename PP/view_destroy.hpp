@@ -5,10 +5,11 @@
 
 namespace PP
 {
-	constexpr inline auto view_destroy = view_for_each * functor([]
-		(auto&& x)
-		{
-			using T = PP_GET_TYPE(~PP_DECLTYPE(x));
-			x.~T();
-		});
+	constexpr inline auto view_destroy =
+		view_for_each * functor(
+							[](auto&& x)
+							{
+								using T = PP_GET_TYPE(~PP_DECLTYPE(x));
+								x.~T();
+							});
 }

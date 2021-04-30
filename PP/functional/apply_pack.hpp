@@ -5,10 +5,11 @@
 
 namespace PP
 {
-	constexpr inline functor apply_pack([]
-		<auto... I>
-		(auto&& packer, auto&& selector, value_sequence<I...>) -> decltype(auto)
+	constexpr inline functor apply_pack(
+		[]<auto... I>(auto&& packer, auto&& selector, value_sequence<I...>)
+			->decltype(auto)
 		{
-			return unwrap_functor(PP_FORWARD(packer))(unwrap_functor(PP_FORWARD(selector))(value<I>)...);
+			return unwrap_functor(PP_FORWARD(packer))(
+				unwrap_functor(PP_FORWARD(selector))(value<I>)...);
 		});
 }

@@ -14,7 +14,7 @@ namespace PP
 			typename T::type;
 		};
 	}
-	
+
 	PP_FUNCTOR(get_type, concepts::type auto t)
 	{
 		return type<PP_TYPE_UNSAFE(t)::type>;
@@ -26,8 +26,8 @@ namespace PP
 	template <typename T>
 	constexpr T ffffff(T);
 
-	#define PP_GET_TYPE(x) ::PP::get_type_t<decltype(ffffff(x))>
-	#define PP_COPY_TYPE(x) (::PP::type<PP_GET_TYPE(x)>)
+#define PP_GET_TYPE(x) ::PP::get_type_t<decltype(ffffff(x))>
+#define PP_COPY_TYPE(x) (::PP::type<PP_GET_TYPE(x)>)
 
 	constexpr inline auto to_type_t = get_type | decl_type_copy;
 }
