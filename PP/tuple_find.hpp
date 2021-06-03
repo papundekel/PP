@@ -10,8 +10,8 @@ namespace PP
 	{
 		return PP_COPY_VALUE_MEMBER(
 			tuple_foldl(
-				[predicate_wrap = PP_FORWARD_WRAP(predicate)](
-					concepts::value auto s, auto&& element)
+				[predicate_wrap = PP_FORWARD_WRAP(
+					 predicate)](concepts::value auto s, auto&& element)
 				{
 					constexpr auto state = PP_GET_VALUE(s);
 
@@ -22,7 +22,8 @@ namespace PP
 																	true)>;
 					else
 						return value<detail::tuple_find_index_state(
-							state.index + 1, false)>;
+							state.index + 1,
+							false)>;
 				},
 				value<detail::tuple_find_index_state(0, false)>,
 				PP_FORWARD(tuple)),

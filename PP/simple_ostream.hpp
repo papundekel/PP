@@ -17,7 +17,7 @@ namespace PP
 		constexpr void write_num(auto number) noexcept
 		{
 			array<char, 32> buffer;
-			auto			end = to_chars(buffer, number);
+			auto end = to_chars(buffer, number);
 			write(make_any_view_chars(view_begin(buffer), end));
 		}
 

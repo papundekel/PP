@@ -7,7 +7,7 @@
 namespace PP
 {
 	PP_FUNCTOR(tuple_find_dynamic,
-			   auto&&				  predicate,
+			   auto&& predicate,
 			   concepts::tuple auto&& tuple)
 	{
 		return tuple_foldl(

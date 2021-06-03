@@ -27,7 +27,8 @@ namespace PP
 			return (tuple_make | tuple_prepend)(
 				tuple_get * value_0 + move(splits),
 				tuple_zip(tuple_get * value_1 + move(splits)));
-		} else
+		}
+		else
 			return empty_tuple{};
 	});
 	constexpr inline auto tuple_zip_pack = tuple_zip | forward_as_tuple;

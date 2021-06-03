@@ -5,8 +5,7 @@
 
 #include "PP/array_vector.hpp"
 
-int
-main()
+int main()
 {
 
 	std::cout.flush();

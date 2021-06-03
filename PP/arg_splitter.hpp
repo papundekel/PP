@@ -13,9 +13,9 @@
 namespace PP
 {
 	PP_FUNCTOR(arg_splitter,
-			   concepts::type auto	  delimiter_type,
+			   concepts::type auto delimiter_type,
 			   concepts::tuple auto&& to_construct_types,
-			   concepts::value auto	  i,
+			   concepts::value auto i,
 			   auto&&... args)
 	{
 		auto splits = tuple_splits(
@@ -30,7 +30,7 @@ namespace PP
 					  "arg_splitter: bad arg delimiter count");
 
 		return (*functor(
-					[](concepts::type auto	to_construct_type,
+					[](concepts::type auto to_construct_type,
 					   concepts::tuple auto args)
 					{
 						return [t = move(to_construct_type), as = move(args)]()

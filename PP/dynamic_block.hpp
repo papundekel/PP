@@ -63,7 +63,8 @@ namespace PP
 		constexpr auto spawn_new(size_t count)
 		{
 			return dynamic_block<T, Allocator&>(
-				ptr.get_object().get_allocator(), count);
+				ptr.get_object().get_allocator(),
+				count);
 		}
 	};
 }

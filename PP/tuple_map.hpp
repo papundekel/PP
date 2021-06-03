@@ -19,7 +19,7 @@ namespace PP
 	});
 
 	constexpr auto operator+(concepts::functor auto&& f,
-							 concepts::tuple auto&&	  tuple)
+							 concepts::tuple auto&& tuple)
 	{
 		return tuple_map(unwrap_functor(PP_FORWARD(f)), PP_FORWARD(tuple));
 	}

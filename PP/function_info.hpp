@@ -10,16 +10,16 @@ namespace PP
 	class function_info
 	{
 	public:
-		[[no_unique_address]] type_t<R>			 return_type;
+		[[no_unique_address]] type_t<R> return_type;
 		[[no_unique_address]] type_tuple_t<P...> parameter_types;
-		bool									 Noexcept;
-		cv_qualifier							 cv;
-		ref_qualifier							 ref;
+		bool Noexcept;
+		cv_qualifier cv;
+		ref_qualifier ref;
 
 	private:
-		constexpr function_info(cv_qualifier  cv,
+		constexpr function_info(cv_qualifier cv,
 								ref_qualifier ref,
-								bool		  Noexcept) noexcept
+								bool Noexcept) noexcept
 			: Noexcept(Noexcept)
 			, cv(cv)
 			, ref(ref)

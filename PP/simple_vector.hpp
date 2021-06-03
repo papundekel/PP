@@ -20,7 +20,7 @@ namespace PP
 		static constexpr size_t default_capacity = 16;
 
 		dynamic_block<T, Allocator> block;
-		size_t						count_;
+		size_t count_;
 
 		constexpr void destroy_all() noexcept
 		{

@@ -7,7 +7,7 @@
 namespace PP
 {
 	PP_FUNCTOR(make_variant_pack,
-			   concepts::type auto	t,
+			   concepts::type auto t,
 			   concepts::value auto i,
 			   auto&&... args)
 	{

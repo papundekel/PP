@@ -42,7 +42,7 @@ namespace PP
 	}
 
 	constexpr auto& operator+=(detail::has_step_or_advance auto&& t,
-							   ptrdiff_t						  offset)
+							   ptrdiff_t offset)
 	{
 		if constexpr (detail::has_advance<decltype(t)>)
 			t.advance(offset);
@@ -55,7 +55,7 @@ namespace PP
 		return t;
 	}
 	constexpr auto& operator-=(detail::has_step_back_or_advance auto&& t,
-							   ptrdiff_t							   offset)
+							   ptrdiff_t offset)
 	{
 		if constexpr (detail::has_advance<decltype(t)>)
 			t.advance(-offset);
@@ -89,7 +89,7 @@ namespace PP
 	}
 
 	constexpr auto operator+(detail::has_operator_advance auto t,
-							 ptrdiff_t						   offset)
+							 ptrdiff_t offset)
 	{
 		t += offset;
 		return t;

@@ -149,10 +149,11 @@ namespace PP
 			return [tag](concepts::type auto t, auto&&... args)
 			{
 				return make_unique_pointer_get_maker_helper(tag)(
-					make_unique_pointer_template(tag)(t), PP_FORWARD(args)...);
+					make_unique_pointer_template(tag)(t),
+					PP_FORWARD(args)...);
 			};
 		}
-		constexpr auto make_unique_pointer_helper(auto&&			  maker,
+		constexpr auto make_unique_pointer_helper(auto&& maker,
 												  concepts::type auto t,
 												  auto&&... args)
 		{
@@ -162,12 +163,14 @@ namespace PP
 		}
 	}
 
-	constexpr auto make_unique_pointer(auto				   tag,
+	constexpr auto make_unique_pointer(auto tag,
 									   concepts::type auto t,
 									   auto&&... args)
 	{
 		return detail::make_unique_pointer_helper(
-			detail::make_unique_pointer_get_maker(tag), t, PP_FORWARD(args)...);
+			detail::make_unique_pointer_get_maker(tag),
+			t,
+			PP_FORWARD(args)...);
 	}
 
 	constexpr auto make_unique_copy(auto tag, auto&& value)

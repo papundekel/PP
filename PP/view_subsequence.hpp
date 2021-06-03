@@ -26,7 +26,7 @@ namespace PP
 	//};
 
 	PP_FUNCTOR(view_subsequence_if,
-			   auto&&				 comparer,
+			   auto&& comparer,
 			   concepts::view auto&& sub,
 			   concepts::view auto&& full)
 	{
@@ -54,7 +54,8 @@ namespace PP
 				return subsequence_type::proper;
 			else
 				return subsequence_type::equal;
-		} else
+		}
+		else
 			return subsequence_type::none;
 	});
 

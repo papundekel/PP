@@ -39,9 +39,9 @@ namespace PP
 	}
 
 	PP_FUNCTOR(tuple_fold,
-			   concepts::value auto	  left,
-			   auto&&				  f,
-			   auto&&				  init,
+			   concepts::value auto left,
+			   auto&& f,
+			   auto&& init,
 			   concepts::tuple auto&& tuple)
 	{
 		return functor(

@@ -35,12 +35,12 @@ namespace PP
 	view_tuple(concepts::value auto count, Iterator)
 		-> view_tuple<Iterator, *PP_COPY_VALUE(count)>;
 
-	constexpr auto make_view_tuple(concepts::value auto		 count,
+	constexpr auto make_view_tuple(concepts::value auto count,
 								   concepts::iterator auto&& i) noexcept
 	{
 		return view_tuple(count, PP_FORWARD(i));
 	}
-	constexpr auto make_view_tuple(concepts::value auto	 count,
+	constexpr auto make_view_tuple(concepts::value auto count,
 								   concepts::view auto&& v) noexcept
 	{
 		return make_view_tuple(count, view_begin(PP_FORWARD(v)));

@@ -16,8 +16,8 @@ namespace PP
 	class small_optimized_vector
 	{
 		static_block<T, StaticCapacity> block_s;
-		dynamic_block<T, Allocator>		block_d;
-		no_default_initialized<size_t>	count_;
+		dynamic_block<T, Allocator> block_d;
+		no_default_initialized<size_t> count_;
 
 		constexpr small_optimized_vector(size_t dynamic_capacity,
 										 size_t count,
@@ -45,7 +45,7 @@ namespace PP
 									 view_count(PP_FORWARD(view)),
 									 Allocator())
 		{
-			view_copy_uninitialized(*this, PP_FOR WARD(view));
+			view_copy_uninitialized(*this, PP_FORWARD(view));
 		}
 
 	public:

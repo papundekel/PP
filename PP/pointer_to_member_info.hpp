@@ -10,7 +10,7 @@ namespace PP
 	{
 	public:
 		[[no_unique_address]] type_t<Member> member_type;
-		[[no_unique_address]] type_t<Class>	 class_type;
+		[[no_unique_address]] type_t<Class> class_type;
 
 	public:
 		explicit constexpr pointer_to_member_info(

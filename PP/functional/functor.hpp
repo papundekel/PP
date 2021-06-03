@@ -42,10 +42,10 @@ namespace PP
 		}
 
 		constexpr auto operator()(partial_tag_t,
-								  auto	 i,
+								  auto i,
 								  auto&& arg) const& noexcept;
 		constexpr auto operator()(partial_tag_t,
-								  auto	 i,
+								  auto i,
 								  auto&& arg) const&& noexcept;
 
 		constexpr decltype(auto) operator[](auto&& tuple) const&;

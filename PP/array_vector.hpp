@@ -17,7 +17,7 @@ namespace PP
 	template <typename T, size_t Capacity, bool looping = false>
 	class array_vector
 	{
-		static_block<T, Capacity>	   block;
+		static_block<T, Capacity> block;
 		no_default_initialized<size_t> count_;
 
 		constexpr void destroy_all() noexcept
@@ -101,7 +101,8 @@ namespace PP
 			{
 				--count_;
 				destroy_at(end());
-			} else
+			}
+			else
 			{
 				if constexpr (!looping)
 					std::terminate();

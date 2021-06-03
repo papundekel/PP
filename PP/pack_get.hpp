@@ -8,7 +8,7 @@ namespace PP
 	{
 		constexpr decltype(auto) pack_get_implementation(
 			concepts::value auto i,
-			auto&&				 first,
+			auto&& first,
 			auto&&... pack) noexcept
 		{
 			if constexpr (*PP_COPY_VALUE(i) == 0)

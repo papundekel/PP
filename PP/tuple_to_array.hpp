@@ -10,7 +10,7 @@ namespace PP
 {
 	namespace detail
 	{
-		constexpr auto tuple_first_element_or(concepts::type auto	 t,
+		constexpr auto tuple_first_element_or(concepts::type auto t,
 											  concepts::tuple auto&& tuple)
 		{
 			if constexpr (tuple_type_count(PP_DECLTYPE(tuple)) != 0)
@@ -20,7 +20,7 @@ namespace PP
 		}
 
 		constexpr auto tuple_to_array_implementation(
-			concepts::type auto	   t,
+			concepts::type auto t,
 			concepts::tuple auto&& tuple)
 		{
 			if constexpr (PP_COPY_TYPE(t) == type_void)
@@ -40,13 +40,13 @@ namespace PP
 	}
 
 	PP_FUNCTOR(tuple_to_array,
-			   concepts::type auto	  t,
+			   concepts::type auto t,
 			   concepts::tuple auto&& tuple)
 	{
 		return detail::tuple_to_array_implementation(t, PP_FORWARD(tuple));
 	});
 
-	constexpr auto operator&(concepts::type auto	t,
+	constexpr auto operator&(concepts::type auto t,
 							 concepts::tuple auto&& tuple)
 	{
 		return tuple_to_array(t, PP_FORWARD(tuple));

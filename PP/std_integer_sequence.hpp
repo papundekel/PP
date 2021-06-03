@@ -35,7 +35,7 @@ namespace concepts
 namespace std
 {
 	template <typename T, T... Values>
-	constexpr decltype(auto) get(PP::concepts::value auto			 i,
+	constexpr decltype(auto) get(PP::concepts::value auto i,
 								 std::integer_sequence<T, Values...> s)
 	{
 		return get(i, PP::value_tuple_v<Values...>);

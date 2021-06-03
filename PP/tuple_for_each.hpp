@@ -6,8 +6,8 @@
 namespace PP
 {
 	PP_FUNCTOR(tuple_for_each,
-			   concepts::value auto	  left,
-			   auto&&				  f,
+			   concepts::value auto left,
+			   auto&& f,
 			   concepts::tuple auto&& t)
 	{
 		tuple_fold(

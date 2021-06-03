@@ -21,7 +21,8 @@ namespace PP
 		if constexpr (*PP_COPY_VALUE(i) == 0)
 			return PP_FORWARD(f)(PP_FORWARD(t));
 		else
-			return tuple_recursive(
-				PP_FORWARD(f), i - value_1, tuple_pred(PP_FORWARD(t)));
+			return tuple_recursive(PP_FORWARD(f),
+								   i - value_1,
+								   tuple_pred(PP_FORWARD(t)));
 	});
 }

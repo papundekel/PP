@@ -11,8 +11,8 @@
 namespace PP
 {
 	PP_FUNCTOR(view_zip_if,
-			   auto&&				  predicate,
-			   auto&&				  f,
+			   auto&& predicate,
+			   auto&& f,
 			   concepts::tuple auto&& views)
 	{
 		auto begin_ends = view_begin_end + PP_FORWARD(views);

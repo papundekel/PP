@@ -29,9 +29,9 @@ namespace PP
 
 	struct cv_decomposition_element
 	{
-		cv_qualifier		  cv;
+		cv_qualifier cv;
 		cv_decomposition_type type;
-		size_t				  extent;
+		size_t extent;
 	};
 
 	constexpr cv_decomposition_type get_cv_decomposition_type(

@@ -56,7 +56,7 @@ namespace PP
 	template <typename T>
 	using pointer_view = simple_view<T*>;
 
-	constexpr auto operator^(concepts::iterator auto				  begin,
+	constexpr auto operator^(concepts::iterator auto begin,
 							 concepts::sentinel<decltype(begin)> auto end)
 	{
 		return simple_view(begin, end);

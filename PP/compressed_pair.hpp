@@ -17,7 +17,7 @@ namespace PP
 		template <typename First, typename Second>
 		struct compressed_pair_nonempty
 		{
-			First  first;
+			First first;
 			Second second;
 		};
 		template <typename Empty, typename Second>

@@ -44,8 +44,9 @@ namespace PP
 		constexpr auto advance(ptrdiff_t offset)
 		{
 			if constexpr ((concepts::iterator_ra<Iterators> && ...))
-				tuple_for_each(
-					value_true, pas(partial_tag, value_1, offset), *this);
+				tuple_for_each(value_true,
+							   pas(partial_tag, value_1, offset),
+							   *this);
 			else
 				return 0;
 		}

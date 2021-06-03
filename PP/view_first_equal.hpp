@@ -9,7 +9,7 @@
 namespace PP
 {
 	PP_FUNCTOR(view_first_equal_if,
-			   auto&&				 comparer,
+			   auto&& comparer,
 			   concepts::view auto&& a,
 			   concepts::view auto&& b)
 	{
@@ -17,7 +17,7 @@ namespace PP
 						 zip_view_pack(PP_FORWARD(a), PP_FORWARD(b)));
 	});
 	PP_FUNCTOR(view_first_difference_if,
-			   auto&&				 comparer,
+			   auto&& comparer,
 			   concepts::view auto&& a,
 			   concepts::view auto&& b)
 	{

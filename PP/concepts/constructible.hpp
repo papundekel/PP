@@ -32,7 +32,7 @@ namespace PP
 	{
 		PP_FUNCTOR(is_constructible_pack_impl,
 				   concepts::value auto Noexcept,
-				   concepts::type auto	t,
+				   concepts::type auto t,
 				   concepts::type auto... arg_types)
 		{
 			if constexpr (PP_GET_VALUE(Noexcept))
@@ -46,7 +46,7 @@ namespace PP
 
 		PP_FUNCTOR(is_constructible_impl,
 				   concepts::value auto Noexcept,
-				   concepts::type auto	t,
+				   concepts::type auto t,
 				   concepts::tuple auto arg_tuple)
 		{
 			return (is_constructible_pack_impl * Noexcept * t)[arg_tuple];

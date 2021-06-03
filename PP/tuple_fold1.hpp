@@ -5,8 +5,8 @@
 namespace PP
 {
 	PP_FUNCTOR(tuple_fold1,
-			   concepts::value auto	  left,
-			   auto&&				  f,
+			   concepts::value auto left,
+			   auto&& f,
 			   concepts::tuple auto&& tuple)
 	{
 		static_assert(tuple_type_count(PP_DECLTYPE(tuple)),

@@ -23,7 +23,7 @@ namespace PP
 		template <template <typename...> typename T, typename... Types>
 		struct decompose_pair
 		{
-			template_t<T>		   Template;
+			template_t<T> Template;
 			type_tuple_t<Types...> types;
 		};
 

@@ -150,9 +150,9 @@ namespace PP
 			copy_value(Category) const = 0;
 	};
 
-	constexpr auto any_iterator_copy_as(const auto&			 any_it,
+	constexpr auto any_iterator_copy_as(const auto& any_it,
 										concepts::value auto category,
-										concepts::type auto	 t)
+										concepts::type auto t)
 	{
 		constexpr auto from_t = PP_COPY_TYPE(any_it.get_type());
 
@@ -174,7 +174,7 @@ namespace PP
 		: public any_iterator_base_base<iterator_category::forward, T>
 	{
 	public:
-		constexpr virtual T	   dereference() const = 0;
+		constexpr virtual T dereference() const = 0;
 		constexpr virtual void increment() = 0;
 		constexpr virtual bool equal(const any_iterator_base& other) const = 0;
 
@@ -195,8 +195,8 @@ namespace PP
 		: public any_iterator_base_base<iterator_category::ra, T>
 	{
 	public:
-		constexpr virtual void		advance(ptrdiff_t offset) = 0;
-		constexpr virtual T			index(ptrdiff_t offset) const = 0;
+		constexpr virtual void advance(ptrdiff_t offset) = 0;
+		constexpr virtual T index(ptrdiff_t offset) const = 0;
 		constexpr virtual ptrdiff_t difference(
 			const any_iterator_base& other) const = 0;
 	};
@@ -250,8 +250,9 @@ namespace PP
 			if (ptr)
 				return PP_FORWARD(f)(ptr);
 			else
-				return invoke_on_first_valid<OtherIterators...>(
-					PP_FORWARD(f), def, other);
+				return invoke_on_first_valid<OtherIterators...>(PP_FORWARD(f),
+																def,
+																other);
 		}
 	}
 
@@ -279,7 +280,7 @@ namespace PP
 		static constexpr auto C = -type<CT>;
 
 		constexpr auto copy(concepts::value auto category,
-							concepts::type auto	 t) const
+							concepts::type auto t) const
 		{
 			return make_unique_pointer(
 				any_iterator_unique_pointer_type{},
@@ -467,7 +468,7 @@ namespace PP
 			: any_iterator_implementation(placeholder, move(other.p))
 		{}
 
-		template <detail::at_least_type<C>	  COther,
+		template <detail::at_least_type<C> COther,
 				  concepts::convertible_to<T> U>
 		constexpr any_iterator_implementation(
 			const any_iterator_implementation<
@@ -542,7 +543,7 @@ namespace PP
 										  T>(move(other))
 		{}
 
-		template <detail::at_least_type<C>	  COther,
+		template <detail::at_least_type<C> COther,
 				  concepts::convertible_to<T> U>
 		constexpr any_iterator_implementation(
 			const any_iterator_implementation<
@@ -599,7 +600,7 @@ namespace PP
 				  move(other))
 		{}
 
-		template <detail::at_least_type<C>	  COther,
+		template <detail::at_least_type<C> COther,
 				  concepts::convertible_to<T> U>
 		constexpr any_iterator_implementation(
 			const any_iterator_implementation<
@@ -655,17 +656,18 @@ namespace PP
 
 		constexpr auto make_any_iterator_implementation_type(
 			concepts::value auto category,
-			concepts::type auto	 dereference_type)
+			concepts::type auto dereference_type)
 		{
 			auto category_type = PP_DECLTYPE(to_value_t(category));
 
-			return Template<any_iterator_implementation>(
-				category_type, category_type, dereference_type);
+			return Template<any_iterator_implementation>(category_type,
+														 category_type,
+														 dereference_type);
 		}
 		constexpr auto make_any_iterator_wrapper_type(
 			concepts::value auto category,
-			concepts::type auto	 dereference_type,
-			concepts::type auto	 iterator_type,
+			concepts::type auto dereference_type,
+			concepts::type auto iterator_type,
 			concepts::tuple auto compatible_iterators)
 		{
 			auto category_type = PP_DECLTYPE(to_value_t(category));
@@ -678,8 +680,8 @@ namespace PP
 
 		constexpr auto make_any_iterator_pointer(
 			concepts::iterator auto i,
-			concepts::type auto		dereference_type,
-			concepts::tuple auto	compatible_iterators)
+			concepts::type auto dereference_type,
+			concepts::tuple auto compatible_iterators)
 		{
 			auto iterator_type = PP_DECLTYPE(i);
 
@@ -694,7 +696,7 @@ namespace PP
 		}
 		constexpr auto make_any_iterator(
 			concepts::iterator auto i,
-			concepts::tuple auto	compatible_iterators)
+			concepts::tuple auto compatible_iterators)
 		{
 			auto iterator_type = PP_DECLTYPE(i);
 			auto dereference_type = PP_DECLTYPE(*i);
@@ -703,8 +705,9 @@ namespace PP
 			return make_any_iterator_implementation_type(category,
 														 dereference_type)(
 				placeholder,
-				make_any_iterator_pointer(
-					i, dereference_type, compatible_iterators));
+				make_any_iterator_pointer(i,
+										  dereference_type,
+										  compatible_iterators));
 		}
 	}
 

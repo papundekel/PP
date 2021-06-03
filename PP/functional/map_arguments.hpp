@@ -13,7 +13,7 @@ namespace PP
 	namespace detail
 	{
 		constexpr decltype(auto) map_arguments_element_helper(
-			auto				 maps,
+			auto maps,
 			concepts::value auto i)
 		{
 			if constexpr (i < tuple_type_count(PP_DECLTYPE(maps)))
@@ -23,7 +23,7 @@ namespace PP
 		}
 		template <auto... I>
 		constexpr decltype(auto) map_arguments_helper(auto& f,
-													  auto	maps,
+													  auto maps,
 													  value_sequence<I...>,
 													  auto&&... args)
 		{

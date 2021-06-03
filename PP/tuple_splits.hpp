@@ -15,7 +15,7 @@ namespace PP
 	{
 		return tuple_foldr(
 			[predicate_wrap = PP_FORWARD_WRAP(predicate)](auto&& element,
-														  auto	 splits)
+														  auto splits)
 			{
 				if constexpr (PP_GET_VALUE(
 								  predicate_wrap.unwrap()(PP_FORWARD(element))))
@@ -23,11 +23,13 @@ namespace PP
 				else
 					return *functor(
 							   [element_wrap = PP_FORWARD_WRAP(element)](
-								   concepts::value auto i, auto split)
+								   concepts::value auto i,
+								   auto split)
 							   {
 								   if constexpr (PP_GET_VALUE(i) == 0)
 									   return tuple_prepend(
-										   element_wrap.unwrap(), move(split));
+										   element_wrap.unwrap(),
+										   move(split));
 								   else
 									   return move(split);
 							   }) +

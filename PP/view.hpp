@@ -101,8 +101,8 @@ namespace PP
 			{
 				view_end(declval(t))
 			}
-			->concepts::sentinel<PP_APPLY_TRANSFORM(
-				detail::view_type_begin_iterator_pure, t)>;
+			->concepts::sentinel<
+				PP_APPLY_TRANSFORM(detail::view_type_begin_iterator_pure, t)>;
 		};
 	});
 

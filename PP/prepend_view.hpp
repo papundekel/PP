@@ -7,8 +7,8 @@ namespace PP
 	class prepend_iterator
 	{
 		Head& head;
-		I	  i;
-		bool  at_head;
+		I i;
+		bool at_head;
 
 	public:
 		constexpr prepend_iterator(Head& head, I i)

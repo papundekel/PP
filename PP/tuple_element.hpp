@@ -74,7 +74,7 @@ namespace PP
 
 	PP_FUNCTOR(tuple_type_element,
 			   concepts::value auto i,
-			   concepts::type auto	t)
+			   concepts::type auto t)
 	{
 		return PP_COPY_TYPE(tuple_element(i, declval(t)));
 	});

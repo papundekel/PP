@@ -17,7 +17,7 @@ namespace PP
 	});
 
 	constexpr decltype(auto) operator||(concepts::functor auto&& f,
-										concepts::tuple auto&&	 tuple)
+										concepts::tuple auto&& tuple)
 	{
 		return tuple_any(unwrap_functor(PP_FORWARD(f)), PP_FORWARD(tuple));
 	}

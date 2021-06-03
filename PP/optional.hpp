@@ -16,7 +16,7 @@ namespace PP
 		friend struct optional_creator;
 
 		static_block<T, 1> block;
-		bool			   valid;
+		bool valid;
 
 	public:
 		constexpr optional(nullopt_t) noexcept

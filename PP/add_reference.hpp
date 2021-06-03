@@ -20,7 +20,8 @@ namespace PP
 				return type<T&&>;
 			else
 				return t;
-		} else
+		}
+		else
 			return t;
 	});
 
@@ -35,7 +36,7 @@ namespace PP
 		add_rvalue_tag{};
 
 	template <ref_qualifier ref>
-	constexpr auto operator+(concepts::type auto	  t,
+	constexpr auto operator+(concepts::type auto t,
 							 add_reference_tag_t<ref> tag) noexcept
 	{
 		return add_reference(tag, t);

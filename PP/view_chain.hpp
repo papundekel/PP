@@ -55,11 +55,13 @@ namespace PP
 				{
 					i += first_sequence_diff;
 					j += offset - first_sequence_diff;
-				} else
+				}
+				else
 				{
 					i += offset;
 				}
-			} else
+			}
+			else
 				return 0;
 		}
 

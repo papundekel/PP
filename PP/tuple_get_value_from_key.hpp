@@ -19,7 +19,7 @@ namespace PP
 	constexpr inline functor tuple_get_value_from_key
 	{
 		[]<typename Default = key_not_found>(concepts::tuple auto&& t,
-											 Default				d = {})
+											 Default d = {})
 		{
 			constexpr auto i = tuple_find_index(predicate | tuple_get * value_0,
 												PP_FORWARD(t));

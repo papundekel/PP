@@ -23,7 +23,7 @@ namespace PP
 		}
 
 		constexpr decltype(auto) reorder_element_helper(auto&& args,
-														auto   current_index,
+														auto current_index,
 														auto&& applied_indices)
 		{
 			return PP_FORWARD(args)[applied_indices[current_index]];
@@ -31,7 +31,7 @@ namespace PP
 		template <size_t... I>
 		constexpr decltype(auto) reorder_helper(auto&& f,
 												auto&& args,
-												auto   applied_indices,
+												auto applied_indices,
 												std::index_sequence<I...>)
 		{
 			return PP_FORWARD(args), value<I>, applied_indices)...);

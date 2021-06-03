@@ -39,14 +39,14 @@ namespace PP
 		{}
 
 		template <detail::at_least_type<CategoryT> CategoryTOther,
-				  concepts::convertible_to<T>	   U>
+				  concepts::convertible_to<T> U>
 		constexpr any_view_implementation(
 			const any_view_implementation<CategoryTOther, U>& other)
 			: begin_(other.begin_)
 			, end_(other.end_)
 		{}
 		template <detail::at_least_type<CategoryT> CategoryTOther,
-				  concepts::convertible_to<T>	   U>
+				  concepts::convertible_to<T> U>
 		constexpr any_view_implementation(
 			any_view_implementation<CategoryTOther, U>&& other)
 			: begin_(move(other.begin_))
@@ -111,8 +111,9 @@ namespace PP
 		constexpr auto make_any_view(concepts::iterator auto begin,
 									 concepts::iterator auto end)
 		{
-			return any_view<PP_GET_VALUE(min_iterator_category(
-								PP_DECLTYPE(begin), PP_DECLTYPE(end))),
+			return any_view<PP_GET_VALUE(
+								min_iterator_category(PP_DECLTYPE(begin),
+													  PP_DECLTYPE(end))),
 							decltype(*begin)>(begin, end);
 		}
 	}
