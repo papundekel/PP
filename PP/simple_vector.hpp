@@ -1,6 +1,8 @@
 #pragma once
 #include "construct_at_pack.hpp"
 #include "dynamic_block.hpp"
+#include "movable.hpp"
+#include "no_default_initialized.hpp"
 #include "view.hpp"
 #include "view_destroy.hpp"
 #include "view_move_uninitialized.hpp"
@@ -20,7 +22,7 @@ namespace PP
 		static constexpr size_t default_capacity = 16;
 
 		dynamic_block<T, Allocator> block;
-		size_t count_;
+		movable<no_default_initialized<size_t>, zero_releaser> count_;
 
 		constexpr void destroy_all() noexcept
 		{
@@ -30,7 +32,7 @@ namespace PP
 	public:
 		constexpr simple_vector(auto&& allocator, size_t capacity) noexcept
 			: block(PP_FORWARD(allocator), capacity)
-			, count_(0)
+			, count_(movable_default_releaser_tag, 0)
 		{}
 		constexpr simple_vector(auto&& allocator, concepts::view auto&& v)
 			: block(PP_FORWARD(allocator), PP_FORWARD(v))
@@ -84,15 +86,15 @@ namespace PP
 
 			construct_at_pack(end(), PP_FORWARD(args)...);
 
-			++count_;
+			++count_[tags::o];
 		}
 
 		constexpr T pop_back()
 		{
-			if (count_ == 0)
+			if (count() == 0)
 				throw 0;
 
-			--count_;
+			--count_[tags::o];
 
 			auto& back = *end();
 
@@ -107,7 +109,7 @@ namespace PP
 		{
 			destroy_all();
 			block = block.spawn_new(default_capacity);
-			count_ = 0;
+			count_[tags::o] = 0;
 		}
 
 		constexpr T* begin() noexcept
@@ -116,7 +118,7 @@ namespace PP
 		}
 		constexpr T* end() noexcept
 		{
-			return begin() + count_;
+			return begin() + count();
 		}
 		constexpr const T* begin() const noexcept
 		{
@@ -124,7 +126,7 @@ namespace PP
 		}
 		constexpr const T* end() const noexcept
 		{
-			return begin() + count_;
+			return begin() + count();
 		}
 
 		constexpr T& operator[](ptrdiff_t i) noexcept
@@ -138,11 +140,11 @@ namespace PP
 
 		constexpr bool empty() const noexcept
 		{
-			return count_ == 0;
+			return count() == 0;
 		}
 		constexpr size_t count() const noexcept
 		{
-			return count_;
+			return count_[tags::o];
 		}
 		constexpr size_t capacity() const noexcept
 		{

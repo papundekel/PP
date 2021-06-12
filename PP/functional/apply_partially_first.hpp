@@ -8,9 +8,9 @@ namespace PP
 	{
 		return functor(
 			[f = unwrap_functor(PP_FORWARD(f)),
-			 arg = PP_FORWARD(arg)](auto&&... other_args) -> decltype(auto)
+			 a = PP_FORWARD(arg)](auto&&... other_args) -> decltype(auto)
 			{
-				return f(arg, PP_FORWARD(other_args)...);
+				return f(a, PP_FORWARD(other_args)...);
 			});
 	});
 

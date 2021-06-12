@@ -3,10 +3,9 @@
 #include "compressed_pair.hpp"
 #include "in_place_tag.hpp"
 #include "placeholder.hpp"
+#include "tags.hpp"
 #include "type_tuple.hpp"
 #include "utility/move.hpp"
-
-#include <iostream>
 
 namespace PP
 {
@@ -44,7 +43,9 @@ namespace PP
 		constexpr scoped(placeholder_t, auto&& value, auto&& destructor)
 			: pair(PP_FORWARD(value), PP_FORWARD(destructor))
 		{}
+
 		scoped() = default;
+
 		constexpr scoped(const scoped& other)
 			: pair(other.pair.first, other.pair.second)
 		{}
@@ -60,21 +61,38 @@ namespace PP
 			: pair(move(other).pair.first, move(other).pair.second)
 		{}
 
-		constexpr T& get_object()
+		constexpr auto& get_object() noexcept
 		{
 			return pair.first;
 		}
-		constexpr const T& get_object() const
+		constexpr auto& get_object() const noexcept
 		{
 			return pair.first;
 		}
-		constexpr Destructor& get_destructor()
+		constexpr auto& get_destructor() noexcept
 		{
 			return pair.second;
 		}
-		constexpr const Destructor& get_destructor() const
+		constexpr auto& get_destructor() const noexcept
 		{
 			return pair.second;
+		}
+
+		constexpr auto& operator[](tags::o_t) noexcept
+		{
+			return get_object();
+		}
+		constexpr auto& operator[](tags::o_t) const noexcept
+		{
+			return get_object();
+		}
+		constexpr auto& operator[](tags::d_t) noexcept
+		{
+			return get_destructor();
+		}
+		constexpr auto& operator[](tags::d_t) const noexcept
+		{
+			return get_destructor();
 		}
 
 	private:

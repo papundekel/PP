@@ -33,11 +33,6 @@ namespace PP
 			view_copy_uninitialized(*this, PP_FORWARD(v));
 		}
 
-		template <typename AllocatorOther>
-		constexpr dynamic_block(dynamic_block<T, AllocatorOther>&& other)
-			: ptr(move(other).ptr)
-		{}
-
 		constexpr T* begin() noexcept
 		{
 			return begin_helper();
@@ -57,14 +52,12 @@ namespace PP
 
 		constexpr size_t count() const noexcept
 		{
-			return ptr.get_object().count();
+			return ptr[tags::o].count();
 		}
 
 		constexpr auto spawn_new(size_t count)
 		{
-			return dynamic_block<T, Allocator&>(
-				ptr.get_object().get_allocator(),
-				count);
+			return dynamic_block(move(ptr[tags::o].get_allocator()), count);
 		}
 	};
 }

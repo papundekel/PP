@@ -53,7 +53,18 @@ namespace PP
 			: small_optimized_vector(placeholder, Allocator())
 		{}
 
-		small_optimized_vector(small_optimized_vector&&) = default;
+		small_optimized_vector(small_optimized_vector&& other)
+			: block_s()
+			, block_d(move(other).block_d)
+			, count_(other.count_)
+		{
+			if (uses_static_block())
+			{
+				view_move_uninitialized(*this, other);
+				other.destroy_all();
+			}
+			other.count_ = 0;
+		}
 
 		static constexpr auto create_empty_from_allocator(auto&& allocator)
 		{
@@ -70,7 +81,7 @@ namespace PP
 			destroy_all();
 		}
 
-		small_optimized_vector& operator=(small_optimized_vector&&) = default;
+		small_optimized_vector& operator=(small_optimized_vector&& other) = delete;
 
 		constexpr void push_back(auto&&... args)
 		{

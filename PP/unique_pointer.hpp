@@ -1,6 +1,7 @@
 #pragma once
 #include "always_false.hpp"
 #include "apply_template.hpp"
+#include "movable.hpp"
 #include "placeholder.hpp"
 #include "pointer_allocate.hpp"
 #include "pointer_new.hpp"
@@ -10,7 +11,6 @@
 #include "size_t.hpp"
 #include "template_t.hpp"
 #include "type_t.hpp"
-#include "unique.hpp"
 
 namespace PP
 {
@@ -18,10 +18,12 @@ namespace PP
 	{
 		struct unique_pointer_deleter
 		{
-			constexpr void operator()(auto& ptr) const
+			constexpr void operator()(auto& wrapped_ptr) const
 			{
-				ptr.get_object().deallocate();
-				[[maybe_unused]] auto x = PP::move(ptr);
+				auto& ptr = wrapped_ptr[tags::o];
+
+				ptr.deallocate();
+				ptr = nullptr;
 			}
 		};
 	}
@@ -32,7 +34,9 @@ namespace PP
 		template <typename>
 		friend class unique_pointer;
 
-		scoped<unique<Pointer>, detail::unique_pointer_deleter> p;
+		scoped<movable<Pointer, nullptr_releaser>,
+			   detail::unique_pointer_deleter>
+			p;
 
 	public:
 		unique_pointer() = default;
@@ -43,7 +47,7 @@ namespace PP
 
 		constexpr unique_pointer(placeholder_t, auto&&... args)
 			: p(scoped_default_destructor_tag,
-				unique_default_releaser_tag,
+				movable_default_releaser_tag,
 				PP_FORWARD(args)...)
 		{}
 
@@ -62,6 +66,8 @@ namespace PP
 			return *this;
 		}
 
+		unique_pointer(const unique_pointer&) = delete;
+		unique_pointer& operator=(const unique_pointer&) = delete;
 		template <typename PointerOther>
 		unique_pointer(const unique_pointer<PointerOther>&) = delete;
 		template <typename PointerOther>
@@ -69,21 +75,29 @@ namespace PP
 
 		constexpr auto& get_object() noexcept
 		{
-			return p.get_object().get_object();
+			return p[tags::o][tags::o];
 		}
 		constexpr auto& get_object() const noexcept
 		{
-			return p.get_object().get_object();
+			return p[tags::o][tags::o];
+		}
+		constexpr auto& operator[](tags::o_t) noexcept
+		{
+			return get_object();
+		}
+		constexpr auto& operator[](tags::o_t) const noexcept
+		{
+			return get_object();
 		}
 
 		constexpr auto get() const noexcept
 		{
-			return get_object().get_ptr();
+			return get_object()[tags::p];
 		}
 
 		constexpr auto release() noexcept
 		{
-			return p.get_object().release().get_ptr();
+			return p[tags::o].release()[tags::p];
 		}
 
 		constexpr explicit operator bool() const noexcept

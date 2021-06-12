@@ -1,6 +1,7 @@
 #pragma once
 #include "compressed_pair.hpp"
 #include "get_type.hpp"
+#include "movable.hpp"
 #include "pointer_new_base.hpp"
 #include "size_t.hpp"
 
@@ -15,6 +16,14 @@ namespace PP
 		compressed_pair<size_t, Allocator> count_allocator;
 
 	public:
+		constexpr pointer_allocate()
+			: pointer_new_base<T>()
+			, count_allocator(0, Allocator())
+		{}
+		constexpr pointer_allocate(decltype(nullptr))
+			: pointer_allocate()
+		{}
+
 		constexpr pointer_allocate(auto&& allocator, size_t count)
 			: pointer_new_base<T>(
 				  count != 0 ? PP_FORWARD(allocator).allocate(count) : nullptr)
@@ -38,9 +47,18 @@ namespace PP
 
 		template <detail::pointer_new_compatible<T> U, typename AllocatorOther>
 		constexpr pointer_allocate& operator=(
+			const pointer_allocate<U, AllocatorOther>& other) noexcept
+		{
+			pointer_new_base<T>::operator=(move(other));
+			count_allocator = other.count_allocator;
+			return *this;
+		}
+		template <detail::pointer_new_compatible<T> U, typename AllocatorOther>
+		constexpr pointer_allocate& operator=(
 			pointer_allocate<U, AllocatorOther>&& other) noexcept
 		{
 			pointer_new_base<T>::operator=(move(other));
+			count_allocator = move(other).count_allocator;
 			return *this;
 		}
 

@@ -8,6 +8,7 @@
 #include "in_place_tag.hpp"
 #include "placeholder.hpp"
 #include "remove_reference.hpp"
+#include "tags.hpp"
 #include "tuple_splits.hpp"
 #include "utility/forward.hpp"
 #include "utility/move.hpp"
@@ -22,12 +23,18 @@ namespace PP
 			return exchange(x, T());
 		}
 	};
-	struct pointer_releaser
+	struct zero_releaser
 	{
-		template <typename T>
-		constexpr auto operator()(T*& x)
+		constexpr auto operator()(auto& x)
 		{
-			return exchange(x, nullptr);
+			return exchange(x, 0);
+		}
+	};
+	struct nullptr_releaser
+	{
+		constexpr auto operator()(auto& x)
+		{
+			return PP::exchange(x, nullptr);
 		}
 	};
 	struct move_releaser
@@ -38,58 +45,58 @@ namespace PP
 		}
 	};
 
-	// constexpr inline struct unique_in_place_delimiter_t {}
-	// unique_in_place_delimiter;
+	// constexpr inline struct movable_in_place_delimiter_t {}
+	// movable_in_place_delimiter;
 
-	constexpr inline struct unique_default_releaser_tag_t
+	constexpr inline struct movable_default_releaser_tag_t
 	{
-	} unique_default_releaser_tag;
+	} movable_default_releaser_tag;
 
 	template <typename T, typename Releaser = move_releaser>
-	class unique
+	class movable
 	{
 		// static constexpr auto splitter = arg_splitter *
-		// type<unique_in_place_delimiter_t> * type_tuple<T, Releaser>;
+		// type<movable_in_place_delimiter_t> * type_tuple<T, Releaser>;
 
 		template <typename, typename>
-		friend class unique;
+		friend class movable;
 
 		compressed_pair<T, Releaser> pair;
 
 	public:
-		// constexpr unique(in_place_tag_t, auto&&... args)
+		// constexpr movable(in_place_tag_t, auto&&... args)
 		//	: pair
 		//	(
 		//		splitter(value_0, PP_FORWARD(args)...),
 		//		splitter(value_1, PP_FORWARD(args)...)
 		//	)
 		//{}
-		constexpr unique(in_place_tag_t, auto&& releaser, auto&&... args)
+		constexpr movable(in_place_tag_t, auto&& releaser, auto&&... args)
 			: pair(T(PP_FORWARD(args)...), PP_FORWARD(releaser))
 		{}
-		constexpr unique(unique_default_releaser_tag_t, auto&&... args)
-			: unique(in_place_tag, Releaser(), PP_FORWARD(args)...)
+		constexpr movable(movable_default_releaser_tag_t, auto&&... args)
+			: movable(in_place_tag, Releaser(), PP_FORWARD(args)...)
 		{}
-		unique() = default;
-		constexpr unique(placeholder_t, auto&& value, auto&& releaser)
+		movable() = default;
+		constexpr movable(placeholder_t, auto&& value, auto&& releaser)
 			: pair(PP_FORWARD(value), PP_FORWARD(releaser))
 		{}
-		constexpr unique(const unique& other)
+		constexpr movable(const movable& other)
 			: pair(other.pair.first, other.pair.second)
 		{}
 		template <typename U, typename D>
-		constexpr unique(const unique<U, D>& other)
+		constexpr movable(const movable<U, D>& other)
 			: pair(other.pair.first, other.pair.second)
 		{}
-		constexpr unique(unique&& other)
+		constexpr movable(movable&& other)
 			: pair(other.release(), move(other).pair.second)
 		{}
 		template <typename U, typename D>
-		constexpr unique(unique<U, D>&& other)
+		constexpr movable(movable<U, D>&& other)
 			: pair(other.release(), move(other).pair.second)
 		{}
 
-		constexpr unique& operator=(unique&& other)
+		constexpr movable& operator=(movable&& other)
 		{
 			if (this != &other)
 			{
@@ -100,7 +107,7 @@ namespace PP
 			return *this;
 		}
 		template <typename U, typename D>
-		constexpr unique& operator=(unique<U, D>&& other)
+		constexpr movable& operator=(movable<U, D>&& other)
 		{
 			pair.first = other.release();
 			pair.second = move(other).pair.second;
@@ -123,6 +130,22 @@ namespace PP
 		{
 			return pair.second;
 		}
+		constexpr auto& operator[](tags::o_t) noexcept
+		{
+			return get_object();
+		}
+		constexpr auto& operator[](tags::o_t) const noexcept
+		{
+			return get_object();
+		}
+		constexpr auto& operator[](tags::r_t) noexcept
+		{
+			return get_releaser();
+		}
+		constexpr auto& operator[](tags::r_t) const noexcept
+		{
+			return get_releaser();
+		}
 
 		constexpr T release() noexcept
 		{
@@ -130,11 +153,11 @@ namespace PP
 		}
 	};
 
-	PP_FUNCTOR(make_unique_default, auto&& value)
+	PP_FUNCTOR(make_movable_default, auto&& value)
 	{
 		constexpr auto value_type = ~PP_DECLTYPE(value);
 
-		return Template<unique>(value_type)(unique_default_releaser_tag,
-											PP_FORWARD(value));
+		return Template<movable>(value_type)(movable_default_releaser_tag,
+											 PP_FORWARD(value));
 	});
 }

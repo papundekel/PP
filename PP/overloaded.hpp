@@ -8,6 +8,12 @@ namespace PP
 		: public Ts...
 	{
 		using Ts::operator()...;
+
+#ifdef __clang__
+		constexpr overloaded(auto&&... args)
+			: Ts(PP_FORWARD(args))...
+		{}
+#endif
 	};
 	template <typename... Ts>
 	overloaded(Ts...) -> overloaded<Ts...>;

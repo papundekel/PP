@@ -1,7 +1,8 @@
 #pragma once
 #include "concepts/convertible_to.hpp"
 #include "exchange.hpp"
-#include "unique.hpp"
+#include "movable.hpp"
+#include "tags.hpp"
 
 namespace PP
 {
@@ -34,28 +35,34 @@ namespace PP
 		constexpr pointer_new_base() noexcept
 			: ptr(nullptr)
 		{}
-
-		template <detail::pointer_new_compatible<T> U>
-		constexpr pointer_new_base(pointer_new_base<U>&& other) noexcept
-			: ptr(PP::exchange(other.ptr, nullptr))
+		constexpr pointer_new_base(decltype(nullptr)) noexcept
+			: pointer_new_base()
 		{}
 
-		constexpr pointer_new_base& operator=(pointer_new_base&& other) noexcept
-		{
-			ptr = PP::exchange(other.ptr, nullptr);
-			return *this;
-		}
+		pointer_new_base(const pointer_new_base& other) = default;
+
+		template <detail::pointer_new_compatible<T> U>
+		constexpr pointer_new_base(const pointer_new_base<U>& other) noexcept
+			: ptr(other.ptr)
+		{}
+
+		pointer_new_base& operator=(const pointer_new_base& other) = default;
+
 		template <detail::pointer_new_compatible<T> U>
 		constexpr pointer_new_base& operator=(
-			pointer_new_base<U>&& other) noexcept
+			const pointer_new_base<U>& other) noexcept
 		{
-			ptr = PP::exchange(other.ptr, nullptr);
+			ptr = other.ptr;
 			return *this;
 		}
 
-		constexpr T* get_ptr() const noexcept
+		constexpr auto get_ptr() const noexcept
 		{
 			return ptr;
+		}
+		constexpr auto operator[](tags::p_t) const noexcept
+		{
+			return get_ptr();
 		}
 	};
 }

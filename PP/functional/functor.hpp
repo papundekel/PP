@@ -13,7 +13,7 @@ namespace PP
 		template <typename T>
 		concept functor_call_not_partial = !requires(T t)
 		{
-			partial_tag_t{ t };
+			partial_tag_t{t};
 		};
 	}
 
@@ -21,6 +21,12 @@ namespace PP
 	struct functor
 	{
 		F f;
+
+#ifdef __clang__
+		constexpr functor(auto&& f)
+			: f(PP_FORWARD(f))
+		{}
+#endif
 
 		constexpr decltype(auto) operator()(auto&&... args) const& requires(
 			concepts::functor_call_not_partial<decltype(args)>&&...) &&
@@ -53,6 +59,11 @@ namespace PP
 
 		static constexpr char arbitrary_concept_tag_functor = {};
 	};
+
+#ifdef __clang__
+	template <typename F>
+	functor(F) -> functor<F>;
+#endif
 
 	namespace concepts
 	{

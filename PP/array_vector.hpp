@@ -3,6 +3,7 @@
 
 #include "construct_at_pack.hpp"
 #include "destroy_at.hpp"
+#include "movable.hpp"
 #include "no_default_initialized.hpp"
 #include "static_block.hpp"
 #include "view_copy_uninitialized.hpp"
@@ -42,6 +43,8 @@ namespace PP
 			, count_(other.count_)
 		{
 			view_move_uninitialized(*this, other);
+			other.destroy_all();
+			other.count_ = 0;
 		}
 		constexpr ~array_vector()
 		{
@@ -58,16 +61,16 @@ namespace PP
 		}
 		constexpr T* end() noexcept
 		{
-			return block.begin() + count_;
+			return block.begin() + count();
 		}
 		constexpr const T* end() const noexcept
 		{
-			return block.begin() + count_;
+			return block.begin() + count();
 		}
 
 		constexpr bool empty() const noexcept
 		{
-			return count_ == 0;
+			return count() == 0;
 		}
 
 		constexpr size_t count() const noexcept
@@ -81,9 +84,9 @@ namespace PP
 			count_ = 0;
 		}
 
-		constexpr void push_back(auto&& object)
+		constexpr void push_back(auto&&... args)
 		{
-			if (count_ == Capacity)
+			if (count() == Capacity)
 			{
 				if constexpr (!looping)
 					std::terminate();
@@ -91,7 +94,7 @@ namespace PP
 					clear();
 			}
 
-			construct_at_pack(end(), PP_FORWARD(object));
+			construct_at_pack(end(), PP_FORWARD(args)...);
 			++count_;
 		}
 
