@@ -47,21 +47,20 @@ namespace PP
 		return functor(
 			[left,
 			 f_wrap = PP_FORWARD_WRAP(f),
-			 init_wrap =
-				 PP_FORWARD_WRAP(init)](auto&&... elements) -> decltype(auto)
+			 init_wrap = PP_FORWARD_WRAP(init)](auto&&... elements)
 			{
 				if constexpr (PP_GET_VALUE(left))
-					return (PP_FORWARD_AS_FOLD_WRAPPER(
-								unwrap_functor(f_wrap.unwrap()),
-								init_wrap.unwrap()) ||
-							... || PP_FORWARD(elements))
-						.init;
+					return move((PP_FORWARD_AS_FOLD_WRAPPER(
+									 unwrap_functor(f_wrap.unwrap()),
+									 init_wrap.unwrap()) ||
+								 ... || PP_FORWARD(elements))
+									.init);
 				else
-					return (PP_FORWARD(elements) || ... ||
-							PP_FORWARD_AS_FOLD_WRAPPER(
-								unwrap_functor(f_wrap.unwrap()),
-								init_wrap.unwrap()))
-						.init;
+					return move((PP_FORWARD(elements) || ... ||
+								 PP_FORWARD_AS_FOLD_WRAPPER(
+									 unwrap_functor(f_wrap.unwrap()),
+									 init_wrap.unwrap()))
+									.init);
 			})[PP_FORWARD(tuple)];
 	});
 

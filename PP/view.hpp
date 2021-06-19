@@ -19,21 +19,19 @@ namespace PP
 		{
 			{
 				declval(type<T>).begin()
-			}
-			->concepts::iterator;
+				} -> concepts::iterator;
 		};
 		template <typename T>
 		concept view_concept_begin_array_reference =
 			view_concept_begin_member<T> ||
-			(is_array | remove_reference <<= type<T>);
+			(is_array <<= remove_reference <<= type<T>);
 		template <typename T>
 		concept view_concept_begin_any =
 			view_concept_begin_array_reference<T> || requires
 		{
 			{
 				begin(declval(type<T>))
-			}
-			->concepts::iterator;
+				} -> concepts::iterator;
 		};
 
 		template <typename T>
@@ -41,21 +39,19 @@ namespace PP
 		{
 			{
 				declval(type<T>).end()
-			}
-			->concepts::non_void;
+				} -> concepts::non_void;
 		};
 		template <typename T>
 		concept view_concept_end_bounded_array_reference =
 			view_concept_end_member<T> ||
-			(is_bounded_array | remove_reference <<= type<T>);
+			(is_bounded_array <<= remove_reference <<= type<T>);
 		template <typename T>
 		concept view_concept_end_any =
 			view_concept_end_bounded_array_reference<T> || requires
 		{
 			{
 				end(declval(type<T>))
-			}
-			->concepts::non_void;
+				} -> concepts::non_void;
 		};
 	}
 
@@ -64,8 +60,8 @@ namespace PP
 	{
 		if constexpr (detail::view_concept_begin_member<decltype(v)>)
 			return PP_FORWARD(v).begin();
-		else if constexpr (detail::view_concept_begin_array_reference<decltype(
-							   v)>)
+		else if constexpr (detail::view_concept_begin_array_reference<
+							   decltype(v)>)
 			return v + 0;
 		else
 			return begin(PP_FORWARD(v));
@@ -96,13 +92,12 @@ namespace PP
 		{
 			{
 				view_begin(declval(t))
-			}
-			->concepts::iterator;
+				} -> concepts::iterator;
 			{
 				view_end(declval(t))
-			}
-			->concepts::sentinel<
-				PP_APPLY_TRANSFORM(detail::view_type_begin_iterator_pure, t)>;
+				} -> concepts::sentinel<PP_APPLY_TRANSFORM(
+					detail::view_type_begin_iterator_pure,
+					t)>;
 		};
 	});
 

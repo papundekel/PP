@@ -2,7 +2,6 @@
 #include "empty_tuple.hpp"
 #include "forward_wrap.hpp"
 #include "functional/apply_partially_first.hpp"
-#include "functional/negate.hpp"
 #include "functional/operators.hpp"
 #include "tuple_all.hpp"
 #include "tuple_apply.hpp"

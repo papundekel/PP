@@ -9,6 +9,7 @@ namespace PP
 	constexpr inline auto tuple_map_make_array = tuple_make_array | tuple_map;
 	constexpr inline auto tuple_map_forward_array =
 		tuple_forward_array | tuple_map;
+
 	PP_FUNCTOR(tuple_map_to_array,
 			   concepts::type auto t,
 			   auto&& map,

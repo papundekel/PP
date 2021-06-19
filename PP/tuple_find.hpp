@@ -15,6 +15,12 @@ namespace PP
 				{
 					constexpr auto state = PP_GET_VALUE(s);
 
+					static_assert(
+						concepts::value<decltype(predicate_wrap.unwrap()(
+							PP_FORWARD(element)))>,
+						"tuple_find: the predicate must return a "
+						"concepts::value");
+
 					if constexpr (state.found ||
 								  PP_GET_VALUE(predicate_wrap.unwrap()(
 									  PP_FORWARD(element))))

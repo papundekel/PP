@@ -21,12 +21,12 @@ namespace PP
 	template <typename T>
 	forward_wrap(T&&) -> forward_wrap<T>;
 
-	constexpr auto&& unwrap(auto&& x)
+	constexpr auto&& unwrap(auto&& x) noexcept
 	{
 		return PP_FORWARD(x);
 	}
 	template <typename T>
-	constexpr auto&& unwrap(const forward_wrap<T>& x)
+	constexpr auto&& unwrap(const forward_wrap<T>& x) noexcept
 	{
 		return x.unwrap();
 	}

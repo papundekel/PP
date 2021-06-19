@@ -23,7 +23,6 @@
 #include "unique_pointer.hpp"
 #include "utility/move.hpp"
 #include "value_t.hpp"
-#include "variant_visit.hpp"
 
 namespace PP
 {
