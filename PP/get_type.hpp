@@ -24,7 +24,9 @@ namespace PP
 	using get_type_t = PP_TYPE_UNSAFE(get_type(type<T>));
 
 	template <typename T>
-	constexpr T ffffff(T);
+	constexpr T ffffff(T&);
+	template <typename T>
+	constexpr T ffffff(T&&);
 
 #define PP_GET_TYPE(x) ::PP::get_type_t<decltype(ffffff(x))>
 #define PP_COPY_TYPE(x) (::PP::type<PP_GET_TYPE(x)>)
