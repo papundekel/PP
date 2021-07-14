@@ -3,7 +3,7 @@
 #include "concepts/pointer_to_member.hpp"
 #include "empty_tuple.hpp"
 #include "extent.hpp"
-#include "functional/functor.hpp"
+#include "functor.hpp"
 #include "get_cv.hpp"
 #include "pointer_to_member_info.hpp"
 #include "remove_extent.hpp"
@@ -52,7 +52,7 @@ namespace PP
 	PP_FUNCTOR(get_cv_decomposition_element, concepts::type auto t)
 		-> cv_decomposition_element
 	{
-		return { *get_cv_value_t(t), get_cv_decomposition_type(t), extent(t) };
+		return {*get_cv_value_t(t), get_cv_decomposition_type(t), extent(t)};
 	});
 
 	constexpr auto shed_pointer(concepts::type auto t)

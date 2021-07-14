@@ -1,5 +1,5 @@
 #pragma once
-#include "functional/functor.hpp"
+#include "functor.hpp"
 #include "tuple_count.hpp"
 #include "tuple_find_dynamic.hpp"
 

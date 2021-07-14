@@ -1,5 +1,5 @@
 #pragma once
-#include "functional/functor.hpp"
+#include "functor.hpp"
 #include "view.hpp"
 
 namespace PP

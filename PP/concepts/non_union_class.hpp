@@ -1,7 +1,7 @@
 #pragma once
-#include "../functional/functor.hpp"
-#include "../functional/negate.hpp"
+#include "../conjunction.hpp"
 #include "../get_type.hpp"
+#include "../negate.hpp"
 #include "atomic/class.hpp"
 #include "union.hpp"
 

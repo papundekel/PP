@@ -1,5 +1,5 @@
 #pragma once
-#include "functional/functor.hpp"
+#include "functor.hpp"
 
 namespace PP
 {
@@ -9,8 +9,7 @@ namespace PP
 		{
 			{
 				PP_FORWARD(t).head_element()
-			}
-			->concepts::type;
+				} -> concepts::type;
 		}
 		{
 			return PP_FORWARD(t).head_element();
@@ -19,8 +18,7 @@ namespace PP
 		{
 			{
 				head_element_implementation(PP_FORWARD(t))
-			}
-			->concepts::type;
+				} -> concepts::type;
 		}
 		{
 			return head_element_implementation(PP_FORWARD(t));
@@ -31,8 +29,7 @@ namespace PP
 	requires requires
 	{
 		detail::tuple_head_element_member(PP_FORWARD(t));
-	}
-	|| requires
+	} || requires
 	{
 		detail::tuple_head_element_nonmember(PP_FORWARD(t));
 	}

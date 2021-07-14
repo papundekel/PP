@@ -1,6 +1,6 @@
 #pragma once
-#include "../functional/negate.hpp"
 #include "../macros/simple_concept.hpp"
+#include "../negate.hpp"
 #include "atomic/pointable.hpp"
 #include "reference.hpp"
 

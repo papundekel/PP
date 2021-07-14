@@ -1,5 +1,5 @@
 #pragma once
-#include "../functional/functor.hpp"
+#include "../functor.hpp"
 #include "../get_type.hpp"
 #include "atomic/class.hpp"
 #include "non_union_class.hpp"

@@ -1,9 +1,10 @@
 #pragma once
-#include "functional/apply_pack.hpp"
-#include "functional/functor.hpp"
+#include "apply_pack.hpp"
+#include "apply_partially.hpp"
+#include "functor.hpp"
+#include "tuple_concept.hpp"
 #include "tuple_count.hpp"
 #include "tuple_get.hpp"
-#include "tuple_like.hpp"
 #include "tuple_value_sequence_for.hpp"
 #include "utility/forward.hpp"
 #include "value_t.hpp"
@@ -21,11 +22,11 @@ namespace PP
 	template <typename F>
 	constexpr decltype(auto) functor<F>::operator[](auto&& t) const&
 	{
-		return tuple_apply(*this, PP_FORWARD(t));
+		return tuple_apply(unwrap_functor(*this), PP_FORWARD(t));
 	}
 	template <typename F>
 	constexpr decltype(auto) functor<F>::operator[](auto&& t) const&&
 	{
-		return tuple_apply(move(*this), PP_FORWARD(t));
+		return tuple_apply(unwrap_functor(move(*this)), PP_FORWARD(t));
 	}
 }

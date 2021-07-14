@@ -1,7 +1,7 @@
 #pragma once
+#include "apply_partially_first.hpp"
 #include "forward_as.hpp"
 #include "forward_wrap.hpp"
-#include "functional/apply_partially_first.hpp"
 #include "tuple_apply.hpp"
 #include "utility/move.hpp"
 
@@ -50,17 +50,17 @@ namespace PP
 			 init_wrap = PP_FORWARD_WRAP(init)](auto&&... elements)
 			{
 				if constexpr (PP_GET_VALUE(left))
-					return move((PP_FORWARD_AS_FOLD_WRAPPER(
-									 unwrap_functor(f_wrap.unwrap()),
-									 init_wrap.unwrap()) ||
-								 ... || PP_FORWARD(elements))
-									.init);
+					return move(
+						(PP_FORWARD_AS_FOLD_WRAPPER(unwrap_functor(f_wrap--),
+													init_wrap--) ||
+						 ... || PP_FORWARD(elements))
+							.init);
 				else
-					return move((PP_FORWARD(elements) || ... ||
-								 PP_FORWARD_AS_FOLD_WRAPPER(
-									 unwrap_functor(f_wrap.unwrap()),
-									 init_wrap.unwrap()))
-									.init);
+					return move(
+						(PP_FORWARD(elements) || ... ||
+						 PP_FORWARD_AS_FOLD_WRAPPER(unwrap_functor(f_wrap--),
+													init_wrap--))
+							.init);
 			})[PP_FORWARD(tuple)];
 	});
 

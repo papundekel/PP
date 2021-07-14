@@ -1,7 +1,7 @@
 #pragma once
+#include "apply_partially_first.hpp"
+#include "compose.hpp"
 #include "decompose_cv.hpp"
-#include "functional/apply_partially_first.hpp"
-#include "functional/compose.hpp"
 #include "tuple_get.hpp"
 #include "value_t.hpp"
 

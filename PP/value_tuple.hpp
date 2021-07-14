@@ -1,5 +1,5 @@
 #pragma once
-#include "functional/functor.hpp"
+#include "functor.hpp"
 #include "get_value.hpp"
 #include "tuple_head_no_get.hpp"
 #include "tuple_recursive.hpp"
@@ -41,7 +41,7 @@ namespace PP
 	constexpr inline auto value_tuple = value_tuple_t<Values...>{};
 
 	template <auto... V>
-	constexpr auto tuple_count_implementation(value_tuple_t<V...>) noexcept
+	constexpr auto tuple_count_impl(value_tuple_t<V...>) noexcept
 	{
 		return value<sizeof...(V)>;
 	}

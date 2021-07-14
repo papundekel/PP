@@ -1,5 +1,5 @@
 #pragma once
-#include "functional/functor.hpp"
+#include "functor.hpp"
 #include "get_value.hpp"
 #include "type_t.hpp"
 #include "utility/forward.hpp"

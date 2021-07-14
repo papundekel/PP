@@ -1,44 +1,35 @@
 #pragma once
-#include "functional/functor.hpp"
+#include "utility/forward.hpp"
 
 namespace PP
 {
 	template <typename T>
-	struct forward_wrap
+	class forward_wrap
 	{
 		T&& ref;
 
-		constexpr T&& unwrap() const noexcept
-		{
-			return static_cast<T&&>(ref);
-		}
+	public:
+		constexpr forward_wrap(T&& ref) noexcept
+			: ref(PP_FORWARD(ref))
+		{}
 
-		constexpr decltype(auto) operator()(auto&&... args) const noexcept
+		constexpr decltype(auto) operator--(int) const noexcept
 		{
-			return static_cast<T&&>(ref)(PP_FORWARD(args)...);
+			return PP_FORWARD(ref);
 		}
 	};
 	template <typename T>
 	forward_wrap(T&&) -> forward_wrap<T>;
 
-	constexpr auto&& unwrap(auto&& x) noexcept
+	constexpr auto&& unwrap_forward(auto&& x) noexcept
 	{
 		return PP_FORWARD(x);
 	}
 	template <typename T>
-	constexpr auto&& unwrap(const forward_wrap<T>& x) noexcept
+	constexpr auto&& unwrap_forward(const forward_wrap<T>& x) noexcept
 	{
-		return x.unwrap();
+		return x--;
 	}
 
-#define PP_FORWARD_WRAP(x)                                                     \
-	::PP::forward_wrap                                                         \
-	{                                                                          \
-		PP_FORWARD(x)                                                          \
-	}
-
-	PP_FUNCTOR(fwrap, auto&& x)
-	{
-		return PP_FORWARD_WRAP(x);
-	});
+#define PP_FORWARD_WRAP(x) ::PP::forward_wrap(PP_FORWARD(x))
 }

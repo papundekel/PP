@@ -1,5 +1,5 @@
 #pragma once
-#include "../functional/compose.hpp"
+#include "../compose.hpp"
 #include "../get_type.hpp"
 #include "../overloaded.hpp"
 #include "../remove_cv.hpp"

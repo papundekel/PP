@@ -1,5 +1,5 @@
 #pragma once
-#include "../functional/negate.hpp"
+#include "../negate.hpp"
 #include "atomic/referencable.hpp"
 #include "object.hpp"
 

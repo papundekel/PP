@@ -1,6 +1,6 @@
 #pragma once
-#include "functional/apply_partially_first.hpp"
-#include "functional/functor.hpp"
+#include "apply_partially_first.hpp"
+#include "functor.hpp"
 #include "get_value.hpp"
 #include "utility/move.hpp"
 #include "view.hpp"

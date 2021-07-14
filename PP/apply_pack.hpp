@@ -1,7 +1,7 @@
 #pragma once
-#include "../get_value.hpp"
-#include "../value_sequence.hpp"
 #include "functor.hpp"
+#include "get_value.hpp"
+#include "value_sequence.hpp"
 
 namespace PP
 {

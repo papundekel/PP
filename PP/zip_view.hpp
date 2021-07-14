@@ -1,9 +1,9 @@
 #pragma once
+#include "applier.hpp"
+#include "apply_partially.hpp"
 #include "concepts/same_except_cvref.hpp"
 #include "construct_pack.hpp"
-#include "functional/applier.hpp"
-#include "functional/apply_partially.hpp"
-#include "functional/operators.hpp"
+#include "operators.hpp"
 #include "simple_view.hpp"
 #include "tuple.hpp"
 #include "tuple_all.hpp"

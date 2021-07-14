@@ -1,5 +1,5 @@
 #pragma once
-#include "functional/compose.hpp"
+#include "compose.hpp"
 #include "remove_cv.hpp"
 #include "remove_reference.hpp"
 

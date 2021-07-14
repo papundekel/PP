@@ -4,7 +4,7 @@
 #include "apply_transform.hpp"
 #include "concepts/array.hpp"
 #include "declval.hpp"
-#include "functional/functor.hpp"
+#include "functor.hpp"
 #include "iterator.hpp"
 #include "remove_reference.hpp"
 #include "size_t.hpp"

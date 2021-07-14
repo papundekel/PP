@@ -1,8 +1,8 @@
 #pragma once
-#include "functional/apply_partially_first.hpp"
+#include "apply_partially_first.hpp"
 #include "tuple.hpp"
 #include "tuple_apply.hpp"
-#include "tuple_like.hpp"
+#include "tuple_concept.hpp"
 
 namespace PP
 {

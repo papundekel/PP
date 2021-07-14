@@ -14,7 +14,7 @@ namespace PP
 			left,
 			[f_wrap = PP_FORWARD_WRAP(f)](empty, auto&& element)
 			{
-				f_wrap.unwrap()(PP_FORWARD(element));
+				f_wrap--(PP_FORWARD(element));
 				return empty{};
 			},
 			empty{},

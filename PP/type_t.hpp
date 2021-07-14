@@ -32,7 +32,5 @@ namespace PP
 	{
 		return true;
 	}
-
-#define PP_TYPE_UNSAFE(x) typename decltype(x)::type
 #define PP_DECLTYPE(x) (::PP::type<decltype(x)>)
 }

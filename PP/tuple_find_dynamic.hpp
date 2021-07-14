@@ -15,13 +15,12 @@ namespace PP
 					   detail::tuple_find_index_state state,
 					   auto&& element) -> detail::tuple_find_index_state
 				   {
-					   if (state.found ||
-						   predicate_wrap.unwrap()(PP_FORWARD(element)))
-						   return { state.index, true };
+					   if (state.found || predicate_wrap--(PP_FORWARD(element)))
+						   return {state.index, true};
 					   else
-						   return { state.index + 1, false };
+						   return {state.index + 1, false};
 				   },
-				   detail::tuple_find_index_state{ 0, false },
+				   detail::tuple_find_index_state{0, false},
 				   PP_FORWARD(tuple))
 			.index;
 	});

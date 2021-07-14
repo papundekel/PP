@@ -1,7 +1,7 @@
 #pragma once
 #include <compare>
 
-#include "functional/functor.hpp"
+#include "functor.hpp"
 
 namespace PP
 {

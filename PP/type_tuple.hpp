@@ -41,7 +41,7 @@ namespace PP
 	constexpr inline type_tuple_t<T...> type_tuple = {};
 
 	template <typename... T>
-	constexpr auto tuple_count_implementation(type_tuple_t<T...>) noexcept
+	constexpr auto tuple_count_impl(type_tuple_t<T...>) noexcept
 	{
 		return value<sizeof...(T)>;
 	}

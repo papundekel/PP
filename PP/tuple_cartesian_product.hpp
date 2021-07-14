@@ -1,8 +1,8 @@
 #pragma once
+#include "apply_partially_first.hpp"
 #include "empty_tuple.hpp"
-#include "functional/apply_partially_first.hpp"
-#include "functional/operators.hpp"
 #include "iterate_tuple.hpp"
+#include "operators.hpp"
 #include "singular_tuple.hpp"
 #include "tuple_concat.hpp"
 #include "tuple_count.hpp"

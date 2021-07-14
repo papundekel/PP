@@ -1,6 +1,6 @@
 #pragma once
 #include "../declval.hpp"
-#include "../functional/functor.hpp"
+#include "../functor.hpp"
 #include "convertible_to.hpp"
 
 namespace PP
@@ -11,8 +11,7 @@ namespace PP
 		{
 			{
 				PP::declval(a) == PP::declval(b)
-			}
-			->concepts::convertible_to<bool>;
+				} -> concepts::convertible_to<bool>;
 		};
 	});
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "../../functional/negate.hpp"
+#include "../../negate.hpp"
 #include "../non_void_fundamental.hpp"
 #include "../pointer.hpp"
 #include "../pointer_to_member.hpp"

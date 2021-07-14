@@ -1,7 +1,7 @@
 #pragma once
+#include "compose.hpp"
 #include "cv_qualifier.hpp"
 #include "decompose_pair.hpp"
-#include "functional/compose.hpp"
 #include "get_type.hpp"
 #include "overloaded.hpp"
 #include "type_t.hpp"

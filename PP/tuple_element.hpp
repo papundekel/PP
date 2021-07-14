@@ -2,7 +2,7 @@
 #include "copy_cv.hpp"
 #include "decl_type.hpp"
 #include "declval.hpp"
-#include "functional/functor.hpp"
+#include "functor.hpp"
 #include "get_value.hpp"
 #include "tuple_head_element.hpp"
 #include "tuple_recursive.hpp"
@@ -17,8 +17,7 @@ namespace PP
 			{
 				::PP::declval(::PP::type<T>)
 					.element(::PP::declval(::PP::type<I>))
-			}
-			->concepts::type;
+				} -> concepts::type;
 		};
 		template <typename I, typename T>
 		concept tuple_concept_element_nonmember =
@@ -27,8 +26,7 @@ namespace PP
 			{
 				element_implementation(::PP::declval(::PP::type<I>),
 									   ::PP::declval(::PP::type<T>))
-			}
-			->concepts::type;
+				} -> concepts::type;
 		};
 		template <typename I, typename T>
 		concept tuple_concept_element_recursive =
@@ -38,28 +36,24 @@ namespace PP
 				tuple_recursive(tuple_head_element,
 								::PP::declval(::PP::type<I>),
 								::PP::declval(::PP::type<T>))
-			}
-			->concepts::type;
+				} -> concepts::type;
 		};
 
-		constexpr auto tuple_element_helper(
-			concepts::value auto i,
-			auto&& t) requires tuple_concept_element_member<decltype(i),
-															decltype(t)>
+		constexpr auto tuple_element_helper(concepts::value auto i,
+											auto&& t) requires
+			tuple_concept_element_member<decltype(i), decltype(t)>
 		{
 			return PP_FORWARD(t).element(i);
 		}
-		constexpr auto tuple_element_helper(
-			concepts::value auto i,
-			auto&& t) requires tuple_concept_element_nonmember<decltype(i),
-															   decltype(t)>
+		constexpr auto tuple_element_helper(concepts::value auto i,
+											auto&& t) requires
+			tuple_concept_element_nonmember<decltype(i), decltype(t)>
 		{
 			return element_implementation(i, PP_FORWARD(t));
 		}
-		constexpr auto tuple_element_helper(
-			concepts::value auto i,
-			auto&& t) requires tuple_concept_element_recursive<decltype(i),
-															   decltype(t)>
+		constexpr auto tuple_element_helper(concepts::value auto i,
+											auto&& t) requires
+			tuple_concept_element_recursive<decltype(i), decltype(t)>
 		{
 			return tuple_recursive(tuple_head_element, i, PP_FORWARD(t));
 		}

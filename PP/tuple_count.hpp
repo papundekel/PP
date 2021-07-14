@@ -1,8 +1,9 @@
 #pragma once
+#include "compose.hpp"
 #include "decl_type.hpp"
 #include "declval.hpp"
-#include "functional/compose.hpp"
-#include "functional/functor.hpp"
+#include "declval_impl.hpp"
+#include "functor.hpp"
 #include "get_value.hpp"
 
 namespace PP
@@ -13,18 +14,16 @@ namespace PP
 		concept tuple_concept_count_value_t_member = requires
 		{
 			{
-				::PP::declval(::PP::type<T>).tuple_count()
-			}
-			->concepts::value;
+				::PP::declval_impl<T>().tuple_count()
+				} -> concepts::value;
 		};
 		template <typename T>
 		concept tuple_concept_count_value_t_any =
 			tuple_concept_count_value_t_member<T> || requires
 		{
 			{
-				tuple_count_implementation(::PP::declval(::PP::type<T>))
-			}
-			->concepts::value;
+				tuple_count_impl(::PP::declval_impl<T>())
+				} -> concepts::value;
 		};
 	}
 
@@ -34,7 +33,7 @@ namespace PP
 		if constexpr (detail::tuple_concept_count_value_t_member<decltype(t)>)
 			return PP_FORWARD(t).tuple_count();
 		else
-			return tuple_count_implementation(PP_FORWARD(t));
+			return tuple_count_impl(PP_FORWARD(t));
 	});
 
 	PP_FUNCTOR(tuple_type_count_value_t, concepts::type auto t)

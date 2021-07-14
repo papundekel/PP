@@ -1,7 +1,7 @@
 #pragma once
+#include "../apply_partially.hpp"
 #include "../conditional.hpp"
 #include "../declval.hpp"
-#include "../functional/apply_partially.hpp"
 #include "../get_type.hpp"
 #include "../tuple_apply.hpp"
 #include "../value_t.hpp"
@@ -10,19 +10,16 @@ namespace PP
 {
 	namespace concepts
 	{
-		template <typename T>
-		constexpr T&& declval___() noexcept;
-
 		template <typename T, typename... Args>
 		concept constructible = requires
 		{
-			T(declval___<Args>()...);
+			T(declval_impl<Args>()...);
 		};
 		template <typename T, typename... Args>
 		concept constructible_noexcept = requires
 		{
 			{
-				T(declval___<Args>()...)
+				T(declval_impl<Args>()...)
 			}
 			noexcept;
 		};

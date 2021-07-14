@@ -1,6 +1,6 @@
 #pragma once
-#include "functional/compose.hpp"
-#include "functional/functor.hpp"
+#include "compose.hpp"
+#include "functor.hpp"
 #include "type_t.hpp"
 
 namespace PP

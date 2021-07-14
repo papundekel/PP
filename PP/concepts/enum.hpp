@@ -1,6 +1,6 @@
 #pragma once
-#include "../functional/functor.hpp"
-#include "../functional/negate.hpp"
+#include "../functor.hpp"
+#include "../negate.hpp"
 #include "atomic/user_defined.hpp"
 #include "class.hpp"
 

@@ -1,7 +1,7 @@
 #pragma once
+#include "PP/compose.hpp"
 #include "PP/construct_pack.hpp"
 #include "PP/decl_type.hpp"
-#include "PP/functional/compose.hpp"
 #include "PP/overloaded.hpp"
 #include "PP/tuple_make.hpp"
 #include "PP/tuple_prepend.hpp"

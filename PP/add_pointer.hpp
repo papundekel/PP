@@ -1,6 +1,6 @@
 #pragma once
 #include "concepts/pointable.hpp"
-#include "functional/functor.hpp"
+#include "functor.hpp"
 #include "remove_reference.hpp"
 
 namespace PP

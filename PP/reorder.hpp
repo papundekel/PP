@@ -1,9 +1,9 @@
 #pragma once
-#include "../tuple.hpp"
-#include "../tuple_filter.hpp"
-#include "../tuple_find_index.hpp"
-#include "../value_sequence.hpp"
 #include "operators.hpp"
+#include "tuple.hpp"
+#include "tuple_filter.hpp"
+#include "tuple_find_index.hpp"
+#include "value_sequence.hpp"
 
 namespace PP
 {

@@ -1,7 +1,7 @@
 #pragma once
-#include "functional/applier.hpp"
-#include "functional/apply_partially_first.hpp"
-#include "functional/compose.hpp"
+#include "applier.hpp"
+#include "apply_partially_first.hpp"
+#include "compose.hpp"
 #include "overloaded.hpp"
 #include "tuple.hpp"
 #include "tuple_apply.hpp"

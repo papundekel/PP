@@ -1,6 +1,6 @@
 #pragma once
 #include "decl_type.hpp"
-#include "functional/functor.hpp"
+#include "functor.hpp"
 #include "get_type.hpp"
 #include "overloaded.hpp"
 #include "value_t.hpp"
@@ -28,8 +28,8 @@ namespace PP
 	}
 
 	constexpr inline auto get_type_value = make_overloaded_pack(
-		[](auto t) -> decltype(
-					   auto) requires detail::has_value_f<PP_GET_TYPE(t)>
+		[
+		](auto t) -> decltype(auto) requires detail::has_value_f<PP_GET_TYPE(t)>
 		{
 			return PP_GET_TYPE(t)::value_f();
 		},
@@ -45,8 +45,8 @@ namespace PP
 		return get_value(v);
 	}
 
-	constexpr decltype(auto) operator-(concepts::type auto t) noexcept
-		requires requires
+	constexpr decltype(auto) operator-(
+		concepts::type auto t) noexcept requires requires
 	{
 		get_type_value(t);
 	}

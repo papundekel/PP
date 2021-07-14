@@ -1,5 +1,5 @@
 #pragma once
-#include "functional/compose.hpp"
+#include "compose.hpp"
 #include "get_value.hpp"
 #include "get_volatile.hpp"
 

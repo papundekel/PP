@@ -1,5 +1,6 @@
 #pragma once
 #include "../../add_reference.hpp"
+#include "../../conjunction.hpp"
 #include "../same.hpp"
 #include "referencable.hpp"
 

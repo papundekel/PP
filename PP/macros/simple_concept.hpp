@@ -1,5 +1,5 @@
 #pragma once
-#include "../functional/functor.hpp"
+#include "../functor.hpp"
 #include "../get_type.hpp"
 
 #define PP_CONCEPT0(concept_name, functor_name_full)                           \

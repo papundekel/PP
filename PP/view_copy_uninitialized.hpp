@@ -1,10 +1,10 @@
 #pragma once
 #include <memory>
 
+#include "applier.hpp"
+#include "apply_partially_first.hpp"
 #include "construct_at_pack.hpp"
-#include "functional/applier.hpp"
-#include "functional/apply_partially_first.hpp"
-#include "functional/operators.hpp"
+#include "operators.hpp"
 #include "utility/forward.hpp"
 #include "view_for_each.hpp"
 #include "zip_view.hpp"

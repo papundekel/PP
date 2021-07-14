@@ -1,6 +1,6 @@
 #pragma once
 #include "arrow_operator_wrapper.hpp"
-#include "functional/compose.hpp"
+#include "compose.hpp"
 #include "remove_cvref.hpp"
 #include "template_t.hpp"
 #include "type_t.hpp"

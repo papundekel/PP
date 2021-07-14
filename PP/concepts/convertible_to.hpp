@@ -1,6 +1,6 @@
 #pragma once
 #include "../declval.hpp"
-#include "../functional/functor.hpp"
+#include "../functor.hpp"
 #include "../get_type.hpp"
 
 namespace PP

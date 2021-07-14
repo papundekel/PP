@@ -3,7 +3,7 @@
 #include "concepts/fundamental_types.hpp"
 #include "concepts/non_void.hpp"
 #include "concepts/same.hpp"
-#include "functional/functor.hpp"
+#include "functor.hpp"
 #include "ptrdiff_t.hpp"
 
 namespace PP
@@ -15,24 +15,21 @@ namespace PP
 		{
 			{
 				t.step()
-			}
-			->concepts::void_type;
+				} -> concepts::void_type;
 		};
 		template <typename T>
 		concept has_step_back = requires(T t)
 		{
 			{
 				t.step_back()
-			}
-			->concepts::void_type;
+				} -> concepts::void_type;
 		};
 		template <typename T>
 		concept has_advance = requires(T t, ptrdiff_t n)
 		{
 			{
 				t.advance(n)
-			}
-			->concepts::void_type;
+				} -> concepts::void_type;
 		};
 
 		template <typename T>
@@ -75,16 +72,14 @@ namespace PP
 		{
 			{
 				t += n
-			}
-			->concepts::same<T&>;
+				} -> concepts::same<T&>;
 		};
 		template <typename T>
 		concept has_operator_back = requires(T t, ptrdiff_t n)
 		{
 			{
 				t -= n
-			}
-			->concepts::same<T&>;
+				} -> concepts::same<T&>;
 		};
 	}
 
@@ -138,8 +133,7 @@ namespace PP
 			++i;
 			{
 				*i
-			}
-			->non_void;
+				} -> non_void;
 		};
 	}
 	PP_CONCEPT_FUNCTOR1(iterator);
@@ -163,8 +157,7 @@ namespace PP
 			i += ptrdiff_t(0);
 			{
 				i[ptrdiff_t(0)]
-			}
-			->non_void;
+				} -> non_void;
 			i - i;
 		}
 		&&iterator_bi<T>;
@@ -174,7 +167,7 @@ namespace PP
 	namespace concepts
 	{
 		template <typename S, typename I>
-		concept sentinel = iterator<I>&& equatable<I, S>;
+		concept sentinel = iterator<I> && equatable<I, S>;
 	}
 	PP_FUNCTOR(is_sentinel, concepts::type auto s, concepts::type auto i)
 	{

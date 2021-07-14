@@ -1,7 +1,7 @@
 #pragma once
+#include "../apply_partially.hpp"
 #include "../apply_template.hpp"
-#include "../functional/apply_partially.hpp"
-#include "../functional/functor.hpp"
+#include "../functor.hpp"
 #include "../get_type.hpp"
 #include "../macros/simple_concept.hpp"
 #include "../size_of.hpp"

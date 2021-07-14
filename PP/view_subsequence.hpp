@@ -1,6 +1,6 @@
 #pragma once
-#include "functional/noop.hpp"
-#include "functional/operators.hpp"
+#include "noop.hpp"
+#include "operators.hpp"
 #include "view_zip_if.hpp"
 
 namespace PP

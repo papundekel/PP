@@ -1,5 +1,5 @@
 #pragma once
-#include "../../functional/functor.hpp"
+#include "../../conjunction.hpp"
 #include "complete_object.hpp"
 #include "returnable.hpp"
 

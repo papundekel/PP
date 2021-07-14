@@ -1,6 +1,6 @@
 #pragma once
-#include "../tuple_apply.hpp"
 #include "apply_partially.hpp"
+#include "tuple_apply.hpp"
 
 namespace PP
 {

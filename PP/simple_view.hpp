@@ -3,7 +3,7 @@
 
 #include "compressed_pair.hpp"
 #include "concepts/same_except_cvref.hpp"
-#include "functional/functor.hpp"
+#include "functor.hpp"
 #include "ptrdiff_t.hpp"
 #include "unbounded.hpp"
 #include "view.hpp"
@@ -23,8 +23,8 @@ namespace PP
 		constexpr simple_view(Iterator begin, Sentinel end)
 			: pair(begin, end)
 		{}
-		constexpr simple_view(concepts::view auto&& v) requires concepts::
-			different_except_cvref<simple_view, decltype(v)>
+		constexpr simple_view(concepts::view auto&& v) requires
+			concepts::different_except_cvref<simple_view, decltype(v)>
 			: simple_view(view_begin(PP_FORWARD(v)), view_end(PP_FORWARD(v)))
 		{}
 		constexpr simple_view(

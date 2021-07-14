@@ -1,12 +1,12 @@
 #pragma once
-#include "../functional/functor.hpp"
-#include "../tuple.hpp"
-#include "../tuple_count.hpp"
-#include "../tuple_get.hpp"
-#include "../utility/forward.hpp"
-#include "../utility/move.hpp"
-#include "../value_sequence.hpp"
+#include "functor.hpp"
 #include "id.hpp"
+#include "tuple.hpp"
+#include "tuple_count.hpp"
+#include "tuple_get.hpp"
+#include "utility/forward.hpp"
+#include "utility/move.hpp"
+#include "value_sequence.hpp"
 
 namespace PP
 {

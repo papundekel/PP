@@ -15,7 +15,7 @@ namespace PP
 				 predicate)](auto&& element, concepts::tuple auto tail)
 			{
 				if constexpr (PP_GET_VALUE(
-								  predicate_wrap.unwrap()(PP_FORWARD(element))))
+								  predicate_wrap--(PP_FORWARD(element))))
 					return !tuple_prepend(PP_FORWARD(element), move(tail));
 				else
 					return tail;

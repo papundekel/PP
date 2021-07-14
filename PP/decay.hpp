@@ -1,9 +1,9 @@
 #pragma once
 #include "add_pointer.hpp"
+#include "caller.hpp"
 #include "concepts/array.hpp"
 #include "concepts/function.hpp"
-#include "functional/caller.hpp"
-#include "functional/functor.hpp"
+#include "functor.hpp"
 #include "remove_extent.hpp"
 #include "remove_reference.hpp"
 

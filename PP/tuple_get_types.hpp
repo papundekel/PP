@@ -1,6 +1,6 @@
 #pragma once
-#include "functional/apply_pack.hpp"
-#include "functional/apply_partially.hpp"
+#include "apply_pack.hpp"
+#include "apply_partially.hpp"
 #include "tuple_get_element.hpp"
 #include "tuple_value_sequence_for.hpp"
 #include "type_tuple.hpp"

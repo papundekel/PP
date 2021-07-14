@@ -1,6 +1,6 @@
 #pragma once
+#include "compose.hpp"
 #include "decompose_pair.hpp"
-#include "functional/compose.hpp"
 #include "get_type.hpp"
 #include "overloaded.hpp"
 #include "ref_qualifier.hpp"

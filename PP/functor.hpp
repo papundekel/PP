@@ -1,6 +1,7 @@
 #pragma once
-#include "../utility/forward.hpp"
-#include "../utility/move.hpp"
+#include "utility/forward.hpp"
+#include "utility/move.hpp"
+#include "value_t.hpp"
 
 namespace PP
 {
@@ -56,8 +57,6 @@ namespace PP
 
 		constexpr decltype(auto) operator[](auto&& tuple) const&;
 		constexpr decltype(auto) operator[](auto&& tuple) const&&;
-
-		static constexpr char arbitrary_concept_tag_functor = {};
 	};
 
 #ifdef __clang__
@@ -65,49 +64,21 @@ namespace PP
 	functor(F) -> functor<F>;
 #endif
 
-	namespace concepts
+	namespace detail
 	{
-		template <typename F>
-		concept functor = requires(F f)
+		template <typename T>
+		concept functor_helper = requires(T t)
 		{
-			f.arbitrary_concept_tag_functor;
+			[]<typename F>(const functor<F>&)
+			{
+			}(t);
 		};
 	}
 
-	constexpr auto&& unwrap_functor(auto&& f)
+	constexpr auto&& unwrap_functor_impl(
+		detail::functor_helper auto&& f) noexcept
 	{
-		if constexpr (concepts::functor<decltype(f)>)
-			return unwrap_functor(PP_FORWARD(f).f);
-		else
-			return PP_FORWARD(f);
-	}
-
-	constexpr decltype(auto) operator<<=(concepts::functor auto&& f, auto&& arg)
-	{
-		return unwrap_functor(PP_FORWARD(f))(PP_FORWARD(arg));
-	}
-
-	constexpr auto operator&&(concepts::functor auto&& f,
-							  concepts::functor auto&& g)
-	{
-		return functor(
-			[f = unwrap_functor(PP_FORWARD(f)),
-			 g = unwrap_functor(PP_FORWARD(g))](
-				auto&&... args) -> decltype(auto)
-			{
-				return f(PP_FORWARD(args)...) && g(PP_FORWARD(args)...);
-			});
-	}
-	constexpr auto operator||(concepts::functor auto&& f,
-							  concepts::functor auto&& g) -> decltype(auto)
-	{
-		return functor(
-			[f = unwrap_functor(PP_FORWARD(f)),
-			 g = unwrap_functor(PP_FORWARD(g))](
-				auto&&... args) -> decltype(auto)
-			{
-				return f(PP_FORWARD(args)...) || g(PP_FORWARD(args)...);
-			});
+		return PP_FORWARD(f).f;
 	}
 
 #define PP_FUNCTOR(name, ...) constexpr inline auto name = ::PP::functor([](__VA_ARGS__)

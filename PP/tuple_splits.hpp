@@ -18,7 +18,7 @@ namespace PP
 														  auto splits)
 			{
 				if constexpr (PP_GET_VALUE(
-								  predicate_wrap.unwrap()(PP_FORWARD(element))))
+								  predicate_wrap--(PP_FORWARD(element))))
 					return !tuple_prepend(empty_tuple{}, move(splits));
 				else
 					return *functor(
@@ -27,9 +27,8 @@ namespace PP
 								   auto split)
 							   {
 								   if constexpr (PP_GET_VALUE(i) == 0)
-									   return tuple_prepend(
-										   element_wrap.unwrap(),
-										   move(split));
+									   return tuple_prepend(element_wrap--,
+															move(split));
 								   else
 									   return move(split);
 							   }) +

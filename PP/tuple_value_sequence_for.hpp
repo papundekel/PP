@@ -1,5 +1,5 @@
 #pragma once
-#include "functional/compose.hpp"
+#include "compose.hpp"
 #include "tuple_count.hpp"
 #include "value_sequence.hpp"
 

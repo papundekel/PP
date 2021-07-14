@@ -1,7 +1,7 @@
 #pragma once
-#include "functional/constant.hpp"
-#include "functional/functor.hpp"
-#include "functional/operators.hpp"
+#include "constant.hpp"
+#include "functor.hpp"
+#include "operators.hpp"
 #include "same.hpp"
 #include "tuple.hpp"
 #include "tuple_find_index.hpp"

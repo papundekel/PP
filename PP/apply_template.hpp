@@ -1,14 +1,14 @@
 #pragma once
 #include "apply_template_pack.hpp"
 
-#include "functional/apply_partially_first.hpp"
-#include "functional/compose.hpp"
-#include "functional/functor.hpp"
+#include "apply_partially_first.hpp"
+#include "compose.hpp"
+#include "functor.hpp"
 #include "get_type.hpp"
 #include "get_value.hpp"
 #include "tuple_apply.hpp"
+#include "tuple_concept.hpp"
 #include "tuple_get.hpp"
-#include "tuple_like.hpp"
 
 namespace PP
 {
