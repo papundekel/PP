@@ -13,28 +13,27 @@ namespace PP
 		{
 			return tuple_concat(
 				tuple_filter<[s = decltype(sequence){}](auto&& x)
-							 {
+			                 {
 								 return !tuple_contains(
-									 apply_partially<false>(equal,
-															PP_FORWARD(x)),
+									 apply_partially<false>(equal, PP_F(x)),
 									 s);
 							 }>(make_value_sequence(count)),
 				sequence);
 		}
 
 		constexpr decltype(auto) reorder_element_helper(auto&& args,
-														auto current_index,
-														auto&& applied_indices)
+		                                                auto current_index,
+		                                                auto&& applied_indices)
 		{
-			return PP_FORWARD(args)[applied_indices[current_index]];
+			return PP_F(args)[applied_indices[current_index]];
 		}
 		template <size_t... I>
 		constexpr decltype(auto) reorder_helper(auto&& f,
-												auto&& args,
-												auto applied_indices,
-												std::index_sequence<I...>)
+		                                        auto&& args,
+		                                        auto applied_indices,
+		                                        std::index_sequence<I...>)
 		{
-			return PP_FORWARD(args), value<I>, applied_indices)...);
+			return PP_F(args), value<I>, applied_indices)...);
 		}
 	}
 
@@ -47,16 +46,16 @@ namespace PP
 				f,
 				std::forward_as_tuple(args...),
 				detail::extend_sequence(value<sizeof...(args)>,
-										std::index_sequence<I...>{}),
+			                            std::index_sequence<I...>{}),
 				std::make_index_sequence<sizeof...(args)>{});
 		};
 	};
 	template <size_t... I>
 	constexpr inline auto reorder<true, I...> = [](auto&& f)
 	{
-		[f = PP_FORWARD(f)](auto&&... args) -> decltype(auto)
+		[f = PP_F(f)](auto&&... args) -> decltype(auto)
 		{
-			return reorder<false, I...>(f)(PP_FORWARD(args)...);
+			return reorder<false, I...>(f)(PP_F(args)...);
 		};
 	};
 }

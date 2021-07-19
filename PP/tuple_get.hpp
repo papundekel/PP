@@ -9,9 +9,9 @@ namespace PP
 	PP_FUNCTOR(tuple_get, concepts::value auto i, auto&& tuple)
 		-> decltype(auto) requires requires
 	{
-		PP_FORWARD(tuple)[i];
+		PP_F(tuple)[i];
 	}
 	{
-		return PP_FORWARD(tuple)[i];
+		return PP_F(tuple)[i];
 	});
 }

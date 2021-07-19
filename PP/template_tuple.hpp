@@ -10,8 +10,8 @@ namespace PP
 	struct template_tuple_t
 	{};
 	template <template <typename...> typename T,
-			  template <typename...>
-			  typename... Templates>
+	          template <typename...>
+	          typename... Templates>
 	struct template_tuple_t<T, Templates...>
 	{
 		constexpr auto head() const noexcept

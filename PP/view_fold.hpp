@@ -8,30 +8,30 @@
 namespace PP
 {
 	PP_FUNCTOR(view_fold,
-			   concepts::value auto left,
-			   auto&& f,
-			   auto init,
-			   concepts::view auto&& v)
+	           concepts::value auto left,
+	           auto&& f,
+	           auto init,
+	           concepts::view auto&& v)
 	{
 		if constexpr (PP_GET_VALUE(left))
 		{
-			auto i = view_begin(PP_FORWARD(v));
+			auto i = view_begin(PP_F(v));
 
-			for (; i != view_end(PP_FORWARD(v)); ++i)
-				init = PP_FORWARD(f)(move(init), *i);
+			for (; i != view_end(PP_F(v)); ++i)
+				init = PP_F(f)(move(init), *i);
 
 			return make_tuple(move(i), move(init));
 		}
 		else
 		{
-			auto [begin, i] = view_begin_end(PP_FORWARD(v));
+			auto [begin, i] = view_begin_end(PP_F(v));
 
 			if (begin != i)
 			{
 				do
 				{
 					--i;
-					init = PP_FORWARD(f)(*i, move(init));
+					init = PP_F(f)(*i, move(init));
 				} while (i != begin);
 			}
 

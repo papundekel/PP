@@ -16,5 +16,5 @@ namespace PP
 									   {
 										   return 0_z;
 									   }) |
-								   to_type_t;
+	                               to_type_t;
 }

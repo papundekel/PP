@@ -26,17 +26,17 @@ namespace PP
 	//};
 
 	PP_FUNCTOR(view_subsequence_if,
-			   auto&& comparer,
-			   concepts::view auto&& sub,
-			   concepts::view auto&& full)
+	           auto&& comparer,
+	           concepts::view auto&& sub,
+	           concepts::view auto&& full)
 	{
 		bool may_be_proper = false;
 
 		auto [sub_end, full_end] = view_zip_if_pack(
 			[&may_be_proper, &comparer](auto&& sub_element, auto&& full_element)
 			{
-				auto cond = PP_FORWARD(comparer)(PP_FORWARD(sub_element),
-												 PP_FORWARD(full_element));
+				auto cond =
+					PP_F(comparer)(PP_F(sub_element), PP_F(full_element));
 
 				if (!cond)
 					may_be_proper = true;
@@ -44,11 +44,10 @@ namespace PP
 				return make_tuple(cond, make_array(cond, true));
 			},
 			noop,
-			PP_FORWARD(sub),
-			PP_FORWARD(full));
+			PP_F(sub),
+			PP_F(full));
 
-		if (sub_end == view_end(PP_FORWARD(sub)) &&
-			full_end == view_end(PP_FORWARD(full)))
+		if (sub_end == view_end(PP_F(sub)) && full_end == view_end(PP_F(full)))
 		{
 			if (may_be_proper)
 				return subsequence_type::proper;

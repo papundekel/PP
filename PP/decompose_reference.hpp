@@ -13,17 +13,17 @@ namespace PP
 			[]<typename T>(type_t<T&&>)
 			{
 				return make_decompose_pair(type<T>,
-										   PP::value<ref_qualifier::rvalue>);
+		                                   PP::value<ref_qualifier::rvalue>);
 			},
 			[]<typename T>(type_t<T&>)
 			{
 				return make_decompose_pair(type<T>,
-										   PP::value<ref_qualifier::lvalue>);
+		                                   PP::value<ref_qualifier::lvalue>);
 			},
 			[]<typename T>(type_t<T>)
 			{
 				return make_decompose_pair(type<T>,
-										   PP::value<ref_qualifier::none>);
+		                                   PP::value<ref_qualifier::none>);
 			}) |
 		to_type_t;
 }

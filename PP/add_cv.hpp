@@ -32,7 +32,7 @@ namespace PP
 
 	template <cv_qualifier cv>
 	constexpr auto operator+(concepts::type auto t,
-							 add_cv_tag_t<cv> tag) noexcept
+	                         add_cv_tag_t<cv> tag) noexcept
 	{
 		return add_cv(tag, t);
 	}

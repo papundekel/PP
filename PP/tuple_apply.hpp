@@ -2,6 +2,7 @@
 #include "apply_pack.hpp"
 #include "apply_partially.hpp"
 #include "functor.hpp"
+#include "functor_concept.hpp"
 #include "tuple_concept.hpp"
 #include "tuple_count.hpp"
 #include "tuple_get.hpp"
@@ -14,19 +15,19 @@ namespace PP
 	PP_FUNCTOR(tuple_apply, auto&& f, concepts::tuple auto&& t)
 		-> decltype(auto)
 	{
-		return apply_pack(unwrap_functor(PP_FORWARD(f)),
-						  tuple_get(partial_tag, value_1, PP_FORWARD_WRAP(t)),
-						  tuple_value_sequence_for(PP_FORWARD(t)));
+		return apply_pack(unwrap_functor(PP_F(f)),
+		                  tuple_get(partial_tag, value_1, PP_FORWARD_WRAP(t)),
+		                  tuple_value_sequence_for(PP_F(t)));
 	});
 
 	template <typename F>
 	constexpr decltype(auto) functor<F>::operator[](auto&& t) const&
 	{
-		return tuple_apply(unwrap_functor(*this), PP_FORWARD(t));
+		return tuple_apply(unwrap_functor(*this), PP_F(t));
 	}
 	template <typename F>
 	constexpr decltype(auto) functor<F>::operator[](auto&& t) const&&
 	{
-		return tuple_apply(unwrap_functor(move(*this)), PP_FORWARD(t));
+		return tuple_apply(unwrap_functor(move(*this)), PP_F(t));
 	}
 }

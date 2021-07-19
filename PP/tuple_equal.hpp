@@ -6,7 +6,7 @@
 namespace PP
 {
 	constexpr auto operator==(const concepts::tuple auto& a,
-							  const concepts::tuple auto& b)
+	                          const concepts::tuple auto& b)
 	{
 		return tuple_count(a) == tuple_count(b) && tuple_all(eql, a ^ b);
 	}

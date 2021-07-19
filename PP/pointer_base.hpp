@@ -13,10 +13,10 @@ namespace PP
 	}
 
 	template <typename T>
-	class pointer_new_base
+	class pointer_base
 	{
 		template <typename>
-		friend class pointer_new_base;
+		friend class pointer_base;
 
 		template <typename>
 		friend class pointer_new;
@@ -28,29 +28,28 @@ namespace PP
 		T* ptr;
 
 	public:
-		explicit constexpr pointer_new_base(T* ptr) noexcept
+		explicit constexpr pointer_base(T* ptr) noexcept
 			: ptr(ptr)
 		{}
 
-		constexpr pointer_new_base() noexcept
+		constexpr pointer_base() noexcept
 			: ptr(nullptr)
 		{}
-		constexpr pointer_new_base(decltype(nullptr)) noexcept
-			: pointer_new_base()
+		constexpr pointer_base(decltype(nullptr)) noexcept
+			: pointer_base()
 		{}
 
-		pointer_new_base(const pointer_new_base& other) = default;
+		pointer_base(const pointer_base& other) = default;
 
 		template <detail::pointer_new_compatible<T> U>
-		constexpr pointer_new_base(const pointer_new_base<U>& other) noexcept
+		constexpr pointer_base(const pointer_base<U>& other) noexcept
 			: ptr(other.ptr)
 		{}
 
-		pointer_new_base& operator=(const pointer_new_base& other) = default;
+		pointer_base& operator=(const pointer_base& other) = default;
 
 		template <detail::pointer_new_compatible<T> U>
-		constexpr pointer_new_base& operator=(
-			const pointer_new_base<U>& other) noexcept
+		constexpr pointer_base& operator=(const pointer_base<U>& other) noexcept
 		{
 			ptr = other.ptr;
 			return *this;

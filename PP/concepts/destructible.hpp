@@ -14,7 +14,7 @@ namespace PP
 			return true;
 		else if constexpr (is_complete_object(T))
 		{
-			using U = PP_GET_TYPE(T);
+			using U = PP_GT(T);
 			return requires
 			{
 				declval(type<U&>).~U();

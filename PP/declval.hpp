@@ -5,5 +5,5 @@
 namespace PP
 {
 	auto declval(concepts::type auto t) noexcept
-		-> decltype(declval_impl<PP_GET_TYPE(t)>());
+		-> decltype(declval_impl<PP_GT(t)>());
 }

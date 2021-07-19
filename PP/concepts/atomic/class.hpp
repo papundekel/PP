@@ -9,7 +9,7 @@ namespace PP
 	{
 		return requires
 		{
-			typename detail::templated_dummy<int PP_GET_TYPE(t)::*>;
+			typename detail::templated_dummy<int PP_GT(t)::*>;
 		};
 	});
 }

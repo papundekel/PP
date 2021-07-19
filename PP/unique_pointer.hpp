@@ -35,7 +35,7 @@ namespace PP
 		friend class unique_pointer;
 
 		scoped<movable<Pointer, nullptr_releaser>,
-			   detail::unique_pointer_deleter>
+		       detail::unique_pointer_deleter>
 			p;
 
 	public:
@@ -47,8 +47,8 @@ namespace PP
 
 		constexpr unique_pointer(placeholder_t, auto&&... args)
 			: p(scoped_default_destructor_tag,
-				movable_default_releaser_tag,
-				PP_FORWARD(args)...)
+		        movable_default_releaser_tag,
+		        PP_F(args)...)
 		{}
 
 		constexpr unique_pointer(unique_pointer&& other) = default;
@@ -150,45 +150,44 @@ namespace PP
 			if constexpr (PP_DECLTYPE(tag) == type<unique_tag_new_t>)
 				return [](concepts::type auto t, auto&&... args)
 				{
-					return PP_GET_TYPE(t)::create(PP_FORWARD(args)...);
+					return PP_GT(t)::create(PP_F(args)...);
 				};
 			else
 				return [](concepts::type auto t, auto&&... args)
 				{
-					return t(PP_FORWARD(args)...);
+					return t(PP_F(args)...);
 				};
 		}
 		constexpr auto make_unique_pointer_get_maker(auto tag)
 		{
 			return [tag](concepts::type auto t, auto&&... args)
 			{
-				return make_unique_pointer_get_maker_helper(tag)(
-					make_unique_pointer_template(tag)(t),
-					PP_FORWARD(args)...);
+				return make_unique_pointer_get_maker_helper(
+					tag)(make_unique_pointer_template(tag)(t), PP_F(args)...);
 			};
 		}
 		constexpr auto make_unique_pointer_helper(auto&& maker,
-												  concepts::type auto t,
-												  auto&&... args)
+		                                          concepts::type auto t,
+		                                          auto&&... args)
 		{
-			auto p = PP_FORWARD(maker)(t, PP_FORWARD(args)...);
+			auto p = PP_F(maker)(t, PP_F(args)...);
 			return Template<unique_pointer>(PP_DECLTYPE(p))(placeholder,
-															move(p));
+			                                                move(p));
 		}
 	}
 
 	constexpr auto make_unique_pointer(auto tag,
-									   concepts::type auto t,
-									   auto&&... args)
+	                                   concepts::type auto t,
+	                                   auto&&... args)
 	{
 		return detail::make_unique_pointer_helper(
 			detail::make_unique_pointer_get_maker(tag),
 			t,
-			PP_FORWARD(args)...);
+			PP_F(args)...);
 	}
 
 	constexpr auto make_unique_copy(auto tag, auto&& value)
 	{
-		return make_unique_pointer(tag, ~PP_DECLTYPE(value), PP_FORWARD(value));
+		return make_unique_pointer(tag, ~PP_DECLTYPE(value), PP_F(value));
 	}
 }

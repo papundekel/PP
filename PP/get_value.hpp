@@ -28,14 +28,13 @@ namespace PP
 	}
 
 	constexpr inline auto get_type_value = make_overloaded_pack(
-		[
-		](auto t) -> decltype(auto) requires detail::has_value_f<PP_GET_TYPE(t)>
+		[](auto t) -> decltype(auto) requires detail::has_value_f<PP_GT(t)>
 		{
-			return PP_GET_TYPE(t)::value_f();
+			return PP_GT(t)::value_f();
 		},
-		[](auto t) -> decltype(auto) requires detail::has_value<PP_GET_TYPE(t)>
+		[](auto t) -> decltype(auto) requires detail::has_value<PP_GT(t)>
 		{
-			return (PP_GET_TYPE(t)::value);
+			return (PP_GT(t)::value);
 		});
 
 	constexpr inline auto get_value = get_type_value | decl_type_copy;
@@ -129,7 +128,7 @@ namespace PP
 	}
 
 	constexpr auto operator<=(concepts::type auto x,
-							  concepts::type auto y) requires requires
+	                          concepts::type auto y) requires requires
 	{
 		-x;
 		-y;

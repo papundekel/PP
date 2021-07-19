@@ -28,23 +28,21 @@ namespace PP
 	namespace detail
 	{
 		PP_FUNCTOR(is_constructible_pack_impl,
-				   concepts::value auto Noexcept,
-				   concepts::type auto t,
-				   concepts::type auto... arg_types)
+		           concepts::value auto Noexcept,
+		           concepts::type auto t,
+		           concepts::type auto... arg_types)
 		{
 			if constexpr (PP_GET_VALUE(Noexcept))
-				return concepts::constructible_noexcept<PP_GET_TYPE(t),
-														PP_GET_TYPE(
-															arg_types)...>;
+				return concepts::constructible_noexcept<PP_GT(t),
+				                                        PP_GT(arg_types)...>;
 			else
-				return concepts::constructible<PP_GET_TYPE(t),
-											   PP_GET_TYPE(arg_types)...>;
+				return concepts::constructible<PP_GT(t), PP_GT(arg_types)...>;
 		});
 
 		PP_FUNCTOR(is_constructible_impl,
-				   concepts::value auto Noexcept,
-				   concepts::type auto t,
-				   concepts::tuple auto arg_tuple)
+		           concepts::value auto Noexcept,
+		           concepts::type auto t,
+		           concepts::tuple auto arg_tuple)
 		{
 			return (is_constructible_pack_impl * Noexcept * t)[arg_tuple];
 		});

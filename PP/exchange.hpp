@@ -7,7 +7,7 @@ namespace PP
 	constexpr auto exchange(auto& x, auto&& new_value)
 	{
 		auto old = move(x);
-		x = PP_FORWARD(new_value);
+		x = PP_F(new_value);
 		return move(old);
 	}
 }

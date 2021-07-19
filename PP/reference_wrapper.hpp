@@ -16,10 +16,9 @@ namespace PP
 	namespace detail
 	{
 		template <typename T, typename U>
-		concept reference_wrapper_compatible =
-			type<T> == type<U> ||
-			(is_convertible_to(U::base_type, T::base_type) &&
-			 T::reference_type == U::reference_type);
+		concept reference_wrapper_compatible = type<T>
+		== type<U> || (is_convertible_to(U::base_type, T::base_type) &&
+		               T::reference_type == U::reference_type);
 	}
 
 	template <typename T>
@@ -27,15 +26,14 @@ namespace PP
 	{
 		static constexpr auto base_type = !type<T>;
 		static constexpr auto reference_type = type<T> + add_rvalue_tag;
-		using RT = PP_GET_TYPE(reference_type);
+		using RT = PP_GT(reference_type);
 
 	public:
-		PP_GET_TYPE(base_type) * ptr;
+		PP_GT(base_type) * ptr;
 
 		template <typename U>
-		constexpr reference_wrapper(reference_wrapper<U> r) noexcept
-			requires detail::reference_wrapper_compatible<reference_wrapper,
-														  decltype(r)>
+		constexpr reference_wrapper(reference_wrapper<U> r) noexcept requires
+			detail::reference_wrapper_compatible<reference_wrapper, decltype(r)>
 			: ptr(r.ptr)
 		{}
 		constexpr reference_wrapper(RT ref) noexcept
@@ -51,19 +49,18 @@ namespace PP
 			return get();
 		}
 
-		constexpr decltype(auto) operator()(auto&&... args) const
-			requires requires
+		constexpr decltype(auto) operator()(
+			auto&&... args) const requires requires
 		{
-			get()(PP_FORWARD(args)...);
+			get()(PP_F(args)...);
 		}
 		{
-			return get()(PP_FORWARD(args)...);
+			return get()(PP_F(args)...);
 		}
 
 		template <typename U>
-		constexpr auto& operator=(reference_wrapper<U> r) noexcept
-			requires detail::reference_wrapper_compatible<reference_wrapper,
-														  decltype(r)>
+		constexpr auto& operator=(reference_wrapper<U> r) noexcept requires
+			detail::reference_wrapper_compatible<reference_wrapper, decltype(r)>
 		{
 			ptr = r.ptr;
 			return *this;
@@ -82,13 +79,13 @@ namespace PP
 		if constexpr (PP_DECLTYPE(x)->Template == Template<reference_wrapper>)
 			return x.get();
 		else
-			return PP_FORWARD(x);
+			return PP_F(x);
 	});
 
 	constexpr inline auto ref = functor(
 									[](auto&& x)
 									{
-										return reference_wrapper(PP_FORWARD(x));
+										return reference_wrapper(PP_F(x));
 									}) |
-								unref;
+	                            unref;
 }

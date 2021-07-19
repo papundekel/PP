@@ -23,9 +23,9 @@ namespace PP
 
 		template <auto... I>
 		constexpr auto is_tuple_helper(concepts::type auto&& t,
-									   value_sequence<I...>) noexcept
+		                               value_sequence<I...>) noexcept
 		{
-			return tuple_accesses<PP_GET_TYPE(t), I...>;
+			return tuple_accesses<PP_GT(t), I...>;
 		}
 	}
 

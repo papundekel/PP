@@ -28,7 +28,7 @@ namespace PP
 
 #ifdef __clang__
 			constexpr decompose_pair(template_t<T>,
-									 type_tuple_t<Types...>) noexcept
+			                         type_tuple_t<Types...>) noexcept
 				: Template()
 				, types()
 			{}
@@ -46,12 +46,12 @@ namespace PP
 				type_t<T<Types...>>)
 			{
 				return detail::decompose_pair(Template<T>,
-											  type_tuple<Types...>);
+		                                      type_tuple<Types...>);
 			},
 			[](auto&&)
 			{
 				return detail::decompose_pair(Template<detail::decompose_dummy>,
-											  type_tuple<>);
+		                                      type_tuple<>);
 			}) |
 		remove_cvref;
 
@@ -60,13 +60,13 @@ namespace PP
 												   {
 													   return p.Template;
 												   }) |
-											   decompose;
+	                                           decompose;
 	constexpr inline auto decompose_types = functor(
 												[](auto p)
 												{
 													return p.types;
 												}) |
-											decompose;
+	                                        decompose;
 
 	constexpr auto operator*(concepts::type auto t) noexcept
 	{

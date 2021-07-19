@@ -16,27 +16,27 @@ namespace PP
 		friend struct optional_creator;
 
 		static_block<T, 1> block;
-		bool valid;
+		bool has_value;
 
 	public:
 		constexpr optional(nullopt_t) noexcept
 			: block()
-			, valid(false)
+			, has_value(false)
 		{}
 
 		constexpr optional(const optional& other)
 			: block()
-			, valid(other)
+			, has_value(other.has_value)
 		{
-			if (other)
+			if (has_value)
 				construct(*other);
 		}
 
 		constexpr optional(optional&& other)
 			: block()
-			, valid(other)
+			, has_value(other.has_value)
 		{
-			if (other)
+			if (has_value)
 				construct(*move(other));
 		}
 
@@ -45,23 +45,22 @@ namespace PP
 			reset();
 		}
 
-	private:
 		constexpr optional(placeholder_t, auto&&... args)
 			: block()
-			, valid(true)
+			, has_value(true)
 		{
-			construct(PP_FORWARD(args)...);
+			construct(PP_F(args)...);
 		}
 
 	public:
 		static constexpr auto create(auto&&... args)
 		{
-			return optional(placeholder, PP_FORWARD(args)...);
+			return optional(placeholder, PP_F(args)...);
 		}
 
 		constexpr explicit operator bool() const noexcept
 		{
-			return valid;
+			return has_value;
 		}
 
 		constexpr T& operator*() & noexcept
@@ -94,16 +93,16 @@ namespace PP
 		{
 			destroy();
 
-			construct(PP_FORWARD(args)...);
+			construct(PP_F(args)...);
 
-			valid = true;
+			has_value = true;
 		}
 
 		constexpr void reset()
 		{
 			destroy();
 
-			valid = false;
+			has_value = false;
 		}
 
 	private:
@@ -118,19 +117,18 @@ namespace PP
 
 		constexpr void destroy()
 		{
-			if (valid)
+			if (has_value)
 				get_ptr()->~T();
 		}
 
 		constexpr void construct(auto&&... args)
 		{
-			construct_at_pack(get_ptr(), PP_FORWARD(args)...);
+			construct_at_pack(get_ptr(), PP_F(args)...);
 		}
 	};
 
 	PP_FUNCTOR(make_optional_copy, auto&& arg)
 	{
-		return optional<PP_GET_TYPE(~PP_DECLTYPE(arg))>::create(
-			PP_FORWARD(arg));
+		return optional<PP_GT(~PP_DECLTYPE(arg))>::create(PP_F(arg));
 	});
 }

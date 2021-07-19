@@ -11,8 +11,8 @@
 namespace PP
 {
 	template <typename T,
-			  size_t StaticCapacity,
-			  typename Allocator = std::allocator<T>>
+	          size_t StaticCapacity,
+	          typename Allocator = std::allocator<T>>
 	class small_optimized_vector
 	{
 		static_block<T, StaticCapacity> block_s;
@@ -20,32 +20,32 @@ namespace PP
 		no_default_initialized<size_t> count_;
 
 		constexpr small_optimized_vector(size_t dynamic_capacity,
-										 size_t count,
-										 auto&& allocator)
+		                                 size_t count,
+		                                 auto&& allocator)
 			: block_s()
-			, block_d(PP_FORWARD(allocator), dynamic_capacity)
+			, block_d(PP_F(allocator), dynamic_capacity)
 			, count_(count)
 		{}
 
 		constexpr small_optimized_vector(placeholder_t, auto&& allocator)
-			: small_optimized_vector(0, 0, PP_FORWARD(allocator))
+			: small_optimized_vector(0, 0, PP_F(allocator))
 		{}
 
 		constexpr small_optimized_vector(placeholder_t,
-										 size_t count,
-										 auto&& allocator)
+		                                 size_t count,
+		                                 auto&& allocator)
 			: small_optimized_vector(count > StaticCapacity ? count : 0,
-									 count,
-									 PP_FORWARD(allocator))
+		                             count,
+		                             PP_F(allocator))
 		{}
 
 		constexpr small_optimized_vector(placeholder_t,
-										 concepts::view auto&& view)
+		                                 concepts::view auto&& view)
 			: small_optimized_vector(placeholder,
-									 view_count(PP_FORWARD(view)),
-									 Allocator())
+		                             view_count(PP_F(view)),
+		                             Allocator())
 		{
-			view_copy_uninitialized(*this, PP_FORWARD(view));
+			view_copy_uninitialized(*this, PP_F(view));
 		}
 
 	public:
@@ -68,12 +68,12 @@ namespace PP
 
 		static constexpr auto create_empty_from_allocator(auto&& allocator)
 		{
-			return small_optimized_vector(placeholder, PP_FORWARD(allocator));
+			return small_optimized_vector(placeholder, PP_F(allocator));
 		}
 
 		static constexpr auto create_copy_view(concepts::view auto&& view)
 		{
-			return small_optimized_vector(placeholder, PP_FORWARD(view));
+			return small_optimized_vector(placeholder, PP_F(view));
 		}
 
 		constexpr ~small_optimized_vector()
@@ -81,7 +81,8 @@ namespace PP
 			destroy_all();
 		}
 
-		small_optimized_vector& operator=(small_optimized_vector&& other) = delete;
+		small_optimized_vector& operator=(small_optimized_vector&& other) =
+			delete;
 
 		constexpr void push_back(auto&&... args)
 		{
@@ -98,7 +99,7 @@ namespace PP
 				block_d = move(new_block_d);
 			}
 
-			construct_at_pack(end(), PP_FORWARD(args)...);
+			construct_at_pack(end(), PP_F(args)...);
 
 			++count_;
 		}
@@ -187,7 +188,7 @@ namespace PP
 
 		constexpr void remove(auto&& predicate)
 		{
-			auto i = view_remove(PP_FORWARD(predicate), *this);
+			auto i = view_remove(PP_F(predicate), *this);
 			erase_until_end(i);
 		}
 

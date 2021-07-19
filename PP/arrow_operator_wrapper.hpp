@@ -15,6 +15,6 @@ namespace PP
 
 	constexpr auto make_arrow_operator_wrapper(auto initializer)
 	{
-		return arrow_operator_wrapper<decltype(initializer())>{ initializer() };
+		return arrow_operator_wrapper<decltype(initializer())>{initializer()};
 	}
 }

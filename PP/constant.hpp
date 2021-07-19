@@ -8,18 +8,19 @@ namespace PP
 	{
 		constexpr auto constant_helper(auto&& x) noexcept
 		{
-			return PP_FORWARD(x);
+			return PP_F(x);
 		}
 		template <typename T>
 		constexpr auto&& constant_helper(const forward_wrap<T>& x) noexcept
 		{
-			return x.unwrap_forward();
+			return x--;
 		}
 	}
-	PP_FUNCTOR(constant, auto&& c)
+
+	PP_FUNCTOR(constant, auto&& cc)
 	{
 		return functor(
-			[c = PP_FORWARD(c)](auto&&...) -> decltype(auto)
+			[c = PP_F(cc)](auto&&...) -> decltype(auto)
 			{
 				return detail::constant_helper(c);
 			});

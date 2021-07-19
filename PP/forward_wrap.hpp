@@ -9,13 +9,20 @@ namespace PP
 		T&& ref;
 
 	public:
+		constexpr forward_wrap(const forward_wrap& other) noexcept
+			: ref(PP_F(other.ref))
+		{}
 		constexpr forward_wrap(T&& ref) noexcept
-			: ref(PP_FORWARD(ref))
+			: ref(PP_F(ref))
 		{}
 
 		constexpr decltype(auto) operator--(int) const noexcept
 		{
-			return PP_FORWARD(ref);
+			return PP_F(ref);
+		}
+		constexpr decltype(auto) operator()(auto&&... args) const
+		{
+			return PP_F(ref)(PP_F(args)...);
 		}
 	};
 	template <typename T>
@@ -23,7 +30,7 @@ namespace PP
 
 	constexpr auto&& unwrap_forward(auto&& x) noexcept
 	{
-		return PP_FORWARD(x);
+		return PP_F(x);
 	}
 	template <typename T>
 	constexpr auto&& unwrap_forward(const forward_wrap<T>& x) noexcept
@@ -31,5 +38,5 @@ namespace PP
 		return x--;
 	}
 
-#define PP_FORWARD_WRAP(x) ::PP::forward_wrap(PP_FORWARD(x))
+#define PP_FORWARD_WRAP(x) ::PP::forward_wrap(PP_F(x))
 }

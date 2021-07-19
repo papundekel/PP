@@ -9,5 +9,5 @@ namespace PP
 											 {
 												 return type<volatile T>;
 											 }) |
-										 to_type_t;
+	                                     to_type_t;
 }

@@ -28,7 +28,7 @@ namespace PP
 {
 	enum class iterator_category : int
 	{
-		forward,
+		fw,
 		bi,
 		ra,
 	};
@@ -125,9 +125,9 @@ namespace PP
 		}
 	};
 	template <typename T>
-	class any_iterator_base_base<iterator_category::forward, T>
+	class any_iterator_base_base<iterator_category::fw, T>
 	{
-		using Category = value_t<iterator_category::forward>;
+		using Category = value_t<iterator_category::fw>;
 
 	public:
 		constexpr auto get_type() const noexcept
@@ -135,28 +135,26 @@ namespace PP
 			return type<T>;
 		}
 
-		constexpr virtual any_iterator_unique_pointer<
-			iterator_category::forward,
-			T>
+		constexpr virtual any_iterator_unique_pointer<iterator_category::fw, T>
 			copy(Category) const = 0;
 		constexpr virtual any_iterator_unique_pointer<
-			iterator_category::forward,
+			iterator_category::fw,
 			detail::any_iterator_const_type<T>>
 			copy_const(Category) const = 0;
 		constexpr virtual any_iterator_unique_pointer<
-			iterator_category::forward,
+			iterator_category::fw,
 			detail::any_iterator_value_type<T>>
 			copy_value(Category) const = 0;
 	};
 
 	constexpr auto any_iterator_copy_as(const auto& any_it,
-										concepts::value auto category,
-										concepts::type auto t)
+	                                    concepts::value auto category,
+	                                    concepts::type auto t)
 	{
 		constexpr auto from_t = PP_COPY_TYPE(any_it.get_type());
 
-		const any_iterator_base_base<PP_GET_VALUE(category),
-									 PP_GET_TYPE(from_t)>& i = any_it;
+		const any_iterator_base_base<PP_GET_VALUE(category), PP_GT(from_t)>& i =
+			any_it;
 
 		auto category_value_t = to_value_t(category);
 
@@ -169,8 +167,8 @@ namespace PP
 	}
 
 	template <typename T>
-	class any_iterator_base<iterator_category::forward, T>
-		: public any_iterator_base_base<iterator_category::forward, T>
+	class any_iterator_base<iterator_category::fw, T>
+		: public any_iterator_base_base<iterator_category::fw, T>
 	{
 	public:
 		constexpr virtual T dereference() const = 0;
@@ -196,7 +194,7 @@ namespace PP
 	public:
 		constexpr virtual void advance(ptrdiff_t offset) = 0;
 		constexpr virtual T index(ptrdiff_t offset) const = 0;
-		constexpr virtual ptrdiff_t difference(
+		constexpr virtual ptrdiff_t diff(
 			const any_iterator_base& other) const = 0;
 	};
 
@@ -209,7 +207,7 @@ namespace PP
 	public:
 		explicit constexpr any_iterator_wrap(
 			concepts::same_except_cvref<Iterator> auto&& i)
-			: i(PP_FORWARD(i))
+			: i(PP_F(i))
 		{}
 
 		constexpr decltype(auto) equal_sentinel(const auto& i_other) const
@@ -231,7 +229,7 @@ namespace PP
 	// tuple_find_dynamic([](auto* p) { return p != nullptr; }, ptrs);
 	//
 	//	if (i != sizeof...(OtherIterators))
-	//		return variant_visit(PP_FORWARD(f), tuple_get_dynamic(i, ptrs));
+	//		return variant_visit(PP_F(f), tuple_get_dynamic(i, ptrs));
 	//	else
 	//		return def;
 	//}
@@ -247,47 +245,47 @@ namespace PP
 		else
 		{
 			if (ptr)
-				return PP_FORWARD(f)(ptr);
+				return PP_F(f)(ptr);
 			else
-				return invoke_on_first_valid<OtherIterators...>(PP_FORWARD(f),
-																def,
-																other);
+				return invoke_on_first_valid<OtherIterators...>(PP_F(f),
+				                                                def,
+				                                                other);
 		}
 	}
 
 	template <iterator_category Category,
-			  iterator_category C,
-			  typename T,
-			  typename Iterator,
-			  typename... CompatibleIterators>
+	          iterator_category C,
+	          typename T,
+	          typename Iterator,
+	          typename... CompatibleIterators>
 	class any_iterator_wrapper_implementation
 	{};
 
 	template <typename CategoryT,
-			  typename CT,
-			  typename T,
-			  typename Iterator,
-			  typename... CompatibleIterators>
+	          typename CT,
+	          typename T,
+	          typename Iterator,
+	          typename... CompatibleIterators>
 	class any_iterator_wrapper
 		: public any_iterator_wrapper_implementation<-type<CategoryT>,
-													 -type<CT>,
-													 T,
-													 Iterator,
-													 CompatibleIterators...>
+	                                                 -type<CT>,
+	                                                 T,
+	                                                 Iterator,
+	                                                 CompatibleIterators...>
 	{
 		static constexpr auto Category = -type<CategoryT>;
 		static constexpr auto C = -type<CT>;
 
 		constexpr auto copy(concepts::value auto category,
-							concepts::type auto t) const
+		                    concepts::type auto t) const
 		{
 			return make_unique_pointer(
 				any_iterator_unique_pointer_type{},
 				type<any_iterator_wrapper<value_t<PP_GET_VALUE(category)>,
-										  CT,
-										  PP_GET_TYPE(t),
-										  Iterator,
-										  CompatibleIterators...>>,
+			                              CT,
+			                              PP_GT(t),
+			                              Iterator,
+			                              CompatibleIterators...>>,
 				this->i);
 		}
 
@@ -321,14 +319,14 @@ namespace PP
 	};
 
 	template <iterator_category C,
-			  typename T,
-			  typename Iterator,
-			  typename... CompatibleIterators>
-	class any_iterator_wrapper_implementation<iterator_category::forward,
-											  C,
-											  T,
-											  Iterator,
-											  CompatibleIterators...>
+	          typename T,
+	          typename Iterator,
+	          typename... CompatibleIterators>
+	class any_iterator_wrapper_implementation<iterator_category::fw,
+	                                          C,
+	                                          T,
+	                                          Iterator,
+	                                          CompatibleIterators...>
 		: public any_iterator_base<C, T>
 		, public any_iterator_wrap<Iterator>
 	{
@@ -345,9 +343,8 @@ namespace PP
 			++(this->i);
 		}
 
-		constexpr bool equal(
-			const any_iterator_base<iterator_category::forward, T>& other)
-			const override final
+		constexpr bool equal(const any_iterator_base<iterator_category::fw, T>&
+		                         other) const override final
 		{
 			return invoke_on_first_valid<Iterator, CompatibleIterators...>(
 				[this](auto* ptr)
@@ -360,23 +357,23 @@ namespace PP
 	};
 
 	template <iterator_category C,
-			  typename T,
-			  typename Iterator,
-			  typename... CompatibleIterators>
+	          typename T,
+	          typename Iterator,
+	          typename... CompatibleIterators>
 	class any_iterator_wrapper_implementation<iterator_category::bi,
-											  C,
-											  T,
-											  Iterator,
-											  CompatibleIterators...>
-		: public any_iterator_wrapper_implementation<iterator_category::forward,
-													 C,
-													 T,
-													 Iterator,
-													 CompatibleIterators...>
+	                                          C,
+	                                          T,
+	                                          Iterator,
+	                                          CompatibleIterators...>
+		: public any_iterator_wrapper_implementation<iterator_category::fw,
+	                                                 C,
+	                                                 T,
+	                                                 Iterator,
+	                                                 CompatibleIterators...>
 	{
 	public:
 		using any_iterator_wrapper_implementation<
-			iterator_category::forward,
+			iterator_category::fw,
 			C,
 			T,
 			Iterator,
@@ -389,19 +386,19 @@ namespace PP
 	};
 
 	template <iterator_category C,
-			  typename T,
-			  typename Iterator,
-			  typename... CompatibleIterators>
+	          typename T,
+	          typename Iterator,
+	          typename... CompatibleIterators>
 	class any_iterator_wrapper_implementation<iterator_category::ra,
-											  C,
-											  T,
-											  Iterator,
-											  CompatibleIterators...>
+	                                          C,
+	                                          T,
+	                                          Iterator,
+	                                          CompatibleIterators...>
 		: public any_iterator_wrapper_implementation<iterator_category::bi,
-													 C,
-													 T,
-													 Iterator,
-													 CompatibleIterators...>
+	                                                 C,
+	                                                 T,
+	                                                 Iterator,
+	                                                 CompatibleIterators...>
 	{
 	public:
 		using any_iterator_wrapper_implementation<
@@ -420,7 +417,7 @@ namespace PP
 			return this->i[offset];
 		}
 
-		constexpr ptrdiff_t difference(
+		constexpr ptrdiff_t diff(
 			const any_iterator_base<iterator_category::ra, T>& other)
 			const override final
 		{
@@ -429,7 +426,7 @@ namespace PP
 				{
 					return ptr->difference_sentinel(this->i);
 				},
-				(ptrdiff_t)0,
+				(ptrdiff_t)-42,
 				other);
 		}
 	};
@@ -439,7 +436,7 @@ namespace PP
 	{};
 
 	template <typename C, typename T>
-	class any_iterator_implementation<value_t<iterator_category::forward>, C, T>
+	class any_iterator_implementation<value_t<iterator_category::fw>, C, T>
 	{
 		template <typename, typename, typename>
 		friend class any_iterator_implementation;
@@ -459,8 +456,8 @@ namespace PP
 			: any_iterator_implementation(
 				  placeholder,
 				  any_iterator_copy_as(*other.p,
-									   value<iterator_category::forward>,
-									   type<T>))
+		                               value<iterator_category::fw>,
+		                               type<T>))
 		{}
 		constexpr any_iterator_implementation(
 			any_iterator_implementation&& other) noexcept
@@ -468,23 +465,22 @@ namespace PP
 		{}
 
 		template <detail::at_least_type<C> COther,
-				  concepts::convertible_to<T> U>
+		          concepts::convertible_to<T> U>
 		constexpr any_iterator_implementation(
-			const any_iterator_implementation<
-				value_t<iterator_category::forward>,
-				COther,
-				U>& other) noexcept
+			const any_iterator_implementation<value_t<iterator_category::fw>,
+		                                      COther,
+		                                      U>& other) noexcept
 			: any_iterator_implementation(
 				  placeholder,
 				  any_iterator_copy_as(*other.p,
-									   value<iterator_category::forward>,
-									   type<T>))
+		                               value<iterator_category::fw>,
+		                               type<T>))
 		{}
 		template <detail::at_least_type<C> COther>
 		constexpr any_iterator_implementation(
-			any_iterator_implementation<value_t<iterator_category::forward>,
-										COther,
-										T>&& other) noexcept
+			any_iterator_implementation<value_t<iterator_category::fw>,
+		                                COther,
+		                                T>&& other) noexcept
 			: any_iterator_implementation(placeholder, move(other.p))
 		{}
 
@@ -514,19 +510,18 @@ namespace PP
 
 	template <typename C, typename T>
 	class any_iterator_implementation<value_t<iterator_category::bi>, C, T>
-		: public any_iterator_implementation<
-			  value_t<iterator_category::forward>,
-			  C,
-			  T>
+		: public any_iterator_implementation<value_t<iterator_category::fw>,
+	                                         C,
+	                                         T>
 	{
 		template <typename, typename, typename>
 		friend class any_iterator_implementation;
 
 	public:
 		constexpr any_iterator_implementation(placeholder_t, auto&& p)
-			: any_iterator_implementation<value_t<iterator_category::forward>,
-										  C,
-										  T>(placeholder, move(p))
+			: any_iterator_implementation<value_t<iterator_category::fw>, C, T>(
+				  placeholder,
+				  move(p))
 		{}
 
 		constexpr any_iterator_implementation(
@@ -537,32 +532,29 @@ namespace PP
 		{}
 		constexpr any_iterator_implementation(
 			any_iterator_implementation&& other) noexcept
-			: any_iterator_implementation<value_t<iterator_category::forward>,
-										  C,
-										  T>(move(other))
+			: any_iterator_implementation<value_t<iterator_category::fw>, C, T>(
+				  move(other))
 		{}
 
 		template <detail::at_least_type<C> COther,
-				  concepts::convertible_to<T> U>
+		          concepts::convertible_to<T> U>
 		constexpr any_iterator_implementation(
-			const any_iterator_implementation<
-				value_t<iterator_category::forward>,
-				COther,
-				U>& other) noexcept
+			const any_iterator_implementation<value_t<iterator_category::fw>,
+		                                      COther,
+		                                      U>& other) noexcept
 			: any_iterator_implementation(
 				  placeholder,
 				  any_iterator_copy_as(*other.p,
-									   value<iterator_category::bi>,
-									   type<T>))
+		                               value<iterator_category::bi>,
+		                               type<T>))
 		{}
 		template <detail::at_least_type<C> COther>
 		constexpr any_iterator_implementation(
-			any_iterator_implementation<value_t<iterator_category::forward>,
-										COther,
-										T>&& other) noexcept
-			: any_iterator_implementation<value_t<iterator_category::forward>,
-										  C,
-										  T>(move(other))
+			any_iterator_implementation<value_t<iterator_category::fw>,
+		                                COther,
+		                                T>&& other) noexcept
+			: any_iterator_implementation<value_t<iterator_category::fw>, C, T>(
+				  move(other))
 		{}
 
 		constexpr void step_back()
@@ -574,8 +566,8 @@ namespace PP
 	template <typename C, typename T>
 	class any_iterator_implementation<value_t<iterator_category::ra>, C, T>
 		: public any_iterator_implementation<value_t<iterator_category::bi>,
-											 C,
-											 T>
+	                                         C,
+	                                         T>
 	{
 		template <typename, typename, typename>
 		friend class any_iterator_implementation;
@@ -600,33 +592,32 @@ namespace PP
 		{}
 
 		template <detail::at_least_type<C> COther,
-				  concepts::convertible_to<T> U>
+		          concepts::convertible_to<T> U>
 		constexpr any_iterator_implementation(
-			const any_iterator_implementation<
-				value_t<iterator_category::forward>,
-				COther,
-				U>& other) noexcept
+			const any_iterator_implementation<value_t<iterator_category::fw>,
+		                                      COther,
+		                                      U>& other) noexcept
 			: any_iterator_implementation(
 				  placeholder,
 				  any_iterator_copy_as(*other.p,
-									   value<iterator_category::ra>,
-									   type<T>))
+		                               value<iterator_category::ra>,
+		                               type<T>))
 		{}
 		template <detail::at_least_type<C> COther>
 		constexpr any_iterator_implementation(
-			any_iterator_implementation<value_t<iterator_category::forward>,
-										COther,
-										T>&& other) noexcept
+			any_iterator_implementation<value_t<iterator_category::fw>,
+		                                COther,
+		                                T>&& other) noexcept
 			: any_iterator_implementation<value_t<iterator_category::bi>, C, T>(
 				  move(other))
 		{}
 
-		constexpr decltype(auto) operator-(const any_iterator_implementation<
-										   value_t<iterator_category::forward>,
-										   C,
-										   T>& other) const
+		constexpr decltype(auto) operator-(
+			const any_iterator_implementation<value_t<iterator_category::fw>,
+		                                      C,
+		                                      T>& other) const
 		{
-			return this->p->difference(*other.p);
+			return this->p->diff(*other.p);
 		}
 
 		constexpr void advance(ptrdiff_t offset)
@@ -650,7 +641,7 @@ namespace PP
 			else if constexpr (is_iterator_bi(I))
 				return value<iterator_category::bi>;
 			else
-				return value<iterator_category::forward>;
+				return value<iterator_category::fw>;
 		}
 
 		constexpr auto make_any_iterator_implementation_type(
@@ -660,8 +651,8 @@ namespace PP
 			auto category_type = PP_DECLTYPE(to_value_t(category));
 
 			return Template<any_iterator_implementation>(category_type,
-														 category_type,
-														 dereference_type);
+			                                             category_type,
+			                                             dereference_type);
 		}
 		constexpr auto make_any_iterator_wrapper_type(
 			concepts::value auto category,
@@ -673,8 +664,8 @@ namespace PP
 
 			return Template<
 				any_iterator_wrapper>[category_type += category_type +=
-									  dereference_type += iterator_type +=
-									  compatible_iterators];
+			                          dereference_type += iterator_type +=
+			                          compatible_iterators];
 		}
 
 		constexpr auto make_any_iterator_pointer(
@@ -702,11 +693,11 @@ namespace PP
 			auto category = get_iterator_category_value_t(iterator_type);
 
 			return make_any_iterator_implementation_type(category,
-														 dereference_type)(
+			                                             dereference_type)(
 				placeholder,
 				make_any_iterator_pointer(i,
-										  dereference_type,
-										  compatible_iterators));
+			                              dereference_type,
+			                              compatible_iterators));
 		}
 	}
 
@@ -721,7 +712,7 @@ namespace PP
 		});
 
 	template <iterator_category Category, typename T>
-	using any_iterator = PP_GET_TYPE(
-		detail::make_any_iterator_implementation_type(value<Category>,
-													  type<T>));
+	using any_iterator =
+		PP_GT(detail::make_any_iterator_implementation_type(value<Category>,
+	                                                        type<T>));
 }

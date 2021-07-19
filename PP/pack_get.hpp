@@ -12,16 +12,15 @@ namespace PP
 			auto&&... pack) noexcept
 		{
 			if constexpr (*PP_COPY_VALUE(i) == 0)
-				return PP_FORWARD(first);
+				return PP_F(first);
 			else
-				return pack_get_implementation(i - value_1,
-											   PP_FORWARD(pack)...);
+				return pack_get_implementation(i - value_1, PP_F(pack)...);
 		}
 	}
 
 	PP_FUNCTOR(pack_get, concepts::value auto i, auto&&... pack)
 		-> decltype(auto)
 	{
-		return detail::pack_get_implementation(i, PP_FORWARD(pack)...);
+		return detail::pack_get_implementation(i, PP_F(pack)...);
 	});
 }

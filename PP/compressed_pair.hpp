@@ -47,14 +47,14 @@ namespace PP
 				return Template<compressed_pair_nonempty>;
 		}
 		constexpr auto compressed_pair_dispatch(concepts::type auto first,
-												concepts::type auto second)
+		                                        concepts::type auto second)
 		{
 			return compressed_pair_dispatch_template(first, second)(first,
-																	second);
+			                                                        second);
 		}
 	}
 
 	template <typename First, typename Second>
-	using compressed_pair = PP_GET_TYPE(
-		detail::compressed_pair_dispatch(type<First>, type<Second>));
+	using compressed_pair =
+		PP_GT(detail::compressed_pair_dispatch(type<First>, type<Second>));
 }

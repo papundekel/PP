@@ -9,7 +9,7 @@ namespace PP
 		view_for_each * functor(
 							[](auto&& x)
 							{
-								using T = PP_GET_TYPE(~PP_DECLTYPE(x));
+								using T = PP_GT(~PP_DECLTYPE(x));
 								x.~T();
 							});
 }

@@ -14,12 +14,12 @@ namespace PP
 			[]<typename T>(type_t<volatile T>)
 			{
 				return make_decompose_pair(type<T>,
-										   PP::value<cv_qualifier::Volatile>);
+		                                   PP::value<cv_qualifier::Volatile>);
 			},
 			[]<typename T>(type_t<T>)
 			{
 				return make_decompose_pair(type<T>,
-										   PP::value<cv_qualifier::none>);
+		                                   PP::value<cv_qualifier::none>);
 			}) |
 		to_type_t;
 }

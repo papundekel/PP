@@ -23,7 +23,7 @@ namespace PP
 	constexpr auto operator|(cv_qualifier a, cv_qualifier b) noexcept
 	{
 		return cv_qualifier((cv_qualifier_underlying)a |
-							(cv_qualifier_underlying)b);
+		                    (cv_qualifier_underlying)b);
 	}
 
 	PP_FUNCTOR(cv_is_const, cv_qualifier q)
@@ -37,7 +37,7 @@ namespace PP
 	});
 
 	constexpr std::partial_ordering operator<=>(cv_qualifier a,
-												cv_qualifier b) noexcept
+	                                            cv_qualifier b) noexcept
 	{
 		auto ai = (cv_qualifier_underlying)a;
 		auto bi = (cv_qualifier_underlying)b;

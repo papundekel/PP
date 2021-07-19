@@ -13,7 +13,8 @@ namespace PP
 	class any_view_implementation;
 
 	template <typename T>
-	concept PPany_view = type<T>->Template == Template<any_view_implementation>;
+	concept PPany_view = type<T>
+	->Template == Template<any_view_implementation>;
 
 	template <typename CategoryT, typename T>
 	class any_view_implementation
@@ -27,26 +28,26 @@ namespace PP
 	public:
 		constexpr any_view_implementation(auto begin, auto end)
 			: begin_(placeholder,
-					 detail::make_any_iterator_pointer(
+		             detail::make_any_iterator_pointer(
 						 begin,
 						 type<T>,
 						 make_singular_tuple(PP_DECLTYPE(end))))
 			, end_(placeholder,
-				   detail::make_any_iterator_pointer(
+		           detail::make_any_iterator_pointer(
 					   end,
 					   type<T>,
 					   make_singular_tuple(PP_DECLTYPE(begin))))
 		{}
 
 		template <detail::at_least_type<CategoryT> CategoryTOther,
-				  concepts::convertible_to<T> U>
+		          concepts::convertible_to<T> U>
 		constexpr any_view_implementation(
 			const any_view_implementation<CategoryTOther, U>& other)
 			: begin_(other.begin_)
 			, end_(other.end_)
 		{}
 		template <detail::at_least_type<CategoryT> CategoryTOther,
-				  concepts::convertible_to<T> U>
+		          concepts::convertible_to<T> U>
 		constexpr any_view_implementation(
 			any_view_implementation<CategoryTOther, U>&& other)
 			: begin_(move(other.begin_))
@@ -54,13 +55,12 @@ namespace PP
 		{}
 
 		constexpr any_view_implementation(
-			const std::initializer_list<PP_GET_TYPE(~type<T>)>& list)
+			const std::initializer_list<PP_GT(~type<T>)>& list)
 			: any_view_implementation(list.begin(), list.end())
 		{}
 		constexpr any_view_implementation(concepts::view auto&& v) requires(
 			!PPany_view<decltype(v)>)
-			: any_view_implementation(view_begin(PP_FORWARD(v)),
-									  view_end(PP_FORWARD(v)))
+			: any_view_implementation(view_begin(PP_F(v)), view_end(PP_F(v)))
 		{}
 		constexpr any_view_implementation()
 			: any_view_implementation(empty_view<T>{})
@@ -94,7 +94,7 @@ namespace PP
 	namespace detail
 	{
 		constexpr auto min_value_t(concepts::value auto a,
-								   concepts::value auto b)
+		                           concepts::value auto b)
 		{
 			if constexpr (PP_GET_VALUE(a) <= PP_GET_VALUE(b))
 				return a;
@@ -102,19 +102,19 @@ namespace PP
 				return b;
 		}
 		constexpr auto min_iterator_category(concepts::type auto a,
-											 concepts::type auto b)
+		                                     concepts::type auto b)
 		{
 			return min_value_t(get_iterator_category_value_t(a),
-							   get_iterator_category_value_t(b));
+			                   get_iterator_category_value_t(b));
 		}
 
 		constexpr auto make_any_view(concepts::iterator auto begin,
-									 concepts::iterator auto end)
+		                             concepts::iterator auto end)
 		{
 			return any_view<PP_GET_VALUE(
 								min_iterator_category(PP_DECLTYPE(begin),
-													  PP_DECLTYPE(end))),
-							decltype(*begin)>(begin, end);
+			                                          PP_DECLTYPE(end))),
+			                decltype(*begin)>(begin, end);
 		}
 	}
 
@@ -125,7 +125,7 @@ namespace PP
 		},
 		[](concepts::view auto&& v)
 		{
-			return detail::make_any_view(view_begin(PP_FORWARD(v)),
-										 view_end(PP_FORWARD(v)));
+			return detail::make_any_view(view_begin(PP_F(v)),
+		                                 view_end(PP_F(v)));
 		});
 }

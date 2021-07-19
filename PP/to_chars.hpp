@@ -7,7 +7,7 @@ namespace PP
 {
 	constexpr auto to_chars(concepts::view auto&& v, auto value) noexcept
 	{
-		auto [begin, end] = PP::view_begin_end(PP_FORWARD(v));
+		auto [begin, end] = PP::view_begin_end(PP_F(v));
 
 		if (begin == end)
 			return begin;

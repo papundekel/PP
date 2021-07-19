@@ -18,7 +18,7 @@ namespace PP
 		}
 		constexpr T&& operator*() const noexcept
 		{
-			PP_GET_TYPE(add_pointer <<= type<T>) p = nullptr;
+			PP_GT(add_pointer <<= type<T>) p = nullptr;
 			return static_cast<T&&>(*p);
 		}
 		constexpr auto& operator+=(ptrdiff_t) noexcept

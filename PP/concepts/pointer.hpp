@@ -15,7 +15,7 @@ namespace PP
 										   {
 											   return false;
 										   }) |
-									   remove_cv;
+	                                   remove_cv;
 
 	PP_CONCEPT1(pointer)
 }

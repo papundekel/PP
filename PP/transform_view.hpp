@@ -30,14 +30,14 @@ namespace PP
 
 	public:
 		constexpr transform_iterator(concepts::iterator auto&& iterator,
-									 auto&& transform)
-			: iterator_transform(PP_FORWARD(iterator), PP_FORWARD(transform))
+		                             auto&& transform)
+			: iterator_transform(PP_F(iterator), PP_F(transform))
 		{}
 		// constexpr transform_iterator(in_place_tag_t, auto&&... args)
 		//	: iterator_transform
 		//	(
-		//		splitter(value_0, PP_FORWARD(args)...),
-		//		splitter(value_1, PP_FORWARD(args)...)
+		//		splitter(value_0, PP_F(args)...),
+		//		splitter(value_1, PP_F(args)...)
 		//	)
 		//{}
 
@@ -79,7 +79,7 @@ namespace PP
 		{
 			if constexpr (PP::concepts::iterator_ra<BaseIterator>)
 				return iterator_transform.first -
-					   other.iterator_transform.first;
+				       other.iterator_transform.first;
 			else
 				return ptrdiff_t(0);
 		}
@@ -100,7 +100,7 @@ namespace PP
 	};
 	template <typename I, typename T>
 	transform_iterator(I&& i, T&& t)
-		-> transform_iterator<PP_GET_TYPE(~type<I>), PP_GET_TYPE(~type<T>)>;
+		-> transform_iterator<PP_GT(~type<I>), PP_GT(~type<T>)>;
 
 	template <typename Functor>
 	struct transform
@@ -110,22 +110,22 @@ namespace PP
 
 	constexpr auto transform_view(concepts::view auto&& v, auto&& f)
 	{
-		return transform_iterator(view_begin(PP_FORWARD(v)), PP_FORWARD(f)) ^
-			   transform_iterator(view_end(PP_FORWARD(v)), PP_FORWARD(f));
+		return transform_iterator(view_begin(PP_F(v)), PP_F(f)) ^
+		       transform_iterator(view_end(PP_F(v)), PP_F(f));
 	}
 
 	constexpr auto operator&(concepts::iterator auto&& i, transform<auto> t)
 	{
-		return transform_iterator(PP_FORWARD(i), move(t).functor);
+		return transform_iterator(PP_F(i), move(t).functor);
 	}
 
 	constexpr auto operator||(concepts::view auto&& v, transform<auto> t)
 	{
-		return begin(PP_FORWARD(v)) & move(t) ^ end(PP_FORWARD(v));
+		return begin(PP_F(v)) & move(t) ^ end(PP_F(v));
 	}
 
 	constexpr auto operator|(concepts::view auto&& v, transform<auto> t)
 	{
-		return transform_view(PP_FORWARD(v), move(t).functor);
+		return transform_view(PP_F(v), move(t).functor);
 	}
 }

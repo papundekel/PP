@@ -14,9 +14,9 @@ namespace PP
 		{
 			using RT =
 				apply_transform_t<add_reference *
-									  value<lvalue ? ref_qualifier::lvalue
-												   : ref_qualifier::rvalue>,
-								  T>;
+			                          value<lvalue ? ref_qualifier::lvalue
+			                                       : ref_qualifier::rvalue>,
+			                      T>;
 
 			RT ref;
 
@@ -36,7 +36,7 @@ namespace PP
 
 			constexpr decltype(auto) operator()(auto&&... args) const noexcept
 			{
-				return get()(PP_FORWARD(args)...);
+				return get()(PP_F(args)...);
 			}
 
 			static constexpr bool ref_wrap_impl_tag = true;
@@ -48,32 +48,32 @@ namespace PP
 	}
 
 	template <typename T>
-	using ref_wrap = detail::ref_wrap_impl<PP_GET_TYPE(!type<T>),
-										   is_lvalue_reference(type<T>)>;
+	using ref_wrap =
+		detail::ref_wrap_impl<PP_GT(!type<T>), is_lvalue_reference(type<T>)>;
 
 	template <typename T>
-	using wrap_ref_t = PP_GET_TYPE(conditional(value<is_reference(type<T>)>,
-											   type<ref_wrap<T>>,
-											   type<T>));
+	using wrap_ref_t = PP_GT(conditional(value<is_reference(type<T>)>,
+	                                     type<ref_wrap<T>>,
+	                                     type<T>));
 
 	PP_FUNCTOR(unwrap_ref, auto&& x) -> auto&&
 	{
 		if constexpr (requires
-					  {
+		              {
 						  x.ref_wrap_impl_tag;
 					  })
 			return x.get();
 		else
-			return PP_FORWARD(x);
+			return PP_F(x);
 	});
 
 	constexpr inline auto wrap_ref =
 		functor(
 			[](auto&& x)
 			{
-				return ref_wrap<decltype(x)>(PP_FORWARD(x));
+				return ref_wrap<decltype(x)>(PP_F(x));
 			}) |
 		unwrap_ref;
 
-#define PP_REF_WRAP(x) ::PP::wrap_ref(PP_FORWARD(x))
+#define PP_REF_WRAP(x) ::PP::wrap_ref(PP_F(x))
 }

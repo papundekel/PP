@@ -39,7 +39,7 @@ namespace PP
 	}
 
 	constexpr auto& operator+=(detail::has_step_or_advance auto&& t,
-							   ptrdiff_t offset)
+	                           ptrdiff_t offset)
 	{
 		if constexpr (detail::has_advance<decltype(t)>)
 			t.advance(offset);
@@ -52,7 +52,7 @@ namespace PP
 		return t;
 	}
 	constexpr auto& operator-=(detail::has_step_back_or_advance auto&& t,
-							   ptrdiff_t offset)
+	                           ptrdiff_t offset)
 	{
 		if constexpr (detail::has_advance<decltype(t)>)
 			t.advance(-offset);
@@ -84,7 +84,7 @@ namespace PP
 	}
 
 	constexpr auto operator+(detail::has_operator_advance auto t,
-							 ptrdiff_t offset)
+	                         ptrdiff_t offset)
 	{
 		t += offset;
 		return t;
@@ -171,7 +171,7 @@ namespace PP
 	}
 	PP_FUNCTOR(is_sentinel, concepts::type auto s, concepts::type auto i)
 	{
-		return concepts::sentinel<PP_GET_TYPE(s), PP_GET_TYPE(i)>;
+		return concepts::sentinel<PP_GT(s), PP_GT(i)>;
 	});
 
 	PP_FUNCTOR(iterator_base, concepts::type auto i)

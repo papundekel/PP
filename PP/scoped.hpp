@@ -30,18 +30,18 @@ namespace PP
 	public:
 		// constexpr scoped(in_place_tag_t, auto&&... args)
 		//	: pair(
-		//		splitter(value_0, PP_FORWARD(args)...),
-		//		splitter(value_1, PP_FORWARD(args)...))
+		//		splitter(value_0, PP_F(args)...),
+		//		splitter(value_1, PP_F(args)...))
 		//{}
 
 		constexpr scoped(in_place_tag_t, auto&& destructor, auto&&... args)
-			: pair(T(PP_FORWARD(args)...), Destructor(PP_FORWARD(destructor)))
+			: pair(T(PP_F(args)...), Destructor(PP_F(destructor)))
 		{}
 		constexpr scoped(scoped_default_destructor_tag_t, auto&&... args)
-			: scoped(in_place_tag, Destructor(), PP_FORWARD(args)...)
+			: scoped(in_place_tag, Destructor(), PP_F(args)...)
 		{}
 		constexpr scoped(placeholder_t, auto&& value, auto&& destructor)
-			: pair(PP_FORWARD(value), PP_FORWARD(destructor))
+			: pair(PP_F(value), PP_F(destructor))
 		{}
 
 		scoped() = default;
@@ -131,5 +131,5 @@ namespace PP
 		}
 	};
 	scoped(auto&& v, auto&& d)
-		-> scoped<PP_GET_TYPE(~PP_DECLTYPE(v)), PP_GET_TYPE(~PP_DECLTYPE(d))>;
+		-> scoped<PP_GT(~PP_DECLTYPE(v)), PP_GT(~PP_DECLTYPE(d))>;
 }

@@ -12,8 +12,8 @@ namespace PP
 	constexpr inline template_t<T> Template{};
 
 	template <template <typename...> typename T,
-			  template <typename...>
-			  typename U>
+	          template <typename...>
+	          typename U>
 	constexpr auto operator==(template_t<T>, template_t<U>) noexcept
 	{
 		return false;

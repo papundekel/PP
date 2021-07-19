@@ -11,7 +11,7 @@
 namespace PP
 {
 	template <typename Iterator,
-			  concepts::sentinel<Iterator> Sentinel = Iterator>
+	          concepts::sentinel<Iterator> Sentinel = Iterator>
 	class simple_view
 	{
 		compressed_pair<Iterator, Sentinel> pair;
@@ -25,7 +25,7 @@ namespace PP
 		{}
 		constexpr simple_view(concepts::view auto&& v) requires
 			concepts::different_except_cvref<simple_view, decltype(v)>
-			: simple_view(view_begin(PP_FORWARD(v)), view_end(PP_FORWARD(v)))
+			: simple_view(view_begin(PP_F(v)), view_end(PP_F(v)))
 		{}
 		constexpr simple_view(
 			const std::initializer_list<
@@ -57,18 +57,18 @@ namespace PP
 	using pointer_view = simple_view<T*>;
 
 	constexpr auto operator^(concepts::iterator auto begin,
-							 concepts::sentinel<decltype(begin)> auto end)
+	                         concepts::sentinel<decltype(begin)> auto end)
 	{
 		return simple_view(begin, end);
 	}
 
 	constexpr auto operator|(concepts::view auto&& v, unbounded_t)
 	{
-		return view_begin(PP_FORWARD(v)) ^ unbounded;
+		return view_begin(PP_F(v)) ^ unbounded;
 	}
 
 	PP_FUNCTOR(make_simple_view, concepts::view auto&& v)
 	{
-		return simple_view(PP_FORWARD(v));
+		return simple_view(PP_F(v));
 	});
 }

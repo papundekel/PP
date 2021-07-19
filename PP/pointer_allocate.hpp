@@ -2,13 +2,13 @@
 #include "compressed_pair.hpp"
 #include "get_type.hpp"
 #include "movable.hpp"
-#include "pointer_new_base.hpp"
+#include "pointer_base.hpp"
 #include "size_t.hpp"
 
 namespace PP
 {
 	template <typename T, typename Allocator>
-	class pointer_allocate : public pointer_new_base<T>
+	class pointer_allocate : public pointer_base<T>
 	{
 		template <typename, typename>
 		friend class pointer_allocate;
@@ -17,7 +17,7 @@ namespace PP
 
 	public:
 		constexpr pointer_allocate()
-			: pointer_new_base<T>()
+			: pointer_base<T>()
 			, count_allocator(0, Allocator())
 		{}
 		constexpr pointer_allocate(decltype(nullptr))
@@ -25,31 +25,31 @@ namespace PP
 		{}
 
 		constexpr pointer_allocate(auto&& allocator, size_t count)
-			: pointer_new_base<T>(
-				  count != 0 ? PP_FORWARD(allocator).allocate(count) : nullptr)
-			, count_allocator(count, PP_FORWARD(allocator))
+			: pointer_base<T>(count != 0 ? PP_F(allocator).allocate(count)
+		                                 : nullptr)
+			, count_allocator(count, PP_F(allocator))
 		{}
 
 		template <detail::pointer_new_compatible<T> U, typename AllocatorOther>
 		constexpr pointer_allocate(
 			const pointer_allocate<U, AllocatorOther>& other) noexcept
-			: pointer_new_base<T>(other)
+			: pointer_base<T>(other)
 			, count_allocator(other.count_allocator.first,
-							  other.count_allocator.second)
+		                      other.count_allocator.second)
 		{}
 		template <detail::pointer_new_compatible<T> U, typename AllocatorOther>
 		constexpr pointer_allocate(
 			pointer_allocate<U, AllocatorOther>&& other) noexcept
-			: pointer_new_base<T>(move(other))
+			: pointer_base<T>(move(other))
 			, count_allocator(other.count_allocator.first,
-							  move(other).count_allocator.second)
+		                      move(other).count_allocator.second)
 		{}
 
 		template <detail::pointer_new_compatible<T> U, typename AllocatorOther>
 		constexpr pointer_allocate& operator=(
 			const pointer_allocate<U, AllocatorOther>& other) noexcept
 		{
-			pointer_new_base<T>::operator=(move(other));
+			pointer_base<T>::operator=(move(other));
 			count_allocator = other.count_allocator;
 			return *this;
 		}
@@ -57,12 +57,12 @@ namespace PP
 		constexpr pointer_allocate& operator=(
 			pointer_allocate<U, AllocatorOther>&& other) noexcept
 		{
-			pointer_new_base<T>::operator=(move(other));
+			pointer_base<T>::operator=(move(other));
 			count_allocator = move(other).count_allocator;
 			return *this;
 		}
 
-		constexpr size_t count() const
+		constexpr size_t count() const noexcept
 		{
 			return count_allocator.first;
 		}

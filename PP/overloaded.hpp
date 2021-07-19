@@ -11,7 +11,7 @@ namespace PP
 
 #ifdef __clang__
 		constexpr overloaded(auto&&... args)
-			: Ts(PP_FORWARD(args))...
+			: Ts(PP_F(args))...
 		{}
 #endif
 	};
@@ -20,6 +20,6 @@ namespace PP
 
 	PP_FUNCTOR(make_overloaded_pack, auto&&... functors)
 	{
-		return functor(overloaded(unwrap_functor(PP_FORWARD(functors))...));
+		return functor(overloaded(unwrap_functor(PP_F(functors))...));
 	});
 }

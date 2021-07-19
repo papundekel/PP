@@ -10,10 +10,10 @@ namespace PP
 			value_true,
 			[&f](empty, auto&& x)
 			{
-				PP_FORWARD(f)(PP_FORWARD(x));
+				PP_F(f)(PP_F(x));
 				return empty{};
 			},
 			empty{},
-			PP_FORWARD(v))[value_0];
+			PP_F(v))[value_0];
 	});
 }

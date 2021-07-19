@@ -25,7 +25,7 @@ namespace PP
 		{
 			{
 				element_implementation(::PP::declval(::PP::type<I>),
-									   ::PP::declval(::PP::type<T>))
+				                       ::PP::declval(::PP::type<T>))
 				} -> concepts::type;
 		};
 		template <typename I, typename T>
@@ -34,28 +34,28 @@ namespace PP
 		{
 			{
 				tuple_recursive(tuple_head_element,
-								::PP::declval(::PP::type<I>),
-								::PP::declval(::PP::type<T>))
+				                ::PP::declval(::PP::type<I>),
+				                ::PP::declval(::PP::type<T>))
 				} -> concepts::type;
 		};
 
 		constexpr auto tuple_element_helper(concepts::value auto i,
-											auto&& t) requires
+		                                    auto&& t) requires
 			tuple_concept_element_member<decltype(i), decltype(t)>
 		{
-			return PP_FORWARD(t).element(i);
+			return PP_F(t).element(i);
 		}
 		constexpr auto tuple_element_helper(concepts::value auto i,
-											auto&& t) requires
+		                                    auto&& t) requires
 			tuple_concept_element_nonmember<decltype(i), decltype(t)>
 		{
-			return element_implementation(i, PP_FORWARD(t));
+			return element_implementation(i, PP_F(t));
 		}
 		constexpr auto tuple_element_helper(concepts::value auto i,
-											auto&& t) requires
+		                                    auto&& t) requires
 			tuple_concept_element_recursive<decltype(i), decltype(t)>
 		{
-			return tuple_recursive(tuple_head_element, i, PP_FORWARD(t));
+			return tuple_recursive(tuple_head_element, i, PP_F(t));
 		}
 	}
 
@@ -63,12 +63,12 @@ namespace PP
 	requires detail::tuple_concept_element_recursive<decltype(i), decltype(t)>
 	{
 		return copy_cv(PP_DECLTYPE(t),
-					   detail::tuple_element_helper(i, PP_FORWARD(t)));
+		               detail::tuple_element_helper(i, PP_F(t)));
 	});
 
 	PP_FUNCTOR(tuple_type_element,
-			   concepts::value auto i,
-			   concepts::type auto t)
+	           concepts::value auto i,
+	           concepts::type auto t)
 	{
 		return PP_COPY_TYPE(tuple_element(i, declval(t)));
 	});

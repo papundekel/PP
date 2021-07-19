@@ -18,7 +18,7 @@ namespace PP
 
 		constexpr decltype(auto) operator()(auto&&... args) const noexcept
 		{
-			return V(PP_FORWARD(args)...);
+			return V(PP_F(args)...);
 		}
 	};
 	template <auto V>

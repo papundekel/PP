@@ -9,5 +9,5 @@ namespace PP
 										  {
 											  return type<const T>;
 										  }) |
-									  to_type_t;
+	                                  to_type_t;
 }

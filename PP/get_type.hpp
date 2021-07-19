@@ -24,8 +24,8 @@ namespace PP
 		return type<get_type_t<get_type_t<decltype(t)>>>;
 	});
 
-#define PP_GET_TYPE(x) ::PP::get_type_t<decltype(x)>
-#define PP_COPY_TYPE(x) (::PP::type<PP_GET_TYPE(x)>)
+#define PP_GT(x) ::PP::get_type_t<decltype(x)>
+#define PP_COPY_TYPE(x) (::PP::type<PP_GT(x)>)
 
 	constexpr inline auto to_type_t = get_type | decl_type_copy;
 }

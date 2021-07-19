@@ -7,7 +7,7 @@ namespace PP
 {
 	PP_FUNCTOR(tuple_contains, auto&& predicate, concepts::tuple auto&& t)
 	{
-		return tuple_find_dynamic(PP_FORWARD(predicate), PP_FORWARD(t)) !=
-			   tuple_count(PP_FORWARD(t));
+		return tuple_find_dynamic(PP_F(predicate), PP_F(t)) !=
+		       tuple_count(PP_F(t));
 	});
 }

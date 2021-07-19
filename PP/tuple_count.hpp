@@ -28,12 +28,12 @@ namespace PP
 	}
 
 	PP_FUNCTOR(tuple_count_value_t,
-			   detail::tuple_concept_count_value_t_any auto&& t)
+	           detail::tuple_concept_count_value_t_any auto&& t)
 	{
 		if constexpr (detail::tuple_concept_count_value_t_member<decltype(t)>)
-			return PP_FORWARD(t).tuple_count();
+			return PP_F(t).tuple_count();
 		else
-			return tuple_count_impl(PP_FORWARD(t));
+			return tuple_count_impl(PP_F(t));
 	});
 
 	PP_FUNCTOR(tuple_type_count_value_t, concepts::type auto t)

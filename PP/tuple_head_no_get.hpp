@@ -20,11 +20,11 @@ namespace PP
 	}
 
 	PP_FUNCTOR(tuple_head_no_get,
-			   detail::tuple_concept_head_no_get_any auto&& t) -> decltype(auto)
+	           detail::tuple_concept_head_no_get_any auto&& t) -> decltype(auto)
 	{
 		if constexpr (detail::tuple_concept_head_no_get_member<decltype(t)>)
-			return PP_FORWARD(t).head();
+			return PP_F(t).head();
 		else
-			return head_implementation(PP_FORWARD(t));
+			return head_implementation(PP_F(t));
 	});
 }

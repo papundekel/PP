@@ -8,13 +8,13 @@ namespace PP
 {
 	// PP_FUNCTOR(negate, auto&& f)
 	//{
-	//	return compose(neg, PP_FORWARD(f));
+	//	return compose(neg, PP_F(f));
 	//});
 
 	constexpr inline auto negate = compose * neg;
 
 	constexpr auto operator!(concepts::functor auto&& f) noexcept
 	{
-		return negate(PP_FORWARD(f));
+		return negate(PP_F(f));
 	}
 }

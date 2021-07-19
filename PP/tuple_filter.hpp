@@ -14,13 +14,12 @@ namespace PP
 			[predicate_wrap = PP_FORWARD_WRAP(
 				 predicate)](auto&& element, concepts::tuple auto tail)
 			{
-				if constexpr (PP_GET_VALUE(
-								  predicate_wrap--(PP_FORWARD(element))))
-					return !tuple_prepend(PP_FORWARD(element), move(tail));
+				if constexpr (PP_GET_VALUE(predicate_wrap(PP_F(element))))
+					return !tuple_prepend(PP_F(element), move(tail));
 				else
 					return tail;
 			},
-			empty_tuple{},
-			PP_FORWARD(t));
+			constant(empty_tuple{}),
+			PP_F(t));
 	});
 }

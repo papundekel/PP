@@ -22,8 +22,8 @@ namespace PP
 		-> decltype(auto)
 	{
 		if constexpr (detail::tuple_concept_pred_member<decltype(t)>)
-			return PP_FORWARD(t).pred();
+			return PP_F(t).pred();
 		else
-			return pred_implementation(PP_FORWARD(t));
+			return pred_implementation(PP_F(t));
 	});
 }

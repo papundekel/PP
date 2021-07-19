@@ -9,6 +9,6 @@ namespace PP
 
 	constexpr auto operator~(concepts::tuple auto&& t)
 	{
-		return tuple_forward_array(PP_FORWARD(t));
+		return tuple_forward_array(PP_F(t));
 	}
 }

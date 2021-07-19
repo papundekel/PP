@@ -67,19 +67,19 @@ namespace PP
 		// constexpr movable(in_place_tag_t, auto&&... args)
 		//	: pair
 		//	(
-		//		splitter(value_0, PP_FORWARD(args)...),
-		//		splitter(value_1, PP_FORWARD(args)...)
+		//		splitter(value_0, PP_F(args)...),
+		//		splitter(value_1, PP_F(args)...)
 		//	)
 		//{}
 		constexpr movable(in_place_tag_t, auto&& releaser, auto&&... args)
-			: pair(T(PP_FORWARD(args)...), PP_FORWARD(releaser))
+			: pair(T(PP_F(args)...), PP_F(releaser))
 		{}
 		constexpr movable(movable_default_releaser_tag_t, auto&&... args)
-			: movable(in_place_tag, Releaser(), PP_FORWARD(args)...)
+			: movable(in_place_tag, Releaser(), PP_F(args)...)
 		{}
 		movable() = default;
 		constexpr movable(placeholder_t, auto&& value, auto&& releaser)
-			: pair(PP_FORWARD(value), PP_FORWARD(releaser))
+			: pair(PP_F(value), PP_F(releaser))
 		{}
 		constexpr movable(const movable& other)
 			: pair(other.pair.first, other.pair.second)
@@ -158,6 +158,6 @@ namespace PP
 		constexpr auto value_type = ~PP_DECLTYPE(value);
 
 		return Template<movable>(value_type)(movable_default_releaser_tag,
-											 PP_FORWARD(value));
+		                                     PP_F(value));
 	});
 }

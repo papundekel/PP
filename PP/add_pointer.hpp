@@ -10,7 +10,7 @@ namespace PP
 			[](concepts::type auto t)
 			{
 				if constexpr (is_pointable(PP_COPY_TYPE(t)))
-					return type<PP_GET_TYPE(t)*>;
+					return type<PP_GT(t)*>;
 				else
 					return t;
 			}) |

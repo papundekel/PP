@@ -8,7 +8,7 @@ namespace PP
 {
 	PP_FUNCTOR(add_reference, concepts::value auto ref, concepts::type auto t)
 	{
-		using T = PP_GET_TYPE(t);
+		using T = PP_GT(t);
 
 		constexpr auto REF = *PP_COPY_VALUE(ref);
 
@@ -37,7 +37,7 @@ namespace PP
 
 	template <ref_qualifier ref>
 	constexpr auto operator+(concepts::type auto t,
-							 add_reference_tag_t<ref> tag) noexcept
+	                         add_reference_tag_t<ref> tag) noexcept
 	{
 		return add_reference(tag, t);
 	}

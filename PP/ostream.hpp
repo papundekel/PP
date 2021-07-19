@@ -9,10 +9,10 @@ namespace PP
 {
 	constexpr auto make_any_view_chars(const char* b, const char* e)
 	{
-		return any_view<iterator_category::forward, char>(b, e);
+		return any_view<iterator_category::fw, char>(b, e);
 	}
 
-	class simple_ostream
+	class ostream
 	{
 		constexpr void write_num(auto number) noexcept
 		{
@@ -23,7 +23,7 @@ namespace PP
 
 	public:
 		constexpr virtual void write(
-			any_view<iterator_category::forward, char> view) noexcept = 0;
+			any_view<iterator_category::fw, char> view) noexcept = 0;
 
 		template <size_t N>
 		constexpr void write(const char (&arr)[N]) noexcept

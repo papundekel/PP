@@ -1,7 +1,6 @@
 #pragma once
-#include "apply_template_pack.hpp"
-
 #include "apply_partially_first.hpp"
+#include "apply_template_pack.hpp"
 #include "compose.hpp"
 #include "functor.hpp"
 #include "get_type.hpp"
@@ -14,7 +13,7 @@ namespace PP
 {
 	PP_FUNCTOR(apply_template, auto Template, concepts::tuple auto&& types)
 	{
-		return (apply_template_pack * Template)[PP_FORWARD(types)];
+		return (apply_template_pack * Template)[PP_F(types)];
 	});
 
 	constexpr inline auto apply_template_type = get_type | apply_template;
@@ -24,6 +23,6 @@ namespace PP
 	template <template <typename...> typename Template>
 	constexpr auto template_t<Template>::operator[](auto&& types) const noexcept
 	{
-		return apply_template(*this, PP_FORWARD(types));
+		return apply_template(*this, PP_F(types));
 	}
 }

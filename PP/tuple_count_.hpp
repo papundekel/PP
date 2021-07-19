@@ -1,4 +1,5 @@
 #pragma once
+#include "constant.hpp"
 #include "tuple_fold.hpp"
 
 namespace PP
@@ -8,10 +9,9 @@ namespace PP
 		return tuple_foldl(
 			[&predicate](auto counter, auto&& element)
 			{
-				return PP_FORWARD(predicate)(PP_FORWARD(element)) ? counter + 1
-																  : counter;
+				return PP_F(predicate)(PP_F(element)) ? counter + 1 : counter;
 			},
-			0_z,
-			PP_FORWARD(t));
+			constant(0_z),
+			PP_F(t));
 	});
 }

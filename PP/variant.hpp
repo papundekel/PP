@@ -31,12 +31,12 @@ namespace PP
 
 	public:
 		constexpr variant(placeholder_t, auto&& x) noexcept
-			: v(PP_FORWARD(x))
+			: v(PP_F(x))
 		{}
 
 		constexpr bool holds_alternative(concepts::type auto t) const noexcept
 		{
-			return std::holds_alternative<wrap_ref_t<PP_GET_TYPE(t)>>(v);
+			return std::holds_alternative<wrap_ref_t<PP_GT(t)>>(v);
 		}
 	};
 
@@ -48,7 +48,7 @@ namespace PP
 		static constexpr auto types = type_tuple<T...>;
 		static constexpr auto max =
 			(id_copy | der | max_default |
-			 tuple_map_make_array)(partial_tag, value_1, types);
+		     tuple_map_make_array)(partial_tag, value_1, types);
 
 		static constexpr auto type_eql = functor(
 			[](auto t, auto u)
@@ -72,13 +72,13 @@ namespace PP
 			auto i = get_type_index(t);
 
 			static_assert(PP_GET_VALUE(i) != sizeof...(T),
-						  "type is not in this variant");
+			              "type is not in this variant");
 
 			index = *i;
 
 			construct_at_pack(
 				reinterpret__cast(add_pointer <<= types[i], buffer),
-				PP_FORWARD(args)...);
+				PP_F(args)...);
 		}
 
 		constexpr bool holds_alternative(concepts::type auto t) const noexcept
@@ -107,7 +107,7 @@ namespace PP
 				-> decltype(auto)
 			{
 				return std::visit(compose(PP_REF_WRAP(visitor), unwrap_ref),
-								  PP_FORWARD(variants).v...);
+				                  PP_F(variants).v...);
 			});
 
 			static PP_FUNCTOR(visit2, auto&& visitor, auto&&... variants)
@@ -118,11 +118,11 @@ namespace PP
 						[](auto... types)
 						{
 							return [](auto&& variant,
-									  auto&... buffers) -> decltype(auto)
-							{
-								return PP_FORWARD(variant)(
+					                  auto&... buffers) -> decltype(auto)
+					        {
+								return PP_F(variant)(
 									reinterpret__cast(PP_COPY_TYPE(types),
-													  buffers)...);
+						                              buffers)...);
 							};
 						}) +
 					tuple_cartesian_product_pack(variants.types...);

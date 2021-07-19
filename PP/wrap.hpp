@@ -15,15 +15,16 @@ namespace PP
 		};
 
 		template <typename T>
-		concept functor_or_wrap = functor<T> || forward_wrap<T>;
+		concept wrap = functor<T> || forward_wrap<T>;
 	}
 
-	constexpr auto&& unwrap_functor_or_wrap(auto&& f)
+	constexpr auto&& unwrap(auto&& f)
 	{
-		if constexpr (concepts::functor_or_wrap<decltype(f)>)
-			return unwrap_functor_or_wrap(
-				unwrap_forward(unwrap_functor(PP_FORWARD(f))));
+		if constexpr (concepts::wrap<decltype(f)>)
+		{
+			return unwrap_functor(unwrap_forward(PP_F(f)));
+		}
 		else
-			return PP_FORWARD(f);
+			return PP_F(f);
 	}
 }

@@ -12,7 +12,7 @@ namespace PP
 			template_t<Template>,
 			concepts::type auto... types)
 		{
-			return type<Template<PP_GET_TYPE(types)...>>;
+			return type<Template<PP_GT(types)...>>;
 		});
 
 	template <template <typename...> typename Template>

@@ -18,8 +18,8 @@ namespace PP
 
 	private:
 		constexpr function_info(cv_qualifier cv,
-								ref_qualifier ref,
-								bool Noexcept) noexcept
+		                        ref_qualifier ref,
+		                        bool Noexcept) noexcept
 			: Noexcept(Noexcept)
 			, cv(cv)
 			, ref(ref)
@@ -41,8 +41,8 @@ namespace PP
 		{}
 		constexpr function_info(type_t<R(P...) const volatile>) noexcept
 			: function_info(cv_qualifier::const_volatile,
-							ref_qualifier::none,
-							false)
+		                    ref_qualifier::none,
+		                    false)
 		{}
 
 		constexpr function_info(type_t<R(P...) &>) noexcept
@@ -53,13 +53,13 @@ namespace PP
 		{}
 		constexpr function_info(type_t<R(P...) volatile&>) noexcept
 			: function_info(cv_qualifier::Volatile,
-							ref_qualifier::lvalue,
-							false)
+		                    ref_qualifier::lvalue,
+		                    false)
 		{}
 		constexpr function_info(type_t<R(P...) const volatile&>) noexcept
 			: function_info(cv_qualifier::const_volatile,
-							ref_qualifier::lvalue,
-							false)
+		                    ref_qualifier::lvalue,
+		                    false)
 		{}
 
 		constexpr function_info(type_t<R(P...) &&>) noexcept
@@ -70,13 +70,13 @@ namespace PP
 		{}
 		constexpr function_info(type_t<R(P...) volatile&&>) noexcept
 			: function_info(cv_qualifier::Volatile,
-							ref_qualifier::rvalue,
-							false)
+		                    ref_qualifier::rvalue,
+		                    false)
 		{}
 		constexpr function_info(type_t<R(P...) const volatile&&>) noexcept
 			: function_info(cv_qualifier::const_volatile,
-							ref_qualifier::rvalue,
-							false)
+		                    ref_qualifier::rvalue,
+		                    false)
 		{}
 
 		constexpr function_info(type_t<R(P...) noexcept>) noexcept
@@ -91,8 +91,8 @@ namespace PP
 		constexpr function_info(
 			type_t<R(P...) const volatile noexcept>) noexcept
 			: function_info(cv_qualifier::const_volatile,
-							ref_qualifier::none,
-							true)
+		                    ref_qualifier::none,
+		                    true)
 		{}
 
 		constexpr function_info(type_t<R(P...) & noexcept>) noexcept
@@ -107,8 +107,8 @@ namespace PP
 		constexpr function_info(
 			type_t<R(P...) const volatile& noexcept>) noexcept
 			: function_info(cv_qualifier::const_volatile,
-							ref_qualifier::lvalue,
-							true)
+		                    ref_qualifier::lvalue,
+		                    true)
 		{}
 
 		constexpr function_info(type_t<R(P...) && noexcept>) noexcept
@@ -123,8 +123,8 @@ namespace PP
 		constexpr function_info(
 			type_t<R(P...) const volatile&& noexcept>) noexcept
 			: function_info(cv_qualifier::const_volatile,
-							ref_qualifier::rvalue,
-							true)
+		                    ref_qualifier::rvalue,
+		                    true)
 		{}
 
 		template <typename T>
@@ -140,5 +140,5 @@ namespace PP
 												  {
 													  return function_info(t);
 												  }) |
-											  to_type_t;
+	                                          to_type_t;
 }

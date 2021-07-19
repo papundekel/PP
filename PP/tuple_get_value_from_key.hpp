@@ -19,12 +19,12 @@ namespace PP
 	constexpr inline functor tuple_get_value_from_key
 	{
 		[]<typename Default = key_not_found>(concepts::tuple auto&& t,
-											 Default d = {})
+		                                     Default d = {})
 		{
-			constexpr auto i = tuple_find_index(predicate | tuple_get * value_0,
-												PP_FORWARD(t));
+			constexpr auto i =
+				tuple_find_index(predicate | tuple_get * value_0, PP_F(t));
 			if constexpr (i != tuple_type_size(PP_DECLTYPE(tuple)))
-				return PP_FORWARD(t)[value<i>][value_1];
+				return PP_F(t)[value<i>][value_1];
 			else
 				return d;
 		});

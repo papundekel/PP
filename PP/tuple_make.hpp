@@ -11,10 +11,10 @@ namespace PP
 
 	constexpr auto operator!(concepts::tuple auto&& t)
 	{
-		return tuple_make(PP_FORWARD(t));
+		return tuple_make(PP_F(t));
 	}
 	constexpr auto operator+(concepts::tuple auto&& t) noexcept
 	{
-		return tuple_forward(PP_FORWARD(t));
+		return tuple_forward(PP_F(t));
 	}
 }

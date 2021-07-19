@@ -19,12 +19,12 @@ namespace PP
 
 	constexpr auto operator>>(shift offset, concepts::view auto&& v)
 	{
-		return simple_view(view_begin(PP_FORWARD(v)) + offset.value,
-						   view_end(PP_FORWARD(v)));
+		return simple_view(view_begin(PP_F(v)) + offset.value,
+		                   view_end(PP_F(v)));
 	}
 	constexpr auto operator<<(concepts::view auto&& v, shift offset)
 	{
-		return simple_view(view_begin(PP_FORWARD(v)),
-						   view_end(PP_FORWARD(v)) - offset.value);
+		return simple_view(view_begin(PP_F(v)),
+		                   view_end(PP_F(v)) - offset.value);
 	}
 }

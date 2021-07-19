@@ -1,9 +1,9 @@
 #pragma once
-#include "simple_ostream.hpp"
+#include "ostream.hpp"
 
 namespace PP
 {
-	class std_ostream final : public simple_ostream
+	class std_ostream final : public ostream
 	{
 		std::ostream& out;
 
@@ -12,8 +12,8 @@ namespace PP
 			: out(out)
 		{}
 
-		constexpr void write(any_view<iterator_category::forward, char>
-								 view) noexcept override final
+		constexpr void write(
+			any_view<iterator_category::fw, char> view) noexcept override final
 		{
 			for (char c : view)
 				out << c;

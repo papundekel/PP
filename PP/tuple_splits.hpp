@@ -1,4 +1,5 @@
 #pragma once
+#include "constant.hpp"
 #include "empty_tuple.hpp"
 #include "forward_wrap.hpp"
 #include "get_value.hpp"
@@ -15,10 +16,9 @@ namespace PP
 	{
 		return tuple_foldr(
 			[predicate_wrap = PP_FORWARD_WRAP(predicate)](auto&& element,
-														  auto splits)
+		                                                  auto splits)
 			{
-				if constexpr (PP_GET_VALUE(
-								  predicate_wrap--(PP_FORWARD(element))))
+				if constexpr (PP_GET_VALUE(predicate_wrap(PP_F(element))))
 					return !tuple_prepend(empty_tuple{}, move(splits));
 				else
 					return *functor(
@@ -28,13 +28,13 @@ namespace PP
 							   {
 								   if constexpr (PP_GET_VALUE(i) == 0)
 									   return tuple_prepend(element_wrap--,
-															move(split));
+						                                    move(split));
 								   else
 									   return move(split);
 							   }) +
-						   tuple_zip_indices(move(splits));
+				           tuple_zip_indices(move(splits));
 			},
-			make_tuple(empty_tuple{}),
-			PP_FORWARD(t));
+			constant(make_tuple(empty_tuple{})),
+			PP_F(t));
 	});
 }

@@ -23,27 +23,27 @@ namespace PP
 		}
 		template <auto... I>
 		constexpr decltype(auto) map_arguments_helper(auto& f,
-													  auto maps,
-													  value_sequence<I...>,
-													  auto&&... args)
+		                                              auto maps,
+		                                              value_sequence<I...>,
+		                                              auto&&... args)
 		{
-			return f(map_arguments_element_helper(maps, value<I>)(
-				PP_FORWARD(args))...);
+			return f(
+				map_arguments_element_helper(maps, value<I>)(PP_F(args))...);
 		}
 	}
 
 	PP_FUNCTOR(map_arguments, auto&& f, auto&&... maps)
 	{
 		return functor(
-			[f = unwrap_functor(PP_FORWARD(f)),
-			 ... maps = unwrap_functor(PP_FORWARD(maps))](
-				auto&&... args) -> decltype(auto)
+			[f = unwrap_functor(PP_F(f)),
+		     ... maps =
+		         unwrap_functor(PP_F(maps))](auto&&... args) -> decltype(auto)
 			{
 				return detail::map_arguments_helper(
 					f,
 					forward_as_tuple(maps...),
 					make_value_sequence(value<sizeof...(args)>),
-					PP_FORWARD(args)...);
+					PP_F(args)...);
 			});
 	});
 }

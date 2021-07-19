@@ -94,7 +94,7 @@ namespace PP
 					clear();
 			}
 
-			construct_at_pack(end(), PP_FORWARD(args)...);
+			construct_at_pack(end(), PP_F(args)...);
 			++count_;
 		}
 

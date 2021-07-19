@@ -15,8 +15,8 @@ namespace PP
 		{
 			return tuple<decltype(head), tuple<decltype(tail)...>>(
 				placeholder,
-				PP_FORWARD(head),
-				forward_as_tuple(PP_FORWARD(tail)...));
+				PP_F(head),
+				forward_as_tuple(PP_F(tail)...));
 		},
 		[]()
 		{

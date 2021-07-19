@@ -6,7 +6,7 @@ namespace PP
 {
 	PP_FUNCTOR(max, auto&& comparer, concepts::view auto&& v)
 	{
-		auto [begin, end] = view_begin_end(PP_FORWARD(v));
+		auto [begin, end] = view_begin_end(PP_F(v));
 
 		if (begin == end)
 			return end;
@@ -17,7 +17,7 @@ namespace PP
 
 		for (; begin != end; ++begin)
 		{
-			if (PP_FORWARD(comparer)(*max_i, *begin))
+			if (PP_F(comparer)(*max_i, *begin))
 				max_i = begin;
 		}
 

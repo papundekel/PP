@@ -30,7 +30,7 @@ namespace PP
 		}
 		constexpr const push_back_iterator& operator=(auto&& value) const
 		{
-			c->push_back(PP_FORWARD(value));
+			c->push_back(PP_F(value));
 
 			return *this;
 		}

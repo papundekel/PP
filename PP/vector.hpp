@@ -17,7 +17,7 @@ namespace std
 namespace PP
 {
 	template <typename T, typename Allocator = std::allocator<T>>
-	class simple_vector
+	class vector
 	{
 		static constexpr size_t default_capacity = 16;
 
@@ -30,25 +30,25 @@ namespace PP
 		}
 
 	public:
-		constexpr simple_vector(auto&& allocator, size_t capacity) noexcept
-			: block(PP_FORWARD(allocator), capacity)
+		constexpr vector(auto&& allocator, size_t capacity) noexcept
+			: block(PP_F(allocator), capacity)
 			, count_(movable_default_releaser_tag, 0)
 		{}
-		constexpr simple_vector(auto&& allocator, concepts::view auto&& v)
-			: block(PP_FORWARD(allocator), PP_FORWARD(v))
+		constexpr vector(auto&& allocator, concepts::view auto&& v)
+			: block(PP_F(allocator), PP_F(v))
 			, count_(block.count())
 		{}
-		explicit constexpr simple_vector(size_t capacity) noexcept
-			: simple_vector(Allocator(), capacity)
+		explicit constexpr vector(size_t capacity) noexcept
+			: vector(Allocator(), capacity)
 		{}
-		explicit constexpr simple_vector(concepts::view auto&& v)
-			: simple_vector(Allocator(), PP_FORWARD(v))
+		explicit constexpr vector(concepts::view auto&& v)
+			: vector(Allocator(), PP_F(v))
 		{}
-		constexpr simple_vector(placeholder_t, auto&& allocator) noexcept
-			: simple_vector(PP_FORWARD(allocator), default_capacity)
+		constexpr vector(placeholder_t, auto&& allocator) noexcept
+			: vector(PP_F(allocator), default_capacity)
 		{}
-		constexpr simple_vector(placeholder_t, size_t count) noexcept
-			: simple_vector(count)
+		constexpr vector(placeholder_t, size_t count) noexcept
+			: vector(count)
 		{
 			view_for_each(
 				[](T& t)
@@ -57,14 +57,14 @@ namespace PP
 				},
 				*this);
 		}
-		constexpr simple_vector() noexcept
-			: simple_vector(Allocator(), default_capacity)
+		constexpr vector() noexcept
+			: vector(Allocator(), default_capacity)
 		{}
 
-		simple_vector(simple_vector&&) = default;
-		simple_vector& operator=(simple_vector&&) = default;
+		vector(vector&&) = default;
+		vector& operator=(vector&&) = default;
 
-		constexpr ~simple_vector()
+		constexpr ~vector()
 		{
 			destroy_all();
 		}
@@ -84,7 +84,7 @@ namespace PP
 				block = move(new_block);
 			}
 
-			construct_at_pack(end(), PP_FORWARD(args)...);
+			construct_at_pack(end(), PP_F(args)...);
 
 			++count_[tags::o];
 		}
@@ -159,7 +159,7 @@ namespace PP
 
 		constexpr void remove(auto&& predicate)
 		{
-			auto i = view_remove(PP_FORWARD(predicate), *this);
+			auto i = view_remove(PP_F(predicate), *this);
 			erase_until_end(i);
 		}
 

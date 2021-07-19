@@ -11,6 +11,8 @@
 #include "decompose_template.hpp"
 #include "empty.hpp"
 #include "empty_iterator.hpp"
+#include "forward_wrap.hpp"
+#include "functor.hpp"
 #include "get_value.hpp"
 #include "id.hpp"
 #include "remove_cvref.hpp"
@@ -18,6 +20,7 @@
 #include "size_t.hpp"
 #include "transform_view.hpp"
 #include "tuple.hpp"
+#include "tuple_map.hpp"
 #include "value_t.hpp"
 
 namespace PP
@@ -29,7 +32,7 @@ namespace PP
 		{
 		public:
 			constexpr array_wrap_wrap(T&& arg, Tag)
-				: forward_wrap<T>(PP_FORWARD(arg))
+				: forward_wrap<T>(PP_F(arg))
 			{}
 		};
 		template <typename T, typename Tag>
@@ -69,7 +72,7 @@ namespace PP
 			{}
 			template <typename U>
 			constexpr array_wrap(array_wrap_wrap<U, in_place_t> i)
-				: obj(i--())
+				: obj(i())
 			{}
 		};
 
@@ -84,7 +87,7 @@ namespace PP
 			array_impl() = default;
 
 			constexpr array_impl(auto tag, auto&&... args) noexcept
-				: buffer(array_wrap_wrap{PP_FORWARD(args), tag}...)
+				: buffer(array_wrap_wrap{PP_F(args), tag}...)
 			{}
 		};
 		template <typename T>
@@ -107,9 +110,9 @@ namespace PP
 		array() = default;
 
 		constexpr array(auto tag,
-						concepts::type auto,
-						auto&&... args) requires(sizeof...(args) == C)
-			: detail::array_impl<T, C>(tag, PP_FORWARD(args)...)
+		                concepts::type auto,
+		                auto&&... args) requires(sizeof...(args) == C)
+			: detail::array_impl<T, C>(tag, PP_F(args)...)
 		{}
 
 		constexpr auto element(concepts::value auto) const noexcept
@@ -160,7 +163,7 @@ namespace PP
 	};
 
 	array(auto, concepts::type auto t, auto&&... args)
-		-> array<PP_GET_TYPE(t), sizeof...(args)>;
+		-> array<PP_GT(t), sizeof...(args)>;
 
 	namespace detail
 	{
@@ -202,8 +205,7 @@ namespace PP
 		}
 	};
 	template <typename T>
-	array_iterator(T* p, concepts::type auto t)
-		-> array_iterator<T, PP_GET_TYPE(t)>;
+	array_iterator(T* p, concepts::type auto t) -> array_iterator<T, PP_GT(t)>;
 
 	namespace detail
 	{
@@ -223,49 +225,67 @@ namespace PP
 			}
 			static constexpr auto end(auto&& a) noexcept
 			{
-				return begin(PP_FORWARD(a)) + a.value;
+				return begin(PP_F(a)) + a.value;
 			}
 		};
 	}
 
 	constexpr auto begin(detail::array_concept auto&& a) noexcept
 	{
-		return detail::array_helper::begin(PP_FORWARD(a));
+		return detail::array_helper::begin(PP_F(a));
 	}
 	constexpr auto end(detail::array_concept auto&& a) noexcept
 	{
-		return detail::array_helper::end(PP_FORWARD(a));
+		return detail::array_helper::end(PP_F(a));
 	}
 
-	constexpr inline auto first_or = PP::make_overloaded_pack(
-		id_forward,
-		[](auto&&, auto&& head, auto&&...) -> decltype(auto)
-		{
-			return PP_FORWARD(head);
-		});
+	PP_FUNCTOR(array_pick_best_type, auto&& o, concepts::tuple auto&& t)
+		-> decltype(auto)
+	{
+		if constexpr (tuple_type_count(PP_DECLTYPE(t)) != 0)
+			return PP_F(t)[value_0];
+		else
+			return PP_F(o);
+	});
 
-	PP_FUNCTOR(init_array,
-			   concepts::value auto do_init,
-			   concepts::type auto t,
-			   auto&&... args)
+	PP_FUNCTOR(array_constructor,
+	           concepts::value auto do_init,
+	           auto&& type_functor,
+	           auto&&... args)
 	{
 		return array(conditional(do_init, in_place, placeholder),
-					 t,
-					 PP_FORWARD(args)...);
+		             array_pick_best_type(PP::type<char>,
+		                                  PP_FORWARD_WRAP(type_functor) +
+		                                      forward_as_tuple(PP_F(args)...)),
+		             PP_F(args)...);
 	});
 
-	constexpr inline auto construct_array = init_array * value_false;
+	PP_FUNCTOR(array_constructor_typed,
+	           concepts::value auto do_init,
+	           concepts::type auto&& type,
+	           auto&&... args)
+	{
+		return array(conditional(do_init, in_place, placeholder),
+		             PP_F(type),
+		             PP_F(args)...);
+	});
 
-	PP_FUNCTOR(make_array, auto&&... args)
+	constexpr inline auto init_array = array_constructor * value_true *
+	                                   [](auto&& arg)
 	{
-		return construct_array(first_or(PP::type<char>, ~PP_DECLTYPE(args)...),
-							   PP_FORWARD(args)...);
-	});
-	PP_FUNCTOR(forward_as_array, auto&&... args)
+		return PP_DECLTYPE(PP_F(arg)());
+	};
+
+	constexpr inline auto make_array = array_constructor * value_false *
+	                                   [](auto&& arg)
 	{
-		return construct_array(first_or(PP::type<char>, PP_DECLTYPE(args)...),
-							   PP_FORWARD(args)...);
-	});
+		return ~PP_DECLTYPE(PP_F(arg));
+	};
+	constexpr inline auto forward_as_array = array_constructor * value_false *
+	                                         [](auto&& arg)
+	{
+		return PP_DECLTYPE(PP_F(arg));
+	};
 }
 
 template <typename T, PP::size_t C>

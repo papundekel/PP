@@ -59,23 +59,23 @@ namespace PP
 		-> decltype(auto)
 	{
 		if constexpr (detail::view_concept_begin_member<decltype(v)>)
-			return PP_FORWARD(v).begin();
+			return PP_F(v).begin();
 		else if constexpr (detail::view_concept_begin_array_reference<
 							   decltype(v)>)
 			return v + 0;
 		else
-			return begin(PP_FORWARD(v));
+			return begin(PP_F(v));
 	});
 	PP_FUNCTOR(view_end, detail::view_concept_end_any auto&& v)
 		-> decltype(auto)
 	{
 		if constexpr (detail::view_concept_end_member<decltype(v)>)
-			return PP_FORWARD(v).end();
+			return PP_F(v).end();
 		else if constexpr (detail::view_concept_end_bounded_array_reference<
 							   decltype(v)>)
 			return v + sizeof(v) / sizeof(*v);
 		else
-			return end(PP_FORWARD(v));
+			return end(PP_F(v));
 	});
 
 	namespace detail
@@ -106,17 +106,17 @@ namespace PP
 	constexpr size_t view_count(concepts::view auto&& v)
 	{
 		if constexpr (requires
-					  {
-						  PP_FORWARD(v).count();
+		              {
+						  PP_F(v).count();
 					  })
-			return PP_FORWARD(v).count();
+			return PP_F(v).count();
 		else
-			return view_end(PP_FORWARD(v)) - view_begin(PP_FORWARD(v));
+			return view_end(PP_F(v)) - view_begin(PP_F(v));
 	}
 
 	constexpr bool view_empty(concepts::view auto&& v)
 	{
-		return view_begin(PP_FORWARD(v)) == view_end(PP_FORWARD(v));
+		return view_begin(PP_F(v)) == view_end(PP_F(v));
 	}
 
 	PP_FUNCTOR(view_type_begin_iterator, concepts::type auto v)
@@ -155,6 +155,6 @@ namespace PP
 
 	PP_FUNCTOR(view_begin_end, concepts::view auto&& v)
 	{
-		return make_tuple(view_begin(PP_FORWARD(v)), view_end(PP_FORWARD(v)));
+		return make_tuple(view_begin(PP_F(v)), view_end(PP_F(v)));
 	});
 }

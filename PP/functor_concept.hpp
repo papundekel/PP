@@ -23,11 +23,11 @@ namespace PP
 	constexpr auto&& unwrap_functor(auto&& f)
 	{
 		if constexpr (detail::functor_member<decltype(f)>)
-			return unwrap_functor(PP_FORWARD(f).unwrap_functor());
+			return unwrap_functor(PP_F(f).unwrap_functor());
 		else if constexpr (detail::functor_any<decltype(f)>)
-			return unwrap_functor(unwrap_functor_impl(PP_FORWARD(f)));
+			return unwrap_functor(unwrap_functor_impl(PP_F(f)));
 		else
-			return PP_FORWARD(f);
+			return PP_F(f);
 	}
 
 	namespace concepts
@@ -40,6 +40,6 @@ namespace PP
 
 	constexpr decltype(auto) operator<<=(concepts::functor auto&& f, auto&& arg)
 	{
-		return unwrap_functor(PP_FORWARD(f))(PP_FORWARD(arg));
+		return unwrap_functor(PP_F(f))(PP_F(arg));
 	}
 }

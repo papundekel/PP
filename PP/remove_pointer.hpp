@@ -15,5 +15,5 @@ namespace PP
 											   {
 												   return t;
 											   }) |
-										   remove_cv;
+	                                       remove_cv;
 }

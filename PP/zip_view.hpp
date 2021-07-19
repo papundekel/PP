@@ -26,7 +26,7 @@ namespace PP
 		static constexpr char dont_make_array_star_operator{};
 
 		constexpr zip_iterator(placeholder_t, auto&&... iterators)
-			: tuple<Iterators...>(placeholder, PP_FORWARD(iterators)...)
+			: tuple<Iterators...>(placeholder, PP_F(iterators)...)
 		{}
 
 		constexpr auto operator*() const
@@ -45,14 +45,14 @@ namespace PP
 		{
 			if constexpr ((concepts::iterator_ra<Iterators> && ...))
 				tuple_for_each(value_true,
-							   pas(partial_tag, value_1, offset),
-							   *this);
+				               pas(partial_tag, value_1, offset),
+				               *this);
 			else
 				return 0;
 		}
 		template <typename... IteratorsOther>
 		requires(sizeof...(Iterators) ==
-				 sizeof...(IteratorsOther)) constexpr bool
+		         sizeof...(IteratorsOther)) constexpr bool
 		operator==(const zip_iterator<IteratorsOther...>& other) const noexcept
 		{
 			return *eql || tuple_zip_pack(*this, other);
@@ -63,12 +63,12 @@ namespace PP
 
 	PP_FUNCTOR(make_zip_iterator, auto&&... iterators)
 	{
-		return zip_iterator(placeholder, PP_FORWARD(iterators)...);
+		return zip_iterator(placeholder, PP_F(iterators)...);
 	});
 
 	PP_FUNCTOR(zip_view_pack, concepts::view auto&&... views)
 	{
-		return simple_view(make_zip_iterator(view_begin(PP_FORWARD(views))...),
-						   make_zip_iterator(view_end(PP_FORWARD(views))...));
+		return simple_view(make_zip_iterator(view_begin(PP_F(views))...),
+		                   make_zip_iterator(view_end(PP_F(views))...));
 	});
 }

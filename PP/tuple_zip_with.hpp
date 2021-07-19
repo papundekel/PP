@@ -19,9 +19,9 @@ namespace PP
 	PP_FUNCTOR(tuple_zip, concepts::tuple auto&& tuples)
 	{
 		if constexpr (tuple_all(neq * 0_z | tuple_type_count,
-								tuple_types(PP_DECLTYPE(tuples))))
+		                        tuple_types(PP_DECLTYPE(tuples))))
 		{
-			auto splits = tuple_split + PP_FORWARD(tuples);
+			auto splits = tuple_split + PP_F(tuples);
 
 			return (tuple_make | tuple_prepend)(
 				tuple_get * value_0 + move(splits),
@@ -34,17 +34,15 @@ namespace PP
 
 	PP_FUNCTOR(tuple_zip_with, auto&& f, concepts::tuple auto&& tuples)
 	{
-		return tuple_apply * forward_wrap(PP_FORWARD(f)) +
-			   tuple_zip(PP_FORWARD(tuples));
+		return tuple_apply * forward_wrap(PP_F(f)) + tuple_zip(PP_F(tuples));
 	});
 	PP_FUNCTOR(tuple_zip_with_pack, auto&& f, concepts::tuple auto&&... tuples)
 	{
-		return tuple_zip_with(PP_FORWARD(f),
-							  forward_as_tuple(PP_FORWARD(tuples)...));
+		return tuple_zip_with(PP_F(f), forward_as_tuple(PP_F(tuples)...));
 	});
 
 	constexpr auto operator^(concepts::tuple auto&& a, concepts::tuple auto&& b)
 	{
-		return tuple_zip_pack(PP_FORWARD(a), PP_FORWARD(b));
+		return tuple_zip_pack(PP_F(a), PP_F(b));
 	}
 }

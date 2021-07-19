@@ -6,12 +6,12 @@
 namespace PP
 {
 	PP_FUNCTOR(is_convertible_to,
-			   concepts::type auto from,
-			   concepts::type auto to)
+	           concepts::type auto from,
+	           concepts::type auto to)
 	{
 		return requires
 		{
-			[](PP_GET_TYPE(to))
+			[](PP_GT(to))
 			{
 			}(declval(from));
 		};
@@ -21,6 +21,6 @@ namespace PP
 	{
 		template <typename From, typename To>
 		concept convertible_to = is_convertible_to(PP::type<From>,
-												   PP::type<To>);
+		                                           PP::type<To>);
 	}
 }

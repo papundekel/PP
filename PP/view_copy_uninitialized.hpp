@@ -16,7 +16,7 @@ namespace PP
 			*functor(
 				[](auto&& to, auto&& from)
 				{
-					construct_at_pack(std::addressof(to), PP_FORWARD(from));
+					construct_at_pack(std::addressof(to), PP_F(from));
 				}) |
 		zip_view_pack;
 }

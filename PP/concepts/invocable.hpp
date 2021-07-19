@@ -6,8 +6,8 @@
 namespace PP
 {
 	PP_FUNCTOR(is_invocable_pack,
-			   concepts::type auto f,
-			   concepts::type auto... arg_types)
+	           concepts::type auto f,
+	           concepts::type auto... arg_types)
 	{
 		return requires
 		{
@@ -16,8 +16,8 @@ namespace PP
 	});
 
 	PP_FUNCTOR(is_invocable,
-			   concepts::type auto f,
-			   concepts::tuple auto arg_tuple)
+	           concepts::type auto f,
+	           concepts::tuple auto arg_tuple)
 	{
 		return (is_invocable_pack * f)[arg_tuple];
 	});

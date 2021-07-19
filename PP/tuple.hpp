@@ -22,10 +22,10 @@ namespace PP
 
 		public:
 			constexpr tuple_wrap(auto&& i)
-				: obj(PP_FORWARD(i))
+				: obj(PP_F(i))
 			{}
 			constexpr tuple_wrap(in_place_t, auto&& i)
-				: obj(PP_FORWARD(i)())
+				: obj(PP_F(i)())
 			{}
 		};
 
@@ -46,29 +46,28 @@ namespace PP
 				: tuple_wrap<value_t<I>, T>()...
 			{}
 
-			constexpr tuple_impl(auto&&... args) requires(sizeof...(T) ==
-														  sizeof...(args))
-				: tuple_impl(placeholder, PP_FORWARD(args)...)
+			constexpr tuple_impl(auto&&... args) requires(sizeof...(args) ==
+			                                              sizeof...(T))
+				: tuple_impl(placeholder, PP_F(args)...)
 			{}
 			constexpr tuple_impl(auto&& t)
-				: tuple_wrap<value_t<I>, T>(PP_FORWARD(t)[value<I>])...
+				: tuple_wrap<value_t<I>, T>(PP_F(t)[value<I>])...
 			{}
 			constexpr tuple_impl(placeholder_t,
-								 auto&&... args) requires(sizeof...(T) ==
-														  sizeof...(args))
-				: tuple_wrap<value_t<I>, T>(PP_FORWARD(args))...
+			                     auto&&... args) requires(sizeof...(args) ==
+			                                              sizeof...(T))
+				: tuple_wrap<value_t<I>, T>(PP_F(args))...
 			{}
 			constexpr tuple_impl(in_place_t,
-								 auto&&... is) requires(sizeof...(T) ==
-														sizeof...(is))
-				: tuple_wrap<value_t<I>, T>(in_place, PP_FORWARD(is))...
+			                     auto&&... is) requires(sizeof...(is) ==
+			                                            sizeof...(T))
+				: tuple_wrap<value_t<I>, T>(in_place, PP_F(is))...
 			{}
 
 		protected:
 			constexpr void assign_tuple(auto&& t)
 			{
-				(((tuple_wrap<value_t<I>, T>&)* this = PP_FORWARD(t)[value<I>]),
-				 ...);
+				(((tuple_wrap<value_t<I>, T>&)* this = PP_F(t)[value<I>]), ...);
 			}
 		};
 
@@ -92,7 +91,7 @@ namespace PP
 
 		constexpr auto& operator=(concepts::tuple auto&& t)
 		{
-			assign_tuple(PP_FORWARD(t));
+			assign_tuple(PP_F(t));
 			return *this;
 		}
 	};
@@ -113,14 +112,14 @@ namespace PP
 		struct tuple_helper
 		{
 			static constexpr auto&& get(concepts::value auto i,
-										auto&& t) noexcept
+			                            auto&& t) noexcept
 			{
 				auto& wrap = t.wrap_types[i](t);
 				return copy_cvref(PP_DECLTYPE(t),
-								  PP_DECLTYPE(wrap.obj))(wrap.obj);
+				                  PP_DECLTYPE(wrap.obj))(wrap.obj);
 			}
 			static constexpr auto element(concepts::value auto i,
-										  auto& t) noexcept
+			                              auto& t) noexcept
 			{
 				return copy_cv(PP_DECLTYPE(t), t.types[i]);
 			}
@@ -129,11 +128,11 @@ namespace PP
 
 	PP_FUNCTOR(make_tuple, auto&&... args)
 	{
-		return tuple(placeholder, PP_FORWARD(args)...);
+		return tuple(placeholder, PP_F(args)...);
 	});
 	PP_FUNCTOR(forward_as_tuple, auto&&... args)
 	{
-		return tuple<decltype(args)...>(placeholder, PP_FORWARD(args)...);
+		return tuple<decltype(args)...>(placeholder, PP_F(args)...);
 	});
 
 	template <typename... T>

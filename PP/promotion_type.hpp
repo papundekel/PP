@@ -46,9 +46,9 @@ namespace PP
 	}
 
 	PP_FUNCTOR(has_implicit_conversion_to_arithmetic_type,
-			   PP::concepts::type auto t)
+	           PP::concepts::type auto t)
 	{
-		return requires(PP_GET_TYPE(t) x)
+		return requires(PP_GT(t) x)
 		{
 			promotion_type_convertor(x);
 		};

@@ -13,6 +13,6 @@ namespace PP
 			t.dont_make_array_star_operator;
 		})
 	{
-		return tuple_make_array(PP_FORWARD(t));
+		return tuple_make_array(PP_F(t));
 	}
 }
