@@ -25,6 +25,11 @@ namespace PP
 			return t;
 	});
 
+	///
+	/// @brief Empty tag type used for adding a ref qualifier.
+	///
+	/// @tparam ref The ref qualifier to add.
+	///
 	template <ref_qualifier ref>
 	struct add_reference_tag_t
 		: public value_t<ref>

@@ -20,6 +20,11 @@ namespace PP
 			return add_const(add_volatile(t));
 	});
 
+	///
+	/// @brief Empty tag type used for adding a cv qualifier.
+	///
+	/// @tparam cv The cv qualifier to add.
+	///
 	template <cv_qualifier cv>
 	struct add_cv_tag_t
 		: public value_t<cv>

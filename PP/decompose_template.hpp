@@ -25,14 +25,6 @@ namespace PP
 		{
 			template_t<T> Template;
 			type_tuple_t<Types...> types;
-
-#ifdef __clang__
-			constexpr decompose_pair(template_t<T>,
-			                         type_tuple_t<Types...>) noexcept
-				: Template()
-				, types()
-			{}
-#endif
 		};
 
 		template <typename T>

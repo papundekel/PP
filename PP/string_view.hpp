@@ -8,6 +8,9 @@
 
 namespace PP
 {
+	///
+	/// @brief Replacement for @ref std::string_view
+	///
 	template <typename CharT>
 	class basic_string_view : public pointer_view<const CharT>
 	{

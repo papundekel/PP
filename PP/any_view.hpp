@@ -16,6 +16,12 @@ namespace PP
 	concept PPany_view = type<T>
 	->Template == Template<any_view_implementation>;
 
+	///
+	/// @brief A view made of two @ref PP::any_iterator_implementation
+	///
+	/// @tparam CategoryT
+	/// @tparam T
+	///
 	template <typename CategoryT, typename T>
 	class any_view_implementation
 	{
@@ -26,6 +32,12 @@ namespace PP
 		any_iterator_implementation<CategoryT, CategoryT, T> end_;
 
 	public:
+		///
+		/// @brief Constructs the view from two strongly typed iterators.
+		///
+		/// @param begin The begin iterator.
+		/// @param end The end iterator.
+		///
 		constexpr any_view_implementation(auto begin, auto end)
 			: begin_(placeholder,
 		             detail::make_any_iterator_pointer(
@@ -39,6 +51,14 @@ namespace PP
 					   make_singular_tuple(PP_DECLTYPE(begin))))
 		{}
 
+		///
+		/// @brief Copy constructor from a compatible any_view.
+		///
+		/// @param other The view to copy.
+		///
+		/// @tparam CategoryTOther The iterator category of @p other.
+		/// @tparam U The type of dereferencing of @p other.
+		///
 		template <detail::at_least_type<CategoryT> CategoryTOther,
 		          concepts::convertible_to<T> U>
 		constexpr any_view_implementation(
@@ -46,6 +66,15 @@ namespace PP
 			: begin_(other.begin_)
 			, end_(other.end_)
 		{}
+
+		///
+		/// @brief Move constructor from a compatible any_view.
+		///
+		/// @param other The view to move.
+		///
+		/// @tparam CategoryTOther The iterator category of @p other.
+		/// @tparam U The type of dereferencing of @p other.
+		///
 		template <detail::at_least_type<CategoryT> CategoryTOther,
 		          concepts::convertible_to<T> U>
 		constexpr any_view_implementation(
@@ -54,27 +83,59 @@ namespace PP
 			, end_(move(other.end_))
 		{}
 
+		///
+		/// @brief Constructs the view from an @ref std::initializer_list.
+		///
+		/// @param list The initializer list.
+		///
 		constexpr any_view_implementation(
 			const std::initializer_list<PP_GT(~type<T>)>& list)
 			: any_view_implementation(list.begin(), list.end())
 		{}
+
+		///
+		/// @brief Construct the view from a view of any type.
+		///
+		/// @param v A view.
+		///
 		constexpr any_view_implementation(concepts::view auto&& v) requires(
 			!PPany_view<decltype(v)>)
 			: any_view_implementation(view_begin(PP_F(v)), view_end(PP_F(v)))
 		{}
+
+		///
+		/// @brief Constructs an empty view.
+		///
 		constexpr any_view_implementation()
 			: any_view_implementation(empty_view<T>{})
 		{}
 
+		///
+		/// @brief Return the begin iterator.
+		///
+		/// @return The begin iterator.
+		///
 		constexpr auto begin() const
 		{
 			return begin_;
 		}
+
+		///
+		/// @brief Return the end iterator.
+		///
+		/// @return The end iterator.
+		///
 		constexpr auto end() const
 		{
 			return end_;
 		}
 
+		///
+		/// @brief Indexes into the view. Same as indexing the begin iterator.
+		///
+		/// @param index The index.
+		/// @return The dereferenced value.
+		///
 		constexpr decltype(auto) operator[](ptrdiff_t index) const
 		{
 			if constexpr (-type<CategoryT> == iterator_category::ra)

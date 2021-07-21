@@ -6,10 +6,11 @@ namespace PP
 {
 	namespace concepts
 	{
+
 		template <typename T>
 		concept copyable = requires
 		{
-			[](remove_reference_impl<T>)
+			[](auto)
 			{
 			}(declval_impl<T>());
 		};

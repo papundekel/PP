@@ -14,5 +14,6 @@ namespace PP
 
 	template <typename T>
 	using remove_reference_impl =
-		decltype(detail::remove_reference_impl_helper(declval_impl<T>()))::type;
+		decltype(detail::remove_reference_impl_helper(
+			declval_impl<T>()))::type;
 }

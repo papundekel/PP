@@ -23,12 +23,6 @@ namespace PP
 	{
 		F f;
 
-#ifdef __clang__
-		constexpr functor(auto&& f)
-			: f(PP_F(f))
-		{}
-#endif
-
 		constexpr decltype(auto) operator()(auto&&... args) const& requires(
 			concepts::functor_call_not_partial<decltype(args)>&&...) &&
 			requires
@@ -58,11 +52,6 @@ namespace PP
 		constexpr decltype(auto) operator[](auto&& tuple) const&;
 		constexpr decltype(auto) operator[](auto&& tuple) const&&;
 	};
-
-#ifdef __clang__
-	template <typename F>
-	functor(F) -> functor<F>;
-#endif
 
 	namespace detail
 	{
