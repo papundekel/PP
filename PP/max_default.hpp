@@ -5,5 +5,5 @@
 
 namespace PP
 {
-	constexpr inline auto max_default = max * lst;
+constexpr inline auto max_default = max * lst;
 }

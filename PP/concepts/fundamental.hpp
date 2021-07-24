@@ -4,9 +4,9 @@
 
 namespace PP
 {
-	namespace concepts
-	{
-		template <typename T>
-		concept fundamental = non_void_fundamental<T> || void_type<T>;
-	}
+namespace concepts
+{
+template <typename T>
+concept fundamental = non_void_fundamental<T> || void_type<T>;
+}
 }

@@ -4,15 +4,15 @@
 
 namespace PP
 {
-	namespace concepts
-	{
+namespace concepts
+{
 
-		template <typename T>
-		concept copyable = requires
-		{
-			[](auto)
-			{
-			}(declval_impl<T>());
-		};
-	}
+template <typename T>
+concept copyable = requires
+{
+	[](auto)
+	{
+	}(declval_impl<T>());
+};
+}
 }

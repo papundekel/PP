@@ -7,7 +7,7 @@
 
 namespace PP
 {
-	constexpr inline auto is_non_union_class = is_class && !is_union;
+constexpr inline auto is_non_union_class = is_class && !is_union;
 
-	PP_CONCEPT1(non_union_class)
+PP_CONCEPT1(non_union_class)
 }

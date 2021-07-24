@@ -5,8 +5,8 @@
 #define PP_CONCEPT0(concept_name, functor_name_full)                           \
 	namespace concepts                                                         \
 	{                                                                          \
-		template <typename T>                                                  \
-		concept concept_name = ::PP::functor_name_full(::PP::type<T>);         \
+	template <typename T>                                                      \
+	concept concept_name = ::PP::functor_name_full(::PP::type<T>);             \
 	}
 
 #define PP_CONCEPT(concept_name, functor_name)                                 \

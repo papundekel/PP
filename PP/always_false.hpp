@@ -2,6 +2,6 @@
 
 namespace PP
 {
-	template <typename...>
-	constexpr inline bool always_false = false;
+template <typename...>
+constexpr inline bool always_false = false;
 }

@@ -4,6 +4,6 @@
 
 namespace PP
 {
-	template <typename T>
-	using get_value_type = decltype(get_value<T>());
+template <typename T>
+using get_value_type = decltype(get_value<T>());
 }

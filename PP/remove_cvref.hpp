@@ -5,10 +5,10 @@
 
 namespace PP
 {
-	constexpr inline auto remove_cvref = remove_cv | remove_reference;
+constexpr inline auto remove_cvref = remove_cv | remove_reference;
 
-	constexpr auto operator~(concepts::type auto t) noexcept
-	{
-		return remove_cvref(t);
-	}
+constexpr auto operator~(concepts::type auto t) noexcept
+{
+	return remove_cvref(t);
+}
 }

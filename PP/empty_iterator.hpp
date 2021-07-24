@@ -5,46 +5,46 @@
 
 namespace PP
 {
-	template <typename T>
-	struct empty_iterator
+template <typename T>
+struct empty_iterator
+{
+	constexpr auto& operator++() noexcept
 	{
-		constexpr auto& operator++() noexcept
-		{
-			return *this;
-		}
-		constexpr auto& operator--() noexcept
-		{
-			return *this;
-		}
-		constexpr T&& operator*() const noexcept
-		{
-			PP_GT(add_pointer <<= type<T>) p = nullptr;
-			return static_cast<T&&>(*p);
-		}
-		constexpr auto& operator+=(ptrdiff_t) noexcept
-		{
-			return *this;
-		}
-		constexpr auto operator+(ptrdiff_t) const noexcept
-		{
-			return *this;
-		}
-		constexpr auto&& operator[](ptrdiff_t) const noexcept
-		{
-			return **this;
-		}
-		constexpr bool operator==(empty_iterator) const noexcept
-		{
-			return true;
-		}
-		constexpr ptrdiff_t operator-(empty_iterator) const noexcept
-		{
-			return 0;
-		}
+		return *this;
+	}
+	constexpr auto& operator--() noexcept
+	{
+		return *this;
+	}
+	constexpr T&& operator*() const noexcept
+	{
+		PP_GT(add_pointer <<= type<T>) p = nullptr;
+		return static_cast<T&&>(*p);
+	}
+	constexpr auto& operator+=(ptrdiff_t) noexcept
+	{
+		return *this;
+	}
+	constexpr auto operator+(ptrdiff_t) const noexcept
+	{
+		return *this;
+	}
+	constexpr auto&& operator[](ptrdiff_t) const noexcept
+	{
+		return **this;
+	}
+	constexpr bool operator==(empty_iterator) const noexcept
+	{
+		return true;
+	}
+	constexpr ptrdiff_t operator-(empty_iterator) const noexcept
+	{
+		return 0;
+	}
 
-		constexpr operator auto() const
-		{
-			return (add_pointer <<= type<T>)(nullptr);
-		}
-	};
+	constexpr operator auto() const
+	{
+		return (add_pointer <<= type<T>)(nullptr);
+	}
+};
 }

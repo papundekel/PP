@@ -3,16 +3,16 @@
 
 namespace PP
 {
-	template <typename Head, typename I>
-	class prepend_iterator
-	{
-		Head& head;
-		I i;
-		bool at_head;
+template <typename Head, typename I>
+class prepend_iterator
+{
+	Head& head;
+	I i;
+	bool at_head;
 
-	public:
-		constexpr prepend_iterator(Head& head, I i)
-			: head(head)
-			, i(i)
-	};
+public:
+	constexpr prepend_iterator(Head& head, I i)
+		: head(head)
+		, i(i)
+};
 }

@@ -3,9 +3,9 @@
 
 namespace PP
 {
-	namespace concepts
-	{
-		// clang-format off
+namespace concepts
+{
+// clang-format off
 		template <typename T, typename U>
 		concept same_except_ref =
 			same<T, U>
@@ -17,6 +17,6 @@ namespace PP
 			different<T, U>
 		&&	different<T, U&>
 		&&	different<T, U&&>;
-		// clang-format on
-	}
+// clang-format on
+}
 }

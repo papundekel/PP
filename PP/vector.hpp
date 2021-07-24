@@ -4,172 +4,172 @@
 #include "movable.hpp"
 #include "no_default_initialized.hpp"
 #include "view.hpp"
-#include "view_destroy.hpp"
-#include "view_move_uninitialized.hpp"
-#include "view_remove.hpp"
+#include "view/destroy.hpp"
+#include "view/move_uninitialized.hpp"
+#include "view/remove.hpp"
 
 namespace std
 {
-	template <typename T>
-	struct allocator;
+template <typename T>
+struct allocator;
 }
 
 namespace PP
 {
-	template <typename T, typename Allocator = std::allocator<T>>
-	class vector
+template <typename T, typename Allocator = std::allocator<T>>
+class vector
+{
+	static constexpr size_t default_capacity = 16;
+
+	dynamic_block<T, Allocator> block;
+	movable<no_default_initialized<size_t>, zero_releaser> count_;
+
+	constexpr void destroy_all() noexcept
 	{
-		static constexpr size_t default_capacity = 16;
+		view_destroy(*this);
+	}
 
-		dynamic_block<T, Allocator> block;
-		movable<no_default_initialized<size_t>, zero_releaser> count_;
+public:
+	constexpr vector(auto&& allocator, size_t capacity) noexcept
+	    : block(PP_F(allocator), capacity)
+	    , count_(movable_default_releaser_tag, 0)
+	{}
+	constexpr vector(auto&& allocator, concepts::view auto&& v)
+	    : block(PP_F(allocator), PP_F(v))
+	    , count_(block.count())
+	{}
+	explicit constexpr vector(size_t capacity) noexcept
+	    : vector(Allocator(), capacity)
+	{}
+	explicit constexpr vector(concepts::view auto&& v)
+	    : vector(Allocator(), PP_F(v))
+	{}
+	constexpr vector(placeholder_t, auto&& allocator) noexcept
+	    : vector(PP_F(allocator), default_capacity)
+	{}
+	constexpr vector(placeholder_t, size_t count) noexcept
+	    : vector(count)
+	{
+		view_for_each(
+		    [](T& t)
+		    {
+			    construct_at_pack(&t);
+		    },
+		    *this);
+	}
+	constexpr vector() noexcept
+	    : vector(Allocator(), default_capacity)
+	{}
 
-		constexpr void destroy_all() noexcept
+	vector(vector&&) = default;
+	vector& operator=(vector&&) = default;
+
+	constexpr ~vector()
+	{
+		destroy_all();
+	}
+
+	constexpr void push_back(auto&&... args)
+	{
+		auto c = capacity();
+
+		if (count() == c)
 		{
-			view_destroy(*this);
-		}
+			auto new_block = block.spawn_new(c != 0 ? 2 * c : 2);
 
-	public:
-		constexpr vector(auto&& allocator, size_t capacity) noexcept
-			: block(PP_F(allocator), capacity)
-			, count_(movable_default_releaser_tag, 0)
-		{}
-		constexpr vector(auto&& allocator, concepts::view auto&& v)
-			: block(PP_F(allocator), PP_F(v))
-			, count_(block.count())
-		{}
-		explicit constexpr vector(size_t capacity) noexcept
-			: vector(Allocator(), capacity)
-		{}
-		explicit constexpr vector(concepts::view auto&& v)
-			: vector(Allocator(), PP_F(v))
-		{}
-		constexpr vector(placeholder_t, auto&& allocator) noexcept
-			: vector(PP_F(allocator), default_capacity)
-		{}
-		constexpr vector(placeholder_t, size_t count) noexcept
-			: vector(count)
-		{
-			view_for_each(
-				[](T& t)
-				{
-					construct_at_pack(&t);
-				},
-				*this);
-		}
-		constexpr vector() noexcept
-			: vector(Allocator(), default_capacity)
-		{}
+			view_move_uninitialized(new_block, *this);
 
-		vector(vector&&) = default;
-		vector& operator=(vector&&) = default;
-
-		constexpr ~vector()
-		{
 			destroy_all();
+
+			block = move(new_block);
 		}
 
-		constexpr void push_back(auto&&... args)
-		{
-			auto c = capacity();
+		construct_at_pack(end(), PP_F(args)...);
 
-			if (count() == c)
-			{
-				auto new_block = block.spawn_new(c != 0 ? 2 * c : 2);
+		++count_[tags::o];
+	}
 
-				view_move_uninitialized(new_block, *this);
+	constexpr T pop_back()
+	{
+		if (count() == 0)
+			throw 0;
 
-				destroy_all();
+		--count_[tags::o];
 
-				block = move(new_block);
-			}
+		auto& back = *end();
 
-			construct_at_pack(end(), PP_F(args)...);
+		auto temp = PP::move(back);
 
-			++count_[tags::o];
-		}
+		back.~T();
 
-		constexpr T pop_back()
-		{
-			if (count() == 0)
-				throw 0;
+		return PP::move(temp);
+	}
 
-			--count_[tags::o];
+	constexpr void clear() noexcept
+	{
+		destroy_all();
+		block = block.spawn_new(default_capacity);
+		count_[tags::o] = 0;
+	}
 
-			auto& back = *end();
+	constexpr T* begin() noexcept
+	{
+		return block.begin();
+	}
+	constexpr T* end() noexcept
+	{
+		return begin() + count();
+	}
+	constexpr const T* begin() const noexcept
+	{
+		return block.begin();
+	}
+	constexpr const T* end() const noexcept
+	{
+		return begin() + count();
+	}
 
-			auto temp = PP::move(back);
+	constexpr T& operator[](ptrdiff_t i) noexcept
+	{
+		return begin()[i];
+	}
+	constexpr const T& operator[](ptrdiff_t i) const noexcept
+	{
+		return begin()[i];
+	}
 
-			back.~T();
+	constexpr bool empty() const noexcept
+	{
+		return count() == 0;
+	}
+	constexpr size_t count() const noexcept
+	{
+		return count_[tags::o];
+	}
+	constexpr size_t capacity() const noexcept
+	{
+		return block.count();
+	}
 
-			return PP::move(temp);
-		}
+	constexpr void erase_until_end(const T* i) noexcept
+	{
+		view_destroy(simple_view(i, end()));
+		count_ = i - begin();
+	}
 
-		constexpr void clear() noexcept
-		{
-			destroy_all();
-			block = block.spawn_new(default_capacity);
-			count_[tags::o] = 0;
-		}
+	constexpr void remove(auto&& predicate)
+	{
+		auto i = view_remove(PP_F(predicate), *this);
+		erase_until_end(i);
+	}
 
-		constexpr T* begin() noexcept
-		{
-			return block.begin();
-		}
-		constexpr T* end() noexcept
-		{
-			return begin() + count();
-		}
-		constexpr const T* begin() const noexcept
-		{
-			return block.begin();
-		}
-		constexpr const T* end() const noexcept
-		{
-			return begin() + count();
-		}
-
-		constexpr T& operator[](ptrdiff_t i) noexcept
-		{
-			return begin()[i];
-		}
-		constexpr const T& operator[](ptrdiff_t i) const noexcept
-		{
-			return begin()[i];
-		}
-
-		constexpr bool empty() const noexcept
-		{
-			return count() == 0;
-		}
-		constexpr size_t count() const noexcept
-		{
-			return count_[tags::o];
-		}
-		constexpr size_t capacity() const noexcept
-		{
-			return block.count();
-		}
-
-		constexpr void erase_until_end(const T* i) noexcept
-		{
-			view_destroy(simple_view(i, end()));
-			count_ = i - begin();
-		}
-
-		constexpr void remove(auto&& predicate)
-		{
-			auto i = view_remove(PP_F(predicate), *this);
-			erase_until_end(i);
-		}
-
-		constexpr T& back() noexcept
-		{
-			return end()[-1];
-		}
-		constexpr const T& back() const noexcept
-		{
-			return end()[-1];
-		}
-	};
+	constexpr T& back() noexcept
+	{
+		return end()[-1];
+	}
+	constexpr const T& back() const noexcept
+	{
+		return end()[-1];
+	}
+};
 }

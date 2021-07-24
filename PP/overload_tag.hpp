@@ -2,7 +2,7 @@
 
 namespace PP
 {
-	template <typename T>
-	struct overload_tag
-	{};
+template <typename T>
+struct overload_tag
+{};
 }

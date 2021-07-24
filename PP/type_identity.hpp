@@ -2,11 +2,11 @@
 
 namespace PP
 {
-	template <typename T>
-	struct type_identity
-	{
-		using type = T;
-	};
+template <typename T>
+struct type_identity
+{
+	using type = T;
+};
 
 #define PP_NEW_TYPE(o, T)                                                      \
 	decltype(o)                                                                \

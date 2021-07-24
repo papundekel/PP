@@ -3,12 +3,12 @@
 
 namespace PP
 {
-	template <typename Value>
-	struct extract_value
+template <typename Value>
+struct extract_value
+{
+	static constexpr decltype(auto) value_f() noexcept
 	{
-		static constexpr decltype(auto) value_f() noexcept
-		{
-			return get_value<Value>();
-		}
-	};
+		return get_value<Value>();
+	}
+};
 }

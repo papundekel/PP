@@ -7,19 +7,19 @@
 
 namespace PP
 {
-	PP_FUNCTOR(apply_partially_first, auto&& f, auto&& arg)
-	{
-		return functor(
-			[f = unwrap_functor(PP_F(f)), a = unwrap_functor(PP_F(arg))](
-				auto&&... other_args) -> decltype(auto)
-			{
-				return unwrap(f)(unwrap(a), PP_F(other_args)...);
-			});
-	});
+PP_FUNCTOR(apply_partially_first, auto&& f, auto&& arg)
+{
+	return functor(
+		[f = unwrap_functor(PP_F(f)),
+	     a = unwrap_functor(PP_F(arg))](auto&&... other_args) -> decltype(auto)
+		{
+			return unwrap(f)(unwrap(a), PP_F(other_args)...);
+		});
+});
 
-	constexpr auto operator*(concepts::wrap auto&& f, auto&& arg) noexcept
-	{
-		return apply_partially_first(unwrap_functor(PP_F(f)),
-		                             unwrap_functor(PP_F(arg)));
-	}
+constexpr auto operator*(concepts::wrap auto&& f, auto&& arg) noexcept
+{
+	return apply_partially_first(unwrap_functor(PP_F(f)),
+	                             unwrap_functor(PP_F(arg)));
+}
 }

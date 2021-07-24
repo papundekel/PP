@@ -7,18 +7,16 @@
 
 namespace PP
 {
-	constexpr inline functor apply_template_pack(
-		[]<template <typename...> typename Template>(
-			template_t<Template>,
-			concepts::type auto... types)
-		{
-			return type<Template<PP_GT(types)...>>;
-		});
-
-	template <template <typename...> typename Template>
-	constexpr auto template_t<Template>::operator()(
-		auto... types) const noexcept
+constexpr inline functor apply_template_pack(
+	[]<template <typename...> typename Template>(template_t<Template>,
+                                                 concepts::type auto... types)
 	{
-		return apply_template_pack(*this, types...);
-	}
+		return type<Template<PP_GT(types)...>>;
+	});
+
+template <template <typename...> typename Template>
+constexpr auto template_t<Template>::operator()(auto... types) const noexcept
+{
+	return apply_template_pack(*this, types...);
+}
 }

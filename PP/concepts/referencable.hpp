@@ -4,6 +4,6 @@
 
 namespace PP::concepts
 {
-	template <typename T>
-	concept referencable = function_pure<T> || object<T>;
+template <typename T>
+concept referencable = function_pure<T> || object<T>;
 }

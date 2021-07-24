@@ -2,5 +2,5 @@
 
 namespace PP
 {
-	using ptrdiff_t = decltype((int*)nullptr - (int*)nullptr);
+using ptrdiff_t = decltype((int*)nullptr - (int*)nullptr);
 }

@@ -5,11 +5,11 @@
 
 namespace PP
 {
-	PP_FUNCTOR(is_class, concepts::type auto t)
+PP_FUNCTOR(is_class, concepts::type auto t)
+{
+	return requires
 	{
-		return requires
-		{
-			typename detail::templated_dummy<int PP_GT(t)::*>;
-		};
-	});
+		typename detail::templated_dummy<int PP_GT(t)::*>;
+	};
+});
 }

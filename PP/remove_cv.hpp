@@ -5,5 +5,5 @@
 
 namespace PP
 {
-	constexpr inline auto remove_cv = remove_volatile | remove_const;
+constexpr inline auto remove_cv = remove_volatile | remove_const;
 }

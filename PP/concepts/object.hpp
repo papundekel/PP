@@ -6,11 +6,11 @@
 
 namespace PP
 {
-	namespace concepts
-	{
-		template <typename T>
-		concept object = complete_object<T> || unbounded_array<T>;
-	}
+namespace concepts
+{
+template <typename T>
+concept object = complete_object<T> || unbounded_array<T>;
+}
 
-	PP_CONCEPT_FUNCTOR1(object);
+PP_CONCEPT_FUNCTOR1(object);
 }

@@ -2,53 +2,38 @@
 #include <iosfwd>
 
 #include "any_view.hpp"
-#include "array.hpp"
+#include "concepts/integer.hpp"
+#include "containers/array.hpp"
 #include "to_chars.hpp"
 
 namespace PP
 {
-	constexpr auto make_any_view_chars(const char* b, const char* e)
-	{
-		return any_view<iterator_category::fw, char>(b, e);
-	}
+class ostream
+{
+public:
+	constexpr virtual void write(char c) noexcept = 0;
+};
 
-	class ostream
-	{
-		constexpr void write_num(auto number) noexcept
-		{
-			array<char, 32> buffer;
-			auto end = to_chars(buffer, number);
-			write(make_any_view_chars(view_begin(buffer), end));
-		}
+constexpr ostream& operator<<(ostream& out, char c) noexcept
+{
+	out.write(c);
+	return out;
+}
 
-	public:
-		constexpr virtual void write(
-			any_view<iterator_category::fw, char> view) noexcept = 0;
+constexpr ostream& operator<<(ostream& out, concepts::view auto&& v) noexcept
+{
+	for (char c : v)
+		out.write(c);
+	return out;
+}
 
-		template <size_t N>
-		constexpr void write(const char (&arr)[N]) noexcept
-		{
-			write(make_any_view_chars(arr, arr + N - 1));
-		}
-		constexpr void write(long long number) noexcept
-		{
-			write_num(number);
-		}
-		constexpr void write(long number) noexcept
-		{
-			write_num(number);
-		}
-		constexpr void write(unsigned long number) noexcept
-		{
-			write_num(number);
-		}
-		constexpr void write(unsigned long long number) noexcept
-		{
-			write_num(number);
-		}
-		constexpr void write_ptr(const void* ptr) noexcept
-		{
-			write(size_t(ptr));
-		}
-	};
+constexpr ostream& operator<<(ostream& out,
+                              concepts::integer auto number) noexcept
+{
+	char buffer[32];
+	auto end = to_chars(buffer, number);
+	return out << (simple_view(view::begin(buffer), end));
+}
+
+extern ostream& cout;
 }

@@ -4,10 +4,10 @@
 
 namespace PP
 {
-	constexpr auto exchange(auto& x, auto&& new_value)
-	{
-		auto old = move(x);
-		x = PP_F(new_value);
-		return move(old);
-	}
+constexpr auto exchange(auto& x, auto&& new_value)
+{
+	auto old = move(x);
+	x = PP_F(new_value);
+	return move(old);
+}
 }

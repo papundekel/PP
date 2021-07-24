@@ -5,11 +5,11 @@
 
 namespace PP
 {
-	namespace concepts
-	{
-		template <typename T>
-		concept non_void_fundamental = arithmetic<T> || null<T>;
-	}
+namespace concepts
+{
+template <typename T>
+concept non_void_fundamental = arithmetic<T> || null<T>;
+}
 
-	PP_CONCEPT_FUNCTOR1(non_void_fundamental);
+PP_CONCEPT_FUNCTOR1(non_void_fundamental);
 }

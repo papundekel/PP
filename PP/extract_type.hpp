@@ -4,6 +4,6 @@
 
 namespace PP
 {
-	template <typename T>
-	using extract_type = type_t<get_type<T>>;
+template <typename T>
+using extract_type = type_t<get_type<T>>;
 }

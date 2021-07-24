@@ -6,11 +6,11 @@
 
 namespace PP
 {
-	namespace concepts
-	{
-		template <typename T>
-		concept function = function_pure<T> || function_cvref<T>;
-	}
+namespace concepts
+{
+template <typename T>
+concept function = function_pure<T> || function_cvref<T>;
+}
 
-	PP_CONCEPT_FUNCTOR1(function);
+PP_CONCEPT_FUNCTOR1(function);
 }

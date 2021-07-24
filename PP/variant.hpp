@@ -12,8 +12,8 @@
 #include "ref_wrap.hpp"
 #include "reinterpret_cast.hpp"
 #include "size_of.hpp"
-#include "tuple_find.hpp"
-#include "tuple_map_to_array.hpp"
+#include "tuple/find.hpp"
+#include "tuple/map_to_array.hpp"
 
 namespace PP
 {
@@ -73,8 +73,7 @@ public:
 	{
 		auto i = get_type_index(t);
 
-		static_assert(PP_GET_VALUE(i) != sizeof...(T),
-		              "type is not in this variant");
+		static_assert(PP_GV(i) != sizeof...(T), "type is not in this variant");
 
 		index = *i;
 
@@ -130,7 +129,7 @@ struct visit_helper
 
 		// tuple_map_make_array(, )
 
-		// Template<functor>[PP_DECLTYPE(visitor) += type_void +=
+		// Template<functor>[PP_DT(visitor) += type_void +=
 		//					  make_iterate_tuple(PP_SIZEOF___(variants),
 		//										 type<char&>)]
 	});

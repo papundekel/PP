@@ -6,11 +6,11 @@
 
 namespace PP
 {
-	namespace concepts
-	{
-		template <typename T>
-		concept array = bounded_array<T> || unbounded_array<T>;
-	}
+namespace concepts
+{
+template <typename T>
+concept array = bounded_array<T> || unbounded_array<T>;
+}
 
-	PP_CONCEPT_FUNCTOR1(array);
+PP_CONCEPT_FUNCTOR1(array);
 }

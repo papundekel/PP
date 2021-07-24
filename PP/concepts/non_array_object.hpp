@@ -8,8 +8,8 @@
 
 namespace PP::concepts
 {
-	template <typename T>
-	concept non_array_object = is_non_array_object(PP::type<T>) ||
-		non_void_fundamental<T> || pointer<T> || pointer_to_member<T> ||
-		user_defined<T>;
+template <typename T>
+concept non_array_object =
+	is_non_array_object(PP::type<T>) || non_void_fundamental<T> || pointer<T> ||
+	pointer_to_member<T> || user_defined<T>;
 }

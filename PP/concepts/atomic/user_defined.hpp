@@ -7,7 +7,7 @@
 
 namespace PP
 {
-	constexpr inline auto is_user_defined =
-		is_non_array_object && !is_non_void_fundamental && !is_pointer &&
-		!is_pointer_to_member;
+constexpr inline auto is_user_defined = is_non_array_object &&
+                                        !is_non_void_fundamental &&
+                                        !is_pointer && !is_pointer_to_member;
 }

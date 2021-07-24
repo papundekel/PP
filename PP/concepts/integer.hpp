@@ -4,9 +4,9 @@
 
 namespace PP
 {
-	namespace concepts
-	{
-		template <typename T>
-		concept integer = signed_integer<T> || unsigned_integer<T>;
-	}
+namespace concepts
+{
+template <typename T>
+concept integer = signed_integer<T> || unsigned_integer<T>;
+}
 }

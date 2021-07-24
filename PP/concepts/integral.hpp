@@ -5,11 +5,11 @@
 
 namespace PP
 {
-	namespace concepts
-	{
-		template <typename T>
-		concept integral = integer<T> || character<T> || bool_type<T>;
-	}
+namespace concepts
+{
+template <typename T>
+concept integral = integer<T> || character<T> || bool_type<T>;
+}
 
-	PP_CONCEPT_FUNCTOR1(integral);
+PP_CONCEPT_FUNCTOR1(integral);
 }

@@ -5,8 +5,8 @@
 
 namespace PP
 {
-	PP_FUNCTOR(type_id, concepts::type auto t) -> auto&
-	{
-		return typeid(PP_GT(t));
-	});
+PP_FUNCTOR(type_id, concepts::type auto t) -> auto&
+{
+	return typeid(PP_GT(t));
+});
 }

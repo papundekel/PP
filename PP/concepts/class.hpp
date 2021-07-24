@@ -7,10 +7,10 @@
 
 namespace PP
 {
-	namespace concepts
-	{
-		template <typename T>
-		concept class_type =
-			is_class(PP::type<T>) || non_union_class<T> || union_type<T>;
-	}
+namespace concepts
+{
+template <typename T>
+concept class_type =
+	is_class(PP::type<T>) || non_union_class<T> || union_type<T>;
+}
 }

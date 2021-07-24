@@ -2,10 +2,10 @@
 
 namespace PP
 {
-	enum class ref_qualifier
-	{
-		none,
-		lvalue,
-		rvalue,
-	};
+enum class ref_qualifier
+{
+	none,
+	lvalue,
+	rvalue,
+};
 }

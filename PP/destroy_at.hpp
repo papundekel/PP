@@ -7,23 +7,23 @@
 
 namespace PP
 {
-	namespace detail
+namespace detail
+{
+template <typename T>
+constexpr void destroy_at_impl(T* p)
+{
+	if constexpr (concepts::array<T>)
 	{
-		template <typename T>
-		constexpr void destroy_at_impl(T* p)
-		{
-			if constexpr (concepts::array<T>)
-			{
-				for (auto& x : *p)
-					destroy_at_impl(std::addressof(x));
-			}
-			else
-				p->~T();
-		}
+		for (auto& x : *p)
+			destroy_at_impl(std::addressof(x));
 	}
+	else
+		p->~T();
+}
+}
 
-	PP_FUNCTOR(destroy_at, auto* p)
-	{
-		detail::destroy_at_impl(p);
-	});
+PP_FUNCTOR(destroy_at, auto* p)
+{
+	detail::destroy_at_impl(p);
+});
 }
