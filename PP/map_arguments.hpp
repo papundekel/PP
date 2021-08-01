@@ -39,7 +39,7 @@ PP_FUNCTOR(map_arguments, auto&& f, auto&&... maps)
 		    return detail::map_arguments_helper(
 		        f,
 		        forward_as_tuple(maps...),
-		        make_value_sequence(value<sizeof...(args)>),
+		        value_sequence_make(value<sizeof...(args)>),
 		        PP_F(args)...);
 	    });
 });

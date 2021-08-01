@@ -1,4 +1,5 @@
 #pragma once
+#include "../operators.hpp"
 #include "../zip_iterator_std.hpp"
 #include "first_equal.hpp"
 

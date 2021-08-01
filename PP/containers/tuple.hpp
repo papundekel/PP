@@ -69,7 +69,7 @@ protected:
 
 template <typename... T>
 using tuple_base =
-    tuple_impl<decltype(make_value_sequence(PP_SIZEOF___(T))), T...>;
+    tuple_impl<decltype(value_sequence_make(PP_SIZEOF___(T))), T...>;
 }
 
 namespace PP::tuple

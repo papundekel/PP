@@ -29,7 +29,7 @@ PP_FUNCTOR(apply_partially, auto&& f, concepts::value auto i, auto&& arg)
 			        else
 				        return move(args)[current_i - value_1];
 		        },
-		        make_value_sequence(PP_SIZEOF___(other_args) + value_1));
+		        value_sequence_make(PP_SIZEOF___(other_args) + value_1));
 	    });
 });
 }
