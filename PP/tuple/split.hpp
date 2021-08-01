@@ -9,21 +9,22 @@
 
 namespace PP::tuple
 {
-constexpr inline auto splitter = make_overloaded_pack(
+PP_CIA splitter = make_overloaded_pack(
     [](auto&& head, auto&&... tail)
     {
-	    return type<decltype(head), containers::tuple<decltype(tail)...>>(
-	        placeholder,
+	    return construct(
+	        type_tuple<decltype(head), container<decltype(tail)...>>,
+	        value_false,
 	        PP_F(head),
 	        forward_as_tuple(PP_F(tail)...));
     },
     []()
     {
-	    return make_tuple(0, 0);
+	    return make(0, 0);
     });
 
-constexpr inline auto split = *splitter;
+PP_CIA split = *splitter;
 
-constexpr inline auto head = get * value_0;
-constexpr inline auto tail = get * value_1 | split;
+PP_CIA head = get * value_0;
+PP_CIA tail = get * value_1 | split;
 }

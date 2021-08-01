@@ -33,6 +33,5 @@ PP_FUNCTOR(view_subsequence_compare_if,
 	}
 });
 
-constexpr inline auto view_subsequence_compare =
-    view_subsequence_compare_if * eql;
+PP_CIA view_subsequence_compare = view_subsequence_compare_if * eql;
 }

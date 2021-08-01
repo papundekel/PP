@@ -40,6 +40,6 @@ PP_FUNCTOR(type_count_value_t, concepts::type auto t)
 	return PP_CV(count_value_t(declval(t)));
 });
 
-constexpr inline auto count = get_value | count_value_t;
-constexpr inline auto type_count = get_value | type_count_value_t;
+PP_CIA count = get_value | count_value_t;
+PP_CIA type_count = get_value | type_count_value_t;
 }

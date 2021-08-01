@@ -38,7 +38,7 @@ template <auto... V>
 value_tuple_t(value_t<V>...) -> value_tuple_t<V...>;
 
 template <auto... Values>
-constexpr inline auto value_tuple = value_tuple_t<Values...>{};
+PP_CIA value_tuple = value_tuple_t<Values...>{};
 
 template <auto... V>
 constexpr auto tuple_count_impl(value_tuple_t<V...>) noexcept

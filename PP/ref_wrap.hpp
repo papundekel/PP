@@ -13,7 +13,7 @@ template <typename T, bool lvalue>
 class ref_wrap_impl
 {
 	using RT =
-		apply_transform_t<add_reference * value<lvalue ? ref_qualifier::lvalue
+	    apply_transform_t<add_reference * value<lvalue ? ref_qualifier::lvalue
 	                                                   : ref_qualifier::rvalue>,
 	                      T>;
 
@@ -21,7 +21,7 @@ class ref_wrap_impl
 
 public:
 	constexpr ref_wrap_impl(RT ref) noexcept
-		: ref((RT)ref)
+	    : ref((RT)ref)
 	{}
 
 	constexpr RT get() const noexcept
@@ -48,7 +48,7 @@ ref_wrap_impl(T&&) -> ref_wrap_impl<T, false>;
 
 template <typename T>
 using ref_wrap =
-	detail::ref_wrap_impl<PP_GT(!type<T>), is_lvalue_reference(type<T>)>;
+    detail::ref_wrap_impl<PP_GT(!type<T>), is_lvalue_reference(type<T>)>;
 
 template <typename T>
 using wrap_ref_t = PP_GT(conditional(value<is_reference(type<T>)>,
@@ -59,19 +59,19 @@ PP_FUNCTOR(unwrap_ref, auto&& x) -> auto&&
 {
 	if constexpr (requires
 	              {
-					  x.ref_wrap_impl_tag;
-				  })
+		              x.ref_wrap_impl_tag;
+	              })
 		return x.get();
 	else
 		return PP_F(x);
 });
 
-constexpr inline auto wrap_ref = functor(
-									 [](auto&& x)
-									 {
-										 return ref_wrap<decltype(x)>(PP_F(x));
-									 }) |
-                                 unwrap_ref;
+PP_CIA wrap_ref = functor(
+                      [](auto&& x)
+                      {
+	                      return ref_wrap<decltype(x)>(PP_F(x));
+                      }) |
+                  unwrap_ref;
 
 #define PP_REF_WRAP(x) ::PP::wrap_ref(PP_F(x))
 }

@@ -10,5 +10,5 @@
 
 namespace PP
 {
-constexpr inline auto view_move = view_for_each * *move_assign | zip_view_pack;
+PP_CIA view_move = view_for_each * *move_assign | zip_view_pack;
 }

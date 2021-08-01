@@ -130,11 +130,11 @@ PP_FUNCTOR(type_end_iterator, concepts::type auto v)
 {
 	return PP_DT(view::end(declval(v)));
 });
-PP_FUNCTOR(view::end_iterator, concepts::view auto&& v)
+PP_FUNCTOR(end_iterator, concepts::view auto&& v)
 {
 	return type_end_iterator(PP_DT(v));
 });
-constexpr inline auto type_base = iterator_base | view_type_begin_iterator;
+PP_CIA type_base = iterator_base | type_begin_iterator;
 }
 
 namespace PP::detail

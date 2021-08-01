@@ -135,18 +135,18 @@ PP_FUNCTOR(make_function_type_from_type_nocvref,
 });
 }
 
-constexpr inline auto make_function_type = make_overloaded_pack(
-	detail::make_function_type_impl,
-	detail::make_function_type_from_type,
-	detail::make_function_type_from_type_nocvref,
-	[](concepts::value auto info)
-	{
-		constexpr auto INFO = PP_CV(info);
+PP_CIA make_function_type = make_overloaded_pack(
+    detail::make_function_type_impl,
+    detail::make_function_type_from_type,
+    detail::make_function_type_from_type_nocvref,
+    [](concepts::value auto info)
+    {
+	    constexpr auto INFO = PP_CV(info);
 
-		return detail::make_function_type_impl(INFO.return_type,
+	    return detail::make_function_type_impl(INFO.return_type,
 	                                           INFO.parameter_types,
 	                                           value<INFO.Noexcept>,
 	                                           value<INFO.cv>,
 	                                           value<INFO.ref>);
-	});
+    });
 }

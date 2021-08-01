@@ -4,7 +4,7 @@
 namespace PP
 {
 template <auto f>
-constexpr inline auto concepts::valueper = []<typename T>(T)
+PP_CIA concepts::valueper = []<typename T>(T)
 {
 	return PP::value<f(T{})>;
 };

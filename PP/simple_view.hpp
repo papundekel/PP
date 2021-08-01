@@ -45,8 +45,8 @@ public:
 	}
 };
 simple_view(concepts::view auto&& v)
-    -> simple_view<PP_APPLY_TRANSFORM(view_type_begin_iterator, PP_DT(v)),
-                   PP_APPLY_TRANSFORM(view_type_end_iterator, PP_DT(v))>;
+    -> simple_view<PP_APPLY_TRANSFORM(view::type_begin_iterator, PP_DT(v)),
+                   PP_APPLY_TRANSFORM(view::type_end_iterator, PP_DT(v))>;
 template <typename T>
 simple_view(const std::initializer_list<T>&) -> simple_view<const T*, const T*>;
 

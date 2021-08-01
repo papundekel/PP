@@ -1079,7 +1079,7 @@ constexpr auto make_any_iterator(concepts::iterator auto i,
 }
 }
 
-constexpr inline auto make_any_iterator = make_overloaded_pack(
+PP_CIA make_any_iterator = make_overloaded_pack(
     [](concepts::iterator auto i, concepts::tuple auto compatible_iterators)
     {
 	    return detail::make_any_iterator(i, compatible_iterators);

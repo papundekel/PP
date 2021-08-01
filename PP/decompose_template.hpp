@@ -6,10 +6,8 @@
 #include "template_t.hpp"
 #include "type_t.hpp"
 
-namespace PP
-{
 template <typename T>
-constexpr auto type_t<T>::operator->() const noexcept
+constexpr auto PP::type_t<T>::operator->() const noexcept
 {
 	return make_arrow_operator_wrapper(
 	    [this]()
@@ -18,7 +16,7 @@ constexpr auto type_t<T>::operator->() const noexcept
 	    });
 }
 
-namespace detail
+namespace PP::detail
 {
 template <template <typename...> typename T, typename... Types>
 struct decompose_pair
@@ -32,7 +30,9 @@ struct decompose_dummy
 {};
 }
 
-constexpr inline auto decompose =
+namespace PP
+{
+PP_CIA decompose =
     make_overloaded_pack(
         []<template <typename...> typename T, typename... Types>(
             type_t<T<Types...>>)
@@ -46,21 +46,21 @@ constexpr inline auto decompose =
         }) |
     remove_cvref;
 
-constexpr inline auto decompose_template = functor(
-                                               [](auto p)
-                                               {
-	                                               return p.Template;
-                                               }) |
-                                           decompose;
-constexpr inline auto decompose_types = functor(
-                                            [](auto p)
-                                            {
-	                                            return p.types;
-                                            }) |
-                                        decompose;
-
-constexpr auto operator*(concepts::type auto t) noexcept
-{
-	return decompose(t);
+PP_CIA decompose_template = functor(
+                                [](auto p)
+                                {
+	                                return p.Template;
+                                }) |
+                            decompose;
+PP_CIA decompose_types = functor(
+                             [](auto p)
+                             {
+	                             return p.types;
+                             }) |
+                         decompose;
 }
+
+constexpr auto operator*(PP::concepts::type auto t) noexcept
+{
+	return PP::decompose(t);
 }

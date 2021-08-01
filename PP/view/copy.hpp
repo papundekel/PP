@@ -8,5 +8,5 @@
 
 namespace PP
 {
-constexpr inline auto view_copy = view_for_each * *asg | zip_view_pack;
+PP_CIA view_copy = view_for_each * *asg | zip_view_pack;
 }

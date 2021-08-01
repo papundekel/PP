@@ -5,7 +5,7 @@
 
 namespace PP::tuple
 {
-constexpr inline auto make_array = *make_array;
+PP_CIA make_array = *make_array;
 }
 
 constexpr auto operator*(PP::concepts::tuple auto&& t) requires(

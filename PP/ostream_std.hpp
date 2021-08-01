@@ -9,7 +9,7 @@ class ostream_std final : public ostream
 
 public:
 	constexpr ostream_std(std::ostream& out) noexcept
-		: out(out)
+	    : out(out)
 	{}
 
 	void write(char c) noexcept override final;

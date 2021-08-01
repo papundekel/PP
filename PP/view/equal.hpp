@@ -16,5 +16,5 @@ PP_FUNCTOR(view_equal_if,
 	return a_end == view::end(PP_F(a)) && b_end == view::end(PP_F(b));
 });
 
-constexpr inline auto view_equal = view_equal_if * eql;
+PP_CIA view_equal = view_equal_if * eql;
 }

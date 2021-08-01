@@ -14,10 +14,10 @@ PP_FUNCTOR(is_convertible_to, concepts::type auto from, concepts::type auto to)
 		}(declval(from));
 	};
 });
+}
 
-namespace concepts
+namespace PP::concepts
 {
 template <typename From, typename To>
 concept convertible_to = is_convertible_to(PP::type<From>, PP::type<To>);
-}
 }

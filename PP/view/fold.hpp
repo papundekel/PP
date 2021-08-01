@@ -39,6 +39,6 @@ PP_FUNCTOR(view_fold,
 	}
 });
 
-constexpr inline auto view_foldl = view_fold * value_true;
-constexpr inline auto view_foldr = view_fold * value_false;
+PP_CIA view_foldl = view_fold * value_true;
+PP_CIA view_foldr = view_fold * value_false;
 }

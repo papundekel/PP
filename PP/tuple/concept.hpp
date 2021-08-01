@@ -14,7 +14,7 @@ template <typename T, auto I>
 concept tuple_access = requires
 {
 	::PP::declval_impl<T>()[::PP::value<I>];
-	::PP::tuple_element(::PP::value<I>, ::PP::declval_impl<T>());
+	::PP::tuple::element(::PP::value<I>, ::PP::declval_impl<T>());
 };
 template <typename T, auto... I>
 concept tuple_accesses = (tuple_access<T, I> && ...);

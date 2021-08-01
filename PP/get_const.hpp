@@ -7,6 +7,5 @@
 
 namespace PP
 {
-constexpr inline auto get_const_value_t =
-    tuple::get * value_1 | decompose_const;
+PP_CIA get_const_value_t = tuple::get * value_1 | decompose_const;
 }

@@ -136,10 +136,10 @@ struct visit_helper
 };
 }
 
-constexpr inline auto visit = detail::visit_helper::visit;
+PP_CIA visit = detail::visit_helper::visit;
 
 namespace detail
 {
-constexpr inline auto visit2 = detail::visit_helper::visit2;
+PP_CIA visit2 = detail::visit_helper::visit2;
 }
 }

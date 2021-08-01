@@ -24,6 +24,6 @@ PP_FUNCTOR(view_first_difference_if,
 	                 zip_view_pack(PP_F(a), PP_F(b)));
 });
 
-constexpr inline auto view_first_equal = view_first_equal_if * eql;
-constexpr inline auto view_first_difference = view_first_difference_if * eql;
+PP_CIA view_first_equal = view_first_equal_if * eql;
+PP_CIA view_first_difference = view_first_difference_if * eql;
 }

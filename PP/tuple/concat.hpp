@@ -19,5 +19,5 @@ PP_FUNCTOR(concats, concepts::tuple auto&& tuples)
 	return foldl(concat, tuple_empty{}, PP_F(tuples));
 });
 
-constexpr inline auto concats_pack = concats | forward_as_tuple;
+PP_CIA concats_pack = concats | forward_as_tuple;
 }

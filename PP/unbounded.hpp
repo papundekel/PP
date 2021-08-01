@@ -6,9 +6,9 @@ namespace PP
 constexpr inline struct unbounded_t
 {
 } unbounded{};
+}
 
-constexpr bool operator==(concepts::iterator auto, unbounded_t) noexcept
+constexpr bool operator==(PP::concepts::iterator auto, PP::unbounded_t) noexcept
 {
 	return false;
-}
 }

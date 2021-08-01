@@ -93,9 +93,8 @@ constexpr inline PP::functor array_tail_value(
 	    return result;
     });
 
-constexpr inline auto cv_decomposition = array_tail_value |
-                                         tuple_map_to_array *
-                                             type<cv_decomposition_element> *
-                                             get_cv_decomposition_element |
-                                         shed_pointers;
+PP_CIA cv_decomposition = array_tail_value |
+                          tuple_map_to_array * type<cv_decomposition_element> *
+                              get_cv_decomposition_element |
+                          shed_pointers;
 }

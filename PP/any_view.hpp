@@ -174,7 +174,7 @@ constexpr auto make_any_view(concepts::iterator auto begin,
 }
 }
 
-constexpr inline auto make_any_view = make_overloaded_pack(
+PP_CIA make_any_view = make_overloaded_pack(
     [](concepts::iterator auto begin, concepts::iterator auto end)
     {
 	    return detail::make_any_view(begin, end);

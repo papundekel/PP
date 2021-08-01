@@ -14,10 +14,10 @@ PP_FUNCTOR(is_equatable, concepts::type auto a, concepts::type auto b)
 			} -> concepts::convertible_to<bool>;
 	};
 });
+}
 
-namespace concepts
+namespace PP::concepts
 {
 template <typename T, typename U>
 concept equatable = is_equatable(PP::type<T>, PP::type<U>);
-}
 }

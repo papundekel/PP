@@ -57,5 +57,5 @@ PP_FUNCTOR(view_subsequence_if,
 		return subsequence_type::none;
 });
 
-constexpr inline auto view_subsequence = view_subsequence_if * eql;
+PP_CIA view_subsequence = view_subsequence_if * eql;
 }

@@ -38,7 +38,7 @@ constexpr decltype(auto) reorder_helper(auto&& f,
 }
 
 template <bool copy, size_t... I>
-constexpr inline auto reorder = [](auto& f)
+PP_CIA reorder = [](auto& f)
 {
 	[&f](auto&&... args) -> decltype(auto)
 	{
@@ -51,7 +51,7 @@ constexpr inline auto reorder = [](auto& f)
 	};
 };
 template <size_t... I>
-constexpr inline auto reorder<true, I...> = [](auto&& f)
+PP_CIA reorder<true, I...> = [](auto&& f)
 {
 	[f = PP_F(f)](auto&&... args) -> decltype(auto)
 	{

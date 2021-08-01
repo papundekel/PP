@@ -14,7 +14,7 @@ namespace detail
 {
 template <typename T, typename Base>
 struct empty_helper
-	: public Base
+    : public Base
 {
 	T t;
 };
@@ -29,7 +29,7 @@ PP_FUNCTOR(is_empty_helper, concepts::type auto member_t, concepts::type auto t)
 });
 }
 
-constexpr inline auto is_empty = detail::is_empty_helper * type_char;
+PP_CIA is_empty = detail::is_empty_helper * type_char;
 
 namespace concepts
 {

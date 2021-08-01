@@ -11,7 +11,7 @@
 
 namespace PP
 {
-constexpr inline auto view_move_uninitialized =
+PP_CIA view_move_uninitialized =
     view_for_each * *functor(
                         [](auto&& to, auto&& from)
                         {

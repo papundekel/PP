@@ -54,12 +54,11 @@ PP_FUNCTOR(has_implicit_conversion_to_arithmetic_type,
 	};
 });
 
-constexpr inline auto promotion_type =
-	decl_type_copy |
-	PP::functor(
-		[](auto x)
-		{
-			return detail::promotion_type_convertor(x);
-		}) |
-	construct_pack;
+PP_CIA promotion_type = decl_type_copy |
+                        PP::functor(
+                            [](auto x)
+                            {
+	                            return detail::promotion_type_convertor(x);
+                            }) |
+                        construct_pack;
 }

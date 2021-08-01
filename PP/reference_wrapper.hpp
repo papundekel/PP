@@ -33,11 +33,11 @@ public:
 
 	template <typename U>
 	constexpr reference_wrapper(reference_wrapper<U> r) noexcept requires
-		detail::reference_wrapper_compatible<reference_wrapper, decltype(r)>
-		: ptr(r.ptr)
+	    detail::reference_wrapper_compatible<reference_wrapper, decltype(r)>
+	    : ptr(r.ptr)
 	{}
 	constexpr reference_wrapper(RT ref) noexcept
-		: ptr(std::addressof(ref))
+	    : ptr(std::addressof(ref))
 	{}
 
 	constexpr auto&& get() const noexcept
@@ -59,7 +59,7 @@ public:
 
 	template <typename U>
 	constexpr auto& operator=(reference_wrapper<U> r) noexcept requires
-		detail::reference_wrapper_compatible<reference_wrapper, decltype(r)>
+	    detail::reference_wrapper_compatible<reference_wrapper, decltype(r)>
 	{
 		ptr = r.ptr;
 		return *this;
@@ -81,10 +81,10 @@ PP_FUNCTOR(unref, auto&& x) -> decltype(auto)
 		return PP_F(x);
 });
 
-constexpr inline auto ref = functor(
-								[](auto&& x)
-								{
-									return reference_wrapper(PP_F(x));
-								}) |
-                            unref;
+PP_CIA ref = functor(
+                 [](auto&& x)
+                 {
+	                 return reference_wrapper(PP_F(x));
+                 }) |
+             unref;
 }

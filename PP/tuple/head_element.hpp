@@ -21,6 +21,7 @@ constexpr auto tuple_head_element_nonmember(auto&& t) requires requires
 {
 	return head_element_implementation(PP_F(t));
 }
+}
 
 namespace PP::tuple
 {

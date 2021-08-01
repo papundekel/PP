@@ -7,5 +7,5 @@
 
 namespace PP
 {
-constexpr inline auto remove_const = tuple::get * value_0 | decompose_const;
+PP_CIA remove_const = tuple::get * value_0 | decompose_const;
 }

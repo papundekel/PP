@@ -7,6 +7,5 @@
 
 namespace PP
 {
-constexpr inline auto get_reference_value_t =
-    tuple::get * value_1 | decompose_reference;
+PP_CIA get_reference_value_t = tuple::get * value_1 | decompose_reference;
 }

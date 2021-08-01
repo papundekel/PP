@@ -5,5 +5,5 @@
 
 namespace PP
 {
-constexpr inline auto max_default = max * lst;
+PP_CIA max_default = max * lst;
 }

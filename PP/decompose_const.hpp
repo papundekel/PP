@@ -9,15 +9,15 @@
 
 namespace PP
 {
-constexpr inline auto decompose_const =
-	make_overloaded_pack(
-		[]<typename T>(type_t<const T>)
-		{
-			return make_decompose_pair(type<T>, PP::value<cv_qualifier::Const>);
-		},
-		[]<typename T>(type_t<T>)
-		{
-			return make_decompose_pair(type<T>, PP::value<cv_qualifier::none>);
-		}) |
-	to_type_t;
+PP_CIA decompose_const =
+    make_overloaded_pack(
+        []<typename T>(type_t<const T>)
+        {
+	        return make_decompose_pair(type<T>, PP::value<cv_qualifier::Const>);
+        },
+        []<typename T>(type_t<T>)
+        {
+	        return make_decompose_pair(type<T>, PP::value<cv_qualifier::none>);
+        }) |
+    to_type_t;
 }

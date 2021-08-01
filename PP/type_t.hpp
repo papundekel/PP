@@ -14,6 +14,7 @@ struct type_t
 	constexpr auto operator->() const noexcept;
 	constexpr decltype(auto) operator()(auto&&...) const;
 };
+
 template <typename T>
 constexpr inline type_t<T> type{};
 
@@ -27,10 +28,12 @@ constexpr auto operator==(type_t<T>, type_t<U>) noexcept
 {
 	return false;
 }
+
 template <typename T>
 constexpr auto operator==(type_t<T>, type_t<T>) noexcept
 {
 	return true;
 }
+
 #define PP_DT(x) (::PP::type<decltype(x)>)
 }

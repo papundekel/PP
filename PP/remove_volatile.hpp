@@ -7,6 +7,5 @@
 
 namespace PP
 {
-constexpr inline auto remove_volatile =
-    tuple::get * value_0 | decompose_volatile;
+PP_CIA remove_volatile = tuple::get * value_0 | decompose_volatile;
 }

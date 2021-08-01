@@ -8,5 +8,5 @@
 
 namespace PP::tuple
 {
-constexpr inline auto disjunction = foldl * or_ * false;
+PP_CIA disjunction = foldl * or_ * false;
 }

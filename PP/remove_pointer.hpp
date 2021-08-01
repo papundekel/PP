@@ -6,14 +6,14 @@
 
 namespace PP
 {
-constexpr inline auto remove_pointer = make_overloaded_pack(
-										   []<typename T>(type_t<T*>)
-										   {
-											   return type<T>;
-										   },
-										   [](auto t)
-										   {
-											   return t;
-										   }) |
-                                       remove_cv;
+PP_CIA remove_pointer = make_overloaded_pack(
+                            []<typename T>(type_t<T*>)
+                            {
+	                            return type<T>;
+                            },
+                            [](auto t)
+                            {
+	                            return t;
+                            }) |
+                        remove_cv;
 }

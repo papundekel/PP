@@ -5,5 +5,5 @@
 
 namespace PP
 {
-constexpr inline auto is_const = cv_is_const | get_value | get_const;
+PP_CIA is_const = cv_is_const | get_value | get_const;
 }

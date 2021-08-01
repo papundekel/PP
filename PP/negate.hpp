@@ -11,7 +11,7 @@ namespace PP
 //	return compose(neg, PP_F(f));
 //});
 
-constexpr inline auto negate = compose * neg;
+PP_CIA negate = compose * neg;
 
 constexpr auto operator!(concepts::functor auto&& f) noexcept
 {

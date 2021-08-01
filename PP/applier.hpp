@@ -10,7 +10,7 @@ PP_FUNCTOR(applier, auto&& f)
 });
 }
 
-constexpr auto operator*(concepts::wrap auto&& f)
+constexpr auto operator*(PP::concepts::wrap auto&& f)
 {
-	return applier(PP_UF(f));
+	return PP::applier(PP_UF(f));
 }

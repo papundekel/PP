@@ -47,13 +47,10 @@ PP_FUNCTOR(is_constructible_impl,
 });
 }
 
-constexpr inline auto is_constructible_pack =
-	detail::is_constructible_pack_impl * value_false;
-constexpr inline auto is_constructible_noexcept_pack =
-	detail::is_constructible_pack_impl * value_true;
+PP_CIA is_constructible_pack = detail::is_constructible_pack_impl * value_false;
+PP_CIA is_constructible_noexcept_pack =
+    detail::is_constructible_pack_impl * value_true;
 
-constexpr inline auto is_constructible =
-	detail::is_constructible_impl * value_false;
-constexpr inline auto is_constructible_noexcept =
-	detail::is_constructible_impl * value_true;
+PP_CIA is_constructible = detail::is_constructible_impl * value_false;
+PP_CIA is_constructible_noexcept = detail::is_constructible_impl * value_true;
 }

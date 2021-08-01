@@ -6,10 +6,9 @@
 
 namespace PP
 {
-constexpr inline auto is_reference =
-	is_referencable && functor(
-						   [](concepts::type auto t)
-						   {
-							   return t + add_rvalue_tag == t;
-						   });
+PP_CIA is_reference = is_referencable && functor(
+                                             [](concepts::type auto t)
+                                             {
+	                                             return t + add_rvalue_tag == t;
+                                             });
 }
