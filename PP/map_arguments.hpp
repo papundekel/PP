@@ -16,7 +16,7 @@ constexpr decltype(auto) map_arguments_element_helper(auto maps,
                                                       concepts::value auto i)
 {
 	if constexpr (i < tuple_type_count(PP_DT(maps)))
-		return tuple_get(i, move(maps));
+		return tuple::get(i, move(maps));
 	else
 		return id_forward;
 }
@@ -33,14 +33,14 @@ constexpr decltype(auto) map_arguments_helper(auto& f,
 PP_FUNCTOR(map_arguments, auto&& f, auto&&... maps)
 {
 	return functor(
-		[f = unwrap_functor(PP_F(f)), ... maps = unwrap_functor(PP_F(maps))](
-			auto&&... args) -> decltype(auto)
-		{
-			return detail::map_arguments_helper(
-				f,
-				forward_as_tuple(maps...),
-				make_value_sequence(value<sizeof...(args)>),
-				PP_F(args)...);
-		});
+	    [f = unwrap_functor(PP_F(f)), ... maps = unwrap_functor(PP_F(maps))](
+	        auto&&... args) -> decltype(auto)
+	    {
+		    return detail::map_arguments_helper(
+		        f,
+		        forward_as_tuple(maps...),
+		        make_value_sequence(value<sizeof...(args)>),
+		        PP_F(args)...);
+	    });
 });
 }

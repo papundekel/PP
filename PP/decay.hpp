@@ -1,25 +1,24 @@
 #pragma once
-#include "add_pointer.hpp"
-#include "caller.hpp"
-#include "concepts/array.hpp"
-#include "concepts/function.hpp"
-#include "functor.hpp"
-#include "remove_extent.hpp"
-#include "remove_reference.hpp"
+#include "declval.hpp"
+#include "get_type.hpp"
+
+namespace PP::detail
+{
+template <typename T>
+struct decay_helper
+    : type_t<T>
+{
+	constexpr decay_helper(auto&&) noexcept
+	{}
+};
+template <typename T>
+decay_helper(T) -> decay_helper<T>;
+}
 
 namespace PP
 {
-constexpr inline auto decay = caller(
-								  [](concepts::type auto type)
-								  {
-									  constexpr auto T = PP_COPY_TYPE(type);
-
-									  if constexpr (is_array(T))
-										  return add_pointer | remove_extent;
-									  else if constexpr (is_function(T))
-										  return add_pointer;
-									  else
-										  return remove_cv;
-								  }) |
-                              remove_reference;
+PP_FUNCTOR(decay, concepts::type auto&& t)
+{
+	return detail::decay_helper(declval(t));
+});
 }

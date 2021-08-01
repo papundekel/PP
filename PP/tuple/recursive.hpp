@@ -28,7 +28,7 @@ PP_FUNCTOR(recursive, auto&& f, concepts::value auto i, auto&& t)
                                ||  requires { pred(PP_F(t)); }
 	                           )
 {
-	return detail::recursive(PP_F(f), i, PP_F(t));
+	return detail::tuple_recursive(PP_F(f), i, PP_F(t));
 });
 // clang-format on
 }

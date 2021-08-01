@@ -2,6 +2,7 @@
 #include "apply_pack.hpp"
 #include "apply_partially_first.hpp"
 #include "containers/tuple.hpp"
+#include "functor.hpp"
 #include "get_value.hpp"
 #include "utility/move.hpp"
 
@@ -15,7 +16,7 @@ PP_FUNCTOR(apply_partially, auto&& f, concepts::value auto i, auto&& arg)
 	    {
 		    return apply_pack(
 		        f,
-		        [&arg, args = forward_as_tuple(PP_F(other_args)...)](
+		        [&arg, args = tuple::forward(PP_F(other_args)...)](
 		            concepts::value auto current_i) -> decltype(auto)
 		        {
 			        constexpr auto CI = PP_CV(current_i);
@@ -31,19 +32,19 @@ PP_FUNCTOR(apply_partially, auto&& f, concepts::value auto i, auto&& arg)
 		        make_value_sequence(PP_SIZEOF___(other_args) + value_1));
 	    });
 });
+}
 
 template <typename F>
-constexpr auto functor<F>::operator()(partial_tag_t,
-                                      auto i,
-                                      auto&& arg) const& noexcept
+constexpr auto PP::functor<F>::operator()(partial_tag_t,
+                                          auto i,
+                                          auto&& arg) const& noexcept
 {
 	return apply_partially(unwrap_functor(*this), i, PP_F(arg));
 }
 template <typename F>
-constexpr auto functor<F>::operator()(partial_tag_t,
-                                      auto i,
-                                      auto&& arg) const&& noexcept
+constexpr auto PP::functor<F>::operator()(partial_tag_t,
+                                          auto i,
+                                          auto&& arg) const&& noexcept
 {
 	return apply_partially(unwrap_functor(move(*this)), i, PP_F(arg));
-}
 }

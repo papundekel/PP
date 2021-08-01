@@ -12,8 +12,7 @@ namespace PP::tuple
 constexpr inline auto splitter = make_overloaded_pack(
     [](auto&& head, auto&&... tail)
     {
-	    return containers::tuple<decltype(head),
-	                             containers::tuple<decltype(tail)...>>(
+	    return type<decltype(head), containers::tuple<decltype(tail)...>>(
 	        placeholder,
 	        PP_F(head),
 	        forward_as_tuple(PP_F(tail)...));

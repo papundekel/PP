@@ -5,12 +5,7 @@
 #include "remove_reference_impl.hpp"
 #include "type_t.hpp"
 
-namespace PP
-{
-template <typename T>
-using get_type_t = remove_reference_impl<T>::type;
-
-namespace concepts
+namespace PP::concepts
 {
 template <typename T>
 concept type = requires
@@ -18,6 +13,11 @@ concept type = requires
 	typename remove_reference_impl<T>::type;
 };
 }
+
+namespace PP
+{
+template <typename T>
+using get_type_t = remove_reference_impl<T>::type;
 
 PP_FUNCTOR(get_type, concepts::type auto&& t)
 {

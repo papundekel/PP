@@ -8,7 +8,7 @@
 namespace PP
 {
 constexpr inline auto remove_reference =
-	tuple_get * value_0 | decompose_reference;
+    tuple::get * value_0 | decompose_reference;
 
 constexpr auto operator!(concepts::type auto t) noexcept
 {

@@ -16,7 +16,7 @@ PP_FUNCTOR(view_zip_if,
            concepts::tuple auto&& views)
 {
 	auto begin_ends = view::begin_end + PP_F(views);
-	auto is = tuple_get * value_0 + begin_ends;
+	auto is = tuple::get * value_0 + begin_ends;
 
 	while (*neq && begin_ends)
 	{
@@ -29,11 +29,11 @@ PP_FUNCTOR(view_zip_if,
 
 		tuple_for_each(value_true,
 		               applier(
-						   [](bool step, auto& i)
-						   {
-							   if (step)
-								   ++i;
-						   }),
+		                   [](bool step, auto& i)
+		                   {
+			                   if (step)
+				                   ++i;
+		                   }),
 		               do_step ^ is);
 	}
 

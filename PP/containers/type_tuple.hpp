@@ -31,7 +31,7 @@ struct type_tuple_t<Head, Rest...>
 	}
 	constexpr auto operator[](concepts::value auto i) const noexcept
 	{
-		return tuple_recursive(tuple_head_no_get, i, *this);
+		return tuple::recursive(tuple::head_no_get, i, *this);
 	}
 };
 template <typename... T>

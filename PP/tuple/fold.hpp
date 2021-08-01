@@ -21,14 +21,14 @@ constexpr auto fold_combinator(concepts::value auto left,
                                auto&& element)
 {
 	return fold_wrapper{
-		PP_F(wrap.f),
-		[f = PP_FW(wrap.f), i = wrap.i, e = PP_FW(element)]() -> decltype(auto)
-		{
-			if constexpr (*PP_CV(left))
-				return f--(i(), e--);
-			else
-				return f--(e--, i());
-		}};
+	    PP_F(wrap.f),
+	    [f = PP_FW(wrap.f), i = wrap.i, e = PP_FW(element)]() -> decltype(auto)
+	    {
+		    if constexpr (*PP_CV(left))
+			    return f--(i(), e--);
+		    else
+			    return f--(e--, i());
+	    }};
 }
 
 template <typename F, typename T>
@@ -51,14 +51,15 @@ PP_FUNCTOR(fold_init,
            auto&& ii,
            concepts::tuple auto&& tuple)
 {
-	return functor(
-		[left, f = PP_FW(ff), i = PP_FW(ii)](auto&&... e) -> decltype(auto)
-		{
-			if constexpr (PP_GV(left))
-				return (detail::fold_wrapper{f--, i} || ... || PP_F(e)).i();
-			else
-				return (PP_F(e) || ... || detail::fold_wrapper{f--, i}).i();
-		})[PP_F(tuple)];
+	return apply(
+	    [left, f = PP_FW(ff), i = PP_FW(ii)](auto&&... e) -> decltype(auto)
+	    {
+		    if constexpr (PP_GV(left))
+			    return (detail::fold_wrapper{f--, i} || ... || PP_F(e)).i();
+		    else
+			    return (PP_F(e) || ... || detail::fold_wrapper{f--, i}).i();
+	    },
+	    PP_F(tuple));
 });
 
 PP_FUNCTOR(fold,

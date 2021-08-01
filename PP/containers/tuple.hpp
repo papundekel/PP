@@ -1,11 +1,15 @@
 #pragma once
 #include "../add_const.hpp"
+#include "../apply_partially_first.hpp"
 #include "../construct_pack.hpp"
 #include "../copy_cvref.hpp"
+#include "../decay.hpp"
 #include "../decompose_template.hpp"
 #include "../get_value.hpp"
+#include "../init_type.hpp"
 #include "../placeholder.hpp"
 #include "../tuple/concept.hpp"
+#include "../tuple/map.hpp"
 #include "../value_sequence.hpp"
 #include "type_tuple.hpp"
 
@@ -46,23 +50,18 @@ public:
 
 	constexpr tuple_impl(auto&&... args) requires(sizeof...(args) ==
 	                                              sizeof...(T))
-	    : tuple_impl(placeholder, PP_F(args)...)
-	{}
-	constexpr tuple_impl(auto&& t)
-	    : tuple_wrap<value_t<I>, T>(PP_F(t)[value<I>])...
-	{}
-	constexpr tuple_impl(placeholder_t,
-	                     auto&&... args) requires(sizeof...(args) ==
-	                                              sizeof...(T))
 	    : tuple_wrap<value_t<I>, T>(PP_F(args))...
 	{}
 	constexpr tuple_impl(in_place_t,
 	                     auto&&... is) requires(sizeof...(is) == sizeof...(T))
 	    : tuple_wrap<value_t<I>, T>(in_place, PP_F(is))...
 	{}
+	constexpr tuple_impl(auto&& t)
+	    : tuple_wrap<value_t<I>, T>(PP_F(t)[value<I>])...
+	{}
 
 protected:
-	constexpr void assign_tuple(auto&& t)
+	constexpr void assign(auto&& t)
 	{
 		(((tuple_wrap<value_t<I>, T>&)* this = PP_F(t)[value<I>]), ...);
 	}
@@ -73,10 +72,10 @@ using tuple_base =
     tuple_impl<decltype(make_value_sequence(PP_SIZEOF___(T))), T...>;
 }
 
-namespace PP::containers
+namespace PP::tuple
 {
 template <typename... T>
-struct tuple
+struct type
     : public detail::tuple_base<T...>
 {
 	using detail::tuple_base<T...>::tuple_base;
@@ -91,33 +90,49 @@ struct tuple
 
 	constexpr auto& operator=(concepts::tuple auto&& t)
 	{
-		assign_tuple(PP_F(t));
+		assign(PP_F(t));
 		return *this;
 	}
 };
-template <typename... T>
-tuple(T...) -> tuple<T...>;
-template <typename... T>
-tuple(placeholder_t, T...) -> tuple<T...>;
-tuple(in_place_t, auto&&... i) -> tuple<decltype(i())...>;
 
 template <typename... T>
-constexpr auto tuple_count_impl(const tuple<T...>&) noexcept
+constexpr auto tuple_count_impl(const type<T...>&) noexcept
 {
 	return value<sizeof...(T)>;
 }
+
+PP_FUNCTOR(construct,
+           concepts::tuple auto&& types,
+           concepts::value auto&& in_place,
+           auto&&... args)
+{
+	auto t = Template<type>[PP_F(types)];
+
+	if constexpr (PP_GV(in_place))
+		return t(PP_F(args)...);
+	else
+		return t(PP::in_place, PP_F(args)...);
+});
 }
 
-namespace PP
+namespace PP::detail
 {
-PP_FUNCTOR(make_tuple, auto&&... args)
+PP_FUNCTOR(tuple_construct_helper,
+           auto&& f,
+           concepts::value auto&& in_place,
+           auto&&... args)
 {
-	return tuple(placeholder, PP_F(args)...);
+	return tuple::construct(tuple::map(f, type_tuple<decltype(args)...>),
+	                        PP_F(in_place),
+	                        PP_F(args)...);
 });
-PP_FUNCTOR(forward_as_tuple, auto&&... args)
+}
+
+namespace PP::tuple
 {
-	return tuple<decltype(args)...>(placeholder, PP_F(args)...);
-});
+PP_CIA make = detail::tuple_construct_helper * decay * value_false;
+PP_CIA forward = detail::tuple_construct_helper * id_copy * value_false;
+PP_CIA init = detail::tuple_construct_helper * init_type * value_true;
 }
 
 namespace PP::detail
@@ -137,39 +152,42 @@ struct tuple_helper
 }
 
 template <typename... T>
-constexpr auto&& PP::tuple<T...>::operator[](concepts::value auto i) & noexcept
+constexpr auto&& PP::tuple::type<T...>::operator[](
+    concepts::value auto i) & noexcept
 {
 	return detail::tuple_helper::get(i, *this);
 }
 
 template <typename... T>
-constexpr auto&& PP::tuple<T...>::operator[](concepts::value auto i) && noexcept
+constexpr auto&& PP::tuple::type<T...>::operator[](
+    concepts::value auto i) && noexcept
 {
 	return detail::tuple_helper::get(i, move(*this));
 }
 
 template <typename... T>
-constexpr auto&& PP::tuple<T...>::operator[](
+constexpr auto&& PP::tuple::type<T...>::operator[](
     concepts::value auto i) const& noexcept
 {
 	return detail::tuple_helper::get(i, *this);
 }
 
 template <typename... T>
-constexpr auto&& PP::tuple<T...>::operator[](
+constexpr auto&& PP::tuple::type<T...>::operator[](
     concepts::value auto i) const&& noexcept
 {
 	return detail::tuple_helper::get(i, move(*this));
 }
 
 template <typename... T>
-constexpr auto PP::tuple<T...>::element(concepts::value auto i) noexcept
+constexpr auto PP::tuple::type<T...>::element(concepts::value auto i) noexcept
 {
 	return detail::tuple_helper::element(i, *this);
 }
 
 template <typename... T>
-constexpr auto PP::tuple<T...>::element(concepts::value auto i) const noexcept
+constexpr auto PP::tuple::type<T...>::element(
+    concepts::value auto i) const noexcept
 {
 	return detail::tuple_helper::element(i, *this);
 }

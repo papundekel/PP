@@ -4,13 +4,13 @@
 #include "complete_object.hpp"
 #include "unbounded_array.hpp"
 
-namespace PP
-{
-namespace concepts
+namespace PP::concepts
 {
 template <typename T>
 concept object = complete_object<T> || unbounded_array<T>;
 }
 
+namespace PP
+{
 PP_CONCEPT_FUNCTOR1(object);
 }

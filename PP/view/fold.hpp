@@ -1,9 +1,9 @@
 #pragma once
-#include "apply_partially_first.hpp"
-#include "functor.hpp"
-#include "get_value.hpp"
-#include "utility/move.hpp"
-#include "view.hpp"
+#include "../apply_partially_first.hpp"
+#include "../functor.hpp"
+#include "../get_value.hpp"
+#include "../utility/move.hpp"
+#include "concept.hpp"
 
 namespace PP
 {

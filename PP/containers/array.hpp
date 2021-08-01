@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-#include <type_traits>
 
 #include "../apply_template.hpp"
 #include "../apply_transform.hpp"
@@ -15,6 +14,7 @@
 #include "../functor.hpp"
 #include "../get_value.hpp"
 #include "../id.hpp"
+#include "../init_type.hpp"
 #include "../remove_cvref.hpp"
 #include "../remove_pointer.hpp"
 #include "../size_t.hpp"
@@ -23,10 +23,10 @@
 #include "../value_t.hpp"
 #include "tuple.hpp"
 
-namespace PP::containers
+namespace PP::array
 {
 template <typename, size_t>
-class array;
+class type;
 }
 
 namespace PP::detail
@@ -53,7 +53,7 @@ template <typename T>
 class array_wrap
 {
 	template <typename, size_t>
-	friend class PP::containers::array;
+	friend class PP::array::type;
 	template <typename, size_t>
 	friend class array_impl;
 	template <typename, typename>
@@ -78,7 +78,7 @@ class array_wrap
 template <typename T, size_t C>
 class array_impl
 {
-	friend array<T, C>;
+	friend array::type<T, C>;
 	friend array_helper;
 
 	array_wrap<T> buffer[C];
@@ -98,7 +98,7 @@ protected:
 };
 }
 
-namespace PP::containers
+namespace PP::array
 {
 ///
 /// @brief A replacement for @ref std::array with support for references.
@@ -107,14 +107,14 @@ namespace PP::containers
 /// @tparam C The element count.
 ///
 template <typename T, size_t C>
-class array : private detail::array_impl<T, C>
+class type : private detail::array_impl<T, C>
 {
 	friend detail::array_helper;
 
 	static constexpr auto non_reference_type = !concepts::reference<T>;
 
 public:
-	array() = default;
+	type() = default;
 
 	///
 	/// @brief Constructs the array depending on @p tag.
@@ -126,9 +126,7 @@ public:
 	/// with TAD.
 	/// @param args The initializers for the array elements.
 	///
-	constexpr array(auto tag,
-	                concepts::type auto,
-	                auto&&... args) requires(sizeof...(args) == C)
+	constexpr type(auto tag, auto&&... args) requires(sizeof...(args) == C)
 	    : detail::array_impl<T, C>(tag, PP_F(args)...)
 	{}
 
@@ -242,11 +240,9 @@ public:
 	///
 	static constexpr auto value = C;
 };
+}
 
-array(auto, concepts::type auto t, auto&&... args)
-    -> array<PP_GT(t), sizeof...(args)>;
-
-namespace detail
+namespace PP::detail
 {
 template <typename T>
 concept array_concept = requires(T t)
@@ -307,84 +303,75 @@ struct array_helper
 };
 }
 
-constexpr auto begin(detail::array_concept auto&& a) noexcept
+constexpr auto begin(PP::detail::array_concept auto&& a) noexcept
 {
 	return detail::array_helper::begin(PP_F(a));
 }
-constexpr auto end(detail::array_concept auto&& a) noexcept
+constexpr auto end(PP::detail::array_concept auto&& a) noexcept
 {
 	return detail::array_helper::end(PP_F(a));
 }
 
-PP_FUNCTOR(array_pick_best_type, auto&& o, concepts::tuple auto&& t)
-    -> decltype(auto)
+namespace PP::detail
+{
+PP_FUNCTOR(array_pick_best_type,
+           concepts::type auto&& def,
+           concepts::tuple auto&& t) -> decltype(auto)
 {
 	if constexpr (tuple_type_count(PP_DT(t)) != 0)
 		return PP_F(t)[value_0];
 	else
-		return PP_F(o);
+		return PP_F(def);
 });
+}
 
-PP_FUNCTOR(array_constructor,
-           concepts::value auto do_init,
-           auto&& type_functor,
-           auto&&... args)
+namespace PP::array
 {
-	return array(conditional(do_init, in_place, placeholder),
-	             array_pick_best_type(PP::type<char>,
-	                                  PP_FW(type_functor) +
-	                                      forward_as_tuple(PP_F(args)...)),
-	             PP_F(args)...);
+PP_FUNCTOR(construct, concepts::type auto&& t, auto tag, auto&&... args)
+{
+	return type<PP_GT(t), sizeof...(args)>(tag, PP_F(args)...);
 });
+}
 
-PP_FUNCTOR(array_constructor_typed,
-           concepts::value auto do_init,
-           concepts::type auto&& type,
-           auto&&... args)
+namespace PP::detail
 {
-	return array(conditional(do_init, in_place, placeholder),
-	             PP_F(type),
-	             PP_F(args)...);
+PP_FUNCTOR(array_construct_helper, auto&& f, auto tag, auto&&... args)
+{
+	return construct(array_pick_best_type(
+	                     type_char,
+	                     tuple::map(PP_F(f), type_tuple<decltype(args)...>)),
+	                 tag,
+	                 PP_F(args)...);
 });
+}
 
-constexpr inline auto init_array = array_constructor * value_true *
-                                   [](auto&& arg)
+namespace PP::array
 {
-	return PP_DT(PP_F(arg)());
-};
-
-constexpr inline auto make_array = array_constructor * value_false *
-                                   [](auto&& arg)
-{
-	return ~PP_DT(PP_F(arg));
-};
-constexpr inline auto forward_as_array = array_constructor * value_false *
-                                         [](auto&& arg)
-{
-	return PP_DT(PP_F(arg));
-};
+PP_CIA make = detail::array_construct_helper * decay * value_false;
+PP_CIA forward = detail::array_construct_helper * id_copy * value_false;
+PP_CIA init = detail::array_construct_helper * init_type * value_true;
 }
 
 template <typename T, PP::size_t C>
-constexpr auto&& PP::array<T, C>::operator[](size_t i) &
+constexpr auto&& PP::containers::array<T, C>::operator[](size_t i) &
 {
 	return begin(*this)[i];
 }
 
 template <typename T, PP::size_t C>
-constexpr auto&& PP::array<T, C>::operator[](size_t i) const&
+constexpr auto&& PP::containers::array<T, C>::operator[](size_t i) const&
 {
 	return begin(*this)[i];
 }
 
 template <typename T, PP::size_t C>
-constexpr auto&& PP::array<T, C>::operator[](size_t i) &&
+constexpr auto&& PP::containers::array<T, C>::operator[](size_t i) &&
 {
 	return begin(move(*this))[i];
 }
 
 template <typename T, PP::size_t C>
-constexpr auto&& PP::array<T, C>::operator[](size_t i) const&&
+constexpr auto&& PP::containers::array<T, C>::operator[](size_t i) const&&
 {
 	return begin(move(*this))[i];
 }

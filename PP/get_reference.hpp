@@ -8,5 +8,5 @@
 namespace PP
 {
 constexpr inline auto get_reference_value_t =
-	tuple_get * value_1 | decompose_reference;
+    tuple::get * value_1 | decompose_reference;
 }
