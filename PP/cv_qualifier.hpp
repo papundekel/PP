@@ -14,18 +14,21 @@ enum class cv_qualifier : cv_qualifier_underlying
 	Volatile = 0b10,
 	const_volatile = 0b11
 };
-
-constexpr bool operator&(cv_qualifier a, cv_qualifier b) noexcept
-{
-	return (cv_qualifier_underlying)a & (cv_qualifier_underlying)b;
 }
 
-constexpr auto operator|(cv_qualifier a, cv_qualifier b) noexcept
+constexpr bool operator&(PP::cv_qualifier a, PP::cv_qualifier b) noexcept
 {
-	return cv_qualifier((cv_qualifier_underlying)a |
-	                    (cv_qualifier_underlying)b);
+	return (PP::cv_qualifier_underlying)a & (PP::cv_qualifier_underlying)b;
 }
 
+constexpr auto operator|(PP::cv_qualifier a, PP::cv_qualifier b) noexcept
+{
+	return PP::cv_qualifier((PP::cv_qualifier_underlying)a |
+	                        (PP::cv_qualifier_underlying)b);
+}
+
+namespace PP
+{
 PP_FUNCTOR(cv_is_const, cv_qualifier q)
 {
 	return q & cv_qualifier::Const;
@@ -35,12 +38,13 @@ PP_FUNCTOR(cv_is_volatile, cv_qualifier q)
 {
 	return q & cv_qualifier::Volatile;
 });
+}
 
-constexpr std::partial_ordering operator<=>(cv_qualifier a,
-                                            cv_qualifier b) noexcept
+constexpr std::partial_ordering operator<=>(PP::cv_qualifier a,
+                                            PP::cv_qualifier b) noexcept
 {
-	auto ai = (cv_qualifier_underlying)a;
-	auto bi = (cv_qualifier_underlying)b;
+	auto ai = (PP::cv_qualifier_underlying)a;
+	auto bi = (PP::cv_qualifier_underlying)b;
 
 	if (ai == bi)
 		return std::partial_ordering::equivalent;
@@ -50,5 +54,4 @@ constexpr std::partial_ordering operator<=>(cv_qualifier a,
 		return std::partial_ordering::greater;
 	else
 		return std::partial_ordering::unordered;
-}
 }

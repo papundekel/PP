@@ -6,21 +6,23 @@
 
 namespace PP
 {
-PP_FUNCTOR(compose, auto&& f, auto&& g)
+PP_FUNCTOR(compose, auto&& ff, auto&& gg)
 {
 	return functor(
-		[ ff = unwrap_functor(PP_F(f)), gg = unwrap_functor(PP_F(g)) ](
-			auto&&... args) -> decltype(auto) requires requires
-		{
-			unwrap(unwrap_functor(PP_F(f)))(unwrap(PP_F(g))(PP_F(args)...));
-		}
-		{
-			return unwrap(ff)(unwrap(gg)(PP_F(args)...));
-		});
+	    [ f = PP_F(ff),
+		  g = PP_F(gg) ](auto&&... args) -> decltype(auto) requires requires
+	    {
+		    ::PP::unwrap_forward(PP_F(ff))(
+		        ::PP::unwrap_forward(PP_F(gg))(PP_F(args)...));
+	    }
+	    {
+		    return unwrap_forward(f)(unwrap_forward(g)(PP_F(args)...));
+	    });
 });
-
-constexpr auto operator|(concepts::wrap auto&& f, concepts::wrap auto&& g)
-{
-	return compose(unwrap_functor(PP_F(f)), unwrap_functor(PP_F(g)));
 }
+
+constexpr auto operator|(PP::concepts::wrap auto&& f,
+                         PP::concepts::wrap auto&& g)
+{
+	return PP::compose(PP_UF(f), PP_UF(g));
 }

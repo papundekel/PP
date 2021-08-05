@@ -23,8 +23,8 @@ PP_CIA splitter = make_overloaded_pack(
 	    return make(0, 0);
     });
 
-PP_CIA split = *splitter;
+// PP_CIA split = *splitter;
 
-PP_CIA head = get * value_0;
-PP_CIA tail = get * value_1 | split;
+// PP_CIA head = get * value_0;
+// PP_CIA tail = get * value_1 | split;
 }

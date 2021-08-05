@@ -2,6 +2,7 @@
 #include "decompose_const.hpp"
 #include "decompose_pair_std.hpp"
 #include "decompose_volatile.hpp"
+#include "get_value.hpp"
 
 namespace PP
 {

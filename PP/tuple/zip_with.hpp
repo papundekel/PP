@@ -14,8 +14,6 @@
 #include "split.hpp"
 #include "types.hpp"
 
-#include "fold.hpp"
-
 namespace PP::tuple
 {
 PP_FUNCTOR(zip, concepts::tuple auto&& tuples)

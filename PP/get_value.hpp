@@ -1,8 +1,10 @@
 #pragma once
 #include "decl_type.hpp"
+#include "declval_impl.hpp"
 #include "functor.hpp"
 #include "get_type.hpp"
 #include "overloaded.hpp"
+#include "remove_reference_impl.hpp"
 #include "value_t.hpp"
 
 namespace PP::detail
@@ -10,12 +12,12 @@ namespace PP::detail
 template <typename T>
 concept has_value_f = requires
 {
-	T::value_f();
+	declval_impl<T>().value_f();
 };
 template <typename T>
 concept has_value = !has_value_f<T> && requires
 {
-	T::value;
+	remove_reference_impl<T>::value;
 };
 }
 
@@ -42,16 +44,16 @@ PP_CIA get_value = get_type_value | decl_type_copy;
 
 constexpr decltype(auto) operator*(PP::concepts::value auto v) noexcept
 {
-	return get_value(v);
+	return PP::get_value(v);
 }
 
 constexpr decltype(auto) operator-(
     PP::concepts::type auto t) noexcept requires requires
 {
-	get_type_value(t);
+	::PP::get_type_value(t);
 }
 {
-	return get_type_value(t);
+	return PP::get_type_value(t);
 }
 
 #define PP_GV(x) (-PP_DT(x))
