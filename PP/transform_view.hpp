@@ -31,7 +31,7 @@ class transform_iterator
 public:
 	constexpr transform_iterator(concepts::iterator auto&& iterator,
 	                             auto&& transform)
-		: iterator_transform(PP_F(iterator), PP_F(transform))
+	    : iterator_transform(PP_F(iterator), PP_F(transform))
 	{}
 	// constexpr transform_iterator(in_place_tag_t, auto&&... args)
 	//	: iterator_transform
@@ -48,10 +48,10 @@ public:
 	constexpr auto operator->() const
 	{
 		return make_arrow_operator_wrapper(
-			[this]()
-			{
-				return **this;
-			});
+		    [this]()
+		    {
+			    return **this;
+		    });
 	}
 	constexpr void step()
 	{
@@ -98,7 +98,7 @@ public:
 };
 template <typename I, typename T>
 transform_iterator(I&& i, T&& t)
-	-> transform_iterator<PP_GT(~type<I>), PP_GT(~type<T>)>;
+    -> transform_iterator<PP_GT(~type<I>), PP_GT(~type<T>)>;
 
 template <typename Functor>
 struct transform
@@ -111,19 +111,19 @@ constexpr auto transform_view(concepts::view auto&& v, auto&& f)
 	return transform_iterator(view::begin(PP_F(v)), PP_F(f)) ^
 	       transform_iterator(view::end(PP_F(v)), PP_F(f));
 }
-
-constexpr auto operator&(concepts::iterator auto&& i, transform<auto> t)
-{
-	return transform_iterator(PP_F(i), move(t).functor);
 }
 
-constexpr auto operator||(concepts::view auto&& v, transform<auto> t)
+constexpr auto operator&(PP::concepts::iterator auto&& i, PP::transform<auto> t)
 {
-	return begin(PP_F(v)) & move(t) ^ end(PP_F(v));
+	return PP::transform_iterator(PP_F(i), PP::move(t).functor);
 }
 
-constexpr auto operator|(concepts::view auto&& v, transform<auto> t)
+constexpr auto operator||(PP::concepts::view auto&& v, PP::transform<auto> t)
 {
-	return transform_view(PP_F(v), move(t).functor);
+	return PP::view::begin(PP_F(v)) & PP::move(t) ^ PP::view::end(PP_F(v));
 }
+
+constexpr auto operator|(PP::concepts::view auto&& v, PP::transform<auto> t)
+{
+	return PP::transform_view(PP_F(v), PP::move(t).functor);
 }

@@ -11,7 +11,7 @@
 
 namespace PP::detail
 {
-constexpr auto map_array_type(auto&& map, auto&& tuple)
+constexpr auto tuple_map_array_type(auto&& map, auto&& tuple)
 {
 	if constexpr (requires
 	              {
@@ -26,19 +26,18 @@ constexpr auto map_array_type(auto&& map, auto&& tuple)
 namespace PP::tuple
 {
 PP_FUNCTOR(map_to_array,
-           concepts::type auto t,
+           concepts::type auto&& t,
            auto&& map,
            concepts::tuple auto&& tuple)
 {
-	return (
-	    array_constructor_typed * value_true *
-	    t)[(apply_partially_first * PP_FW(map) | PP::functor(
-	                                                 [](auto&& x)
-	                                                 {
-		                                                 return forward_wrap(
-		                                                     PP_F(x));
-	                                                 })) +
-	       PP_F(tuple)];
+	return (array::construct * t *
+	        in_place)[(apply_partially_first * PP_FW(map) |
+	                   PP::functor(
+	                       [](auto&& x)
+	                       {
+		                       return forward_wrap(PP_F(x));
+	                       })) +
+	                  PP_F(tuple)];
 });
 
 PP_FUNCTOR(map_make_array, auto&& map, concepts::tuple auto&& tuple)

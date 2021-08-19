@@ -30,7 +30,7 @@ PP_FUNCTOR(splits, auto&& pp, concepts::tuple auto&& t)
 			               }) +
 			           zip_indices(move(splits));
 	    },
-	    make_tuple(tuple_empty{}),
+	    make(tuple_empty{}),
 	    PP_F(t));
 });
 }

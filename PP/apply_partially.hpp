@@ -11,11 +11,10 @@ namespace PP
 PP_FUNCTOR(apply_partially, auto&& f, concepts::value auto i, auto&& arg)
 {
 	return functor(
-	    [f = unwrap_functor(PP_F(f)),
-	     arg = PP_F(arg)](auto&&... other_args) -> decltype(auto)
+	    [f = PP_F(f), arg = PP_F(arg)](auto&&... other_args) -> decltype(auto)
 	    {
 		    return apply_pack(
-		        f,
+		        unwrap_forward(f),
 		        [&arg, args = tuple::forward(PP_F(other_args)...)](
 		            concepts::value auto current_i) -> decltype(auto)
 		        {

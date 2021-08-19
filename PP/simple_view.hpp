@@ -53,19 +53,19 @@ simple_view(const std::initializer_list<T>&) -> simple_view<const T*, const T*>;
 template <typename T>
 using pointer_view = simple_view<T*>;
 
-constexpr auto operator^(concepts::iterator auto begin,
-                         concepts::sentinel<decltype(begin)> auto end)
-{
-	return simple_view(begin, end);
-}
-
-constexpr auto operator|(concepts::view auto&& v, unbounded_t)
-{
-	return view::begin(PP_F(v)) ^ unbounded;
-}
-
 PP_FUNCTOR(make_simple_view, concepts::view auto&& v)
 {
 	return simple_view(PP_F(v));
 });
+}
+
+constexpr auto operator^(PP::concepts::iterator auto begin,
+                         PP::concepts::sentinel<decltype(begin)> auto end)
+{
+	return PP::simple_view(begin, end);
+}
+
+constexpr auto operator|(PP::concepts::view auto&& v, PP::unbounded_t)
+{
+	return PP::view::begin(PP_F(v)) ^ PP::unbounded;
 }

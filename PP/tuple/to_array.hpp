@@ -29,19 +29,19 @@ constexpr auto tuple_to_array_helper(concepts::type auto t,
 
 namespace PP::tuple
 {
-PP_FUNCTOR(to_array, concepts::type auto t, concepts::tuple auto&& tuple)
+PP_FUNCTOR(to_array, concepts::type auto&& t, concepts::tuple auto&& tuple)
 {
-	return (array_constructor_typed * value_false *
-	        detail::tuple_to_array_helper(t, PP_F(tuple)))[PP_F(tuple)];
+	return (array::construct * PP_FW(t) * placeholder)[PP_F(tuple)];
 });
 }
 
-constexpr auto operator&(concepts::type auto t, concepts::tuple auto&& tuple)
+constexpr auto operator&(PP::concepts::type auto t,
+                         PP::concepts::tuple auto&& tuple)
 {
-	return to_array(t, PP_F(tuple));
+	return PP::tuple::to_array(t, PP_F(tuple));
 }
 
-constexpr auto operator&(concepts::tuple auto&& tuple)
+constexpr auto operator&(PP::concepts::tuple auto&& tuple)
 {
-	return to_array(type_void, PP_F(tuple));
+	return PP::tuple::to_array(PP::type_void, PP_F(tuple));
 }

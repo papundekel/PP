@@ -20,7 +20,7 @@ PP_FUNCTOR(zip, concepts::tuple auto&& tuples)
 {
 	if constexpr (all(neq * 0_z | type_count, types(PP_DT(tuples))))
 	{
-		auto splits = plit + PP_F(tuples);
+		auto splits = split + PP_F(tuples);
 
 		return (make | prepend)(get * value_0 + move(splits),
 		                        zip(get * value_1 + move(splits)));
@@ -29,7 +29,7 @@ PP_FUNCTOR(zip, concepts::tuple auto&& tuples)
 		return tuple_empty{};
 });
 
-PP_CIA zip_pack = zip | forward_as_tuple;
+PP_CIA zip_pack = zip | forward;
 
 PP_FUNCTOR(zip_with, auto&& f, concepts::tuple auto&& tuples)
 {

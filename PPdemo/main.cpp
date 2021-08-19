@@ -45,11 +45,11 @@
 
 #include "PP/tuple/split.hpp"
 
-//#include "PP/tuple/zip_with.hpp"
-//#include "PP/view/concept.hpp"
-//#include "PP/view/zip.hpp"
-//#include "PP/zip_iterator_std.hpp"
-//#include "PP/view/first_equal.hpp"
+#include "PP/tuple/zip_with.hpp"
+#include "PP/view/concept.hpp"
+#include "PP/view/first_equal.hpp"
+#include "PP/view/zip.hpp"
+#include "PP/zip_iterator_std.hpp"
 
 int main()
 {

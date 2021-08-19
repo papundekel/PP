@@ -26,7 +26,7 @@
 namespace PP::array
 {
 template <typename, size_t>
-class type;
+class container;
 }
 
 namespace PP::detail
@@ -53,7 +53,7 @@ template <typename T>
 class array_wrap
 {
 	template <typename, size_t>
-	friend class PP::array::type;
+	friend class PP::array::container;
 	template <typename, size_t>
 	friend class array_impl;
 	template <typename, typename>
@@ -78,7 +78,7 @@ class array_wrap
 template <typename T, size_t C>
 class array_impl
 {
-	friend array::type<T, C>;
+	friend array::container<T, C>;
 	friend array_helper;
 
 	array_wrap<T> buffer[C];
@@ -107,14 +107,14 @@ namespace PP::array
 /// @tparam C The element count.
 ///
 template <typename T, size_t C>
-class type : private detail::array_impl<T, C>
+class container : private detail::array_impl<T, C>
 {
 	friend detail::array_helper;
 
 	static constexpr auto non_reference_type = !concepts::reference<T>;
 
 public:
-	type() = default;
+	container() = default;
 
 	///
 	/// @brief Constructs the array depending on @p tag.
@@ -126,7 +126,7 @@ public:
 	/// with TAD.
 	/// @param args The initializers for the array elements.
 	///
-	constexpr type(auto tag, auto&&... args) requires(sizeof...(args) == C)
+	constexpr container(auto tag, auto&&... args) requires(sizeof...(args) == C)
 	    : detail::array_impl<T, C>(tag, PP_F(args)...)
 	{}
 
@@ -247,7 +247,7 @@ namespace PP::detail
 template <typename T>
 concept array_concept = requires(T t)
 {
-	[]<typename U, size_t C>(const array<U, C>&)
+	[]<typename U, size_t C>(const array::container<U, C>&)
 	{
 	}(t);
 };
@@ -305,11 +305,11 @@ struct array_helper
 
 constexpr auto begin(PP::detail::array_concept auto&& a) noexcept
 {
-	return detail::array_helper::begin(PP_F(a));
+	return PP::detail::array_helper::begin(PP_F(a));
 }
 constexpr auto end(PP::detail::array_concept auto&& a) noexcept
 {
-	return detail::array_helper::end(PP_F(a));
+	return PP::detail::array_helper::end(PP_F(a));
 }
 
 namespace PP::detail
@@ -353,25 +353,25 @@ PP_CIA init = detail::array_construct_helper * init_type * value_true;
 }
 
 template <typename T, PP::size_t C>
-constexpr auto&& PP::containers::array<T, C>::operator[](size_t i) &
+constexpr auto&& PP::array::container<T, C>::operator[](size_t i) &
 {
 	return begin(*this)[i];
 }
 
 template <typename T, PP::size_t C>
-constexpr auto&& PP::containers::array<T, C>::operator[](size_t i) const&
+constexpr auto&& PP::array::container<T, C>::operator[](size_t i) const&
 {
 	return begin(*this)[i];
 }
 
 template <typename T, PP::size_t C>
-constexpr auto&& PP::containers::array<T, C>::operator[](size_t i) &&
+constexpr auto&& PP::array::container<T, C>::operator[](size_t i) &&
 {
 	return begin(move(*this))[i];
 }
 
 template <typename T, PP::size_t C>
-constexpr auto&& PP::containers::array<T, C>::operator[](size_t i) const&&
+constexpr auto&& PP::array::container<T, C>::operator[](size_t i) const&&
 {
 	return begin(move(*this))[i];
 }

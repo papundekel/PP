@@ -17,7 +17,7 @@
 namespace PP
 {
 template <typename... Iterators>
-class zip_iterator : public tuple<Iterators...>
+class zip_iterator : public tuple::container<Iterators...>
 {
 	template <typename...>
 	friend class zip_iterator;
@@ -26,7 +26,7 @@ public:
 	static constexpr char dont_make_array_star_operator{};
 
 	constexpr zip_iterator(placeholder_t, auto&&... iterators)
-	    : tuple<Iterators...>(placeholder, PP_F(iterators)...)
+	    : tuple::container<Iterators...>(placeholder, PP_F(iterators)...)
 	{}
 
 	constexpr auto operator*() const
@@ -39,14 +39,14 @@ public:
 	constexpr void step()
 	{
 		if constexpr ((concepts::iterator<Iterators> && ...))
-			tuple_for_each(value_true, ipr, *this);
+			tuple::for_each(value_true, ipr, *this);
 	}
 	constexpr auto advance(ptrdiff_t offset)
 	{
 		if constexpr ((concepts::iterator_ra<Iterators> && ...))
-			tuple_for_each(value_true,
-			               pas(partial_tag, value_1, offset),
-			               *this);
+			tuple::for_each(value_true,
+			                pas(partial_tag, value_1, offset),
+			                *this);
 		else
 			return 0;
 	}
@@ -54,7 +54,7 @@ public:
 	requires(sizeof...(Iterators) == sizeof...(IteratorsOther)) constexpr bool
 	operator==(const zip_iterator<IteratorsOther...>& other) const noexcept
 	{
-		return *eql || tuple_zip_pack(*this, other);
+		return *eql || tuple::zip_pack(*this, other);
 	}
 };
 template <typename... Iterators>
