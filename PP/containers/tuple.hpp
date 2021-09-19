@@ -15,7 +15,7 @@
 
 namespace PP::detail
 {
-template <typename, typename T>
+template <PP::size_t, typename T>
 class tuple_wrap
 {
 	friend class tuple_helper;
@@ -33,37 +33,37 @@ public:
 
 template <typename, typename... T>
 class tuple_impl;
-template <auto... I, typename... T>
-class tuple_impl<value_sequence<I...>, T...>
-    : private tuple_wrap<value_t<I>, T>...
+template <PP::size_t... I, typename... T>
+class tuple_impl<value_sequence<I...>, T...> : private tuple_wrap<I, T>...
 {
 	friend class tuple_helper;
 
-	static constexpr auto wrap_types =
-	    type_tuple<tuple_wrap<value_t<I>, T>&...>;
+	static constexpr auto wrap_types = type_tuple<tuple_wrap<I, T>&...>;
 	static constexpr auto types = type_tuple<T...>;
 
 public:
 	constexpr tuple_impl()
-	    : tuple_wrap<value_t<I>, T>()...
+	    : tuple_wrap<I, T>()...
 	{}
 
 	constexpr tuple_impl(auto&&... args) requires(sizeof...(args) ==
 	                                              sizeof...(T))
-	    : tuple_wrap<value_t<I>, T>(PP_F(args))...
+	    : tuple_wrap<I, T>(PP_F(args))...
 	{}
 	constexpr tuple_impl(in_place_t,
 	                     auto&&... is) requires(sizeof...(is) == sizeof...(T))
-	    : tuple_wrap<value_t<I>, T>(in_place, PP_F(is))...
+	    : tuple_wrap<I, T>(in_place, PP_F(is))...
 	{}
-	constexpr tuple_impl(auto&& t)
-	    : tuple_wrap<value_t<I>, T>(PP_F(t)[value<I>])...
+	constexpr tuple_impl(auto&& t) requires requires
+	{
+		(tuple_wrap<I, T>(PP_F(t)[value<I>]), ...);
+	} : tuple_wrap<I, T>(PP_F(t)[value<I>])...
 	{}
 
 protected:
 	constexpr void assign(auto&& t)
 	{
-		(((tuple_wrap<value_t<I>, T>&)* this = PP_F(t)[value<I>]), ...);
+		(((tuple_wrap<I, T>&)* this = PP_F(t)[value<I>]), ...);
 	}
 };
 

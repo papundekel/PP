@@ -1,6 +1,6 @@
 #pragma once
 #include "../apply_pack.hpp"
-#include "../apply_partially.hpp"
+//#include "../apply_partially.hpp"
 #include "../functor.hpp"
 #include "../functor_concept.hpp"
 #include "../utility/forward.hpp"
@@ -14,9 +14,14 @@ namespace PP::tuple
 {
 PP_FUNCTOR(apply, auto&& f, concepts::tuple auto&& t) -> decltype(auto)
 {
-	return apply_pack(PP_F(f),
-	                  tuple::get(partial_tag, value_1, PP_FW(t)),
-	                  value_sequence_for(PP_F(t)));
+	return apply_pack(
+	    PP_F(f),
+	    // tuple::get(partial_tag, value_1, PP_FW(t)),
+	    [tt = PP_FW(t)](concepts::value auto&& i) -> decltype(auto)
+	    {
+		    return tt-- [PP_F(i)];
+	    },
+	    value_sequence_for(PP_F(t)));
 });
 }
 

@@ -30,13 +30,13 @@ concept value = detail::has_value_f<T> || detail::has_value<T>;
 namespace PP
 {
 PP_CIA get_type_value = make_overloaded_pack(
-    [](auto t) -> decltype(auto) requires detail::has_value_f<PP_GT(t)>
+    [](auto&& t) -> decltype(auto) requires detail::has_value_f<PP_GT(t)>
     {
-	    return PP_GT(t)::value_f();
+	    return remove_reference_impl<PP_GT(t)>::value_f();
     },
-    [](auto t) -> decltype(auto) requires detail::has_value<PP_GT(t)>
+    [](auto&& t) -> decltype(auto) requires detail::has_value<PP_GT(t)>
     {
-	    return (PP_GT(t)::value);
+	    return (remove_reference_impl<PP_GT(t)>::value);
     });
 
 PP_CIA get_value = get_type_value | decl_type_copy;
@@ -48,12 +48,12 @@ constexpr decltype(auto) operator*(PP::concepts::value auto v) noexcept
 }
 
 constexpr decltype(auto) operator-(
-    PP::concepts::type auto t) noexcept requires requires
+    PP::concepts::type auto&& t) noexcept requires requires
 {
-	::PP::get_type_value(t);
+	::PP::get_type_value(PP_F(t));
 }
 {
-	return PP::get_type_value(t);
+	return PP::get_type_value(PP_F(t));
 }
 
 #define PP_GV(x) (-PP_DT(x))

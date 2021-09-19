@@ -35,11 +35,15 @@ constexpr bool operator<=(iterator_category a, iterator_category b)
 {
 	return (int)a <= (int)b;
 }
-constexpr iterator_category operator-(iterator_category a)
-{
-	return iterator_category((int)a - 1);
 }
 
+constexpr PP::iterator_category operator-(PP::iterator_category a)
+{
+	return PP::iterator_category((int)a - 1);
+}
+
+namespace PP
+{
 PP_FUNCTOR(add_cv_reference, concepts::value auto cv, concepts::type auto t)
 {
 	return add_reference(get_reference_value_t(t), add_cv(cv, !t));

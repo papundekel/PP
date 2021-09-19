@@ -113,7 +113,7 @@ constexpr size_t count(concepts::view auto&& v)
 		return view::end(PP_F(v)) - view::begin(PP_F(v));
 }
 
-constexpr bool empty(concepts::view auto&& v)
+constexpr bool is_empty(concepts::view auto&& v)
 {
 	return view::begin(PP_F(v)) == view::end(PP_F(v));
 }

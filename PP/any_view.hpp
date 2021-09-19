@@ -105,7 +105,7 @@ public:
 	/// @brief Constructs an empty view.
 	///
 	constexpr any_view_implementation()
-	    : any_view_implementation(empty_view<T>{})
+	    : any_view_implementation(view::empty<T>{})
 	{}
 
 	///
