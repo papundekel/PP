@@ -6,21 +6,21 @@ namespace PP
 {
 PP_FUNCTOR(max, auto&& comparer, concepts::view auto&& v)
 {
-	auto [begin, end] = view::begin_end(PP_F(v));
+    auto [begin, end] = view::begin_end(PP_F(v));
 
-	if (begin == end)
-		return end;
+    if (begin == end)
+        return end;
 
-	auto max_i = begin;
+    auto max_i = begin;
 
-	++begin;
+    ++begin;
 
-	for (; begin != end; ++begin)
-	{
-		if (PP_F(comparer)(*max_i, *begin))
-			max_i = begin;
-	}
+    for (; begin != end; ++begin)
+    {
+        if (PP_F(comparer)(*max_i, *begin))
+            max_i = begin;
+    }
 
-	return max_i;
+    return max_i;
 });
 }

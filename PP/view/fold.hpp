@@ -13,30 +13,30 @@ PP_FUNCTOR(fold,
            auto init,
            concepts::view auto&& v)
 {
-	if constexpr (PP_GV(left))
-	{
-		auto i = begin(PP_F(v));
+    if constexpr (PP_GV(left))
+    {
+        auto i = begin(PP_F(v));
 
-		for (; i != end(PP_F(v)); ++i)
-			init = PP_F(f)(move(init), *i);
+        for (; i != end(PP_F(v)); ++i)
+            init = PP_F(f)(move(init), *i);
 
-		return make_tuple(move(i), move(init));
-	}
-	else
-	{
-		auto [begin, i] = begin_end(PP_F(v));
+        return make_tuple(move(i), move(init));
+    }
+    else
+    {
+        auto [begin, i] = begin_end(PP_F(v));
 
-		if (begin != i)
-		{
-			do
-			{
-				--i;
-				init = PP_F(f)(*i, move(init));
-			} while (i != begin);
-		}
+        if (begin != i)
+        {
+            do
+            {
+                --i;
+                init = PP_F(f)(*i, move(init));
+            } while (i != begin);
+        }
 
-		return make_tuple(move(i), move(init));
-	}
+        return make_tuple(move(i), move(init));
+    }
 });
 
 PP_CIA foldl = fold * value_true;

@@ -8,16 +8,16 @@ namespace PP
 {
 PP_FUNCTOR(add_cv, concepts::value auto cv, concepts::type auto t)
 {
-	constexpr auto CV = *PP_CV(cv);
+    constexpr auto CV = *PP_CV(cv);
 
-	if constexpr (CV == cv_qualifier::none)
-		return t;
-	else if constexpr (CV == cv_qualifier::Const)
-		return add_const(t);
-	else if constexpr (CV == cv_qualifier::Volatile)
-		return add_volatile(t);
-	else
-		return add_const(add_volatile(t));
+    if constexpr (CV == cv_qualifier::none)
+        return t;
+    else if constexpr (CV == cv_qualifier::Const)
+        return add_const(t);
+    else if constexpr (CV == cv_qualifier::Volatile)
+        return add_volatile(t);
+    else
+        return add_const(add_volatile(t));
 });
 
 ///
@@ -38,6 +38,6 @@ constexpr inline add_cv_tag_t<cv_qualifier::const_volatile>
 template <cv_qualifier cv>
 constexpr auto operator+(concepts::type auto t, add_cv_tag_t<cv> tag) noexcept
 {
-	return add_cv(tag, t);
+    return add_cv(tag, t);
 }
 }

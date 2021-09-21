@@ -6,13 +6,13 @@ namespace PP
 template <typename T>
 struct type_t
 {
-	using type = T;
+    using type = T;
 
-	type_t() = default;
-	type_t(const type_t&) = default;
+    type_t() = default;
+    type_t(const type_t&) = default;
 
-	constexpr auto operator->() const noexcept;
-	constexpr decltype(auto) operator()(auto&&...) const;
+    constexpr auto operator->() const noexcept;
+    constexpr decltype(auto) operator()(auto&&...) const;
 };
 
 template <typename T>
@@ -26,13 +26,13 @@ constexpr inline type_t<size_t> type_size_t{};
 template <typename T, typename U>
 constexpr auto operator==(type_t<T>, type_t<U>) noexcept
 {
-	return false;
+    return false;
 }
 
 template <typename T>
 constexpr auto operator==(type_t<T>, type_t<T>) noexcept
 {
-	return true;
+    return true;
 }
 
 #define PP_DT(x) (::PP::type<decltype(x)>)

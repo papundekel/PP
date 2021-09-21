@@ -6,7 +6,7 @@ namespace PP::view
 {
 struct shift
 {
-	size_t value;
+    size_t value;
 };
 }
 
@@ -16,18 +16,18 @@ inline namespace literals
 {
 constexpr auto operator""_s(unsigned long long value)
 {
-	return view::shift(value);
+    return view::shift(value);
 }
 }
 }
 
 constexpr auto operator>>(PP::view::shift offset, PP::concepts::view auto&& v)
 {
-	return PP::view::pair(PP::view::begin(PP_F(v)) + offset.value,
-	                      PP::view::end(PP_F(v)));
+    return PP::view::pair(PP::view::begin(PP_F(v)) + offset.value,
+                          PP::view::end(PP_F(v)));
 }
 constexpr auto operator<<(PP::concepts::view auto&& v, PP::view::shift offset)
 {
-	return PP::view::pair(PP::view::begin(PP_F(v)),
-	                      PP::view::end(PP_F(v)) - offset.value);
+    return PP::view::pair(PP::view::begin(PP_F(v)),
+                          PP::view::end(PP_F(v)) - offset.value);
 }

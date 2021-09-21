@@ -7,11 +7,11 @@ namespace PP::tuple
 {
 PP_FUNCTOR(all, auto&& pp, concepts::tuple auto&& t) -> decltype(auto)
 {
-	return functor(
-	    [p = PP_FW(pp)](auto&&... e) -> decltype(auto)
-	    {
-		    return (true && ... && p(PP_F(e)));
-	    })[PP_F(t)];
+    return functor(
+        [p = PP_FW(pp)](auto&&... e) -> decltype(auto)
+        {
+            return (true && ... && p(PP_F(e)));
+        })[PP_F(t)];
 });
 }
 
@@ -20,6 +20,6 @@ namespace PP
 constexpr decltype(auto) operator&&(concepts::functor auto&& f,
                                     concepts::tuple auto&& tuple)
 {
-	return tuple::all(PP_UF(f), PP_F(tuple));
+    return tuple::all(PP_UF(f), PP_F(tuple));
 }
 }

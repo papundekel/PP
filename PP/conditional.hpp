@@ -11,9 +11,9 @@ PP_FUNCTOR(conditional,
            auto&& true_value,
            auto&& false_value) -> decltype(auto)
 {
-	if constexpr (PP_GV(condition))
-		return PP_F(true_value);
-	else
-		return PP_F(false_value);
+    if constexpr (PP_GV(condition))
+        return PP_F(true_value);
+    else
+        return PP_F(false_value);
 });
 }

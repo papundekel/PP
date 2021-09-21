@@ -9,8 +9,8 @@ namespace PP::tuple
 {
 PP_FUNCTOR(types, concepts::type auto t)
 {
-	return apply_pack(make_type_tuple,
-	                  type_element(partial_tag, value_1, t),
-	                  type_value_sequence_for(t));
+    return apply_pack(make_type_tuple,
+                      type_element(partial_tag, value_1, t),
+                      type_value_sequence_for(t));
 });
 }

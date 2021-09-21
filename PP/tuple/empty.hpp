@@ -5,17 +5,17 @@ namespace PP
 {
 struct value_zero
 {
-	static constexpr auto value_f() noexcept
-	{
-		return 0_z;
-	}
+    static constexpr auto value_f() noexcept
+    {
+        return 0_z;
+    }
 };
 
 struct tuple_empty
 {
-	constexpr auto tuple_count() const
-	{
-		return value_zero{};
-	}
+    constexpr auto tuple_count() const
+    {
+        return value_zero{};
+    }
 };
 }

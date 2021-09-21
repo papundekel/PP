@@ -6,6 +6,6 @@ namespace PP
 {
 PP_FUNCTOR(dynamic__cast, concepts::type auto t, auto&& value) -> decltype(auto)
 {
-	return dynamic_cast<PP_GT(t)>(PP_F(value));
+    return dynamic_cast<PP_GT(t)>(PP_F(value));
 });
 }

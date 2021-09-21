@@ -6,20 +6,20 @@ namespace PP
 template <auto V>
 struct value_t
 {
-	static constexpr decltype(auto) value_f() noexcept
-	{
-		return V;
-	}
+    static constexpr decltype(auto) value_f() noexcept
+    {
+        return V;
+    }
 
-	constexpr operator decltype(V)() const noexcept
-	{
-		return V;
-	}
+    constexpr operator decltype(V)() const noexcept
+    {
+        return V;
+    }
 
-	constexpr decltype(auto) operator()(auto&&... args) const noexcept
-	{
-		return V(PP_F(args)...);
-	}
+    constexpr decltype(auto) operator()(auto&&... args) const noexcept
+    {
+        return V(PP_F(args)...);
+    }
 };
 template <auto V>
 constexpr inline value_t<V> value = {};

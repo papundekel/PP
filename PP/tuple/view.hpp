@@ -11,8 +11,8 @@ namespace PP::tuple
 {
 PP_FUNCTOR(make_view, concepts::tuple auto&& tuple)
 {
-	return *(make_variant_pack *
-	         Template<std::variant>[wrap_reference + get_types(PP_F(tuple))]) <
-	       zip_indices(PP_F(tuple));
+    return *(make_variant_pack *
+             Template<std::variant>[wrap_reference + get_types(PP_F(tuple))]) <
+           zip_indices(PP_F(tuple));
 });
 }

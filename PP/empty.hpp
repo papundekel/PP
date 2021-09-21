@@ -4,7 +4,7 @@ namespace PP
 {
 struct empty
 {
-	constexpr empty(auto&&...) noexcept
-	{}
+    constexpr empty(auto&&...) noexcept
+    {}
 };
 }

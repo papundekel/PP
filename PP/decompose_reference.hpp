@@ -12,17 +12,17 @@ PP_CIA decompose_reference =
     make_overloaded_pack(
         []<typename T>(type_t<T&&>)
         {
-	        return make_decompose_pair(type<T>,
-	                                   PP::value<ref_qualifier::rvalue>);
+            return make_decompose_pair(type<T>,
+                                       PP::value<ref_qualifier::rvalue>);
         },
         []<typename T>(type_t<T&>)
         {
-	        return make_decompose_pair(type<T>,
-	                                   PP::value<ref_qualifier::lvalue>);
+            return make_decompose_pair(type<T>,
+                                       PP::value<ref_qualifier::lvalue>);
         },
         []<typename T>(type_t<T>)
         {
-	        return make_decompose_pair(type<T>, PP::value<ref_qualifier::none>);
+            return make_decompose_pair(type<T>, PP::value<ref_qualifier::none>);
         }) |
     to_type_t;
 }

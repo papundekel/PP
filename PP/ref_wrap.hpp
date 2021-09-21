@@ -12,33 +12,33 @@ namespace detail
 template <typename T, bool lvalue>
 class ref_wrap_impl
 {
-	using RT =
-	    apply_transform_t<add_reference * value<lvalue ? ref_qualifier::lvalue
-	                                                   : ref_qualifier::rvalue>,
-	                      T>;
+    using RT =
+        apply_transform_t<add_reference * value<lvalue ? ref_qualifier::lvalue
+                                                       : ref_qualifier::rvalue>,
+                          T>;
 
-	RT ref;
+    RT ref;
 
 public:
-	constexpr ref_wrap_impl(RT ref) noexcept
-	    : ref((RT)ref)
-	{}
+    constexpr ref_wrap_impl(RT ref) noexcept
+        : ref((RT)ref)
+    {}
 
-	constexpr RT get() const noexcept
-	{
-		return (RT)ref;
-	}
-	constexpr operator RT() const noexcept
-	{
-		return get();
-	}
+    constexpr RT get() const noexcept
+    {
+        return (RT)ref;
+    }
+    constexpr operator RT() const noexcept
+    {
+        return get();
+    }
 
-	constexpr decltype(auto) operator()(auto&&... args) const noexcept
-	{
-		return get()(PP_F(args)...);
-	}
+    constexpr decltype(auto) operator()(auto&&... args) const noexcept
+    {
+        return get()(PP_F(args)...);
+    }
 
-	static constexpr bool ref_wrap_impl_tag = true;
+    static constexpr bool ref_wrap_impl_tag = true;
 };
 template <typename T>
 ref_wrap_impl(T&) -> ref_wrap_impl<T, true>;
@@ -57,19 +57,19 @@ using wrap_ref_t = PP_GT(conditional(value<is_reference(type<T>)>,
 
 PP_FUNCTOR(unwrap_ref, auto&& x) -> auto&&
 {
-	if constexpr (requires
-	              {
-		              x.ref_wrap_impl_tag;
-	              })
-		return x.get();
-	else
-		return PP_F(x);
+    if constexpr (requires
+                  {
+                      x.ref_wrap_impl_tag;
+                  })
+        return x.get();
+    else
+        return PP_F(x);
 });
 
 PP_CIA wrap_ref = functor(
                       [](auto&& x)
                       {
-	                      return ref_wrap<decltype(x)>(PP_F(x));
+                          return ref_wrap<decltype(x)>(PP_F(x));
                       }) |
                   unwrap_ref;
 

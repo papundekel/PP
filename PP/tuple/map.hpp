@@ -12,17 +12,17 @@ namespace PP::tuple
 {
 PP_FUNCTOR(map, auto&& map, concepts::tuple auto&& t)
 {
-	return apply(
-	    [m = PP_FW(map)](auto&&... elements)
-	    {
-		    return init((cal * m * PP_FW(elements))...);
-	    },
-	    PP_F(t));
+    return apply(
+        [m = PP_FW(map)](auto&&... elements)
+        {
+            return init((cal * m * PP_FW(elements))...);
+        },
+        PP_F(t));
 });
 }
 
 constexpr auto operator+(PP::concepts::wrap auto&& f,
                          PP::concepts::tuple auto&& t)
 {
-	return map(PP_UF(f), PP_F(t));
+    return map(PP_UF(f), PP_F(t));
 }

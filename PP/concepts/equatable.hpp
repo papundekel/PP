@@ -7,12 +7,12 @@ namespace PP
 {
 PP_FUNCTOR(is_equatable, concepts::type auto a, concepts::type auto b)
 {
-	return requires
-	{
-		{
-			PP::declval(a) == PP::declval(b)
-			} -> concepts::convertible_to<bool>;
-	};
+    return requires
+    {
+        {
+            PP::declval(a) == PP::declval(b)
+            } -> concepts::convertible_to<bool>;
+    };
 });
 }
 

@@ -7,9 +7,9 @@ namespace PP
 {
 PP_FUNCTOR(is_class, concepts::type auto t)
 {
-	return requires
-	{
-		typename detail::templated_dummy<int PP_GT(t)::*>;
-	};
+    return requires
+    {
+        typename detail::templated_dummy<int PP_GT(t)::*>;
+    };
 });
 }

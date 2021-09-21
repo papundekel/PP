@@ -8,21 +8,21 @@ namespace PP
 {
 PP_FUNCTOR(add_reference, concepts::value auto ref, concepts::type auto t)
 {
-	using T = PP_GT(t);
+    using T = PP_GT(t);
 
-	constexpr auto REF = *PP_CV(ref);
+    constexpr auto REF = *PP_CV(ref);
 
-	if constexpr (is_referencable(type<T>))
-	{
-		if constexpr (REF == ref_qualifier::lvalue)
-			return type<T&>;
-		else if constexpr (REF == ref_qualifier::rvalue)
-			return type<T&&>;
-		else
-			return t;
-	}
-	else
-		return t;
+    if constexpr (is_referencable(type<T>))
+    {
+        if constexpr (REF == ref_qualifier::lvalue)
+            return type<T&>;
+        else if constexpr (REF == ref_qualifier::rvalue)
+            return type<T&&>;
+        else
+            return t;
+    }
+    else
+        return t;
 });
 
 ///
@@ -42,6 +42,6 @@ template <ref_qualifier ref>
 constexpr auto operator+(concepts::type auto t,
                          add_reference_tag_t<ref> tag) noexcept
 {
-	return add_reference(tag, t);
+    return add_reference(tag, t);
 }
 }

@@ -15,6 +15,6 @@ PP_CIA negate = compose * neg;
 
 constexpr auto operator!(concepts::functor auto&& f) noexcept
 {
-	return negate(PP_F(f));
+    return negate(PP_F(f));
 }
 }

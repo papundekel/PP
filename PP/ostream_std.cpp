@@ -2,5 +2,5 @@
 
 void PP::ostream_std::write(char c) noexcept
 {
-	out << c;
+    out << c;
 }

@@ -4,8 +4,8 @@ namespace PP
 {
 enum class ref_qualifier
 {
-	none,
-	lvalue,
-	rvalue,
+    none,
+    lvalue,
+    rvalue,
 };
 }

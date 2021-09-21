@@ -9,6 +9,6 @@ PP_CIA remove_cvref = remove_cv | remove_reference;
 
 constexpr auto operator~(concepts::type auto t) noexcept
 {
-	return remove_cvref(t);
+    return remove_cvref(t);
 }
 }

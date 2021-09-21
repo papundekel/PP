@@ -6,6 +6,6 @@ namespace PP
 template <auto f>
 PP_CIA concepts::valueper = []<typename T>(T)
 {
-	return PP::value<f(T{})>;
+    return PP::value<f(T{})>;
 };
 }

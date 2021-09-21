@@ -6,10 +6,10 @@ namespace PP
 {
 PP_FUNCTOR(decl_type_copy, auto v)
 {
-	return PP_DT(v);
+    return PP_DT(v);
 });
 PP_FUNCTOR(decl_type_forward, auto&& v)
 {
-	return PP_DT(v);
+    return PP_DT(v);
 });
 }

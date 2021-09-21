@@ -11,12 +11,12 @@ namespace PP::tuple
 {
 PP_FUNCTOR(oncat, concepts::tuple auto&& l, concepts::tuple auto&& r)
 {
-	return foldr(prepend, forward(PP_F(r)), PP_F(l));
+    return foldr(prepend, forward(PP_F(r)), PP_F(l));
 });
 
 PP_FUNCTOR(concats, concepts::tuple auto&& tuples)
 {
-	return foldl(concat, tuple_empty{}, PP_F(tuples));
+    return foldl(concat, tuple_empty{}, PP_F(tuples));
 });
 
 PP_CIA concats_pack = concats | forward_as_tuple;

@@ -8,7 +8,7 @@ namespace PP::view
 PP_CIA destroy = for_each * functor(
                                 [](auto&& x)
                                 {
-	                                using T = PP_GT(~PP_DT(x));
-	                                x.~T();
+                                    using T = PP_GT(~PP_DT(x));
+                                    x.~T();
                                 });
 }

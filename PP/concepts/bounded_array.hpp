@@ -9,11 +9,11 @@ namespace PP
 PP_CIA is_bounded_array = make_overloaded_pack(
                               []<typename T, size_t N>(type_t<T[N]>)
                               {
-	                              return true;
+                                  return true;
                               },
                               [](auto)
                               {
-	                              return false;
+                                  return false;
                               }) |
                           to_type_t;
 

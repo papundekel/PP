@@ -9,11 +9,11 @@
 template <typename T>
 constexpr auto PP::type_t<T>::operator->() const noexcept
 {
-	return make_arrow_operator_wrapper(
-	    [this]()
-	    {
-		    return **this;
-	    });
+    return make_arrow_operator_wrapper(
+        [this]()
+        {
+            return **this;
+        });
 }
 
 namespace PP::detail
@@ -21,8 +21,8 @@ namespace PP::detail
 template <template <typename...> typename T, typename... Types>
 struct decompose_pair
 {
-	template_t<T> Template;
-	type_tuple_t<Types...> types;
+    template_t<T> Template;
+    type_tuple_t<Types...> types;
 };
 
 template <typename T>
@@ -37,30 +37,30 @@ PP_CIA decompose =
         []<template <typename...> typename T, typename... Types>(
             type_t<T<Types...>>)
         {
-	        return detail::decompose_pair(Template<T>, type_tuple<Types...>);
+            return detail::decompose_pair(Template<T>, type_tuple<Types...>);
         },
         [](auto&&)
         {
-	        return detail::decompose_pair(Template<detail::decompose_dummy>,
-	                                      type_tuple<>);
+            return detail::decompose_pair(Template<detail::decompose_dummy>,
+                                          type_tuple<>);
         }) |
     remove_cvref;
 
 PP_CIA decompose_template = functor(
                                 [](auto p)
                                 {
-	                                return p.Template;
+                                    return p.Template;
                                 }) |
                             decompose;
 PP_CIA decompose_types = functor(
                              [](auto p)
                              {
-	                             return p.types;
+                                 return p.types;
                              }) |
                          decompose;
 }
 
 constexpr auto operator*(PP::concepts::type auto t) noexcept
 {
-	return PP::decompose(t);
+    return PP::decompose(t);
 }

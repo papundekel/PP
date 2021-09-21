@@ -7,49 +7,49 @@ namespace PP
 {
 constexpr auto to_chars(concepts::view auto&& v, auto value) noexcept
 {
-	auto [begin, end] = PP::view::begin_end(PP_F(v));
+    auto [begin, end] = PP::view::begin_end(PP_F(v));
 
-	if (begin == end)
-		return begin;
+    if (begin == end)
+        return begin;
 
-	if (value == 0 && begin != end)
-	{
-		*begin = '0';
-		return ++begin;
-	}
+    if (value == 0 && begin != end)
+    {
+        *begin = '0';
+        return ++begin;
+    }
 
-	auto i = end;
+    auto i = end;
 
-	bool was_negative = false;
+    bool was_negative = false;
 
-	constexpr bool signed_type = decltype(value)(-1) < decltype(value)(0);
+    constexpr bool signed_type = decltype(value)(-1) < decltype(value)(0);
 
-	if constexpr (signed_type)
-	{
-		if (value < 0)
-		{
-			was_negative = true;
-			value = -value;
-		}
-	}
+    if constexpr (signed_type)
+    {
+        if (value < 0)
+        {
+            was_negative = true;
+            value = -value;
+        }
+    }
 
-	while (i != begin && value != 0)
-	{
-		auto digit = value % 10;
-		value /= 10;
-		--i;
-		*i = char('0' + digit);
-	}
+    while (i != begin && value != 0)
+    {
+        auto digit = value % 10;
+        value /= 10;
+        --i;
+        *i = char('0' + digit);
+    }
 
-	if constexpr (signed_type)
-	{
-		if (was_negative && i != begin)
-		{
-			--i;
-			*i = '-';
-		}
-	}
+    if constexpr (signed_type)
+    {
+        if (was_negative && i != begin)
+        {
+            --i;
+            *i = '-';
+        }
+    }
 
-	return view_move(begin ^ unbounded, i ^ end)[value_0];
+    return view_move(begin ^ unbounded, i ^ end)[value_0];
 }
 }

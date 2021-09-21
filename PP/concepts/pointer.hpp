@@ -9,11 +9,11 @@ namespace PP
 PP_CIA is_pointer = make_overloaded_pack(
                         []<typename T>(type_t<T*>)
                         {
-	                        return true;
+                            return true;
                         },
                         [](auto)
                         {
-	                        return false;
+                            return false;
                         }) |
                     remove_cv;
 

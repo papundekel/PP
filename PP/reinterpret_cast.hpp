@@ -7,6 +7,6 @@ namespace PP
 PP_FUNCTOR(reinterpret__cast, concepts::type auto t, auto&& value)
     -> decltype(auto)
 {
-	return reinterpret_cast<PP_GT(t)>(PP_F(value));
+    return reinterpret_cast<PP_GT(t)>(PP_F(value));
 });
 }

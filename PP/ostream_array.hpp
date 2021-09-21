@@ -10,8 +10,8 @@ namespace detail
 template <size_t count>
 struct ostream_array_helper
 {
-	template <typename T>
-	using help = array_vector<T, count, true>;
+    template <typename T>
+    using help = array_vector<T, count, true>;
 };
 }
 

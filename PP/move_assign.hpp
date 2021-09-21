@@ -6,6 +6,6 @@ namespace PP
 {
 PP_FUNCTOR(move_assign, auto&& x, auto&& y) -> decltype(auto)
 {
-	return PP_F(x) = move(y);
+    return PP_F(x) = move(y);
 });
 }

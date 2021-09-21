@@ -11,8 +11,8 @@ PP_CIA maker_array = *array::make;
 constexpr auto operator*(PP::concepts::tuple auto&& t) requires(
     !requires
     {
-	    t.dont_make_array_star_operator;
+        t.dont_make_array_star_operator;
     })
 {
-	return PP::tuple::maker_array(PP_F(t));
+    return PP::tuple::maker_array(PP_F(t));
 }

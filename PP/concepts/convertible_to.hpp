@@ -7,12 +7,12 @@ namespace PP
 {
 PP_FUNCTOR(is_convertible_to, concepts::type auto from, concepts::type auto to)
 {
-	return requires
-	{
-		[](PP_GT(to))
-		{
-		}(declval(from));
-	};
+    return requires
+    {
+        [](PP_GT(to))
+        {
+        }(declval(from));
+    };
 });
 }
 

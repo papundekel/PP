@@ -8,7 +8,7 @@ inline namespace literals
 {
 constexpr auto operator""_z(unsigned long long value) noexcept
 {
-	return size_t(value);
+    return size_t(value);
 }
 }
 }

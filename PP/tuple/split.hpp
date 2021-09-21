@@ -12,15 +12,15 @@ namespace PP::tuple
 PP_CIA splitter = make_overloaded_pack(
     [](auto&& head, auto&&... tail)
     {
-	    return construct(
-	        type_tuple<decltype(head), container<decltype(tail)...>>,
-	        value_false,
-	        PP_F(head),
-	        forward_as_tuple(PP_F(tail)...));
+        return construct(
+            type_tuple<decltype(head), container<decltype(tail)...>>,
+            value_false,
+            PP_F(head),
+            forward_as_tuple(PP_F(tail)...));
     },
     []()
     {
-	    return 0;
+        return 0;
     });
 
 PP_CIA split = *splitter;

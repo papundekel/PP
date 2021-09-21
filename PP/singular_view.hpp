@@ -5,6 +5,6 @@ namespace PP
 {
 PP_FUNCTOR(make_singular_view, auto& object)
 {
-	return simple_view(&object, &object + 1);
+    return simple_view(&object, &object + 1);
 });
 }

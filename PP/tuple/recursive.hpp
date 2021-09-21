@@ -10,10 +10,10 @@ constexpr decltype(auto) tuple_recursive(auto&& f,
                                          concepts::value auto i,
                                          auto&& t)
 {
-	if constexpr (*PP_CV(i) == 0)
-		return PP_F(f)(PP_F(t));
-	else
-		return tuple_recursive(PP_F(f), i - value_1, tuple::pred(PP_F(t)));
+    if constexpr (*PP_CV(i) == 0)
+        return PP_F(f)(PP_F(t));
+    else
+        return tuple_recursive(PP_F(f), i - value_1, tuple::pred(PP_F(t)));
 }
 }
 

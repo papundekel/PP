@@ -12,12 +12,12 @@ namespace PP::detail
 template <typename T>
 concept has_value_f = requires
 {
-	declval_impl<T>().value_f();
+    declval_impl<T>().value_f();
 };
 template <typename T>
 concept has_value = !has_value_f<T> && requires
 {
-	remove_reference_impl<T>::value;
+    remove_reference_impl<T>::value;
 };
 }
 
@@ -32,11 +32,11 @@ namespace PP
 PP_CIA get_type_value = make_overloaded_pack(
     [](auto&& t) -> decltype(auto) requires detail::has_value_f<PP_GT(t)>
     {
-	    return remove_reference_impl<PP_GT(t)>::value_f();
+        return remove_reference_impl<PP_GT(t)>::value_f();
     },
     [](auto&& t) -> decltype(auto) requires detail::has_value<PP_GT(t)>
     {
-	    return (remove_reference_impl<PP_GT(t)>::value);
+        return (remove_reference_impl<PP_GT(t)>::value);
     });
 
 PP_CIA get_value = get_type_value | decl_type_copy;
@@ -44,16 +44,16 @@ PP_CIA get_value = get_type_value | decl_type_copy;
 
 constexpr decltype(auto) operator*(PP::concepts::value auto v) noexcept
 {
-	return PP::get_value(v);
+    return PP::get_value(v);
 }
 
 constexpr decltype(auto) operator-(
     PP::concepts::type auto&& t) noexcept requires requires
 {
-	::PP::get_type_value(PP_F(t));
+    ::PP::get_type_value(PP_F(t));
 }
 {
-	return PP::get_type_value(PP_F(t));
+    return PP::get_type_value(PP_F(t));
 }
 
 #define PP_GV(x) (-PP_DT(x))
@@ -64,92 +64,92 @@ constexpr decltype(auto) operator-(
 constexpr auto operator==(PP::concepts::value auto x,
                           PP::concepts::value auto y)
 {
-	return PP::value<PP_GV(x) == PP_GV(y)>;
+    return PP::value<PP_GV(x) == PP_GV(y)>;
 }
 constexpr auto operator!=(PP::concepts::value auto x,
                           PP::concepts::value auto y)
 {
-	return PP::value<PP_GV(x) != PP_GV(y)>;
+    return PP::value<PP_GV(x) != PP_GV(y)>;
 }
 constexpr auto operator<(PP::concepts::value auto x, PP::concepts::value auto y)
 {
-	return PP::value<PP_GV(x) < PP_GV(y)>;
+    return PP::value<PP_GV(x) < PP_GV(y)>;
 }
 constexpr auto operator<=(PP::concepts::value auto x,
                           PP::concepts::value auto y)
 {
-	return PP::value<PP_GV(x) <= PP_GV(y)>;
+    return PP::value<PP_GV(x) <= PP_GV(y)>;
 }
 constexpr auto operator>(PP::concepts::value auto x, PP::concepts::value auto y)
 {
-	return PP::value<(PP_GV(x) > PP_GV(y))>;
+    return PP::value<(PP_GV(x) > PP_GV(y))>;
 }
 constexpr auto operator>=(PP::concepts::value auto x,
                           PP::concepts::value auto y)
 {
-	return PP::value<(PP_GV(x) >= PP_GV(y))>;
+    return PP::value<(PP_GV(x) >= PP_GV(y))>;
 }
 constexpr auto operator+(PP::concepts::value auto x, PP::concepts::value auto y)
 {
-	return PP::value<PP_GV(x) + PP_GV(y)>;
+    return PP::value<PP_GV(x) + PP_GV(y)>;
 }
 constexpr auto operator-(PP::concepts::value auto x, PP::concepts::value auto y)
 {
-	return PP::value<PP_GV(x) - PP_GV(y)>;
+    return PP::value<PP_GV(x) - PP_GV(y)>;
 }
 constexpr auto operator*(PP::concepts::value auto x, PP::concepts::value auto y)
 {
-	return PP::value<PP_GV(x) * PP_GV(y)>;
+    return PP::value<PP_GV(x) * PP_GV(y)>;
 }
 constexpr auto operator/(PP::concepts::value auto x, PP::concepts::value auto y)
 {
-	return PP::value<PP_GV(x) / PP_GV(y)>;
+    return PP::value<PP_GV(x) / PP_GV(y)>;
 }
 constexpr auto operator%(PP::concepts::value auto x, PP::concepts::value auto y)
 {
-	return PP::value<PP_GV(x) % PP_GV(y)>;
+    return PP::value<PP_GV(x) % PP_GV(y)>;
 }
 constexpr auto operator&(PP::concepts::value auto x, PP::concepts::value auto y)
 {
-	return PP::value<PP_GV(x) & PP_GV(y)>;
+    return PP::value<PP_GV(x) & PP_GV(y)>;
 }
 constexpr auto operator|(PP::concepts::value auto x, PP::concepts::value auto y)
 {
-	return PP::value<PP_GV(x) | PP_GV(y)>;
+    return PP::value<PP_GV(x) | PP_GV(y)>;
 }
 constexpr auto operator-(PP::concepts::value auto x)
 {
-	return PP::value<-PP_GV(x)>;
+    return PP::value<-PP_GV(x)>;
 }
 constexpr auto operator!(PP::concepts::value auto x)
 {
-	return PP::value<!PP_GV(x)>;
+    return PP::value<!PP_GV(x)>;
 }
 constexpr auto operator&&(PP::concepts::value auto x,
                           PP::concepts::value auto y)
 {
-	return PP::value < PP_GV(x) && PP_GV(y) > ;
+    return PP::value < PP_GV(x) && PP_GV(y) > ;
 }
 constexpr auto operator||(PP::concepts::value auto x,
                           PP::concepts::value auto y)
 {
-	return PP::value < PP_GV(x) || PP_GV(y) > ;
+    return PP::value < PP_GV(x) || PP_GV(y) > ;
 }
 
 constexpr auto operator<=(PP::concepts::type auto x,
                           PP::concepts::type auto y) requires requires
 {
-	-x;
-	-y;
+    -x;
+    -y;
 }
 {
-	return -x <= -y;
+    return -x <= -y;
 }
 
 namespace PP
 {
 PP_FUNCTOR(to_value_t, concepts::value auto x)
 {
-	return value<PP_GV(x)>;
+    return value<PP_GV(x)>;
 });
 }

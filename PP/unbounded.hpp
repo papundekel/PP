@@ -10,5 +10,5 @@ constexpr inline struct unbounded_t
 
 constexpr bool operator==(PP::concepts::iterator auto, PP::unbounded_t) noexcept
 {
-	return false;
+    return false;
 }

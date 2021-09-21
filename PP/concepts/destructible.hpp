@@ -8,20 +8,20 @@ namespace PP
 {
 PP_FUNCTOR(is_destructible, concepts::type auto t)
 {
-	constexpr auto T = PP_COPY_TYPE(t);
+    constexpr auto T = PP_COPY_TYPE(t);
 
-	if constexpr (is_reference(T))
-		return true;
-	else if constexpr (is_complete_object(T))
-	{
-		using U = PP_GT(T);
-		return requires
-		{
-			declval(type<U&>).~U();
-		};
-	}
-	else
-		return false;
+    if constexpr (is_reference(T))
+        return true;
+    else if constexpr (is_complete_object(T))
+    {
+        using U = PP_GT(T);
+        return requires
+        {
+            declval(type<U&>).~U();
+        };
+    }
+    else
+        return false;
 });
 
 namespace concepts

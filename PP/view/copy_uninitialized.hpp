@@ -15,7 +15,7 @@ PP_CIA copy_uninitialized =
     for_each * *functor(
                    [](auto&& to, auto&& from)
                    {
-	                   construct_at_pack(std::addressof(to), PP_F(from));
+                       construct_at_pack(std::addressof(to), PP_F(from));
                    }) |
     zip_view_pack;
 }

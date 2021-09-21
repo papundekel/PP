@@ -13,12 +13,12 @@ PP_CIA decompose_volatile =
     make_overloaded_pack(
         []<typename T>(type_t<volatile T>)
         {
-	        return make_decompose_pair(type<T>,
-	                                   PP::value<cv_qualifier::Volatile>);
+            return make_decompose_pair(type<T>,
+                                       PP::value<cv_qualifier::Volatile>);
         },
         []<typename T>(type_t<T>)
         {
-	        return make_decompose_pair(type<T>, PP::value<cv_qualifier::none>);
+            return make_decompose_pair(type<T>, PP::value<cv_qualifier::none>);
         }) |
     to_type_t;
 }

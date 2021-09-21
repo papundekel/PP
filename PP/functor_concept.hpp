@@ -11,23 +11,23 @@ namespace detail
 template <typename T>
 concept functor_member = requires
 {
-	declval_impl<T>().unwrap_functor();
+    declval_impl<T>().unwrap_functor();
 };
 template <typename T>
 concept functor_any = detail::functor_member<T> || requires
 {
-	unwrap_functor_impl(declval_impl<T>());
+    unwrap_functor_impl(declval_impl<T>());
 };
 }
 
 constexpr auto&& unwrap_functor(auto&& f)
 {
-	if constexpr (detail::functor_member<decltype(f)>)
-		return unwrap_functor(PP_F(f).unwrap_functor());
-	else if constexpr (detail::functor_any<decltype(f)>)
-		return unwrap_functor(unwrap_functor_impl(PP_F(f)));
-	else
-		return PP_F(f);
+    if constexpr (detail::functor_member<decltype(f)>)
+        return unwrap_functor(PP_F(f).unwrap_functor());
+    else if constexpr (detail::functor_any<decltype(f)>)
+        return unwrap_functor(unwrap_functor_impl(PP_F(f)));
+    else
+        return PP_F(f);
 }
 
 #define PP_UF(x) ::PP::unwrap_functor(PP_F(x))
@@ -42,6 +42,6 @@ concept functor =
 
 constexpr decltype(auto) operator<<=(concepts::functor auto&& f, auto&& arg)
 {
-	return PP_UF(f)(PP_F(arg));
+    return PP_UF(f)(PP_F(arg));
 }
 }

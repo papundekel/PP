@@ -12,10 +12,10 @@ PP_CIA forwarder = *forward;
 
 constexpr auto operator!(PP::concepts::tuple auto&& t)
 {
-	return PP::tuple::maker(PP_F(t));
+    return PP::tuple::maker(PP_F(t));
 }
 
 constexpr auto operator+(PP::concepts::tuple auto&& t) noexcept
 {
-	return PP::tuple::forwarder(PP_F(t));
+    return PP::tuple::forwarder(PP_F(t));
 }
