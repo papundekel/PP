@@ -36,8 +36,8 @@ namespace concepts
 {
 template <typename T>
 concept functor =
-	(detail::functor_member<T> || detail::functor_any<T>)&&copyable<
-		decltype(unwrap_functor(declval_impl<T>()))>;
+    (detail::functor_member<T> || detail::functor_any<T>)&&copyable<
+        decltype(unwrap_functor(declval_impl<T>()))>;
 }
 
 constexpr decltype(auto) operator<<=(concepts::functor auto&& f, auto&& arg)

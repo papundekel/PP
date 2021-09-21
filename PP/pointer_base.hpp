@@ -29,21 +29,21 @@ class pointer_base
 
 public:
 	explicit constexpr pointer_base(T* ptr) noexcept
-		: ptr(ptr)
+	    : ptr(ptr)
 	{}
 
 	constexpr pointer_base() noexcept
-		: ptr(nullptr)
+	    : ptr(nullptr)
 	{}
 	constexpr pointer_base(decltype(nullptr)) noexcept
-		: pointer_base()
+	    : pointer_base()
 	{}
 
 	pointer_base(const pointer_base& other) = default;
 
 	template <detail::pointer_new_compatible<T> U>
 	constexpr pointer_base(const pointer_base<U>& other) noexcept
-		: ptr(other.ptr)
+	    : ptr(other.ptr)
 	{}
 
 	pointer_base& operator=(const pointer_base& other) = default;

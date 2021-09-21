@@ -8,7 +8,7 @@
 #include "for_each.hpp"
 #include "zip.hpp"
 
-namespace PP
+namespace PP::view
 {
-PP_CIA view_move = view_for_each * *move_assign | zip_view_pack;
+PP_CIA move = for_each * *move_assign | zip_view_pack;
 }

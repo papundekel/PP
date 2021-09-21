@@ -11,7 +11,7 @@ public:
 	no_default_initialized() = delete;
 
 	explicit constexpr no_default_initialized(T value) noexcept
-		: val(value)
+	    : val(value)
 	{}
 
 	constexpr auto get() const noexcept

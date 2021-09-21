@@ -18,17 +18,17 @@ PP_FUNCTOR(cartesian_product, concepts::tuple auto&& tuples)
 		auto [head_tuples, tail_tuples] = split(PP_F(tuples));
 
 		return concats(zip_with_pack(
-			[](auto&& h, auto&& t)
-			{
-				return map(
-					[&h](auto&& x)
-					{
-						return prepend(PP_F(h), PP_F(x));
-					},
-					PP_F(t));
-			},
-			PP_F(head_tuples),
-			make_iterate_tuple(count_value_t(head_tuples),
+		    [](auto&& h, auto&& t)
+		    {
+			    return map(
+			        [&h](auto&& x)
+			        {
+				        return prepend(PP_F(h), PP_F(x));
+			        },
+			        PP_F(t));
+		    },
+		    PP_F(head_tuples),
+		    make_iterate_tuple(count_value_t(head_tuples),
 		                       cartesian_product(move(tail_tuples)))));
 	}
 	else

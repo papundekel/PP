@@ -5,9 +5,9 @@
 #include "../utility/move.hpp"
 #include "concept.hpp"
 
-namespace PP
+namespace PP::view
 {
-PP_FUNCTOR(view_fold,
+PP_FUNCTOR(fold,
            concepts::value auto left,
            auto&& f,
            auto init,
@@ -15,16 +15,16 @@ PP_FUNCTOR(view_fold,
 {
 	if constexpr (PP_GV(left))
 	{
-		auto i = view::begin(PP_F(v));
+		auto i = begin(PP_F(v));
 
-		for (; i != view::end(PP_F(v)); ++i)
+		for (; i != end(PP_F(v)); ++i)
 			init = PP_F(f)(move(init), *i);
 
 		return make_tuple(move(i), move(init));
 	}
 	else
 	{
-		auto [begin, i] = view::begin_end(PP_F(v));
+		auto [begin, i] = begin_end(PP_F(v));
 
 		if (begin != i)
 		{
@@ -39,6 +39,6 @@ PP_FUNCTOR(view_fold,
 	}
 });
 
-PP_CIA view_foldl = view_fold * value_true;
-PP_CIA view_foldr = view_fold * value_false;
+PP_CIA foldl = fold * value_true;
+PP_CIA foldr = fold * value_false;
 }

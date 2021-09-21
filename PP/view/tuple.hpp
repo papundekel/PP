@@ -1,9 +1,9 @@
 #pragma once
-#include "get_type.hpp"
-#include "get_value.hpp"
-#include "remove_cvref.hpp"
-#include "utility/move.hpp"
-#include "view.hpp"
+#include "../get_type.hpp"
+#include "../get_value.hpp"
+#include "../remove_cvref.hpp"
+#include "../utility/move.hpp"
+#include "../view/concept.hpp"
 
 namespace PP
 {
@@ -14,7 +14,7 @@ class view_tuple
 
 public:
 	constexpr view_tuple(concepts::value auto, Iterator begin) noexcept
-		: begin(move(begin))
+	    : begin(move(begin))
 	{}
 
 	constexpr decltype(auto) operator[](concepts::value auto i) const noexcept
@@ -32,7 +32,7 @@ public:
 };
 template <typename Iterator>
 view_tuple(concepts::value auto count, Iterator)
-	-> view_tuple<Iterator, *PP_CV(count)>;
+    -> view_tuple<Iterator, *PP_CV(count)>;
 
 constexpr auto make_view_tuple(concepts::value auto count,
                                concepts::iterator auto&& i) noexcept

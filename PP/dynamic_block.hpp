@@ -1,7 +1,7 @@
 #pragma once
 #include "pointer_allocate.hpp"
 #include "unique_pointer.hpp"
-#include "view.hpp"
+#include "view/concept.hpp"
 #include "view/copy_uninitialized.hpp"
 
 namespace PP

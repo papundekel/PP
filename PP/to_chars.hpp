@@ -1,7 +1,7 @@
 #pragma once
-#include "simple_view.hpp"
 #include "unbounded.hpp"
 #include "view/move.hpp"
+#include "view/pair.hpp"
 
 namespace PP
 {

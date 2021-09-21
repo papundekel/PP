@@ -32,7 +32,7 @@ PP_FUNCTOR(add_reference, concepts::value auto ref, concepts::type auto t)
 ///
 template <ref_qualifier ref>
 struct add_reference_tag_t
-	: public value_t<ref>
+    : public value_t<ref>
 {};
 
 constexpr inline add_reference_tag_t<ref_qualifier::lvalue> add_lvalue_tag{};

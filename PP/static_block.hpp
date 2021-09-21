@@ -18,8 +18,8 @@ class static_block
 
 public:
 	constexpr static_block() noexcept
-		: buffer()
-		, constant_created(false)
+	    : buffer()
+	    , constant_created(false)
 	{
 		if (std::is_constant_evaluated())
 		{

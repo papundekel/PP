@@ -1,10 +1,10 @@
 #pragma once
 #include <iosfwd>
 
-#include "shift_view.hpp"
-#include "simple_view.hpp"
 #include "size_t.hpp"
 #include "view/equal.hpp"
+#include "view/pair.hpp"
+#include "view/shift.hpp"
 
 namespace PP
 {
@@ -12,11 +12,11 @@ namespace PP
 /// @brief Replacement for @ref std::string_view
 ///
 template <typename CharT>
-class basic_string_view : public pointer_view<const CharT>
+class basic_string_view : public view::pair_pointer<const CharT>
 {
 public:
 	constexpr basic_string_view(const CharT* begin, const CharT* end) noexcept
-	    : pointer_view<const CharT>(begin, end)
+	    : view::pair_pointer<const CharT>(begin, end)
 	{}
 	constexpr basic_string_view(concepts::view auto&& v) noexcept
 	    : basic_string_view(view::begin(PP_F(v)), view::end(PP_F(v)))

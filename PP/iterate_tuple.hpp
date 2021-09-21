@@ -14,16 +14,16 @@ public:
 	T obj;
 
 	constexpr iterate_tuple(placeholder_t, auto&& obj)
-		: obj(PP_F(obj))
+	    : obj(PP_F(obj))
 	{}
 	constexpr iterate_tuple(placeholder_t, concepts::value auto, auto&& obj)
-		: iterate_tuple(placeholder, PP_F(obj))
+	    : iterate_tuple(placeholder, PP_F(obj))
 	{}
 	constexpr iterate_tuple(placeholder_t,
 	                        concepts::value auto,
 	                        concepts::type auto,
 	                        auto&& obj)
-		: iterate_tuple(placeholder, PP_F(obj))
+	    : iterate_tuple(placeholder, PP_F(obj))
 	{}
 
 	constexpr auto tuple_count() const noexcept
@@ -38,11 +38,11 @@ public:
 	constexpr decltype(auto) operator[](concepts::value auto i) const& noexcept;
 	constexpr decltype(auto) operator[](concepts::value auto i) && noexcept;
 	constexpr decltype(auto) operator[](
-		concepts::value auto i) const&& noexcept;
+	    concepts::value auto i) const&& noexcept;
 };
 template <typename T>
 iterate_tuple(placeholder_t, concepts::value auto count, T)
-	-> iterate_tuple<decltype(to_value_t(count)), T>;
+    -> iterate_tuple<decltype(to_value_t(count)), T>;
 iterate_tuple(placeholder_t,
               concepts::value auto count,
               concepts::type auto t,
@@ -84,25 +84,25 @@ noexcept
 
 template <typename Count, typename T>
 constexpr decltype(auto) PP::iterate_tuple<Count, T>::operator[](
-	concepts::value auto i) & noexcept
+    concepts::value auto i) & noexcept
 {
 	return get(i, *this);
 }
 template <typename Count, typename T>
 constexpr decltype(auto) PP::iterate_tuple<Count, T>::operator[](
-	concepts::value auto i) const& noexcept
+    concepts::value auto i) const& noexcept
 {
 	return get(i, *this);
 }
 template <typename Count, typename T>
 constexpr decltype(auto) PP::iterate_tuple<Count, T>::operator[](
-	concepts::value auto i) && noexcept
+    concepts::value auto i) && noexcept
 {
 	return get(i, move(*this));
 }
 template <typename Count, typename T>
 constexpr decltype(auto) PP::iterate_tuple<Count, T>::operator[](
-	concepts::value auto i) const&& noexcept
+    concepts::value auto i) const&& noexcept
 {
 	return get(i, move(*this));
 }

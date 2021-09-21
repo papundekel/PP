@@ -14,26 +14,27 @@ public:
 	constexpr virtual void write(char c) noexcept = 0;
 };
 
-constexpr ostream& operator<<(ostream& out, char c) noexcept
+extern ostream& cout;
+}
+
+constexpr PP::ostream& operator<<(PP::ostream& out, char c) noexcept
 {
 	out.write(c);
 	return out;
 }
 
-constexpr ostream& operator<<(ostream& out, concepts::view auto&& v) noexcept
+constexpr PP::ostream& operator<<(PP::ostream& out,
+                                  PP::concepts::view auto&& v) noexcept
 {
 	for (char c : v)
 		out.write(c);
 	return out;
 }
 
-constexpr ostream& operator<<(ostream& out,
-                              concepts::integer auto number) noexcept
+constexpr PP::ostream& operator<<(PP::ostream& out,
+                                  PP::concepts::integer auto number) noexcept
 {
 	char buffer[32];
-	auto end = to_chars(buffer, number);
-	return out << (simple_view(view::begin(buffer), end));
-}
-
-extern ostream& cout;
+	auto end = PP::to_chars(buffer, number);
+	return out << (PP::view::pair(PP::view::begin(buffer), end));
 }

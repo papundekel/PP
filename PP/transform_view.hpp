@@ -11,7 +11,7 @@
 #include "iterator_inner.hpp"
 #include "ptrdiff_t.hpp"
 #include "remove_cvref.hpp"
-#include "simple_view.hpp"
+#include "view/pair.hpp"
 
 namespace PP
 {

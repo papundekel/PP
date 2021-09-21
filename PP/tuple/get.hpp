@@ -7,7 +7,7 @@
 namespace PP::tuple
 {
 PP_FUNCTOR(get, concepts::value auto i, auto&& tuple)
-	-> decltype(auto) requires requires
+    -> decltype(auto) requires requires
 {
 	PP_F(tuple)[i];
 }

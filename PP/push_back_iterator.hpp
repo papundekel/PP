@@ -10,10 +10,10 @@ class push_back_iterator
 
 public:
 	constexpr push_back_iterator() noexcept
-		: c(nullptr)
+	    : c(nullptr)
 	{}
 	constexpr push_back_iterator(C& c) noexcept
-		: c(&c)
+	    : c(&c)
 	{}
 
 	constexpr const push_back_iterator& operator*() const noexcept

@@ -2,18 +2,18 @@
 #include "empty.hpp"
 #include "fold.hpp"
 
-namespace PP
+namespace PP::view
 {
-PP_FUNCTOR(view_for_each, auto&& f, concepts::view auto&& v)
+PP_FUNCTOR(for_each, auto&& f, concepts::view auto&& v)
 {
-	return view_fold(
+	return fold(
 	    value_true,
-	    [&f](empty, auto&& x)
+	    [&f](PP::empty, auto&& x)
 	    {
 		    PP_F(f)(PP_F(x));
-		    return empty{};
+		    return PP::empty{};
 	    },
-	    empty{},
+	    PP::empty{},
 	    PP_F(v))[value_0];
 });
 }

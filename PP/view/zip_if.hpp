@@ -1,19 +1,16 @@
 #pragma once
-#include "operators.hpp"
-#include "tuple.hpp"
-#include "tuple/for_each.hpp"
-#include "tuple/make.hpp"
-#include "tuple/map.hpp"
-#include "tuple/zip_with.hpp"
-#include "utility/move.hpp"
-#include "view.hpp"
+#include "../containers/tuple.hpp"
+#include "../operators.hpp"
+#include "../tuple/for_each.hpp"
+#include "../tuple/make.hpp"
+#include "../tuple/map.hpp"
+#include "../tuple/zip_with.hpp"
+#include "../utility/move.hpp"
+#include "concept.hpp"
 
-namespace PP
+namespace PP::view
 {
-PP_FUNCTOR(view_zip_if,
-           auto&& predicate,
-           auto&& f,
-           concepts::tuple auto&& views)
+PP_FUNCTOR(zip_if, auto&& predicate, auto&& f, concepts::tuple auto&& views)
 {
 	auto begin_ends = view::begin_end + PP_F(views);
 	auto is = tuple::get * value_0 + begin_ends;
@@ -40,13 +37,11 @@ PP_FUNCTOR(view_zip_if,
 	return !is;
 });
 
-PP_FUNCTOR(view_zip_if_pack,
+PP_FUNCTOR(zip_if_pack,
            auto&& predicate,
            auto&& f,
            concepts::view auto&&... views)
 {
-	return view_zip_if(PP_F(predicate),
-	                   PP_F(f),
-	                   forward_as_tuple(PP_F(views)...));
+	return zip_if(PP_F(predicate), PP_F(f), tuple::forward(PP_F(views)...));
 });
 }

@@ -12,7 +12,7 @@ class prepend_iterator
 
 public:
 	constexpr prepend_iterator(Head& head, I i)
-		: head(head)
-		, i(i)
+	    : head(head)
+	    , i(i)
 };
 }

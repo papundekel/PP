@@ -20,9 +20,9 @@ constexpr auto&& constant_helper(const forward_wrap<T>& x) noexcept
 PP_FUNCTOR(constant, auto&& cc)
 {
 	return functor(
-		[c = PP_F(cc)](auto&&...) -> decltype(auto)
-		{
-			return detail::constant_helper(c);
-		});
+	    [c = PP_F(cc)](auto&&...) -> decltype(auto)
+	    {
+		    return detail::constant_helper(c);
+	    });
 });
 }

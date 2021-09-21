@@ -72,28 +72,28 @@ public:
 	//	)
 	//{}
 	constexpr movable(in_place_tag_t, auto&& releaser, auto&&... args)
-		: pair(T(PP_F(args)...), PP_F(releaser))
+	    : pair(T(PP_F(args)...), PP_F(releaser))
 	{}
 	constexpr movable(movable_default_releaser_tag_t, auto&&... args)
-		: movable(in_place_tag, Releaser(), PP_F(args)...)
+	    : movable(in_place_tag, Releaser(), PP_F(args)...)
 	{}
 	movable() = default;
 	constexpr movable(placeholder_t, auto&& value, auto&& releaser)
-		: pair(PP_F(value), PP_F(releaser))
+	    : pair(PP_F(value), PP_F(releaser))
 	{}
 	constexpr movable(const movable& other)
-		: pair(other.pair.first, other.pair.second)
+	    : pair(other.pair.first, other.pair.second)
 	{}
 	template <typename U, typename D>
 	constexpr movable(const movable<U, D>& other)
-		: pair(other.pair.first, other.pair.second)
+	    : pair(other.pair.first, other.pair.second)
 	{}
 	constexpr movable(movable&& other)
-		: pair(other.release(), move(other).pair.second)
+	    : pair(other.release(), move(other).pair.second)
 	{}
 	template <typename U, typename D>
 	constexpr movable(movable<U, D>&& other)
-		: pair(other.release(), move(other).pair.second)
+	    : pair(other.release(), move(other).pair.second)
 	{}
 
 	constexpr movable& operator=(movable&& other)

@@ -5,7 +5,7 @@ namespace PP
 {
 template <typename... Ts>
 struct overloaded
-	: public Ts...
+    : public Ts...
 {
 	using Ts::operator()...;
 };

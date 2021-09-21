@@ -3,7 +3,7 @@
 #include "dynamic_block.hpp"
 #include "movable.hpp"
 #include "no_default_initialized.hpp"
-#include "view.hpp"
+#include "view/concept.hpp"
 #include "view/destroy.hpp"
 #include "view/move_uninitialized.hpp"
 #include "view/remove.hpp"

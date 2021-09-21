@@ -10,10 +10,10 @@ class forward_wrap
 
 public:
 	constexpr forward_wrap(const forward_wrap& other) noexcept
-		: ref(PP_F(other.ref))
+	    : ref(PP_F(other.ref))
 	{}
 	constexpr forward_wrap(T&& ref) noexcept
-		: ref(PP_F(ref))
+	    : ref(PP_F(ref))
 	{}
 
 	constexpr decltype(auto) operator--(int) const noexcept

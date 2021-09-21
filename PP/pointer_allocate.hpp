@@ -17,37 +17,37 @@ class pointer_allocate : public pointer_base<T>
 
 public:
 	constexpr pointer_allocate()
-		: pointer_base<T>()
-		, count_allocator(0, Allocator())
+	    : pointer_base<T>()
+	    , count_allocator(0, Allocator())
 	{}
 	constexpr pointer_allocate(decltype(nullptr))
-		: pointer_allocate()
+	    : pointer_allocate()
 	{}
 
 	constexpr pointer_allocate(auto&& allocator, size_t count)
-		: pointer_base<T>(count != 0 ? PP_F(allocator).allocate(count)
+	    : pointer_base<T>(count != 0 ? PP_F(allocator).allocate(count)
 	                                 : nullptr)
-		, count_allocator(count, PP_F(allocator))
+	    , count_allocator(count, PP_F(allocator))
 	{}
 
 	template <detail::pointer_new_compatible<T> U, typename AllocatorOther>
 	constexpr pointer_allocate(
-		const pointer_allocate<U, AllocatorOther>& other) noexcept
-		: pointer_base<T>(other)
-		, count_allocator(other.count_allocator.first,
+	    const pointer_allocate<U, AllocatorOther>& other) noexcept
+	    : pointer_base<T>(other)
+	    , count_allocator(other.count_allocator.first,
 	                      other.count_allocator.second)
 	{}
 	template <detail::pointer_new_compatible<T> U, typename AllocatorOther>
 	constexpr pointer_allocate(
-		pointer_allocate<U, AllocatorOther>&& other) noexcept
-		: pointer_base<T>(move(other))
-		, count_allocator(other.count_allocator.first,
+	    pointer_allocate<U, AllocatorOther>&& other) noexcept
+	    : pointer_base<T>(move(other))
+	    , count_allocator(other.count_allocator.first,
 	                      move(other).count_allocator.second)
 	{}
 
 	template <detail::pointer_new_compatible<T> U, typename AllocatorOther>
 	constexpr pointer_allocate& operator=(
-		const pointer_allocate<U, AllocatorOther>& other) noexcept
+	    const pointer_allocate<U, AllocatorOther>& other) noexcept
 	{
 		pointer_base<T>::operator=(move(other));
 		count_allocator = other.count_allocator;
@@ -55,7 +55,7 @@ public:
 	}
 	template <detail::pointer_new_compatible<T> U, typename AllocatorOther>
 	constexpr pointer_allocate& operator=(
-		pointer_allocate<U, AllocatorOther>&& other) noexcept
+	    pointer_allocate<U, AllocatorOther>&& other) noexcept
 	{
 		pointer_base<T>::operator=(move(other));
 		count_allocator = move(other).count_allocator;

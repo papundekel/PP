@@ -14,7 +14,6 @@
 #include "empty.hpp"
 #include "get_reference.hpp"
 #include "ptrdiff_t.hpp"
-#include "simple_view.hpp"
 #include "tuple/find_dynamic.hpp"
 #include "tuple/get_dynamic.hpp"
 #include "tuple/prepend.hpp"
@@ -22,6 +21,7 @@
 #include "utility/move.hpp"
 #include "value_t.hpp"
 #include "view/empty.hpp"
+#include "view/pair.hpp"
 
 namespace PP
 {

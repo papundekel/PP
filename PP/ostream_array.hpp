@@ -17,5 +17,5 @@ struct ostream_array_helper
 
 template <size_t count>
 using ostream_array =
-	detail::ostream_basic<detail::ostream_array_helper<count>::template help>;
+    detail::ostream_basic<detail::ostream_array_helper<count>::template help>;
 }

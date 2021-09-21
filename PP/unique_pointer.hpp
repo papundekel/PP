@@ -35,17 +35,17 @@ class unique_pointer
 	friend class unique_pointer;
 
 	scoped<movable<Pointer, nullptr_releaser>, detail::unique_pointer_deleter>
-		p;
+	    p;
 
 public:
 	unique_pointer() = default;
 
 	constexpr unique_pointer(decltype(nullptr)) noexcept
-		: unique_pointer()
+	    : unique_pointer()
 	{}
 
 	constexpr unique_pointer(placeholder_t, auto&&... args)
-		: p(scoped_default_destructor_tag,
+	    : p(scoped_default_destructor_tag,
 	        movable_default_releaser_tag,
 	        PP_F(args)...)
 	{}
@@ -53,7 +53,7 @@ public:
 	constexpr unique_pointer(unique_pointer&& other) = default;
 	template <typename PointerOther>
 	constexpr unique_pointer(unique_pointer<PointerOther>&& other)
-		: p(move(other).p)
+	    : p(move(other).p)
 	{}
 
 	constexpr unique_pointer& operator=(unique_pointer&& other) = default;
@@ -161,7 +161,7 @@ constexpr auto make_unique_pointer_get_maker(auto tag)
 	return [tag](concepts::type auto t, auto&&... args)
 	{
 		return make_unique_pointer_get_maker_helper(
-			tag)(make_unique_pointer_template(tag)(t), PP_F(args)...);
+		    tag)(make_unique_pointer_template(tag)(t), PP_F(args)...);
 	};
 }
 constexpr auto make_unique_pointer_helper(auto&& maker,
@@ -178,9 +178,9 @@ constexpr auto make_unique_pointer(auto tag,
                                    auto&&... args)
 {
 	return detail::make_unique_pointer_helper(
-		detail::make_unique_pointer_get_maker(tag),
-		t,
-		PP_F(args)...);
+	    detail::make_unique_pointer_get_maker(tag),
+	    t,
+	    PP_F(args)...);
 }
 
 constexpr auto make_unique_copy(auto tag, auto&& value)

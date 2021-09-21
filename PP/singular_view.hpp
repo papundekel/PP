@@ -1,5 +1,5 @@
 #pragma once
-#include "simple_view.hpp"
+#include "view/pair.hpp"
 
 namespace PP
 {

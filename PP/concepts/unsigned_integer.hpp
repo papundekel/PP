@@ -7,6 +7,6 @@ namespace concepts
 {
 template <typename T>
 concept unsigned_integer = unsigned_short<T> || unsigned_int<T> ||
-	unsigned_long<T> || unsigned_long_long<T>;
+    unsigned_long<T> || unsigned_long_long<T>;
 }
 }

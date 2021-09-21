@@ -6,13 +6,13 @@
 #include "../containers/tuple.hpp"
 #include "../containers/tuple_std.hpp"
 #include "../operators.hpp"
-#include "../simple_view.hpp"
 #include "../tuple/all.hpp"
 #include "../tuple/any.hpp"
 #include "../tuple/for_each.hpp"
 #include "../tuple/map.hpp"
 #include "../tuple/zip_with.hpp"
 #include "concept.hpp"
+#include "pair.hpp"
 
 namespace PP
 {

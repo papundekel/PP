@@ -20,21 +20,21 @@ class optional
 
 public:
 	constexpr optional(nullopt_t) noexcept
-		: block()
-		, has_value(false)
+	    : block()
+	    , has_value(false)
 	{}
 
 	constexpr optional(const optional& other)
-		: block()
-		, has_value(other.has_value)
+	    : block()
+	    , has_value(other.has_value)
 	{
 		if (has_value)
 			construct(*other);
 	}
 
 	constexpr optional(optional&& other)
-		: block()
-		, has_value(other.has_value)
+	    : block()
+	    , has_value(other.has_value)
 	{
 		if (has_value)
 			construct(*move(other));
@@ -46,8 +46,8 @@ public:
 	}
 
 	constexpr optional(placeholder_t, auto&&... args)
-		: block()
-		, has_value(true)
+	    : block()
+	    , has_value(true)
 	{
 		construct(PP_F(args)...);
 	}

@@ -10,7 +10,7 @@ class wrap_iterator
 
 public:
 	constexpr wrap_iterator(W w)
-		: w(move(w))
+	    : w(move(w))
 	{}
 
 	constexpr auto& operator*() const
@@ -34,7 +34,7 @@ class index_view
 
 public:
 	constexpr index_view(F f)
-		: f(move(f))
+	    : f(move(f))
 	{}
 
 	constexpr auto begin() const

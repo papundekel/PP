@@ -12,9 +12,9 @@ class view_chain_iterator
 
 public:
 	constexpr view_chain_iterator(const I& i, const E& e, const J& j)
-		: i(i)
-		, e(e)
-		, j(j)
+	    : i(i)
+	    , e(e)
+	    , j(j)
 	{}
 
 	constexpr decltype(auto) operator*() const
@@ -93,7 +93,7 @@ class view_chain_wrap
 
 public:
 	constexpr view_chain_wrap(const I& i, const E& e)
-		: pair(i, e)
+	    : pair(i, e)
 	{}
 
 	constexpr auto begin() const
@@ -117,7 +117,7 @@ constexpr auto operator^(view_chain_wrap<I, E> vc, concepts::view auto&& v)
 	// should return a simpler end iterator but any_view is broken and
 	// cannot receive two different iterators
 	return view_chain_wrap(
-		view_chain_iterator(vc.begin(), vc.end(), view::begin(PP_F(v))),
-		view_chain_iterator(vc.end(), vc.end(), view::end(PP_F(v))));
+	    view_chain_iterator(vc.begin(), vc.end(), view::begin(PP_F(v))),
+	    view_chain_iterator(vc.end(), vc.end(), view::end(PP_F(v))));
 }
 }
