@@ -37,11 +37,11 @@ struct add_reference_tag_t
 
 constexpr inline add_reference_tag_t<ref_qualifier::lvalue> add_lvalue_tag{};
 constexpr inline add_reference_tag_t<ref_qualifier::rvalue> add_rvalue_tag{};
-
-template <ref_qualifier ref>
-constexpr auto operator+(concepts::type auto t,
-                         add_reference_tag_t<ref> tag) noexcept
-{
-    return add_reference(tag, t);
 }
+
+template <PP::ref_qualifier ref>
+constexpr auto operator+(PP::concepts::type auto t,
+                         PP::add_reference_tag_t<ref> tag) noexcept
+{
+    return PP::add_reference(tag, t);
 }

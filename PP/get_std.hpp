@@ -4,9 +4,12 @@
 
 namespace PP
 {
+namespace tuple
+{
 template <size_t I>
 constexpr decltype(auto) get(concepts::tuple auto&& t) noexcept
 {
     return PP_F(t)[value<I>];
+}
 }
 }

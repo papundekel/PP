@@ -11,9 +11,9 @@ struct value_t
         return V;
     }
 
-    constexpr operator decltype(V)() const noexcept
+    explicit constexpr operator decltype(V)() const noexcept
     {
-        return V;
+       return V;
     }
 
     constexpr decltype(auto) operator()(auto&&... args) const noexcept

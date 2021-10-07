@@ -2,9 +2,7 @@
 #include "forward_wrap.hpp"
 #include "functor.hpp"
 
-namespace PP
-{
-namespace detail
+namespace PP::detail
 {
 constexpr auto constant_helper(auto&& x) noexcept
 {
@@ -17,6 +15,8 @@ constexpr auto&& constant_helper(const forward_wrap<T>& x) noexcept
 }
 }
 
+namespace PP
+{
 PP_FUNCTOR(constant, auto&& cc)
 {
     return functor(

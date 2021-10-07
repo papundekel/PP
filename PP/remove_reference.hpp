@@ -7,10 +7,10 @@
 
 namespace PP
 {
-PP_CIA remove_reference = tuple::get * value_0 | decompose_reference;
-
-constexpr auto operator!(concepts::type auto t) noexcept
-{
-    return remove_reference(t);
+PP_CIA remove_reference = tuple_get * value_0 | decompose_reference;
 }
+
+constexpr auto operator!(PP::concepts::type auto t) noexcept
+{
+    return PP::remove_reference(t);
 }

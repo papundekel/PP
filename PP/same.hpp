@@ -2,10 +2,7 @@
 #include "get_type.hpp"
 #include "type_t.hpp"
 
-namespace PP
+constexpr auto operator==(PP::concepts::type auto t, PP::concepts::type auto u) noexcept
 {
-constexpr auto operator==(concepts::type auto t, concepts::type auto u) noexcept
-{
-    return to_type_t(t) == to_type_t(u);
-}
+    return PP::to_type_t(t) == PP::to_type_t(u);
 }

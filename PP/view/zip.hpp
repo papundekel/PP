@@ -39,14 +39,12 @@ public:
     constexpr void step()
     {
         if constexpr ((concepts::iterator<Iterators> && ...))
-            tuple::for_each(value_true, ipr, *this);
+            tuple::for_each(ipr, *this);
     }
     constexpr auto advance(ptrdiff_t offset)
     {
         if constexpr ((concepts::iterator_ra<Iterators> && ...))
-            tuple::for_each(value_true,
-                            pas(partial_tag, value_1, offset),
-                            *this);
+            tuple::for_each(pas(partial_tag, value_1, offset), *this);
         else
             return 0;
     }
@@ -67,7 +65,7 @@ PP_FUNCTOR(make_zip_iterator, auto&&... iterators)
 
 PP_FUNCTOR(zip_view_pack, concepts::view auto&&... views)
 {
-    return simple_view(make_zip_iterator(view::begin(PP_F(views))...),
-                       make_zip_iterator(view::end(PP_F(views))...));
+    return view::pair(make_zip_iterator(view::begin(PP_F(views))...),
+                      make_zip_iterator(view::end(PP_F(views))...));
 });
 }

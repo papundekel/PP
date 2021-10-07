@@ -4,6 +4,7 @@
 #include "../macros/CIA.hpp"
 #include "../utility/move.hpp"
 #include "apply.hpp"
+#include "../constant.hpp"
 
 namespace PP::detail
 {

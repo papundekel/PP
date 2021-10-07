@@ -22,7 +22,7 @@ namespace PP::tuple
 // clang-format off
 PP_FUNCTOR(recursive, auto&& f, concepts::value auto i, auto&& t)
     -> decltype(auto) requires requires { PP_F(f)(PP_F(t)); }
-                            && (bool(PP_CV(i) < type_count_value_t(PP_DT(t))))
+                            && ((PP_CV(i) < type_count_value_t(PP_DT(t))).value_f())
 	                  	    && (
                                    *PP_CV(i) == 0
                                ||  requires { pred(PP_F(t)); }

@@ -20,7 +20,7 @@ PP_FUNCTOR(fold,
         for (; i != end(PP_F(v)); ++i)
             init = PP_F(f)(move(init), *i);
 
-        return make_tuple(move(i), move(init));
+        return tuple::make(move(i), move(init));
     }
     else
     {
@@ -35,7 +35,7 @@ PP_FUNCTOR(fold,
             } while (i != begin);
         }
 
-        return make_tuple(move(i), move(init));
+        return tuple::make(move(i), move(init));
     }
 });
 

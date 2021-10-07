@@ -23,7 +23,7 @@ class tuple_wrap
     T obj;
 
 public:
-    constexpr tuple_wrap(auto&& i)
+    constexpr tuple_wrap(placeholder_t, auto&& i)
         : obj(PP_F(i))
     {}
     constexpr tuple_wrap(in_place_t, auto&& i)
@@ -46,9 +46,10 @@ public:
         : tuple_wrap<I, T>()...
     {}
 
-    constexpr tuple_impl(auto&&... args) requires(sizeof...(args) ==
+    constexpr tuple_impl(placeholder_t,
+                         auto&&... args) requires(sizeof...(args) ==
                                                   sizeof...(T))
-        : tuple_wrap<I, T>(PP_F(args))...
+        : tuple_wrap<I, T>(placeholder, PP_F(args))...
     {}
     constexpr tuple_impl(in_place_t,
                          auto&&... is) requires(sizeof...(is) == sizeof...(T))
@@ -111,7 +112,7 @@ PP_FUNCTOR(construct,
     if constexpr (PP_GV(in_place))
         return t(PP::in_place, PP_F(args)...);
     else
-        return t(PP_F(args)...);
+        return t(PP::placeholder, PP_F(args)...);
 });
 }
 

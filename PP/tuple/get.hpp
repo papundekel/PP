@@ -4,14 +4,14 @@
 #include "../type_t.hpp"
 #include "../utility/forward.hpp"
 
-namespace PP::tuple
+namespace PP
 {
-PP_FUNCTOR(get, concepts::value auto i, auto&& tuple)
+PP_FUNCTOR(tuple_get, concepts::value auto i, auto&& t)
     -> decltype(auto) requires requires
 {
-    PP_F(tuple)[i];
+    PP_F(t)[i];
 }
 {
-    return PP_F(tuple)[i];
+    return PP_F(t)[i];
 });
 }

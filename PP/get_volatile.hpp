@@ -7,5 +7,5 @@
 
 namespace PP
 {
-PP_CIA get_volatile_value_t = tuple::get * value_1 | decompose_volatile;
+PP_CIA get_volatile_value_t = tuple_get * value_1 | decompose_volatile;
 }

@@ -36,6 +36,6 @@ constexpr auto operator""_sv(const char* s, size_t l)
     return string_view(s, s + l);
 }
 }
-
-std::ostream& operator<<(std::ostream& out, string_view sv);
 }
+
+std::ostream& operator<<(std::ostream& out, PP::string_view sv);

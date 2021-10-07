@@ -26,7 +26,7 @@ class vector
 
     constexpr void destroy_all() noexcept
     {
-        view_destroy(*this);
+        view::destroy(*this);
     }
 
 public:
@@ -77,7 +77,7 @@ public:
         {
             auto new_block = block.spawn_new(c != 0 ? 2 * c : 2);
 
-            view_move_uninitialized(new_block, *this);
+            view::move_uninitialized(new_block, *this);
 
             destroy_all();
 

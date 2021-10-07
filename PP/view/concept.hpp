@@ -15,7 +15,7 @@ template <typename T>
 concept view_concept_begin_member = requires
 {
     {
-        declval(type<T>).begin()
+        declval_impl<T>().begin()
         } -> concepts::iterator;
 };
 template <typename T>
@@ -26,7 +26,7 @@ concept view_concept_begin_any =
     view_concept_begin_array_reference<T> || requires
 {
     {
-        begin(declval(type<T>))
+        begin(declval_impl<T>())
         } -> concepts::iterator;
 };
 
@@ -34,7 +34,7 @@ template <typename T>
 concept view_concept_end_member = requires
 {
     {
-        declval(type<T>).end()
+        declval_impl<T>().end()
         } -> concepts::non_void;
 };
 template <typename T>
@@ -45,7 +45,7 @@ concept view_concept_end_any =
     view_concept_end_bounded_array_reference<T> || requires
 {
     {
-        end(declval(type<T>))
+        end(declval_impl<T>())
         } -> concepts::non_void;
 };
 }
@@ -83,21 +83,38 @@ PP_FUNCTOR(view_type_begin_iterator_pure, concepts::type auto v)
 
 namespace PP
 {
-PP_FUNCTOR(is_view, concepts::type auto t)
+namespace concepts
 {
-    return requires
+template <typename T>
+concept view = requires
+{
     {
-        {
-            view::begin(declval(t))
-            } -> concepts::iterator;
-        {
-            view::end(declval(t))
-            } -> concepts::sentinel<
-                PP_APPLY_TRANSFORM(detail::view_type_begin_iterator_pure, t)>;
-    };
-});
+        ::PP::view::begin(::PP::declval_impl<T>())
+        } -> concepts::iterator;
+    {
+        ::PP::view::end(::PP::declval_impl<T>())
+        } -> concepts::sentinel<PP_GT(
+            detail::view_type_begin_iterator_pure(PP::type<T>))>;
+};
+}
 
-PP_CONCEPT1(view)
+PP_CONCEPT_FUNCTOR1(view);
+// PP_FUNCTOR(is_view, concepts::type auto t)
+// {
+//     return requires
+//     {
+//         {
+//             ::PP::view::begin(::PP::declval(t))
+//             } -> concepts::iterator;
+//         {
+//             ::PP::view::end(::PP::declval(t))
+//             } -> concepts::sentinel<
+//                 PP_APPLY_TRANSFORM(detail::view_type_begin_iterator_pure,
+//                 t)>;
+//     };
+// });
+
+// PP_CONCEPT1(view)
 }
 
 namespace PP::view

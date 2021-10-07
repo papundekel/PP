@@ -1,8 +1,8 @@
 #pragma once
 #include <tuple>
 
-#include "get_std.hpp"
-#include "view/zip.hpp"
+#include "../get_std.hpp"
+#include "zip.hpp"
 
 namespace std
 {

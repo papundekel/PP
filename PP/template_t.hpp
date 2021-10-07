@@ -10,15 +10,15 @@ struct template_t
 };
 template <template <typename...> typename T>
 constexpr inline template_t<T> Template{};
+}
 
 template <template <typename...> typename T, template <typename...> typename U>
-constexpr auto operator==(template_t<T>, template_t<U>) noexcept
+constexpr auto operator==(PP::template_t<T>, PP::template_t<U>) noexcept
 {
     return false;
 }
 template <template <typename...> typename T>
-constexpr auto operator==(template_t<T>, template_t<T>) noexcept
+constexpr auto operator==(PP::template_t<T>, PP::template_t<T>) noexcept
 {
     return true;
-}
 }

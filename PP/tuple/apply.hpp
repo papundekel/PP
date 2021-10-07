@@ -16,7 +16,7 @@ PP_FUNCTOR(apply, auto&& f, concepts::tuple auto&& t) -> decltype(auto)
 {
     return apply_pack(
         PP_F(f),
-        // tuple::get(partial_tag, value_1, PP_FW(t)),
+        // tuple_get(partial_tag, value_1, PP_FW(t)),
         [tt = PP_FW(t)](concepts::value auto&& i) -> decltype(auto)
         {
             return tt-- [PP_F(i)];

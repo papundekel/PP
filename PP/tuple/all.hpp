@@ -15,11 +15,8 @@ PP_FUNCTOR(all, auto&& pp, concepts::tuple auto&& t) -> decltype(auto)
 });
 }
 
-namespace PP
+constexpr decltype(auto) operator&&(PP::concepts::functor auto&& f,
+                                    PP::concepts::tuple auto&& tuple)
 {
-constexpr decltype(auto) operator&&(concepts::functor auto&& f,
-                                    concepts::tuple auto&& tuple)
-{
-    return tuple::all(PP_UF(f), PP_F(tuple));
-}
+    return PP::tuple::all(PP_UF(f), PP_F(tuple));
 }

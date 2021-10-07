@@ -6,15 +6,10 @@
 
 namespace PP
 {
-// PP_FUNCTOR(negate, auto&& f)
-//{
-//	return compose(neg, PP_F(f));
-//});
-
 PP_CIA negate = compose * neg;
-
-constexpr auto operator!(concepts::functor auto&& f) noexcept
-{
-    return negate(PP_F(f));
 }
+
+constexpr auto operator!(PP::concepts::functor auto&& f) noexcept
+{
+    return PP::negate(PP_F(f));
 }

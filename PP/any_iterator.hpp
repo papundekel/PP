@@ -31,12 +31,12 @@ enum class iterator_category : int
     bi,
     ra,
 };
-constexpr bool operator<=(iterator_category a, iterator_category b)
+}
+
+constexpr bool operator<=(PP::iterator_category a, PP::iterator_category b)
 {
     return (int)a <= (int)b;
 }
-}
-
 constexpr PP::iterator_category operator-(PP::iterator_category a)
 {
     return PP::iterator_category((int)a - 1);
@@ -385,7 +385,7 @@ public:
 // tuple_find_dynamic([](auto* p) { return p != nullptr; }, ptrs);
 //
 //	if (i != sizeof...(OtherIterators))
-//		return variant_visit(PP_F(f), tuple::get_dynamic(i, ptrs));
+//		return variant_visit(PP_F(f), tuple_get_dynamic(i, ptrs));
 //	else
 //		return def;
 //}

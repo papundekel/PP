@@ -10,7 +10,7 @@ PP_FUNCTOR(prepend, auto&& head, concepts::tuple auto&& t)
     return functor(
         [&head](auto&&... elements)
         {
-            return forward_as_tuple(PP_F(head), PP_F(elements)...);
+            return tuple::forward(PP_F(head), PP_F(elements)...);
         })[PP_F(t)];
 });
 }

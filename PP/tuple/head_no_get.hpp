@@ -22,7 +22,7 @@ namespace PP::tuple
 PP_FUNCTOR(head_no_get, detail::tuple_concept_head_no_get_any auto&& t)
     -> decltype(auto)
 {
-    if constexpr (detail::tuple_concept_head_no_get_member<decltype(t)>)
+    if constexpr (PP::detail::tuple_concept_head_no_get_member<decltype(t)>)
         return PP_F(t).head();
     else
         return head_impl(PP_F(t));

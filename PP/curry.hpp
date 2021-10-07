@@ -15,9 +15,9 @@ PP_FUNCTOR(curry, auto&& f)
                 });
         });
 });
-
-constexpr auto operator~(concepts::functor auto&& f)
-{
-    return curry(unwrap_functor(PP_F(f)));
 }
+
+constexpr auto operator~(PP::concepts::functor auto&& f)
+{
+    return PP::curry(PP::unwrap_functor(PP_F(f)));
 }

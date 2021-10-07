@@ -24,5 +24,5 @@ PP_FUNCTOR(map, auto&& map, concepts::tuple auto&& t)
 constexpr auto operator+(PP::concepts::wrap auto&& f,
                          PP::concepts::tuple auto&& t)
 {
-    return map(PP_UF(f), PP_F(t));
+    return PP::tuple::map(PP_UF(f), PP_F(t));
 }

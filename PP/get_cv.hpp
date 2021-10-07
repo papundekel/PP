@@ -7,5 +7,5 @@
 
 namespace PP
 {
-PP_CIA get_cv_value_t = tuple::get * value_1 | decompose_cv;
+PP_CIA get_cv_value_t = tuple_get * value_1 | decompose_cv;
 }

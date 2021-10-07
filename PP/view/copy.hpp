@@ -6,7 +6,7 @@
 #include "for_each.hpp"
 #include "zip.hpp"
 
-namespace PP
+namespace PP::view
 {
-PP_CIA view_copy = view_for_each * *asg | zip_view_pack;
+PP_CIA copy = for_each * *asg | zip_view_pack;
 }
