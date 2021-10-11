@@ -29,7 +29,7 @@ concept value = detail::has_value_f<T> || detail::has_value<T>;
 
 namespace PP
 {
-PP_CIA get_type_value = make_overloaded_pack(
+PP_CIA get_type_value = overloaded(
     [](auto&& t) -> decltype(auto) requires detail::has_value_f<PP_GT(t)>
     {
         return remove_reference_impl<PP_GT(t)>::value_f();
@@ -148,8 +148,12 @@ constexpr auto operator<=(PP::concepts::type auto x,
 
 namespace PP
 {
-PP_FUNCTOR(to_value_t, concepts::value auto x)
+namespace functors
+{
+PP_CIA to_value_t = [](concepts::value auto x)
 {
     return value<PP_GV(x)>;
-});
+};
+}
+using functors::to_value_t;
 }

@@ -12,11 +12,10 @@
 
 namespace PP
 {
-PP_FUNCTOR(arg_splitter,
-           concepts::type auto delimiter_type,
-           concepts::tuple auto&& to_construct_types,
-           concepts::value auto i,
-           auto&&... args)
+PP_CIA arg_splitter = [](concepts::type auto delimiter_type,
+                         concepts::tuple auto&& to_construct_types,
+                         concepts::value auto i,
+                         auto&&... args)
 {
     auto splits = tuple_splits(
         [delimiter_type](auto&& arg)
@@ -39,5 +38,5 @@ PP_FUNCTOR(arg_splitter,
                 };
             }) +
         (PP_F(to_construct_types) ^ move(splits)))[i]();
-});
+};
 }

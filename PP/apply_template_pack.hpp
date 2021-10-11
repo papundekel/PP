@@ -7,12 +7,16 @@
 
 namespace PP
 {
-constexpr inline functor apply_template_pack(
+namespace functors
+{
+PP_CIA apply_template_pack =
     []<template <typename...> typename Template>(template_t<Template>,
                                                  concepts::type auto... types)
-    {
-        return type<Template<PP_GT(types)...>>;
-    });
+{
+    return type<Template<PP_GT(types)...>>;
+};
+}
+PP_FUNCTOR(apply_template_pack)
 }
 
 template <template <typename...> typename Template>

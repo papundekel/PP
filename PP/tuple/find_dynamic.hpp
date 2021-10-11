@@ -6,7 +6,7 @@
 
 namespace PP::tuple
 {
-PP_FUNCTOR(find_dynamic, auto&& predicate, concepts::tuple auto&& tuple)
+PP_CIA find_dynamic = [](auto&& predicate, concepts::tuple auto&& tuple)
 {
     return foldl(
                [predicate_wrap = PP_FW(predicate)](
@@ -21,5 +21,5 @@ PP_FUNCTOR(find_dynamic, auto&& predicate, concepts::tuple auto&& tuple)
                detail::tuple_find_index_state{0, false},
                PP_F(tuple))
         .index;
-});
+};
 }

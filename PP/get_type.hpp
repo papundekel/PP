@@ -19,10 +19,14 @@ namespace PP
 template <typename T>
 using get_type_t = remove_reference_impl<T>::type;
 
-PP_FUNCTOR(get_type, concepts::type auto&& t)
+namespace functors
+{
+PP_CIA get_type = [](concepts::type auto&& t)
 {
     return type<get_type_t<get_type_t<decltype(t)>>>;
-});
+};
+}
+using functors::get_type;
 
 #define PP_GT(x) ::PP::get_type_t<decltype(x)>
 #define PP_COPY_TYPE(x) (::PP::type<PP_GT(x)>)

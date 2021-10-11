@@ -10,7 +10,7 @@
 
 namespace PP::tuple
 {
-PP_FUNCTOR(cartesian_product, concepts::tuple auto&& tuples)
+PP_CIA cartesian_product = [](concepts::tuple auto&& tuples)
 {
     if constexpr (type_count(PP_DT(tuples)) != 0 &&
                   all(neq * 0_z | type_count, types(PP_DT(tuples))))
@@ -32,11 +32,11 @@ PP_FUNCTOR(cartesian_product, concepts::tuple auto&& tuples)
                                cartesian_product(move(tail_tuples)))));
     }
     else
-        return make_singular_tuple(tuple_empty{});
-});
+        return make_singular_tuple(tuple_empty{};
+};
 
-PP_FUNCTOR(cartesian_product_pack, concepts::tuple auto&&... tuples)
+PP_CIA cartesian_product_pack = [](concepts::tuple auto&&... tuples)
 {
     return cartesian_product(forward_as_tuple(PP_F(tuples)...));
-});
+};
 }

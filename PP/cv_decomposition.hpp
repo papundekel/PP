@@ -49,11 +49,11 @@ constexpr cv_decomposition_type get_cv_decomposition_type(
         return cv_decomposition_type::none;
 }
 
-PP_FUNCTOR(get_cv_decomposition_element, concepts::type auto t)
-    -> cv_decomposition_element
+PP_CIA get_cv_decomposition_element =
+    [](concepts::type auto t) -> cv_decomposition_element
 {
     return {*get_cv_value_t(t), get_cv_decomposition_type(t), extent(t)};
-});
+};
 
 constexpr auto shed_pointer(concepts::type auto t)
 {
@@ -78,20 +78,20 @@ constexpr auto shed_pointers_helper(concepts::type auto t) noexcept
         return make_singular_tuple(T);
 }
 
-PP_FUNCTOR(shed_pointers, concepts::type auto t)
+PP_CIA shed_pointers = [](concepts::type auto t)
 {
     return shed_pointers_helper(t);
-});
+};
 
 constexpr inline PP::functor array_tail_value(
     []<typename T, size_t N>(PP::array<T, N> arr)
     {
-        using namespace PP::literals;
+    using namespace PP::literals;
 
-        PP::array<T, N - 1> result;
-        PP::view_copy(result, 1_s >> arr);
-        return result;
-    });
+    PP::array<T, N - 1> result;
+    PP::view_copy(result, 1_s >> arr);
+    return result;
+    };
 
 PP_CIA cv_decomposition = array_tail_value |
                           tuple_map_to_array * type<cv_decomposition_element> *

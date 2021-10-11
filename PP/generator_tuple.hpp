@@ -25,8 +25,8 @@ public:
     }
 };
 
-PP_FUNCTOR(make_id_tuple, concepts::value auto count)
+PP_CIA make_id_tuple = [](concepts::value auto count)
 {
     return generator_tuple_t<id_copy, PP_GV(count)>{};
-});
+};
 }

@@ -7,7 +7,7 @@
 namespace PP
 {
 PP_CIA is_pointer_to_member =
-    make_overloaded_pack(
+    overloaded(
         []<typename T, typename Class>(type_t<T Class::*>)
         {
             return true;

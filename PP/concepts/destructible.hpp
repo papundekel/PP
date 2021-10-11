@@ -6,7 +6,7 @@
 
 namespace PP
 {
-PP_FUNCTOR(is_destructible, concepts::type auto t)
+PP_CIA is_destructible = [](concepts::type auto t)
 {
     constexpr auto T = PP_COPY_TYPE(t);
 
@@ -22,7 +22,7 @@ PP_FUNCTOR(is_destructible, concepts::type auto t)
     }
     else
         return false;
-});
+};
 
 namespace concepts
 {

@@ -5,11 +5,15 @@
 
 namespace PP
 {
-PP_FUNCTOR(is_pointable, concepts::type auto t)
+namespace functors
+{
+PP_CIA is_pointable = [](concepts::type auto t)
 {
     return requires
     {
         typename detail::templated_dummy<PP_GT(t)*>;
     };
-});
+};
+}
+PP_FUNCTOR(is_pointable)
 }

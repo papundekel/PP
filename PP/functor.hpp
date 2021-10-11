@@ -1,80 +1,33 @@
 #pragma once
-#include "macros/CIA.hpp"
+#include "concepts/copyable.hpp"
+#include "declval_impl.hpp"
 #include "utility/forward.hpp"
-#include "utility/move.hpp"
-#include "value_t.hpp"
-
-namespace PP
-{
-constexpr inline struct partial_tag_t
-{
-} partial_tag;
-}
 
 namespace PP::concepts
 {
 template <typename T>
-concept functor_call_not_partial = !requires(T t)
+concept functor = requires
 {
-    partial_tag_t{t};
+    functor_enabler(declval_impl<T>());
 };
 }
 
-namespace PP
-{
-template <typename F>
-struct functor
-{
-    F f;
-
-    constexpr decltype(auto) operator()(auto&&... args) const& requires(
-        concepts::functor_call_not_partial<decltype(args)>&&...) &&
-        requires
-    {
-        f(PP_F(args)...);
-    }
-    {
-        return f(PP_F(args)...);
-    }
-    constexpr decltype(auto) operator()(auto&&... args) const&& requires(
-        concepts::functor_call_not_partial<decltype(args)>&&...) &&
-        requires
-    {
-        move(f)(PP_F(args)...);
-    }
-    {
-        return move(f)(PP_F(args)...);
+#define PP_FUNCTOR_ENABLER(namespace_name)                                     \
+    namespace namespace_name::functors                                         \
+    {                                                                          \
+    void functor_enabler(auto&&);                                              \
     }
 
-    constexpr auto operator()(partial_tag_t,
-                              auto i,
-                              auto&& arg) const& noexcept;
-    constexpr auto operator()(partial_tag_t,
-                              auto i,
-                              auto&& arg) const&& noexcept;
+PP_FUNCTOR_ENABLER(PP)
+PP_FUNCTOR_ENABLER(PP::detail)
+PP_FUNCTOR_ENABLER(PP::tuple)
+PP_FUNCTOR_ENABLER(PP::view)
 
-    constexpr decltype(auto) operator[](auto&& tuple) const&;
-    constexpr decltype(auto) operator[](auto&& tuple) const&&;
-};
+#undef PP_FUNCTOR_ENABLER
+
+constexpr decltype(auto) operator<<=(PP::concepts::functor auto&& f, auto&& arg)
+{
+    return PP_F(f)(PP_F(arg));
 }
 
-namespace PP::detail
-{
-template <typename T>
-concept functor_helper = requires(T t)
-{
-    []<typename F>(const functor<F>&)
-    {
-    }(t);
-};
-}
-
-namespace PP
-{
-constexpr auto&& unwrap_functor_impl(detail::functor_helper auto&& f) noexcept
-{
-    return PP_F(f).f;
-}
-
-#define PP_FUNCTOR(name, ...) PP_CIA name = ::PP::functor([](__VA_ARGS__)
-}
+#define PP_FUNCTOR(functor_name) using functors::functor_name;

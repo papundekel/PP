@@ -7,8 +7,8 @@
 
 namespace PP
 {
-PP_FUNCTOR(init_type, concepts::type auto&& t)
+PP_CIA init_type = [](concepts::type auto&& t)
 {
     return PP_DT(declval(PP_F(t))());
-});
+};
 }

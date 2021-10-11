@@ -6,7 +6,7 @@
 
 namespace PP
 {
-PP_FUNCTOR(add_reference, concepts::value auto ref, concepts::type auto t)
+PP_CIA add_reference = [](concepts::value auto ref, concepts::type auto t)
 {
     using T = PP_GT(t);
 
@@ -23,7 +23,7 @@ PP_FUNCTOR(add_reference, concepts::value auto ref, concepts::type auto t)
     }
     else
         return t;
-});
+};
 
 ///
 /// @brief Empty tag type used for adding a ref qualifier.

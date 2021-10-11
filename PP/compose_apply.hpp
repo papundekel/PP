@@ -4,15 +4,18 @@
 
 namespace PP
 {
-PP_FUNCTOR(compose_apply, auto&& f, auto&& g)
+namespace functors
 {
-    return compose(applier(unwrap_functor(PP_F(f))), unwrap_functor(PP_F(g)));
-});
+PP_CIA compose_apply = [](auto&& f, auto&& g)
+{
+    return compose(applier(PP_F(f)), PP_F(g));
+};
+}
+PP_FUNCTOR(compose_apply)
 }
 
 constexpr auto operator^(PP::concepts::functor auto&& f,
                          PP::concepts::functor auto&& g)
 {
-    return PP::compose_apply(PP::unwrap_functor(PP_F(f)),
-                             PP::unwrap_functor(PP_F(g)));
+    return PP::compose_apply(PP_F(f), PP_F(g));
 }

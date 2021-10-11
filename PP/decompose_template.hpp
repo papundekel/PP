@@ -33,7 +33,7 @@ struct decompose_dummy
 namespace PP
 {
 PP_CIA decompose =
-    make_overloaded_pack(
+    overloaded(
         []<template <typename...> typename T, typename... Types>(
             type_t<T<Types...>>)
         {
@@ -46,18 +46,18 @@ PP_CIA decompose =
         }) |
     remove_cvref;
 
-PP_CIA decompose_template = functor(
-                                [](auto p)
-                                {
-                                    return p.Template;
-                                }) |
-                            decompose;
-PP_CIA decompose_types = functor(
-                             [](auto p)
-                             {
-                                 return p.types;
-                             }) |
-                         decompose;
+PP_CIA decompose_template = compose(
+    [](auto p)
+    {
+        return p.Template;
+    },
+    decompose);
+PP_CIA decompose_types = compose(
+    [](auto p)
+    {
+        return p.types;
+    },
+    decompose);
 }
 
 constexpr auto operator*(PP::concepts::type auto t) noexcept

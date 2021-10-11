@@ -71,15 +71,15 @@ constexpr const auto&& get(concepts::value auto,
     return static_cast<const decltype(t.obj)&&>(t.obj);
 }
 
-PP_FUNCTOR(make_iterate_tuple, concepts::value auto count, auto&& x)
+PP_CIA make_iterate_tuple = [](concepts::value auto count, auto&& x)
 {
     return iterate_tuple(placeholder, count, PP_F(x));
-});
-PP_FUNCTOR(forward_as_iterate_tuple, concepts::value auto count, auto&& x)
-noexcept
+};
+PP_CIA forward_as_iterate_tuple =
+    [](concepts::value auto count, auto&& x) noexcept
 {
     return iterate_tuple(placeholder, count, PP_DT(x), PP_F(x));
-});
+};
 }
 
 template <typename Count, typename T>

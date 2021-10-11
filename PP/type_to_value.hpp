@@ -4,8 +4,8 @@
 
 namespace PP
 {
-PP_FUNCTOR(type_to_value, concepts::type auto t)
+PP_CIA type_to_value = [](concepts::type auto t)
 {
     return PP::value<PP_COPY_TYPE(t)>;
-});
+};
 }

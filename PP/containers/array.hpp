@@ -314,35 +314,38 @@ constexpr auto end(PP::detail::array_concept auto&& a) noexcept
 
 namespace PP::detail
 {
-PP_FUNCTOR(array_pick_best_type,
-           concepts::type auto&& def,
-           concepts::tuple auto&& t) -> decltype(auto)
+PP_CIA array_pick_best_type = [](concepts::type auto&& def,
+                                 concepts::tuple auto&& t) -> decltype(auto)
 {
     if constexpr (tuple_type_count(PP_DT(t)) != 0)
         return PP_F(t)[value_0];
     else
         return PP_F(def);
-});
+};
 }
 
 namespace PP::array
 {
-PP_FUNCTOR(construct, concepts::type auto&& t, auto tag, auto&&... args)
+PP_CIA construct = [](concepts::type auto&& t, auto tag, auto&&... args)
 {
     return type<PP_GT(t), sizeof...(args)>(tag, PP_F(args)...);
-});
+};
 }
 
 namespace PP::detail
 {
-PP_FUNCTOR(array_construct_helper, auto&& f, auto tag, auto&&... args)
+namespace functors
+{
+PP_CIA array_construct_helper = [](auto&& f, auto tag, auto&&... args)
 {
     return construct(array_pick_best_type(
                          type_char,
                          tuple::map(PP_F(f), type_tuple<decltype(args)...>)),
                      tag,
                      PP_F(args)...);
-});
+};
+}
+PP_FUNCTOR(array_construct_helper)
 }
 
 namespace PP::array

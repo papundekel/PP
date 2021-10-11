@@ -46,8 +46,8 @@ constexpr auto tuple_count_impl(value_tuple_t<V...>) noexcept
     return value<sizeof...(V)>;
 }
 
-PP_FUNCTOR(make_value_tuple, concepts::value auto... v)
+PP_CIA make_value_tuple = [](concepts::value auto... v)
 {
     return value_tuple_t(to_value_t(v)...);
-});
+};
 }

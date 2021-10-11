@@ -32,9 +32,17 @@ public:
         return (*this)[value<I>];
     }
 };
+}
 
-PP_FUNCTOR(make_decompose_pair, concepts::type auto t, concepts::value auto v)
+namespace PP::functors
 {
-    return decompose_pair<PP_GT(t), PP_GV(v)>();
-});
+PP_CIA make_decompose_pair = [](concepts::type auto t, concepts::value auto v)
+{
+    return decompose_pair<PP_GT(t), PP_GV(v)>{};
+};
+}
+
+namespace PP
+{
+using functors::make_decompose_pair;
 }

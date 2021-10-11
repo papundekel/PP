@@ -4,8 +4,12 @@
 
 namespace PP
 {
-PP_FUNCTOR(static__cast, concepts::type auto t, auto&& value) -> decltype(auto)
+namespace functors
+{
+PP_CIA static__cast = [](concepts::type auto t, auto&& value) -> decltype(auto)
 {
     return static_cast<PP_GT(t)>(PP_F(value));
-});
+};
+}
+PP_FUNCTOR(static__cast)
 }

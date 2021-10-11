@@ -41,8 +41,12 @@ constexpr auto value_sequence_make(concepts::value auto i)
 
 namespace PP
 {
-PP_FUNCTOR(value_sequence_make, concepts::value auto i)
+namespace functors
+{
+PP_CIA value_sequence_make = [](concepts::value auto i)
 {
     return detail::value_sequence_make(i);
-});
+};
+}
+PP_FUNCTOR(value_sequence_make)
 }

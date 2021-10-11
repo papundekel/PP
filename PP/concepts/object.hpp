@@ -12,5 +12,9 @@ concept object = complete_object<T> || unbounded_array<T>;
 
 namespace PP
 {
+namespace functors
+{
 PP_CONCEPT_FUNCTOR1(object);
+}
+PP_FUNCTOR(is_object)
 }

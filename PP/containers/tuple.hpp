@@ -10,6 +10,7 @@
 #include "../init_type.hpp"
 #include "../placeholder.hpp"
 #include "../tuple/concept.hpp"
+#include "../utility/move.hpp"
 #include "../value_sequence.hpp"
 #include "type_tuple.hpp"
 
@@ -102,10 +103,9 @@ constexpr auto tuple_count_impl(const container<T...>&) noexcept
     return value<sizeof...(T)>;
 }
 
-PP_FUNCTOR(construct,
-           concepts::tuple auto&& types,
-           concepts::value auto&& in_place,
-           auto&&... args)
+PP_CIA construct = [](concepts::tuple auto&& types,
+                      concepts::value auto&& in_place,
+                      auto&&... args)
 {
     auto t = Template<container>[PP_F(types)];
 
@@ -113,27 +113,25 @@ PP_FUNCTOR(construct,
         return t(PP::in_place, PP_F(args)...);
     else
         return t(PP::placeholder, PP_F(args)...);
-});
-}
-
-namespace PP::detail
-{
-PP_FUNCTOR(tuple_construct_helper,
-           auto&& f,
-           concepts::value auto&& in_place,
-           auto&&... args)
-{
-    return tuple::construct(type_tuple<PP_GT(PP_F(f)(PP_DT(args)))...>,
-                            PP_F(in_place),
-                            PP_F(args)...);
-});
+};
 }
 
 namespace PP::tuple
 {
-PP_CIA make = detail::tuple_construct_helper * decay * value_false;
-PP_CIA forward = detail::tuple_construct_helper * id_copy * value_false;
-PP_CIA init = detail::tuple_construct_helper * init_type * value_true;
+namespace functors
+{
+PP_CIA tuple_construct_helper =
+    [](auto&& f, concepts::value auto&& in_place, auto&&... args)
+{
+    return tuple::construct(type_tuple<PP_GT(PP_F(f)(PP_DT(args)))...>,
+                            PP_F(in_place),
+                            PP_F(args)...);
+};
+}
+
+PP_CIA make = functors::tuple_construct_helper * decay * value_false;
+PP_CIA forward = functors::tuple_construct_helper * id_copy * value_false;
+PP_CIA init = functors::tuple_construct_helper * init_type * value_true;
 }
 
 namespace PP::detail

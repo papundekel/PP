@@ -3,7 +3,7 @@
 
 namespace PP
 {
-PP_FUNCTOR(view_find, auto&& predicate, concepts::view auto&& v)
+PP_CIA view_find = [](auto&& predicate, concepts::view auto&& v)
 {
     auto i = view::begin(PP_F(v));
 
@@ -11,5 +11,5 @@ PP_FUNCTOR(view_find, auto&& predicate, concepts::view auto&& v)
         ;
 
     return move(i);
-});
+};
 }

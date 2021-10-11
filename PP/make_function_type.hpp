@@ -96,25 +96,23 @@ constexpr auto make_function_type_helper(concepts::type auto return_type,
     }
 }
 
-PP_FUNCTOR(make_function_type_impl,
-           concepts::type auto return_type,
-           concepts::tuple auto parameter_types,
-           concepts::value auto Noexcept,
-           concepts::value auto cv,
-           concepts::value auto ref)
+PP_CIA make_function_type_impl = [](concepts::type auto return_type,
+                                    concepts::tuple auto parameter_types,
+                                    concepts::value auto Noexcept,
+                                    concepts::value auto cv,
+                                    concepts::value auto ref)
 {
     return make_function_type_helper(return_type,
                                      make_type_tuple[parameter_types],
                                      Noexcept,
                                      cv,
                                      ref);
-});
+};
 
-PP_FUNCTOR(make_function_type_from_type,
-           concepts::type auto t,
-           concepts::value auto Noexcept,
-           concepts::value auto cv,
-           concepts::value auto ref)
+PP_CIA make_function_type_from_type = [](concepts::type auto t,
+                                         concepts::value auto Noexcept,
+                                         concepts::value auto cv,
+                                         concepts::value auto ref)
 {
     auto info = get_function_info(t);
     return make_function_type_impl(info.return_type,
@@ -122,17 +120,16 @@ PP_FUNCTOR(make_function_type_from_type,
                                    Noexcept,
                                    cv,
                                    ref);
-});
+};
 
-PP_FUNCTOR(make_function_type_from_type_nocvref,
-           concepts::type auto t,
-           concepts::value auto Noexcept)
+PP_CIA make_function_type_from_type_nocvref =
+    [](concepts::type auto t, concepts::value auto Noexcept)
 {
     return make_function_type_from_type(t,
                                         Noexcept,
                                         value<cv_qualifier::none>,
                                         value<ref_qualifier::none>);
-});
+};
 }
 
 PP_CIA make_function_type = make_overloaded_pack(
@@ -141,12 +138,12 @@ PP_CIA make_function_type = make_overloaded_pack(
     detail::make_function_type_from_type_nocvref,
     [](concepts::value auto info)
     {
-        constexpr auto INFO = PP_CV(info);
+    constexpr auto INFO = PP_CV(info);
 
-        return detail::make_function_type_impl(INFO.return_type,
-                                               INFO.parameter_types,
-                                               value<INFO.Noexcept>,
-                                               value<INFO.cv>,
-                                               value<INFO.ref>);
-    });
+    return detail::make_function_type_impl(INFO.return_type,
+                                           INFO.parameter_types,
+                                           value<INFO.Noexcept>,
+                                           value<INFO.cv>,
+                                           value<INFO.ref>);
+    };
 }

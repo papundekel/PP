@@ -1,16 +1,13 @@
 #pragma once
-#include "apply_partially.hpp"
+#include "apply_partially_first.hpp"
 #include "tuple/apply.hpp"
 
 namespace PP
 {
-PP_FUNCTOR(applier, auto&& f)
-{
-    return tuple::apply * PP_F(f);
-});
+PP_CIA applier = apply_partially_first * tuple::apply;
 }
 
-constexpr auto operator*(PP::concepts::wrap auto&& f)
+constexpr auto operator++(PP::concepts::functor_or_wrap auto&& f, int)
 {
-    return PP::applier(PP_UF(f));
+    return PP::applier(PP_F(f));
 }

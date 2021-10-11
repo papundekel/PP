@@ -7,10 +7,10 @@
 
 namespace PP::tuple
 {
-PP_FUNCTOR(for_each_dir,
-           concepts::value auto left,
-           auto&& ff,
-           concepts::tuple auto&& t)
+namespace functors
+{
+PP_CIA for_each_dir =
+    [](concepts::value auto left, auto&& ff, concepts::tuple auto&& t)
 {
     fold(
         left,
@@ -21,7 +21,9 @@ PP_FUNCTOR(for_each_dir,
         },
         empty{},
         PP_F(t));
-});
+};
+}
+PP_FUNCTOR(for_each_dir)
 
 PP_CIA for_each = for_each_dir * value_true;
 }

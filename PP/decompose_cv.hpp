@@ -4,13 +4,18 @@
 #include "decompose_volatile.hpp"
 #include "get_value.hpp"
 
-namespace PP
+namespace PP::functors
 {
-PP_FUNCTOR(decompose_cv, concepts::type auto t)
+PP_CIA decompose_cv = [](concepts::type auto t)
 {
     auto [t_no_c, c] = decompose_const(t);
     auto [t_no_cv, v] = decompose_volatile(t_no_c);
 
     return make_decompose_pair(t_no_cv, c | v);
-});
+};
+}
+
+namespace PP
+{
+using functors::decompose_cv;
 }

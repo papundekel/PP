@@ -29,10 +29,10 @@ constexpr auto tuple_to_array_helper(concepts::type auto t,
 
 namespace PP::tuple
 {
-PP_FUNCTOR(to_array, concepts::type auto&& t, concepts::tuple auto&& tuple)
+PP_CIA to_array = [](concepts::type auto&& t, concepts::tuple auto&& tuple)
 {
     return (array::construct * PP_FW(t) * placeholder)[PP_F(tuple)];
-});
+};
 }
 
 constexpr auto operator&(PP::concepts::type auto t,

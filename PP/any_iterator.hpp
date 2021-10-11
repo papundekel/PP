@@ -44,10 +44,14 @@ constexpr PP::iterator_category operator-(PP::iterator_category a)
 
 namespace PP
 {
-PP_FUNCTOR(add_cv_reference, concepts::value auto cv, concepts::type auto t)
+namespace functors
+{
+PP_CIA add_cv_reference = [](concepts::value auto cv, concepts::type auto t)
 {
     return add_reference(get_reference_value_t(t), add_cv(cv, !t));
-});
+};
+}
+PP_FUNCTOR(add_cv_reference)
 
 namespace detail
 {
@@ -57,7 +61,7 @@ struct any_iterator_cant_copy_construct
     {}
 };
 
-PP_FUNCTOR(remove_cvref_if_constructible, concepts::type auto t)
+PP_CIA remove_cvref_if_constructible = [](concepts::type auto t)
 {
     constexpr auto T = PP_COPY_TYPE(t);
 
@@ -65,7 +69,7 @@ PP_FUNCTOR(remove_cvref_if_constructible, concepts::type auto t)
         return remove_cvref(T);
     else
         return type<detail::any_iterator_cant_copy_construct>;
-});
+};
 
 template <typename T, typename U>
 concept at_least_type = -type<T> >= -type<U>;
@@ -1083,7 +1087,7 @@ constexpr auto make_any_iterator(concepts::iterator auto i,
 }
 }
 
-PP_CIA make_any_iterator = make_overloaded_pack(
+PP_CIA make_any_iterator = overloaded(
     [](concepts::iterator auto i, concepts::tuple auto compatible_iterators)
     {
         return detail::make_any_iterator(i, compatible_iterators);

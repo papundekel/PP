@@ -13,6 +13,6 @@ project(PP)
 
 add_subdirectory(PP)
 
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/PPdemo/")
-add_subdirectory(PPdemo)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/PPtest/")
+add_subdirectory(PPtest)
 endif()

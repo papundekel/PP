@@ -17,8 +17,12 @@ decay_helper(T) -> decay_helper<T>;
 
 namespace PP
 {
-PP_FUNCTOR(decay, concepts::type auto&& t)
+namespace functors
 {
-    return detail::decay_helper(declval(t));
-});
+PP_CIA decay = [](concepts::type auto&& t)
+{
+    return detail::decay_helper(declval(PP_F(t)));
+};
+}
+PP_FUNCTOR(decay)
 }

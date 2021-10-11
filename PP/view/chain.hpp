@@ -113,7 +113,8 @@ constexpr auto view_chain(concepts::view auto&& v)
 }
 
 template <typename I, typename E>
-constexpr auto operator^(PP::view_chain_wrap<I, E> vc, PP::concepts::view auto&& v)
+constexpr auto operator^(PP::view_chain_wrap<I, E> vc,
+                         PP::concepts::view auto&& v)
 {
     // should return a simpler end iterator but any_view is broken and
     // cannot receive two different iterators

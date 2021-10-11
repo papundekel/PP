@@ -5,7 +5,7 @@
 
 namespace PP
 {
-PP_CIA is_unbounded_array = make_overloaded_pack(
+PP_CIA is_unbounded_array = overloaded(
                                 []<typename T>(type_t<T[]>)
                                 {
                                     return true;

@@ -11,7 +11,7 @@
 
 namespace PP::tuple
 {
-PP_FUNCTOR(splits, auto&& pp, concepts::tuple auto&& t)
+PP_CIA splits = [](auto&& pp, concepts::tuple auto&& t)
 {
     return foldr(
         [p = PP_FW(pp)](auto&& element, auto splits)
@@ -32,5 +32,5 @@ PP_FUNCTOR(splits, auto&& pp, concepts::tuple auto&& t)
         },
         make(tuple_empty{}),
         PP_F(t));
-});
+};
 }

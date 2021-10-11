@@ -1,28 +1,27 @@
 #pragma once
 #include "forward_wrap.hpp"
 #include "functor.hpp"
-
-namespace PP::detail
-{
-constexpr auto constant_helper(auto&& x) noexcept
-{
-    return PP_F(x);
-}
-template <typename T>
-constexpr auto&& constant_helper(const forward_wrap<T>& x) noexcept
-{
-    return x--;
-}
-}
+#include "overloaded.hpp"
 
 namespace PP
 {
-PP_FUNCTOR(constant, auto&& cc)
+namespace functors
 {
-    return functor(
-        [c = PP_F(cc)](auto&&...) -> decltype(auto)
-        {
-            return detail::constant_helper(c);
-        });
-});
+PP_CIA constant = [](auto&& cc)
+{
+    return [c = PP_F(cc)](auto&&...) -> decltype(auto)
+    {
+        return overloaded(
+            []<typename T>(const forward_wrap<T>& x) -> auto&&
+            {
+                return x--;
+            },
+            [](auto&& x)
+            {
+                return PP_F(x);
+            })(c);
+    };
+};
+}
+PP_FUNCTOR(constant)
 }

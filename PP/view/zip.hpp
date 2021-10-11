@@ -14,7 +14,7 @@
 #include "concept.hpp"
 #include "pair.hpp"
 
-namespace PP
+namespace PP::view
 {
 template <typename... Iterators>
 class zip_iterator : public tuple::container<Iterators...>
@@ -44,7 +44,7 @@ public:
     constexpr auto advance(ptrdiff_t offset)
     {
         if constexpr ((concepts::iterator_ra<Iterators> && ...))
-            tuple::for_each(pas(partial_tag, value_1, offset), *this);
+            tuple::for_each(apply_partially(pas, value_1, offset), *this);
         else
             return 0;
     }
@@ -52,20 +52,25 @@ public:
     requires(sizeof...(Iterators) == sizeof...(IteratorsOther)) constexpr bool
     operator==(const zip_iterator<IteratorsOther...>& other) const noexcept
     {
-        return *eql || tuple::zip_pack(*this, other);
+        return eql++ || tuple::zip_pack(*this, other);
     }
 };
 template <typename... Iterators>
 zip_iterator(placeholder_t, Iterators...) -> zip_iterator<Iterators...>;
 
-PP_FUNCTOR(make_zip_iterator, auto&&... iterators)
+namespace functors
+{
+PP_CIA make_zip_iterator = [](auto&&... iterators)
 {
     return zip_iterator(placeholder, PP_F(iterators)...);
-});
+};
 
-PP_FUNCTOR(zip_view_pack, concepts::view auto&&... views)
+PP_CIA zip_pack = [](concepts::view auto&&... views)
 {
-    return view::pair(make_zip_iterator(view::begin(PP_F(views))...),
-                      make_zip_iterator(view::end(PP_F(views))...));
-});
+    return pair(make_zip_iterator(begin(PP_F(views))...),
+                make_zip_iterator(end(PP_F(views))...));
+};
+}
+PP_FUNCTOR(make_zip_iterator)
+PP_FUNCTOR(zip_pack)
 }

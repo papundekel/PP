@@ -3,8 +3,8 @@
 
 namespace PP
 {
-PP_FUNCTOR(make_singular_view, auto& object)
+PP_CIA make_singular_view = [](auto& object)
 {
     return simple_view(&object, &object + 1);
-});
+};
 }

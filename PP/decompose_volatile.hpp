@@ -10,7 +10,7 @@
 namespace PP
 {
 PP_CIA decompose_volatile =
-    make_overloaded_pack(
+    overloaded(
         []<typename T>(type_t<volatile T>)
         {
             return make_decompose_pair(type<T>,

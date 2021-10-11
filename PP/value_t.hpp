@@ -13,7 +13,7 @@ struct value_t
 
     explicit constexpr operator decltype(V)() const noexcept
     {
-       return V;
+        return V;
     }
 
     constexpr decltype(auto) operator()(auto&&... args) const noexcept

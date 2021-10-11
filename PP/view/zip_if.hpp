@@ -10,12 +10,12 @@
 
 namespace PP::view
 {
-PP_FUNCTOR(zip_if, auto&& predicate, auto&& f, concepts::tuple auto&& views)
+PP_CIA zip_if = [](auto&& predicate, auto&& f, concepts::tuple auto&& views)
 {
     auto begin_ends = view::begin_end + PP_F(views);
     auto is = tuple_get * value_0 + begin_ends;
 
-    while (*neq && begin_ends)
+    while (neq++ && begin_ends)
     {
         auto dereferenced = der + is;
 
@@ -35,13 +35,11 @@ PP_FUNCTOR(zip_if, auto&& predicate, auto&& f, concepts::tuple auto&& views)
     }
 
     return !is;
-});
+};
 
-PP_FUNCTOR(zip_if_pack,
-           auto&& predicate,
-           auto&& f,
-           concepts::view auto&&... views)
+PP_CIA zip_if_pack =
+    [](auto&& predicate, auto&& f, concepts::view auto&&... views)
 {
     return zip_if(PP_F(predicate), PP_F(f), tuple::forward(PP_F(views)...));
-});
+};
 }

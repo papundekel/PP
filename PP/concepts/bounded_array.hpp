@@ -6,7 +6,7 @@
 
 namespace PP
 {
-PP_CIA is_bounded_array = make_overloaded_pack(
+PP_CIA is_bounded_array = overloaded(
                               []<typename T, size_t N>(type_t<T[N]>)
                               {
                                   return true;

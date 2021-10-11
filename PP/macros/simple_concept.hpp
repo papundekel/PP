@@ -15,9 +15,9 @@
 #define PP_CONCEPT1(name) PP_CONCEPT(name, name)
 
 #define PP_CONCEPT_FUNCTOR(concept_name, functor_name)                         \
-    PP_FUNCTOR(is_##functor_name, ::PP::concepts::type auto t)                 \
+    PP_CIA is_##functor_name = [](::PP::concepts::type auto t)                 \
     {                                                                          \
         return ::PP::concepts::concept_name<PP_GT(t)>;                         \
-    })
+    }
 
 #define PP_CONCEPT_FUNCTOR1(name) PP_CONCEPT_FUNCTOR(name, name)

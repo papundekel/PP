@@ -4,7 +4,7 @@
 
 namespace PP
 {
-PP_FUNCTOR(max, auto&& comparer, concepts::view auto&& v)
+PP_CIA max = [](auto&& comparer, concepts::view auto&& v)
 {
     auto [begin, end] = view::begin_end(PP_F(v));
 
@@ -22,5 +22,5 @@ PP_FUNCTOR(max, auto&& comparer, concepts::view auto&& v)
     }
 
     return max_i;
-});
+};
 }

@@ -5,10 +5,14 @@
 
 namespace PP
 {
-PP_FUNCTOR(is_union, concepts::type auto t)
+namespace functors
+{
+PP_CIA is_union = [](concepts::type auto t)
 {
     return __is_union(PP_GT(t));
-});
+};
+}
+PP_FUNCTOR(is_union)
 
 PP_CONCEPT(union_type, union)
 }

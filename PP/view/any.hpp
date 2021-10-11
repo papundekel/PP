@@ -3,8 +3,8 @@
 
 namespace PP::view
 {
-PP_FUNCTOR(any, auto&& predicate, concepts::view auto&& v)
+PP_CIA any = [](auto&& predicate, concepts::view auto&& v)
 {
     return find(PP_F(predicate), PP_F(v)) != view::end(PP_F(v));
-});
+};
 }

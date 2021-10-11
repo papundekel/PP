@@ -3,6 +3,8 @@
 
 namespace PP
 {
+namespace functors
+{
 template <typename... Ts>
 struct overloaded
     : public Ts...
@@ -11,9 +13,6 @@ struct overloaded
 };
 template <typename... Ts>
 overloaded(Ts...) -> overloaded<Ts...>;
-
-PP_FUNCTOR(make_overloaded_pack, auto&&... functors)
-{
-    return functor(overloaded(unwrap_functor(PP_F(functors))...));
-});
+}
+using functors::overloaded;
 }

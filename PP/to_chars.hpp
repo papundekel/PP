@@ -1,13 +1,13 @@
 #pragma once
-#include "unbounded.hpp"
 #include "view/move.hpp"
 #include "view/pair.hpp"
+#include "view/unbounded.hpp"
 
 namespace PP
 {
 constexpr auto to_chars(concepts::view auto&& v, auto value) noexcept
 {
-    auto [begin, end] = PP::view::begin_end(PP_F(v));
+    auto [begin, end] = view::begin_end(PP_F(v));
 
     if (begin == end)
         return begin;
@@ -50,6 +50,6 @@ constexpr auto to_chars(concepts::view auto&& v, auto value) noexcept
         }
     }
 
-    return view_move(begin ^ unbounded, i ^ end)[value_0];
+    return view::move(begin ^ view::unbounded, view::pair(i, end))[value_0];
 }
 }

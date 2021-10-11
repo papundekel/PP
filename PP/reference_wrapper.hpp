@@ -11,9 +11,7 @@
 #include "placeholder.hpp"
 #include "remove_reference.hpp"
 
-namespace PP
-{
-namespace detail
+namespace PP::detail
 {
 template <typename T, typename U>
 concept reference_wrapper_compatible = type<T>
@@ -21,6 +19,8 @@ concept reference_wrapper_compatible = type<T>
                T::reference_type == U::reference_type);
 }
 
+namespace PP
+{
 template <typename T>
 class reference_wrapper
 {
@@ -73,18 +73,21 @@ reference_wrapper(T&&) -> reference_wrapper<T&&>;
 template <typename T>
 using clref_t = reference_wrapper<const T&>;
 
-PP_FUNCTOR(unref, auto&& x) -> decltype(auto)
+namespace functors
+{
+PP_CIA unref = [](auto&& x) -> decltype(auto)
 {
     if constexpr (PP_DT(x)->Template == Template<reference_wrapper>)
         return x.get();
     else
         return PP_F(x);
-});
+};
 
-PP_CIA ref = functor(
-                 [](auto&& x)
-                 {
-                     return reference_wrapper(PP_F(x));
-                 }) |
-             unref;
+PP_CIA ref = [](auto&& x)
+{
+    return reference_wrapper(PP_F(x));
+} | unref;
+}
+PP_FUNCTOR(unref)
+PP_FUNCTOR(ref)
 }

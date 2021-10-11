@@ -49,14 +49,15 @@ class variant2
 
     static constexpr auto types = type_tuple<T...>;
     static constexpr auto max =
-        (id_copy | der | max_default |
-         tuple_map_make_array)(partial_tag, value_1, types);
+        apply_partially(id_copy | der | max_default | tuple_map_make_array,
+                        value_1,
+                        types);
 
     static constexpr auto type_eql = functor(
         [](auto t, auto u)
         {
-            return value<PP_COPY_TYPE(t) == PP_COPY_TYPE(u)>;
-        });
+        return value<PP_COPY_TYPE(t) == PP_COPY_TYPE(u)>;
+        };
 
     size_t index;
     alignas(max(alignment_of)) char buffer[max(size_of)];
@@ -104,15 +105,15 @@ struct visit_helper
     template <typename V, typename R, typename... T>
     using functor = R (*)(V, T...);
 
-    static PP_FUNCTOR(visit, auto&& visitor, auto&&... variants)
-        -> decltype(auto)
+    static PP_CIA visit = [](auto&& visitor,
+                             auto&&... variants) -> decltype(auto)
     {
         return std::visit(compose(PP_REF_WRAP(visitor), unwrap_ref),
                           PP_F(variants).v...);
-    });
+    };
 
-    static PP_FUNCTOR(visit2, auto&& visitor, auto&&... variants)
-        -> decltype(auto)
+    static PP_CIA visit2 = [](auto&& visitor,
+                              auto&&... variants) -> decltype(auto)
     {
         auto table_tuple =
             PP::applier(
@@ -132,7 +133,7 @@ struct visit_helper
         // Template<functor>[PP_DT(visitor) += type_void +=
         //					  make_iterate_tuple(PP_SIZEOF___(variants),
         //										 type<char&>)]
-    });
+    };
 };
 }
 

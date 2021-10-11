@@ -6,9 +6,7 @@
 #include "../tuple/apply.hpp"
 #include "../value_t.hpp"
 
-namespace PP
-{
-namespace concepts
+namespace PP::concepts
 {
 template <typename T, typename... Args>
 concept constructible = requires
@@ -25,32 +23,33 @@ concept constructible_noexcept = requires
 };
 }
 
-namespace detail
+namespace PP
 {
-PP_FUNCTOR(is_constructible_pack_impl,
-           concepts::value auto Noexcept,
-           concepts::type auto t,
-           concepts::type auto... arg_types)
+namespace functors
+{
+PP_CIA is_constructible_pack_impl = [](concepts::value auto Noexcept,
+                                       concepts::type auto t,
+                                       concepts::type auto... arg_types)
 {
     if constexpr (PP_GV(Noexcept))
         return concepts::constructible_noexcept<PP_GT(t), PP_GT(arg_types)...>;
     else
         return concepts::constructible<PP_GT(t), PP_GT(arg_types)...>;
-});
+};
 
-PP_FUNCTOR(is_constructible_impl,
-           concepts::value auto Noexcept,
-           concepts::type auto t,
-           concepts::tuple auto arg_tuple)
+PP_CIA is_constructible_impl = [](concepts::value auto Noexcept,
+                                  concepts::type auto t,
+                                  concepts::tuple auto arg_tuple)
 {
     return (is_constructible_pack_impl * Noexcept * t)[arg_tuple];
-});
+};
 }
 
-PP_CIA is_constructible_pack = detail::is_constructible_pack_impl * value_false;
+PP_CIA is_constructible_pack =
+    functors::is_constructible_pack_impl * value_false;
 PP_CIA is_constructible_noexcept_pack =
-    detail::is_constructible_pack_impl * value_true;
+    functors::is_constructible_pack_impl * value_true;
 
-PP_CIA is_constructible = detail::is_constructible_impl * value_false;
-PP_CIA is_constructible_noexcept = detail::is_constructible_impl * value_true;
+PP_CIA is_constructible = functors::is_constructible_impl * value_false;
+PP_CIA is_constructible_noexcept = functors::is_constructible_impl * value_true;
 }

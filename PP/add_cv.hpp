@@ -6,7 +6,7 @@
 
 namespace PP
 {
-PP_FUNCTOR(add_cv, concepts::value auto cv, concepts::type auto t)
+PP_CIA add_cv = [](concepts::value auto cv, concepts::type auto t)
 {
     constexpr auto CV = *PP_CV(cv);
 
@@ -18,7 +18,7 @@ PP_FUNCTOR(add_cv, concepts::value auto cv, concepts::type auto t)
         return add_volatile(t);
     else
         return add_const(add_volatile(t));
-});
+};
 
 ///
 /// @brief Empty tag type used for adding a cv qualifier.
@@ -38,7 +38,8 @@ constexpr inline add_cv_tag_t<cv_qualifier::const_volatile>
 }
 
 template <PP::cv_qualifier cv>
-constexpr auto operator+(PP::concepts::type auto t, PP::add_cv_tag_t<cv> tag) noexcept
+constexpr auto operator+(PP::concepts::type auto t,
+                         PP::add_cv_tag_t<cv> tag) noexcept
 {
     return PP::add_cv(tag, t);
 }

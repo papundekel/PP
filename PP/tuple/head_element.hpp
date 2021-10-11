@@ -25,8 +25,7 @@ constexpr auto tuple_head_element_nonmember(auto&& t) requires requires
 
 namespace PP::tuple
 {
-PP_FUNCTOR(head_element, auto&& t)
-requires requires
+PP_CIA head_element = [](auto&& t) requires requires
 {
     detail::tuple_head_element_member(PP_F(t));
 } || requires
@@ -41,5 +40,5 @@ requires requires
         return detail::tuple_head_element_member(PP_F(t));
     else
         return detail::tuple_head_element_nonmember(PP_F(t));
-});
+};
 }

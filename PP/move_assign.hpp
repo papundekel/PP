@@ -4,8 +4,12 @@
 
 namespace PP
 {
-PP_FUNCTOR(move_assign, auto&& x, auto&& y) -> decltype(auto)
+namespace functors
+{
+PP_CIA move_assign = [](auto&& x, auto&& y) -> decltype(auto)
 {
     return PP_F(x) = move(y);
-});
+};
+}
+PP_FUNCTOR(move_assign)
 }

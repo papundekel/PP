@@ -17,8 +17,8 @@ constexpr decltype(auto) pack_get_implementation(concepts::value auto i,
 }
 }
 
-PP_FUNCTOR(pack_get, concepts::value auto i, auto&&... pack) -> decltype(auto)
+PP_CIA pack_get = [](concepts::value auto i, auto&&... pack) -> decltype(auto)
 {
     return detail::pack_get_implementation(i, PP_F(pack)...);
-});
+};
 }

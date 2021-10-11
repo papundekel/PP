@@ -1,10 +1,10 @@
 #pragma once
 #include "../apply_partially_first.hpp"
+#include "../constant.hpp"
 #include "../forward_wrap.hpp"
 #include "../macros/CIA.hpp"
 #include "../utility/move.hpp"
 #include "apply.hpp"
-#include "../constant.hpp"
 
 namespace PP::detail
 {
@@ -46,11 +46,12 @@ constexpr auto operator||(auto&& element, fold_wrapper<F, T> wrap)
 
 namespace PP::tuple
 {
-PP_FUNCTOR(fold_init,
-           concepts::value auto left,
-           auto&& ff,
-           auto&& ii,
-           concepts::tuple auto&& tuple)
+namespace functors
+{
+PP_CIA fold_init = [](concepts::value auto left,
+                      auto&& ff,
+                      auto&& ii,
+                      concepts::tuple auto&& tuple)
 {
     return apply(
         [left, f = PP_FW(ff), i = PP_FW(ii)](auto&&... e) -> decltype(auto)
@@ -61,18 +62,19 @@ PP_FUNCTOR(fold_init,
                 return (PP_F(e) || ... || detail::fold_wrapper{f--, i}).i();
         },
         PP_F(tuple));
-});
+};
 
-PP_FUNCTOR(fold,
-           concepts::value auto left,
-           auto&& ff,
-           auto&& ii,
-           concepts::tuple auto&& tuple)
+PP_CIA fold = [](concepts::value auto left,
+                 auto&& ff,
+                 auto&& ii,
+                 concepts::tuple auto&& tuple)
 {
     return fold_init(left, PP_F(ff), constant(PP_FW(ii)), PP_F(tuple));
-});
+};
+}
+PP_FUNCTOR(fold_init)
+PP_FUNCTOR(fold)
 
 PP_CIA foldl = fold * value_true;
-
 PP_CIA foldr = fold * value_false;
 }

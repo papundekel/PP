@@ -7,7 +7,7 @@
 
 namespace PP::view
 {
-PP_FUNCTOR(remove, auto&& predicate, concepts::view auto&& v)
+PP_CIA remove = [](auto&& predicate, concepts::view auto&& v)
 {
     return zip_if_pack(
         [&predicate](auto&&, auto&& element)
@@ -18,10 +18,10 @@ PP_FUNCTOR(remove, auto&& predicate, concepts::view auto&& v)
         move_assign,
         PP_F(v),
         PP_F(v))[value_0];
-});
+};
 
-PP_FUNCTOR(remove_view, auto&& predicate, concepts::view auto&& v)
+PP_CIA remove_view = [](auto&& predicate, concepts::view auto&& v)
 {
     return pair(begin(PP_F(v)), remove(PP_F(predicate), PP_F(v)));
-});
+};
 }

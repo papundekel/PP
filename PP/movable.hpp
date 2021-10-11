@@ -153,11 +153,11 @@ public:
     }
 };
 
-PP_FUNCTOR(make_movable_default, auto&& value)
+PP_CIA make_movable_default = [](auto&& value)
 {
     constexpr auto value_type = ~PP_DT(value);
 
     return Template<movable>(value_type)(movable_default_releaser_tag,
                                          PP_F(value));
-});
+};
 }

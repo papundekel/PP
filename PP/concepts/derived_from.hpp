@@ -13,8 +13,8 @@ concept derived_from = class_type<D> && class_type<B> &&
     convertible_to<const volatile D*, const volatile B*>;
 }
 
-PP_FUNCTOR(is_derived_from, concepts::type auto d, concepts::type auto b)
+PP_CIA is_derived_from = [](concepts::type auto d, concepts::type auto b)
 {
     return concepts::derived_from<PP_GT(d), PP_GT(b)>;
-});
+};
 }

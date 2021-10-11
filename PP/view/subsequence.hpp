@@ -25,10 +25,8 @@ enum class subsequence_type
 //	}
 //};
 
-PP_FUNCTOR(view_subsequence_if,
-           auto&& comparer,
-           concepts::view auto&& sub,
-           concepts::view auto&& full)
+PP_CIA view_subsequence_if =
+    [](auto&& comparer, concepts::view auto&& sub, concepts::view auto&& full)
 {
     bool may_be_proper = false;
 
@@ -55,7 +53,7 @@ PP_FUNCTOR(view_subsequence_if,
     }
     else
         return subsequence_type::none;
-});
+};
 
 PP_CIA view_subsequence = view_subsequence_if * eql;
 }

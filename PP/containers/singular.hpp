@@ -18,13 +18,13 @@ template <typename T>
 singular(placeholder_t, T) -> singular<T>;
 singular(placeholder_t, concepts::type auto t, auto&&) -> singular<PP_GT(t)>;
 
-PP_FUNCTOR(make_singular, auto&& x)
+PP_CIA make_singular = [](auto&& x)
 {
     return singular(placeholder, PP_F(x));
-});
+};
 
-PP_FUNCTOR(forward_as_singular, auto&& x) noexcept
+PP_CIA forward_as_singular = [](auto&& x) noexcept
 {
     return singular(placeholder, PP_DT(x), PP_F(x));
-});
+};
 }

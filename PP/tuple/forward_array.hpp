@@ -5,7 +5,7 @@
 
 namespace PP::tuple
 {
-PP_CIA forward_array = *array::forward;
+PP_CIA forward_array = array::forward++;
 }
 
 constexpr auto operator~(PP::concepts::tuple auto&& t)

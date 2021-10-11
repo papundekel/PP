@@ -5,8 +5,8 @@
 #include "../concepts/same_except_cvref.hpp"
 #include "../functor.hpp"
 #include "../ptrdiff_t.hpp"
-#include "../unbounded.hpp"
 #include "concept.hpp"
+#include "unbounded.hpp"
 
 namespace PP::view
 {
@@ -53,10 +53,10 @@ pair(const std::initializer_list<T>&) -> pair<const T*, const T*>;
 template <typename T>
 using pair_pointer = pair<T*>;
 
-PP_FUNCTOR(make_pair, concepts::view auto&& v)
+PP_CIA make_pair = [](concepts::view auto&& v)
 {
     return pair(PP_F(v));
-});
+};
 }
 
 constexpr auto operator^(PP::concepts::iterator auto begin,
@@ -65,7 +65,7 @@ constexpr auto operator^(PP::concepts::iterator auto begin,
     return PP::view::pair(begin, end);
 }
 
-constexpr auto operator|(PP::concepts::view auto&& v, PP::unbounded_t)
+constexpr auto operator|(PP::concepts::view auto&& v, PP::view::unbounded_t)
 {
-    return PP::view::begin(PP_F(v)) ^ PP::unbounded;
+    return PP::view::begin(PP_F(v)) ^ PP::view::unbounded;
 }

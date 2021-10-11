@@ -5,8 +5,8 @@
 
 namespace PP
 {
-PP_FUNCTOR(make_in_place_index, concepts::value auto i)
+PP_CIA make_in_place_index = [](concepts::value auto i)
 {
     return std::in_place_index<PP_GV(i)>;
-});
+};
 }

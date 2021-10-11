@@ -6,8 +6,8 @@
 
 namespace PP::tuple
 {
-PP_CIA maker = *make;
-PP_CIA forwarder = *forward;
+PP_CIA maker = make++;
+PP_CIA forwarder = forward++;
 }
 
 constexpr auto operator!(PP::concepts::tuple auto&& t)

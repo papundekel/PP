@@ -55,14 +55,16 @@ constexpr auto tuple_element_helper(concepts::value auto i, auto&& t) requires
 
 namespace PP::tuple
 {
-PP_FUNCTOR(element, concepts::value auto i, auto&& t)
-requires detail::tuple_concept_element_recursive<decltype(i), decltype(t)>
+PP_CIA element =
+    [](concepts::value auto i,
+       auto&& t) requires detail::tuple_concept_element_recursive<decltype(i),
+                                                                  decltype(t)>
 {
     return copy_cv(PP_DT(t), detail::tuple_element_helper(i, PP_F(t)));
-});
+};
 
-PP_FUNCTOR(type_element, concepts::value auto i, concepts::type auto t)
+PP_CIA type_element = [](concepts::value auto i, concepts::type auto t)
 {
     return PP_COPY_TYPE(element(i, declval(t)));
-});
+};
 }

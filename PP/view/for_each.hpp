@@ -4,7 +4,9 @@
 
 namespace PP::view
 {
-PP_FUNCTOR(for_each, auto&& f, concepts::view auto&& v)
+namespace functors
+{
+PP_CIA for_each = [](auto&& f, concepts::view auto&& v)
 {
     return fold(
         value_true,
@@ -15,5 +17,7 @@ PP_FUNCTOR(for_each, auto&& f, concepts::view auto&& v)
         },
         PP::empty{},
         PP_F(v))[value_0];
-});
+};
+}
+PP_FUNCTOR(for_each)
 }

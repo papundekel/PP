@@ -3,6 +3,7 @@
 
 #include "../apply_transform.hpp"
 #include "../concepts/array.hpp"
+#include "../containers/tuple.hpp"
 #include "../declval.hpp"
 #include "../functor.hpp"
 #include "../iterator.hpp"
@@ -52,7 +53,9 @@ concept view_concept_end_any =
 
 namespace PP::view
 {
-PP_FUNCTOR(begin, detail::view_concept_begin_any auto&& v) -> decltype(auto)
+namespace functors
+{
+PP_CIA begin = [](detail::view_concept_begin_any auto&& v) -> decltype(auto)
 {
     if constexpr (detail::view_concept_begin_member<decltype(v)>)
         return PP_F(v).begin();
@@ -60,8 +63,8 @@ PP_FUNCTOR(begin, detail::view_concept_begin_any auto&& v) -> decltype(auto)
         return v + 0;
     else
         return begin(PP_F(v));
-});
-PP_FUNCTOR(end, detail::view_concept_end_any auto&& v) -> decltype(auto)
+};
+PP_CIA end = [](detail::view_concept_end_any auto&& v) -> decltype(auto)
 {
     if constexpr (detail::view_concept_end_member<decltype(v)>)
         return PP_F(v).end();
@@ -70,15 +73,22 @@ PP_FUNCTOR(end, detail::view_concept_end_any auto&& v) -> decltype(auto)
         return v + sizeof(v) / sizeof(*v);
     else
         return end(PP_F(v));
-});
+};
+}
+PP_FUNCTOR(begin)
+PP_FUNCTOR(end)
 }
 
 namespace PP::detail
 {
-PP_FUNCTOR(view_type_begin_iterator_pure, concepts::type auto v)
+namespace functors
+{
+PP_CIA view_type_begin_iterator_pure = [](concepts::type auto v)
 {
     return PP_DT(view::begin(declval(v)));
-});
+};
+}
+PP_FUNCTOR(view_type_begin_iterator_pure)
 }
 
 namespace PP
@@ -99,22 +109,6 @@ concept view = requires
 }
 
 PP_CONCEPT_FUNCTOR1(view);
-// PP_FUNCTOR(is_view, concepts::type auto t)
-// {
-//     return requires
-//     {
-//         {
-//             ::PP::view::begin(::PP::declval(t))
-//             } -> concepts::iterator;
-//         {
-//             ::PP::view::end(::PP::declval(t))
-//             } -> concepts::sentinel<
-//                 PP_APPLY_TRANSFORM(detail::view_type_begin_iterator_pure,
-//                 t)>;
-//     };
-// });
-
-// PP_CONCEPT1(view)
 }
 
 namespace PP::view
@@ -134,23 +128,34 @@ constexpr bool is_empty(concepts::view auto&& v)
 {
     return view::begin(PP_F(v)) == view::end(PP_F(v));
 }
+}
 
-PP_FUNCTOR(type_begin_iterator, concepts::type auto v)
+namespace PP::view
+{
+namespace functors
+{
+PP_CIA type_begin_iterator = [](concepts::type auto v)
 {
     return detail::view_type_begin_iterator_pure(v);
-});
-PP_FUNCTOR(begin_iterator, concepts::view auto&& v)
+};
+PP_CIA begin_iterator = [](concepts::view auto&& v)
 {
     return type_begin_iterator(PP_DT(v));
-});
-PP_FUNCTOR(type_end_iterator, concepts::type auto v)
+};
+PP_CIA type_end_iterator = [](concepts::type auto v)
 {
     return PP_DT(view::end(declval(v)));
-});
-PP_FUNCTOR(end_iterator, concepts::view auto&& v)
+};
+PP_CIA end_iterator = [](concepts::view auto&& v)
 {
     return type_end_iterator(PP_DT(v));
-});
+};
+}
+PP_FUNCTOR(type_begin_iterator)
+PP_FUNCTOR(begin_iterator)
+PP_FUNCTOR(type_end_iterator)
+PP_FUNCTOR(end_iterator)
+
 PP_CIA type_base = iterator_base | type_begin_iterator;
 }
 
@@ -169,8 +174,8 @@ constexpr auto wrap_initializer_list(const std::initializer_list<T>& l)
 
 namespace PP::view
 {
-PP_FUNCTOR(begin_end, concepts::view auto&& v)
+PP_CIA begin_end = [](concepts::view auto&& v)
 {
-    return make_tuple(view::begin(PP_F(v)), view::end(PP_F(v)));
-});
+    return tuple::make(view::begin(PP_F(v)), view::end(PP_F(v)));
+};
 }

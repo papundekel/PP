@@ -10,7 +10,7 @@
 namespace PP
 {
 PP_CIA decompose_const =
-    make_overloaded_pack(
+    overloaded(
         []<typename T>(type_t<const T>)
         {
             return make_decompose_pair(type<T>, PP::value<cv_qualifier::Const>);

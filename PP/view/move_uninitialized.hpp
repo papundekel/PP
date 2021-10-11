@@ -9,13 +9,16 @@
 #include "for_each.hpp"
 #include "zip.hpp"
 
+namespace PP::detail::functors
+{
+PP_CIA move_uninitialized_helper = [](auto&& to, auto&& from)
+{
+    construct_at_pack(std::addressof(to), PP::move(from));
+};
+}
+
 namespace PP::view
 {
 PP_CIA move_uninitialized =
-    for_each * *functor(
-                   [](auto&& to, auto&& from)
-                   {
-                       construct_at_pack(std::addressof(to), PP::move(from));
-                   }) |
-    zip_view_pack;
+    for_each * detail::functors::move_uninitialized_helper++ | zip_pack;
 }

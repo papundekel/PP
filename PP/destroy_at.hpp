@@ -22,8 +22,8 @@ constexpr void destroy_at_impl(T* p)
 }
 }
 
-PP_FUNCTOR(destroy_at, auto* p)
+PP_CIA destroy_at = [](auto* p)
 {
     detail::destroy_at_impl(p);
-});
+};
 }

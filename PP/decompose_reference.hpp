@@ -9,7 +9,7 @@
 namespace PP
 {
 PP_CIA decompose_reference =
-    make_overloaded_pack(
+    overloaded(
         []<typename T>(type_t<T&&>)
         {
             return make_decompose_pair(type<T>,

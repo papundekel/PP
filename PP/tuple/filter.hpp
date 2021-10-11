@@ -8,7 +8,7 @@
 
 namespace PP::tuple
 {
-PP_FUNCTOR(filter, auto&& predicate, concepts::tuple auto&& t)
+PP_CIA filter = [](auto&& predicate, concepts::tuple auto&& t)
 {
     return foldr(
         [p = PP_FW(predicate)](auto&& element, concepts::tuple auto tail)
@@ -20,5 +20,5 @@ PP_FUNCTOR(filter, auto&& predicate, concepts::tuple auto&& t)
         },
         tuple_empty{},
         PP_F(t));
-});
+};
 }

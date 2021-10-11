@@ -46,10 +46,10 @@ constexpr auto tuple_count_impl(type_tuple_t<T...>) noexcept
     return value<sizeof...(T)>;
 }
 
-PP_FUNCTOR(make_type_tuple, concepts::type auto... t)
+PP_CIA make_type_tuple = [](concepts::type auto... t)
 {
     return type_tuple_t(to_type_t(t)...);
-});
+};
 
 template <typename... T, typename... U>
 constexpr auto type_tuple_concat(type_tuple_t<T...>,

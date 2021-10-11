@@ -6,7 +6,7 @@
 
 namespace PP::tuple
 {
-PP_FUNCTOR(find, auto&& predicate, concepts::tuple auto&& tuple)
+PP_CIA find = [](auto&& predicate, concepts::tuple auto&& tuple)
 {
     return PP_CV_MEMBER(
         foldl(
@@ -31,5 +31,5 @@ PP_FUNCTOR(find, auto&& predicate, concepts::tuple auto&& tuple)
             value<detail::tuple_find_index_state(0, false)>,
             PP_F(tuple)),
         index);
-});
+};
 }

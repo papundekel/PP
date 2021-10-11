@@ -7,11 +7,10 @@
 
 namespace PP::view
 {
-PP_FUNCTOR(fold,
-           concepts::value auto left,
-           auto&& f,
-           auto init,
-           concepts::view auto&& v)
+namespace functors
+{
+PP_CIA fold =
+    [](concepts::value auto left, auto&& f, auto init, concepts::view auto&& v)
 {
     if constexpr (PP_GV(left))
     {
@@ -37,7 +36,9 @@ PP_FUNCTOR(fold,
 
         return tuple::make(move(i), move(init));
     }
-});
+};
+}
+PP_FUNCTOR(fold)
 
 PP_CIA foldl = fold * value_true;
 PP_CIA foldr = fold * value_false;

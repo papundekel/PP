@@ -3,7 +3,7 @@
 
 namespace PP
 {
-PP_FUNCTOR(curry, auto&& f)
+PP_CIA curry = [](auto&& f)
 {
     return functor(
         [ff = unwrap_functor(PP_F(f))](auto&& arg)
@@ -11,10 +11,10 @@ PP_FUNCTOR(curry, auto&& f)
             return functor(
                 [fff = ff, arg = PP_F(arg)](auto&&... args) -> decltype(auto)
                 {
-                    return fff(arg, PP_F(args)...);
-                });
-        });
-});
+            return fff(arg, PP_F(args)...);
+                };
+        };
+};
 }
 
 constexpr auto operator~(PP::concepts::functor auto&& f)

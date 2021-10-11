@@ -1,62 +1,81 @@
 #pragma once
 #include "functor.hpp"
+#include "macros/CIA.hpp"
+#include "utility/forward.hpp"
 
 namespace PP
 {
-PP_FUNCTOR(eql, auto&& x, auto&& y) -> decltype(auto)
+namespace functors
+{
+PP_CIA eql = [](auto&& x, auto&& y) -> decltype(auto)
 {
     return PP_F(x) == PP_F(y);
-});
-PP_FUNCTOR(neq, auto&& x, auto&& y) -> decltype(auto)
+};
+PP_CIA neq = [](auto&& x, auto&& y) -> decltype(auto)
 {
     return PP_F(x) != PP_F(y);
-});
-PP_FUNCTOR(lst, auto&& x, auto&& y) -> decltype(auto)
+};
+PP_CIA lst = [](auto&& x, auto&& y) -> decltype(auto)
 {
     return PP_F(x) < PP_F(y);
-});
-PP_FUNCTOR(lte, auto&& x, auto&& y) -> decltype(auto)
+};
+PP_CIA lte = [](auto&& x, auto&& y) -> decltype(auto)
 {
     return PP_F(x) <= PP_F(y);
-});
-PP_FUNCTOR(or_, auto&& x, auto&& y) -> decltype(auto)
+};
+PP_CIA or_ = [](auto&& x, auto&& y) -> decltype(auto)
 {
     return PP_F(x) || PP_F(y);
-});
-PP_FUNCTOR(an_, auto&& x, auto&& y) -> decltype(auto)
+};
+PP_CIA an_ = [](auto&& x, auto&& y) -> decltype(auto)
 {
     return PP_F(x) && PP_F(y);
-});
-PP_FUNCTOR(pls, auto&& x, auto&& y) -> decltype(auto)
+};
+PP_CIA pls = [](auto&& x, auto&& y) -> decltype(auto)
 {
     return PP_F(x) + PP_F(y);
-});
-PP_FUNCTOR(asg, auto&& x, auto&& y) -> decltype(auto)
+};
+PP_CIA asg = [](auto&& x, auto&& y) -> decltype(auto)
 {
     return PP_F(x) = PP_F(y);
-});
-PP_FUNCTOR(pas, auto&& x, auto&& y) -> decltype(auto)
+};
+PP_CIA pas = [](auto&& x, auto&& y) -> decltype(auto)
 {
     return PP_F(x) += PP_F(y);
-});
-PP_FUNCTOR(mas, auto&& x, auto&& y) -> decltype(auto)
+};
+PP_CIA mas = [](auto&& x, auto&& y) -> decltype(auto)
 {
     return PP_F(x) -= PP_F(y);
-});
-PP_FUNCTOR(ipr, auto&& x) -> decltype(auto)
+};
+PP_CIA ipr = [](auto&& x) -> decltype(auto)
 {
     return ++PP_F(x);
-});
-PP_FUNCTOR(der, auto&& x) -> decltype(auto)
+};
+PP_CIA der = [](auto&& x) -> decltype(auto)
 {
     return *PP_F(x);
-});
-PP_FUNCTOR(neg, auto&& x) -> decltype(auto)
+};
+PP_CIA neg = [](auto&& x) -> decltype(auto)
 {
     return !PP_F(x);
-});
-PP_FUNCTOR(cal, auto&& f, auto&&... args) -> decltype(auto)
+};
+PP_CIA cal = [](auto&& f, auto&&... args) -> decltype(auto)
 {
     return PP_F(f)(PP_F(args)...);
-});
+};
+}
+PP_FUNCTOR(eql)
+PP_FUNCTOR(neq)
+PP_FUNCTOR(lst)
+PP_FUNCTOR(lte)
+PP_FUNCTOR(or_)
+PP_FUNCTOR(an_)
+PP_FUNCTOR(pls)
+PP_FUNCTOR(asg)
+PP_FUNCTOR(pas)
+PP_FUNCTOR(mas)
+PP_FUNCTOR(ipr)
+PP_FUNCTOR(der)
+PP_FUNCTOR(neg)
+PP_FUNCTOR(cal)
 }

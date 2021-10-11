@@ -6,7 +6,7 @@
 
 namespace PP
 {
-PP_CIA is_pointer = make_overloaded_pack(
+PP_CIA is_pointer = overloaded(
                         []<typename T>(type_t<T*>)
                         {
                             return true;

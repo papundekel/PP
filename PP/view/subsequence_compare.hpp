@@ -3,10 +3,8 @@
 
 namespace PP
 {
-PP_FUNCTOR(view_subsequence_compare_if,
-           auto&& comparer,
-           concepts::view auto&& a,
-           concepts::view auto&& b)
+PP_CIA view_subsequence_compare_if =
+    [](auto&& comparer, concepts::view auto&& a, concepts::view auto&& b)
 {
     auto a_b = view_subsequence_if(PP_F(comparer), PP_F(a), PP_F(b));
     switch (a_b)
@@ -31,7 +29,7 @@ PP_FUNCTOR(view_subsequence_compare_if,
                     return std::partial_ordering::unordered;
             }
     }
-});
+};
 
 PP_CIA view_subsequence_compare = view_subsequence_compare_if * eql;
 }

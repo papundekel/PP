@@ -1,6 +1,4 @@
-.*/
-*.exe
-CMakeSettings.json
+.vscode/
 build/
-out/
-PPdemo/
+
+CMakeSettings.json

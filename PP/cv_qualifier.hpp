@@ -27,17 +27,23 @@ constexpr auto operator|(PP::cv_qualifier a, PP::cv_qualifier b) noexcept
                             (PP::cv_qualifier_underlying)b);
 }
 
-namespace PP
+namespace PP::functors
 {
-PP_FUNCTOR(cv_is_const, cv_qualifier q)
+PP_CIA cv_is_const = [](cv_qualifier q)
 {
     return q & cv_qualifier::Const;
-});
+};
 
-PP_FUNCTOR(cv_is_volatile, cv_qualifier q)
+PP_CIA cv_is_volatile = [](cv_qualifier q)
 {
     return q & cv_qualifier::Volatile;
-});
+};
+}
+
+namespace PP
+{
+using functors::cv_is_const;
+using functors::cv_is_volatile;
 }
 
 constexpr std::partial_ordering operator<=>(PP::cv_qualifier a,

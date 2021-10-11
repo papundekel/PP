@@ -9,7 +9,10 @@
 
 namespace PP::tuple
 {
-PP_CIA splitter = make_overloaded_pack(
+struct splitter_empty_tuple
+{};
+
+PP_CIA splitter = overloaded(
     [](auto&& head, auto&&... tail)
     {
         return tuple::construct(
@@ -20,10 +23,10 @@ PP_CIA splitter = make_overloaded_pack(
     },
     []()
     {
-        return 0;
+        return splitter_empty_tuple{};
     });
 
-PP_CIA split = *splitter;
+PP_CIA split = splitter++;
 
 PP_CIA head = tuple_get * value_0;
 PP_CIA tail = tuple_get * value_1 | split;

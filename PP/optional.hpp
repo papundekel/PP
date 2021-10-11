@@ -127,8 +127,8 @@ private:
     }
 };
 
-PP_FUNCTOR(make_optional_copy, auto&& arg)
+PP_CIA make_optional_copy = [](auto&& arg)
 {
     return optional<PP_GT(~PP_DT(arg))>::create(PP_F(arg));
-});
+};
 }
