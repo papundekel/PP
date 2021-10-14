@@ -49,7 +49,7 @@ class variant2
 
     static constexpr auto types = type_tuple<T...>;
     static constexpr auto max =
-        apply_partially(id_copy | der | max_default | tuple_map_make_array,
+        apply_partially(id_copy | der | max_default | tuple::map_make_array,
                         value_1,
                         types);
 
@@ -125,9 +125,9 @@ struct visit_helper
                             reinterpret__cast(PP_COPY_TYPE(types), buffers)...);
                     };
                 }) +
-            tuple_cartesian_product_pack(variants.types...);
+            tuple::cartesian_product_pack(variants.types...);
 
-        // tuple_map_make_array(, )
+        // tuple::map_make_array(, )
 
         // Template<functor>[PP_DT(visitor) += type_void +=
         //					  make_iterate_tuple(PP_SIZEOF___(variants),

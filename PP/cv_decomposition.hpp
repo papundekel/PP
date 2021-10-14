@@ -73,7 +73,7 @@ constexpr auto shed_pointers_helper(concepts::type auto t) noexcept
     constexpr auto shedded = shed_pointer(T);
 
     if constexpr (shedded != T)
-        return !tuple_prepend(T, shed_pointers_helper(shedded));
+        return !tuple::prepend(T, shed_pointers_helper(shedded));
     else
         return make_singular_tuple(T);
 }
@@ -94,7 +94,7 @@ constexpr inline PP::functor array_tail_value(
     };
 
 PP_CIA cv_decomposition = array_tail_value |
-                          tuple_map_to_array * type<cv_decomposition_element> *
+                          tuple::map_to_array * type<cv_decomposition_element> *
                               get_cv_decomposition_element |
                           shed_pointers;
 }

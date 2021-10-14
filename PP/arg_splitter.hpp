@@ -19,15 +19,15 @@ PP_CIA arg_splitter = [](concepts::type auto delimiter_type,
                          concepts::value auto i,
                          auto&&... args)
 {
-    auto splits = tuple_splits(
+    auto splits = tuple::splits(
         [delimiter_type](auto&& arg)
         {
             return value<~PP_DT(arg) == PP_COPY_TYPE(delimiter_type)>;
         },
         forward_as_tuple(PP_F(args)...));
 
-    static_assert(tuple_type_count(PP_DT(to_construct_types)) ==
-                      tuple_type_count(PP_DT(splits)),
+    static_assert(tuple::type_count(PP_DT(to_construct_types)) ==
+                      tuple::type_count(PP_DT(splits)),
                   "arg_splitter: bad arg delimiter count");
 
     return (

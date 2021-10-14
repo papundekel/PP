@@ -386,7 +386,7 @@ public:
 //{
 //	auto ptrs = make_tuple(dynamic_cast<const
 // any_iterator_wrap<OtherIterators>*>(&other)...); 	auto i =
-// tuple_find_dynamic([](auto* p) { return p != nullptr; }, ptrs);
+// tuple::find_dynamic([](auto* p) { return p != nullptr; }, ptrs);
 //
 //	if (i != sizeof...(OtherIterators))
 //		return variant_visit(PP_F(f), get__dynamic(i, ptrs));

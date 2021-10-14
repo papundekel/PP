@@ -317,7 +317,7 @@ namespace PP::detail
 PP_CIA array_pick_best_type = [](concepts::type auto&& def,
                                  concepts::tuple auto&& t) -> decltype(auto)
 {
-    if constexpr (tuple_type_count(PP_DT(t)) != 0)
+    if constexpr (tuple::type_count(PP_DT(t)) != 0)
         return PP_F(t)[value_0];
     else
         return PP_F(def);
