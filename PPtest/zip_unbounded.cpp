@@ -13,6 +13,7 @@ void zip_unbounded()
     auto v = PP::view::zip_pack(PP::view::begin(a) ^ PP::view::unbounded, b);
 
     for (auto [x, y] : v)
-        std::cout << x << "\n";
+        std::cout << x << ", ";
+    std::cout << '\n';
 }
 }

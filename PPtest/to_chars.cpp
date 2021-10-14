@@ -8,8 +8,10 @@ void to_chars()
 {
     char buff[100];
 
-    *PP::to_chars(buff, 25) = 0;
+    int a = 25;
 
-    std::cout << buff << '\n';
+    *PP::to_chars(buff, a) = 0;
+
+    std::cout << "should be: " << a << ", is: " << buff << '\n';
 }
 }

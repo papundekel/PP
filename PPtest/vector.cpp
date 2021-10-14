@@ -14,6 +14,7 @@ void vector()
     v.push_back(3);
 
     for (const auto& e : v)
-        std::cout << e << "\n";
+        std::cout << e << ", ";
+    std::cout << '\n';
 }
 }
