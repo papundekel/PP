@@ -53,11 +53,10 @@ class variant2
                         value_1,
                         types);
 
-    static constexpr auto type_eql = functor(
-        [](auto t, auto u)
-        {
+    static constexpr auto type_eql = [](auto t, auto u)
+    {
         return value<PP_COPY_TYPE(t) == PP_COPY_TYPE(u)>;
-        };
+    };
 
     size_t index;
     alignas(max(alignment_of)) char buffer[max(size_of)];

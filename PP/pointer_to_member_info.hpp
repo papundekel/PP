@@ -18,12 +18,12 @@ public:
     {}
 };
 
-PP_CIA get_pointer_to_member_info = functor(
-                                        [](auto t)
-                                        {
-                                            return pointer_to_member_info(t);
-                                        }) |
-                                    to_type_t;
+namespace functors
+{
+PP_CIA get_pointer_to_member_info = [](auto t)
+{
+    return pointer_to_member_info(t);
+} | to_type_t;
 PP_CIA get_pointer_to_member_member_type = [](auto t)
 {
     return get_pointer_to_member_info(t).member_type;
@@ -32,4 +32,8 @@ PP_CIA get_pointer_to_member_class_type = [](auto t)
 {
     return get_pointer_to_member_info(t).class_type;
 };
+}
+PP_FUNCTOR(get_pointer_to_member_info)
+PP_FUNCTOR(get_pointer_to_member_member_type)
+PP_FUNCTOR(get_pointer_to_member_class_type)
 }

@@ -7,16 +7,17 @@
 
 namespace PP::tuple
 {
+namespace functors
+{
 PP_CIA zip_indices = [](concepts::tuple auto&& t)
 {
-    return *functor(
-               [](auto i, auto&& element)
-               {
-                   return container<decltype(i), decltype(element)>(
-                       placeholder,
-                       i,
-                       PP_F(element));
-               }) +
-           (make_id_tuple(count_value_t(t)) ^ PP_F(t));
+    return [](auto i, auto&& element)
+    {
+        return container<decltype(i), decltype(element)>(placeholder,
+                                                         i,
+                                                         PP_F(element));
+    }++ + (make_id_tuple(count_value_t(t)) ^ PP_F(t));
 };
+}
+PP_FUNCTOR(zip_indices)
 }

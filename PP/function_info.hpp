@@ -126,10 +126,12 @@ public:
 template <typename T>
 function_info(type_t<T>) -> function_info<void>;
 
-PP_CIA get_function_info = functor(
-                               [](auto t)
-                               {
-                                   return function_info(t);
-                               }) |
-                           to_type_t;
+namespace functors
+{
+PP_CIA get_function_info = [](auto&& t)
+{
+    return function_info(PP_F(t));
+} | to_type_t;
+}
+PP_FUNCTOR(get_function_info)
 }

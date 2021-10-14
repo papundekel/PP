@@ -18,10 +18,12 @@ static constexpr auto remove_all_extents_helper(concepts::type auto t) noexcept
 }
 }
 
-PP_CIA remove_all_extents = functor(
-                                [](auto t)
-                                {
-                                    return detail::remove_all_extents_helper(t);
-                                }) |
-                            to_type_t;
+namespace functors
+{
+PP_CIA remove_all_extents = [](auto t)
+{
+    return detail::remove_all_extents_helper(t);
+} | to_type_t;
+}
+PP_FUNCTOR(remove_all_extents)
 }
