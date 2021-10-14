@@ -24,8 +24,8 @@ PP_CIA zip = [](concepts::tuple auto&& tuples)
     {
         auto splits = split + PP_F(tuples);
 
-        return (maker | prepend)(tuple_get * value_0 + move(splits),
-                                 zip(tuple_get * value_1 + move(splits)));
+        return (maker | prepend)(get_ * value_0 + move(splits),
+                                 zip(get_ * value_1 + move(splits)));
     }
     else
         return tuple_empty{};

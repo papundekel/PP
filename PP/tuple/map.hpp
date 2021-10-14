@@ -1,5 +1,6 @@
 #pragma once
 #include "../apply_partially_first.hpp"
+#include "../combine.hpp"
 #include "../containers/tuple.hpp"
 #include "../declval.hpp"
 #include "../forward_wrap.hpp"
@@ -12,17 +13,14 @@ namespace PP::tuple
 {
 namespace functors
 {
-PP_CIA map = [](auto&& map, concepts::tuple auto&& t)
+PP_CIA map_pack = [](auto&& map, auto&&... elements)
 {
-    return apply(
-        [m = PP_FW(map)](auto&&... elements)
-        {
-            return init((cal * m * PP_FW(elements))...);
-        },
-        PP_F(t));
+    return init((cal * map * PP_FW(elements))...);
 };
 }
-PP_FUNCTOR(map)
+PP_FUNCTOR(map_pack)
+
+PP_CIA map = combine(apply, apply_partially_first * map_pack | get_0, get_1);
 }
 
 constexpr auto operator+(PP::concepts::functor_or_wrap auto&& f,

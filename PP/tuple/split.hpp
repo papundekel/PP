@@ -28,6 +28,6 @@ PP_CIA splitter = overloaded(
 
 PP_CIA split = splitter++;
 
-PP_CIA head = tuple_get * value_0;
-PP_CIA tail = tuple_get * value_1 | split;
+PP_CIA head = get_ * value_0;
+PP_CIA tail = get_ * value_1 | split;
 }

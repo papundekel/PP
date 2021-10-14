@@ -1,5 +1,4 @@
 #pragma once
-#include "applier.hpp"
 #include "apply_partially_first.hpp"
 #include "apply_template_pack.hpp"
 #include "compose.hpp"
@@ -16,7 +15,7 @@ namespace functors
 {
 PP_CIA apply_template = [](auto Template, concepts::tuple auto&& types)
 {
-    return (apply_template_pack * Template)++(PP_F(types));
+    return tuple::apply(apply_template_pack * Template, PP_F(types));
 };
 }
 PP_FUNCTOR(apply_template)

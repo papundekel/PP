@@ -1,5 +1,6 @@
 #pragma once
 #include "../apply_partially_first.hpp"
+#include "../combine.hpp"
 #include "../constant.hpp"
 #include "../forward_wrap.hpp"
 #include "../macros/CIA.hpp"
@@ -23,12 +24,12 @@ constexpr auto fold_combinator(concepts::value auto left,
 {
     return fold_wrapper{
         PP_F(wrap.f),
-        [f = PP_FW(wrap.f), i = wrap.i, e = PP_FW(element)]() -> decltype(auto)
+        [f = PP_FW(wrap.f), i = wrap.i, PP_FWL(element)]() -> decltype(auto)
         {
             if constexpr (*PP_CV(left))
-                return f--(i(), e--);
+                return f--(i(), element--);
             else
-                return f--(e--, i());
+                return f--(element--, i());
         }};
 }
 
@@ -48,30 +49,42 @@ namespace PP::tuple
 {
 namespace functors
 {
-PP_CIA fold_init = [](concepts::value auto left,
-                      auto&& ff,
-                      auto&& ii,
-                      concepts::tuple auto&& tuple)
+PP_CIA fold_init_pack =
+    [](concepts::value auto&& left, auto&& f, auto&& i, auto&&... e)
 {
-    return apply(
-        [left, f = PP_FW(ff), i = PP_FW(ii)](auto&&... e) -> decltype(auto)
-        {
-            if constexpr (PP_GV(left))
-                return (detail::fold_wrapper{f--, i} || ... || PP_F(e)).i();
-            else
-                return (PP_F(e) || ... || detail::fold_wrapper{f--, i}).i();
-        },
-        PP_F(tuple));
+    return [&left, ... PP_FWL(e)](auto wrapper)
+    {
+        if constexpr (PP_GV(left))
+            return (wrapper() || ... || e--);
+        else
+            return (e-- || ... || wrapper());
+    }(
+               [PP_FWL(f), PP_FWL(i)]()
+               {
+                   return detail::fold_wrapper{f--, i};
+               })
+        .i();
 };
 
-PP_CIA fold = [](concepts::value auto left,
-                 auto&& ff,
-                 auto&& ii,
-                 concepts::tuple auto&& tuple)
-{
-    return fold_init(left, PP_F(ff), constant(PP_FW(ii)), PP_F(tuple));
-};
+PP_CIA fold_init = combine(
+    apply,
+    [](concepts::value auto&& left,
+       auto&& ff,
+       auto&& ii,
+       concepts::tuple auto&&)
+    {
+        return apply_partially_first(fold_init_pack,
+                                     PP_FW(left),
+                                     PP_FW(ff),
+                                     PP_FW(ii));
+    },
+    get_3);
+
+PP_CIA fold =
+    combine(fold_init, get_0, get_1, constant | wrap_forward | get_2, get_3);
+
 }
+PP_FUNCTOR(fold_init_pack)
 PP_FUNCTOR(fold_init)
 PP_FUNCTOR(fold)
 

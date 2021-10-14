@@ -1,4 +1,6 @@
 #pragma once
+#include "macros/CIA.hpp"
+#include "macros/functor.hpp"
 #include "utility/forward.hpp"
 
 namespace PP
@@ -28,6 +30,15 @@ public:
 template <typename T>
 forward_wrap(T&&) -> forward_wrap<T>;
 
+namespace functors
+{
+PP_CIA wrap_forward = [](auto&& x)
+{
+    return forward_wrap(PP_F(x));
+};
+}
+PP_FUNCTOR(wrap_forward)
+
 constexpr auto&& unwrap_forward(auto&& x) noexcept
 {
     return PP_F(x);
@@ -39,4 +50,5 @@ constexpr auto&& unwrap_forward(const forward_wrap<T>& x) noexcept
 }
 
 #define PP_FW(x) ::PP::forward_wrap(PP_F(x))
+#define PP_FWL(x) x = PP_FW(x)
 }

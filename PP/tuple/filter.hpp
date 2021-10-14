@@ -11,9 +11,9 @@ namespace PP::tuple
 PP_CIA filter = [](auto&& predicate, concepts::tuple auto&& t)
 {
     return foldr(
-        [p = PP_FW(predicate)](auto&& element, concepts::tuple auto tail)
+        [PP_FWL(predicate)](auto&& element, concepts::tuple auto tail)
         {
-            if constexpr (PP_GV(p(PP_F(element))))
+            if constexpr (PP_GV(predicate(PP_F(element))))
                 return !prepend(PP_F(element), move(tail));
             else
                 return tail;

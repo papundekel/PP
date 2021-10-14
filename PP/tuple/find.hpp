@@ -10,18 +10,16 @@ PP_CIA find = [](auto&& predicate, concepts::tuple auto&& tuple)
 {
     return PP_CV_MEMBER(
         foldl(
-            [predicate_wrap = PP_FW(predicate)](concepts::value auto s,
-                                                auto&& element)
+            [PP_FWL(predicate)](concepts::value auto s, auto&& element)
             {
                 constexpr auto state = PP_GV(s);
 
                 static_assert(
-                    concepts::value<decltype(predicate_wrap(PP_F(element)))>,
+                    concepts::value<decltype(predicate(PP_F(element)))>,
                     "tuple::find: the predicate must return a "
                     "concepts::value");
 
-                if constexpr (state.found ||
-                              PP_GV(predicate_wrap(PP_F(element))))
+                if constexpr (state.found || PP_GV(predicate(PP_F(element))))
                     return value<detail::tuple_find_index_state(state.index,
                                                                 true)>;
                 else

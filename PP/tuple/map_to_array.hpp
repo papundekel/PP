@@ -29,9 +29,9 @@ namespace PP::tuple
 PP_CIA map_to_array =
     [](concepts::type auto&& t, auto&& map, concepts::tuple auto&& tuple)
 {
-    return (array::construct * t * in_place)
-               ++((apply_partially_first * PP_FW(map)
-                 | construct_pack * type<forward_wrap>) + PP_F(tuple));
+    return apply(array::construct * t * in_place,
+                 ((apply_partially_first * PP_FW(map)
+               | construct_pack * type<forward_wrap>) + PP_F(tuple)));
 };
 // clang-format on
 

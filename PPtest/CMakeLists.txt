@@ -5,6 +5,13 @@ add_executable(PPtest
 "zip_unbounded.cpp"
 "vector.cpp"
 "to_chars.cpp"
+"combine.cpp"
+"conjunction.cpp"
+"add_const.cpp"
+"tuple_any.cpp"
+"tuple_apply.cpp"
+"tuple_concat.cpp"
+"tuple_fold.cpp"
 )
 target_compile_features(PPtest PUBLIC cxx_std_20)
 target_include_directories(PPtest PUBLIC "${CMAKE_CURRENT_LIST_DIR}/..")

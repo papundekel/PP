@@ -389,7 +389,7 @@ public:
 // tuple_find_dynamic([](auto* p) { return p != nullptr; }, ptrs);
 //
 //	if (i != sizeof...(OtherIterators))
-//		return variant_visit(PP_F(f), tuple_get_dynamic(i, ptrs));
+//		return variant_visit(PP_F(f), get__dynamic(i, ptrs));
 //	else
 //		return def;
 //}

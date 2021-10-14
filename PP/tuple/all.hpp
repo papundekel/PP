@@ -1,23 +1,23 @@
 #pragma once
-#include "../forward_wrap.hpp"
-#include "../functor_or_wrap.hpp"
+#include "../apply_partially_first.hpp"
+#include "../combine.hpp"
+#include "../compose.hpp"
+#include "../functor.hpp"
 #include "apply.hpp"
+#include "get.hpp"
 
 namespace PP::tuple
 {
 namespace functors
 {
-PP_CIA all = [](auto&& pp, concepts::tuple auto&& t) -> decltype(auto)
+PP_CIA all_pack = [](auto&& p, auto&&... e) -> decltype(auto)
 {
-    return apply(
-        [p = PP_FW(pp)](auto&&... e) -> decltype(auto)
-        {
-            return (true && ... && p(PP_F(e)));
-        },
-        PP_F(t));
+    return (true && ... && PP_F(p)(PP_F(e)));
 };
 }
-PP_FUNCTOR(all)
+PP_FUNCTOR(all_pack)
+
+PP_CIA all = combine(apply, apply_partially_first* all_pack | get_0, get_1);
 }
 
 constexpr decltype(auto) operator&&(PP::concepts::functor auto&& f,

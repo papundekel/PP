@@ -1,6 +1,7 @@
 #pragma once
 #include "concepts/copyable.hpp"
 #include "declval_impl.hpp"
+#include "macros/functor.hpp"
 #include "utility/forward.hpp"
 
 namespace PP::concepts
@@ -29,5 +30,3 @@ constexpr decltype(auto) operator<<=(PP::concepts::functor auto&& f, auto&& arg)
 {
     return PP_F(f)(PP_F(arg));
 }
-
-#define PP_FUNCTOR(functor_name) using functors::functor_name;

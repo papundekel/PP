@@ -4,10 +4,10 @@
 
 namespace PP::tuple
 {
-PP_CIA count_if = [](auto&& pp, concepts::tuple auto&& t)
+PP_CIA count_if = [](auto&& p, concepts::tuple auto&& t)
 {
     return foldl(
-        [p = PP_FW(pp)](auto counter, auto&& element)
+        [PP_FWL(p)](auto counter, auto&& element)
         {
             return p(PP_F(element)) ? counter + 1 : counter;
         },

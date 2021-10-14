@@ -9,11 +9,11 @@ namespace PP::tuple
 PP_CIA find_dynamic = [](auto&& predicate, concepts::tuple auto&& tuple)
 {
     return foldl(
-               [predicate_wrap = PP_FW(predicate)](
+               [PP_FWL(predicate)](
                    detail::tuple_find_index_state state,
                    auto&& element) -> detail::tuple_find_index_state
                {
-                   if (state.found || predicate_wrap(PP_F(element)))
+                   if (state.found || predicate(PP_F(element)))
                        return {state.index, true};
                    else
                        return {state.index + 1, false};

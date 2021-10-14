@@ -7,5 +7,5 @@
 
 namespace PP
 {
-PP_CIA remove_const = tuple_get * value_0 | decompose_const;
+PP_CIA remove_const = tuple::get_ * value_0 | decompose_const;
 }

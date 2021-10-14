@@ -13,7 +13,8 @@ PP_CIA prepend = [](auto&& head, concepts::tuple auto&& t)
         [&head](auto&&... elements)
         {
             return tuple::forward(PP_F(head), PP_F(elements)...);
-        }, PP_F(t));
+        },
+        PP_F(t));
 };
 }
 PP_FUNCTOR(prepend)

@@ -7,7 +7,7 @@
 
 namespace PP
 {
-PP_CIA remove_reference = tuple_get * value_0 | decompose_reference;
+PP_CIA remove_reference = tuple::get_ * value_0 | decompose_reference;
 }
 
 constexpr auto operator!(PP::concepts::type auto t) noexcept

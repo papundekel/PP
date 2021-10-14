@@ -8,11 +8,11 @@ namespace PP
 {
 namespace functors
 {
-PP_CIA apply_partially_first = [](auto&& f, auto&& arg)
+PP_CIA apply_partially_first = [](auto&& ff, auto&&... aa)
 {
-    return [f = PP_F(f), a = PP_F(arg)](auto&&... other_args) -> decltype(auto)
+    return [f = PP_F(ff), ... a = PP_F(aa)](auto&&... b) -> decltype(auto)
     {
-        return unwrap_forward(f)(unwrap_forward(a), PP_F(other_args)...);
+        return unwrap_forward(f)(unwrap_forward(a)..., PP_F(b)...);
     };
 };
 }

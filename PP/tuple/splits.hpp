@@ -11,26 +11,27 @@
 
 namespace PP::tuple
 {
-PP_CIA splits = [](auto&& pp, concepts::tuple auto&& t)
+namespace functors
+{
+PP_CIA splits = [](auto&& p, concepts::tuple auto&& t)
 {
     return foldr(
-        [p = PP_FW(pp)](auto&& element, auto splits)
+        [PP_FWL(p)](auto&& element, auto splits)
         {
             if constexpr (PP_GV(p(PP_F(element))))
                 return !prepend(tuple_empty{}, move(splits));
             else
-                return *functor(
-                           [element_wrap = PP_FW(
-                                element)](concepts::value auto i, auto split)
-                           {
-                               if constexpr (PP_GV(i) == 0)
-                                   return prepend(element_wrap--, move(split));
-                               else
-                                   return move(split);
-                           }) +
-                       zip_indices(move(splits));
+                return [PP_FWL(element)](concepts::value auto&& i, auto split)
+                {
+                    if constexpr (PP_GV(i) == 0)
+                        return prepend(element--, move(split));
+                    else
+                        return move(split);
+                } +++zip_indices(move(splits));
         },
         make(tuple_empty{}),
         PP_F(t));
 };
+}
+PP_FUNCTOR(splits)
 }

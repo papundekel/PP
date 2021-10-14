@@ -6,7 +6,7 @@ template <template <typename...> typename Template>
 struct template_t
 {
     constexpr auto operator[](auto&& types) const noexcept;
-    constexpr auto operator()(auto... types) const noexcept;
+    constexpr auto operator()(auto&&... types) const noexcept;
 };
 template <template <typename...> typename T>
 constexpr inline template_t<T> Template{};

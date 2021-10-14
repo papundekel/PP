@@ -16,9 +16,9 @@ PP_CIA apply = [](auto&& f, concepts::tuple auto&& t) -> decltype(auto)
 {
     return apply_pack(
         PP_F(f),
-        [tt = PP_FW(t)](concepts::value auto&& i) -> decltype(auto)
+        [PP_FWL(t)](concepts::value auto&& i) -> decltype(auto)
         {
-            return tt-- [PP_F(i)];
+            return t-- [PP_F(i)];
         },
         value_sequence_for(PP_F(t)));
 };

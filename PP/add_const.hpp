@@ -1,15 +1,14 @@
 #pragma once
-#include "compose.hpp"
-#include "get_type.hpp"
+#include "apply_template_pack.hpp"
+#include "template_t.hpp"
+
+namespace PP::detail
+{
+template <typename T>
+using add_const_t = const T;
+}
 
 namespace PP
 {
-namespace functors
-{
-PP_CIA add_const = []<typename T>(type_t<T>)
-{
-    return type<const T>;
-} | to_type_t;
-}
-PP_FUNCTOR(add_const)
+PP_CIA add_const = Template<detail::add_const_t>;
 }

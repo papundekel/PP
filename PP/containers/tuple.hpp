@@ -1,6 +1,7 @@
 #pragma once
 #include "../add_const.hpp"
 #include "../apply_partially_first.hpp"
+#include "../apply_template.hpp"
 #include "../construct_pack.hpp"
 #include "../copy_cvref.hpp"
 #include "../decay.hpp"
