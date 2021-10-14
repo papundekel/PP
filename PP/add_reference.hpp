@@ -26,8 +26,8 @@ PP_CIA add_reference = [](concepts::value auto ref, concepts::type auto t)
     else
         return t;
 };
-PP_FUNCTOR(add_reference)
 }
+PP_FUNCTOR(add_reference)
 
 ///
 /// @brief Empty tag type used for adding a ref qualifier.
