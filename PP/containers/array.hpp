@@ -328,7 +328,7 @@ namespace PP::array
 {
 PP_CIA construct = [](concepts::type auto&& t, auto tag, auto&&... args)
 {
-    return type<PP_GT(t), sizeof...(args)>(tag, PP_F(args)...);
+    return container<PP_GT(t), sizeof...(args)>(tag, PP_F(args)...);
 };
 }
 
@@ -338,11 +338,12 @@ namespace functors
 {
 PP_CIA array_construct_helper = [](auto&& f, auto tag, auto&&... args)
 {
-    return construct(array_pick_best_type(
-                         type_char,
-                         tuple::map(PP_F(f), type_tuple<decltype(args)...>)),
-                     tag,
-                     PP_F(args)...);
+    return array::construct(
+        array_pick_best_type(
+            type_char,
+            tuple::map(PP_F(f), type_tuple<decltype(args)...>)),
+        tag,
+        PP_F(args)...);
 };
 }
 PP_FUNCTOR(array_construct_helper)
@@ -350,9 +351,9 @@ PP_FUNCTOR(array_construct_helper)
 
 namespace PP::array
 {
-PP_CIA make = detail::array_construct_helper * decay * value_false;
-PP_CIA forward = detail::array_construct_helper * id_copy * value_false;
-PP_CIA init = detail::array_construct_helper * init_type * value_true;
+PP_CIA make = detail::array_construct_helper * decay * placeholder;
+PP_CIA forward = detail::array_construct_helper * id_copy * placeholder;
+PP_CIA init = detail::array_construct_helper * init_type * in_place;
 }
 
 template <typename T, PP::size_t C>
