@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.8)
 add_library(PP
 "string_view.cpp"
 "ostream.cpp"
-"ostream_std.cpp"
 )
 
 target_compile_features(PP PUBLIC cxx_std_20)

@@ -50,6 +50,6 @@ constexpr auto to_chars(concepts::view auto&& v, auto value) noexcept
         }
     }
 
-    return view::move(begin ^ view::unbounded, view::pair(i, end))[value_0];
+    return i;
 }
 }

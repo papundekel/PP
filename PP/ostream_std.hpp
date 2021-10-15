@@ -3,15 +3,21 @@
 
 namespace PP
 {
-class ostream_std final : public ostream
+template <typename Char>
+class ostream_basic_std final : public ostream_basic<Char>
 {
-    std::ostream& out;
+    std::basic_ostream<Char>& out;
 
 public:
-    constexpr ostream_std(std::ostream& out) noexcept
+    constexpr ostream_basic_std(std::basic_ostream<Char>& out) noexcept
         : out(out)
     {}
 
-    void write(char c) noexcept override final;
+    void write(Char c) noexcept override final
+    {
+        out.put(c);
+    }
 };
+
+using ostream_std = ostream_basic_std<char>;
 }

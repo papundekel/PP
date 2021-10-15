@@ -8,33 +8,39 @@
 
 namespace PP
 {
-class ostream
+template <typename Char>
+class ostream_basic
 {
 public:
-    constexpr virtual void write(char c) noexcept = 0;
+    constexpr virtual void write(Char c) noexcept = 0;
 };
+
+using ostream = ostream_basic<char>;
 
 extern ostream& cout;
 }
 
-constexpr PP::ostream& operator<<(PP::ostream& out, char c) noexcept
+template <typename Char>
+constexpr auto& operator<<(PP::ostream_basic<Char>& out, Char c) noexcept
 {
     out.write(c);
     return out;
 }
 
-constexpr PP::ostream& operator<<(PP::ostream& out,
+template <typename Char>
+constexpr auto& operator<<(PP::ostream_basic<Char>& out,
                                   PP::concepts::view auto&& v) noexcept
 {
-    for (char c : v)
-        out.write(c);
+    for (auto&& c : v)
+        out.write(PP_F(c));
     return out;
 }
 
-constexpr PP::ostream& operator<<(PP::ostream& out,
+template <typename Char>
+constexpr auto& operator<<(PP::ostream_basic<Char>& out,
                                   PP::concepts::integer auto number) noexcept
 {
-    char buffer[32];
-    auto end = PP::to_chars(buffer, number);
-    return out << (PP::view::pair(PP::view::begin_(buffer), end));
+    Char buffer[32];
+    auto begin = PP::to_chars(buffer, number);
+    return out << (PP::view::pair(begin, PP::view::end_(buffer)));
 }

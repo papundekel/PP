@@ -7,11 +7,12 @@ namespace PPtest
 void to_chars()
 {
     char buff[100];
+    buff[99] = 0;
 
     int a = 25;
 
-    *PP::to_chars(buff, a) = 0;
+    auto b = PP::to_chars(PP::view::pair(buff + 0, buff + 99), a);
 
-    std::cout << "should be: " << a << ", is: " << buff << '\n';
+    std::cout << "should be: " << a << ", is: " << b << '\n';
 }
 }

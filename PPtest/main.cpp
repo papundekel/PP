@@ -1,10 +1,5 @@
 #include <iostream>
 
-#include "PP/containers/array.hpp"
-#include "PP/ref_wrap.hpp"
-#include "PP/transform_view.hpp"
-#include "PP/vector.hpp"
-
 namespace PPtest
 {
 void zip_unbounded();
@@ -17,6 +12,17 @@ void tuple_any();
 void tuple_apply();
 void tuple_concat();
 void tuple_fold();
+void cout();
+}
+
+namespace
+{
+    auto& print_many(char c, std::size_t count)
+    {
+        for (auto i = 0z; i != count; ++i)
+            std::cout << c;
+        return std::cout;
+    }
 }
 
 int main()
@@ -32,33 +38,16 @@ int main()
         {PPtest::tuple_apply, "tuple_apply"},
         {PPtest::tuple_concat, "tuple_concat"},
         {PPtest::tuple_fold, "tuple_fold"},
+        {PPtest::cout, "cout"},
     };
 
     for (auto [function, name] : tests)
     {
-        std::cout << name << ":\n"
-                  << "----\n";
+        std::cout << '|' << name << "|\n";
+        print_many('-', std::char_traits<char>::length(name)) << "--\n";
         function();
-        std::cout << "----\n";
+        print_many('-', 80) << "\n";
     }
-
-    std::string a = "abc", b = "defg";
-
-    auto x = PP::array::forward(a, b);
-
-    for (const auto& e : x)
-        std::cout << e << ' ';
-
-    PP::vector<PP::ref_wrap<std::string&>> strings(x);
-
-    auto i = PP::view::begin_(strings) &
-             PP::transform(PP::static__cast * PP::type<std::string&>);
-
-    std::cout << PP::concepts::iterator<decltype(i)>;
-
-    for (auto&& s :
-         strings | PP::transform(PP::static__cast * PP::type<std::string&>))
-        std::cout << s << ' ';
 
     return 0;
 }
