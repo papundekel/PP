@@ -2,18 +2,14 @@
 #include "apply_pack.hpp"
 #include "apply_partially_first.hpp"
 #include "containers/tuple.hpp"
-#include "functor.hpp"
 #include "get_value.hpp"
 #include "utility/move.hpp"
 
 namespace PP
 {
-namespace functors
-{
 PP_CIA apply_partially = [](auto&& f, concepts::value auto i, auto&& arg)
 {
-    return
-        [f = PP_F(f), arg = PP_F(arg)](auto&&... other_args) -> decltype(auto)
+    return [PP_FL(f), PP_FL(arg)](auto&&... other_args) -> decltype(auto)
     {
         return apply_pack(
             unwrap_forward(f),
@@ -33,6 +29,4 @@ PP_CIA apply_partially = [](auto&& f, concepts::value auto i, auto&& arg)
             value_sequence_make(PP_SIZEOF___(other_args) + value_1));
     };
 };
-}
-PP_FUNCTOR(apply_partially)
 }

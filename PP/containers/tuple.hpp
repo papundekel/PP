@@ -117,9 +117,7 @@ PP_CIA construct = [](concepts::tuple auto&& types,
 };
 }
 
-namespace PP::tuple
-{
-namespace functors
+namespace PP::detail
 {
 PP_CIA tuple_construct_helper =
     [](auto&& f, concepts::value auto&& in_place, auto&&... args)
@@ -130,9 +128,11 @@ PP_CIA tuple_construct_helper =
 };
 }
 
-PP_CIA make = functors::tuple_construct_helper * decay * value_false;
-PP_CIA forward = functors::tuple_construct_helper * id_copy * value_false;
-PP_CIA init = functors::tuple_construct_helper * init_type * value_true;
+namespace PP::tuple
+{
+PP_CIA make = detail::tuple_construct_helper * decay * value_false;
+PP_CIA forward = detail::tuple_construct_helper * id_copy * value_false;
+PP_CIA init = detail::tuple_construct_helper * init_type * value_true;
 }
 
 namespace PP::detail

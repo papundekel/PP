@@ -55,8 +55,6 @@ using wrap_ref_t = PP_GT(conditional(value<is_reference(type<T>)>,
                                      type<ref_wrap<T>>,
                                      type<T>));
 
-namespace functors
-{
 PP_CIA unwrap_ref = [](auto&& x) -> auto&&
 {
     if constexpr (requires
@@ -68,13 +66,10 @@ PP_CIA unwrap_ref = [](auto&& x) -> auto&&
         return PP_F(x);
 };
 
-PP_CIA wrap_ref = [](auto&& x)
+PP_CIA wrap_ref = compose([](auto&& x)
 {
     return ref_wrap<decltype(x)>(PP_F(x));
-} | unwrap_ref;
-}
-PP_FUNCTOR(unwrap_ref)
-PP_FUNCTOR(wrap_ref)
+}, unwrap_ref);
 
 #define PP_REF_WRAP(x) ::PP::wrap_ref(PP_F(x))
 }

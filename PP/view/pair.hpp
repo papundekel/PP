@@ -3,7 +3,6 @@
 
 #include "../compressed_pair.hpp"
 #include "../concepts/same_except_cvref.hpp"
-#include "../functor.hpp"
 #include "../ptrdiff_t.hpp"
 #include "concept.hpp"
 #include "unbounded.hpp"
@@ -24,11 +23,11 @@ public:
     {}
     constexpr pair(concepts::view auto&& v) requires
         concepts::different_except_cvref<pair, decltype(v)>
-        : pair(view::begin(PP_F(v)), view::end(PP_F(v)))
+        : pair(view::begin_(PP_F(v)), view::end_(PP_F(v)))
     {}
-    constexpr pair(
-        const std::initializer_list<
-            apply_transform_t<remove_reference | iterator_base, Iterator>>& l)
+    constexpr pair(const std::initializer_list<
+                   apply_transform_t<compose(remove_reference, iterator_base),
+                                     Iterator>>& l)
         : pair(l.begin(), l.end())
     {}
     constexpr auto begin() const
@@ -59,13 +58,13 @@ PP_CIA make_pair = [](concepts::view auto&& v)
 };
 }
 
-constexpr auto operator^(PP::concepts::iterator auto begin,
-                         PP::concepts::sentinel<decltype(begin)> auto end)
+constexpr auto operator^(PP::concepts::iterator auto&& begin,
+                         PP::concepts::sentinel<decltype(begin)> auto&& end)
 {
     return PP::view::pair(begin, end);
 }
 
 constexpr auto operator|(PP::concepts::view auto&& v, PP::view::unbounded_t)
 {
-    return PP::view::begin(PP_F(v)) ^ PP::view::unbounded;
+    return PP::view::begin_(PP_F(v)) ^ PP::view::unbounded;
 }

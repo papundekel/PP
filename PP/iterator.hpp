@@ -3,7 +3,6 @@
 #include "concepts/fundamental_types.hpp"
 #include "concepts/non_void.hpp"
 #include "concepts/same.hpp"
-#include "functor.hpp"
 #include "ptrdiff_t.hpp"
 
 namespace PP::detail
@@ -162,15 +161,9 @@ concept iterator_ra = requires(T i)
 
 namespace PP
 {
-namespace functors
-{
 PP_CONCEPT_FUNCTOR1(iterator);
 PP_CONCEPT_FUNCTOR1(iterator_bi);
 PP_CONCEPT_FUNCTOR1(iterator_ra);
-}
-PP_FUNCTOR(is_iterator)
-PP_FUNCTOR(is_iterator_bi)
-PP_FUNCTOR(is_iterator_ra)
 }
 
 namespace PP::concepts
@@ -180,8 +173,6 @@ concept sentinel = iterator<I> && equatable<I, S>;
 }
 
 namespace PP
-{
-namespace functors
 {
 PP_CIA is_sentinel = [](concepts::type auto s, concepts::type auto i)
 {
@@ -203,9 +194,4 @@ PP_CIA iterator_next = [](concepts::iterator auto i)
     ++i;
     return i;
 };
-}
-PP_FUNCTOR(is_sentinel)
-PP_FUNCTOR(iterator_base)
-PP_FUNCTOR(iterator_prev)
-PP_FUNCTOR(iterator_next)
 }

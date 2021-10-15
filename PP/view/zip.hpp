@@ -58,8 +58,6 @@ public:
 template <typename... Iterators>
 zip_iterator(placeholder_t, Iterators...) -> zip_iterator<Iterators...>;
 
-namespace functors
-{
 PP_CIA make_zip_iterator = [](auto&&... iterators)
 {
     return zip_iterator(placeholder, PP_F(iterators)...);
@@ -67,10 +65,7 @@ PP_CIA make_zip_iterator = [](auto&&... iterators)
 
 PP_CIA zip_pack = [](concepts::view auto&&... views)
 {
-    return pair(make_zip_iterator(begin(PP_F(views))...),
-                make_zip_iterator(end(PP_F(views))...));
+    return pair(make_zip_iterator(begin_(PP_F(views))...),
+                make_zip_iterator(end_(PP_F(views))...));
 };
-}
-PP_FUNCTOR(make_zip_iterator)
-PP_FUNCTOR(zip_pack)
 }

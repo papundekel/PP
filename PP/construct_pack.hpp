@@ -1,5 +1,4 @@
 #pragma once
-#include "functor.hpp"
 #include "get_type.hpp"
 #include "type_t.hpp"
 

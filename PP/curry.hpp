@@ -1,5 +1,4 @@
 #pragma once
-#include "functor.hpp"
 
 namespace PP
 {
@@ -17,7 +16,7 @@ PP_CIA curry = [](auto&& f)
 };
 }
 
-constexpr auto operator~(PP::concepts::functor auto&& f)
+constexpr auto operator~(auto&& f)
 {
     return PP::curry(PP::unwrap_functor(PP_F(f)));
 }

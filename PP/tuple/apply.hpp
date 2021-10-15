@@ -1,6 +1,5 @@
 #pragma once
 #include "../apply_pack.hpp"
-#include "../functor.hpp"
 #include "../utility/forward.hpp"
 #include "../value_t.hpp"
 #include "concept.hpp"
@@ -9,8 +8,6 @@
 #include "value_sequence_for.hpp"
 
 namespace PP::tuple
-{
-namespace functors
 {
 PP_CIA apply = [](auto&& f, concepts::tuple auto&& t) -> decltype(auto)
 {
@@ -22,6 +19,4 @@ PP_CIA apply = [](auto&& f, concepts::tuple auto&& t) -> decltype(auto)
         },
         value_sequence_for(PP_F(t)));
 };
-}
-PP_FUNCTOR(apply)
 }

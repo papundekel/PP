@@ -5,7 +5,7 @@
 
 namespace PP
 {
-PP_CIA remove_cvref = remove_cv | remove_reference;
+PP_CIA remove_cvref = compose(remove_cv, remove_reference);
 }
 
 constexpr auto operator~(PP::concepts::type auto t) noexcept

@@ -1,10 +1,11 @@
 #pragma once
 #include "decompose_const.hpp"
+#include "decompose_pair.hpp"
 #include "decompose_pair_std.hpp"
 #include "decompose_volatile.hpp"
 #include "get_value.hpp"
 
-namespace PP::functors
+namespace PP
 {
 PP_CIA decompose_cv = [](concepts::type auto t)
 {
@@ -13,9 +14,4 @@ PP_CIA decompose_cv = [](concepts::type auto t)
 
     return make_decompose_pair(t_no_cv, c | v);
 };
-}
-
-namespace PP
-{
-using functors::decompose_cv;
 }

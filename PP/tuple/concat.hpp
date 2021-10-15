@@ -25,8 +25,10 @@ PP_CIA concat = combine(
                               else
                                   return PP_F(r)[PP_F(i) - lc];
                           }),
-    value_sequence_make | pls++ | map_pack * count_value_t);
+    compose(compose(value_sequence_make, pls++), map_pack* count_value_t));
+
 PP_CIA concats =
     combine(foldl, constant(concat), constant(tuple_empty{}), id_forward);
-PP_CIA concats_pack = concats | forward;
+
+PP_CIA concats_pack = compose(concats, forward);
 }

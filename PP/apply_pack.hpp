@@ -1,5 +1,4 @@
 #pragma once
-#include "functor.hpp"
 #include "value_sequence.hpp"
 #include "value_t.hpp"
 

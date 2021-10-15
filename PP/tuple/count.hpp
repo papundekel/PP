@@ -3,7 +3,6 @@
 #include "../decl_type.hpp"
 #include "../declval.hpp"
 #include "../declval_impl.hpp"
-#include "../functor.hpp"
 #include "../get_value.hpp"
 
 namespace PP::detail
@@ -27,8 +26,6 @@ concept tuple_concept_count_value_t_any =
 
 namespace PP::tuple
 {
-namespace functors
-{
 PP_CIA count_value_t = [](detail::tuple_concept_count_value_t_any auto&& t)
 {
     if constexpr (detail::tuple_concept_count_value_t_member<decltype(t)>)
@@ -41,10 +38,7 @@ PP_CIA type_count_value_t = [](concepts::type auto t)
 {
     return PP_CV(count_value_t(declval(t)));
 };
-}
-PP_FUNCTOR(count_value_t)
-PP_FUNCTOR(type_count_value_t)
 
-PP_CIA count = get_value | count_value_t;
-PP_CIA type_count = get_value | type_count_value_t;
+PP_CIA count = compose(get_value, count_value_t);
+PP_CIA type_count = compose(get_value, type_count_value_t);
 }

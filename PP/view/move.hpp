@@ -10,5 +10,5 @@
 
 namespace PP::view
 {
-PP_CIA move = for_each * move_assign++ | zip_pack;
+PP_CIA move = compose(for_each * move_assign++, zip_pack);
 }

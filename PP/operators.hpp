@@ -1,11 +1,8 @@
 #pragma once
-#include "functor.hpp"
 #include "macros/CIA.hpp"
 #include "utility/forward.hpp"
 
 namespace PP
-{
-namespace functors
 {
 PP_CIA eql = [](auto&& x, auto&& y) -> decltype(auto)
 {
@@ -63,19 +60,4 @@ PP_CIA cal = [](auto&& f, auto&&... args) -> decltype(auto)
 {
     return PP_F(f)(PP_F(args)...);
 };
-}
-PP_FUNCTOR(eql)
-PP_FUNCTOR(neq)
-PP_FUNCTOR(lst)
-PP_FUNCTOR(lte)
-PP_FUNCTOR(or_)
-PP_FUNCTOR(an_)
-PP_FUNCTOR(pls)
-PP_FUNCTOR(asg)
-PP_FUNCTOR(pas)
-PP_FUNCTOR(mas)
-PP_FUNCTOR(ipr)
-PP_FUNCTOR(der)
-PP_FUNCTOR(neg)
-PP_FUNCTOR(cal)
 }

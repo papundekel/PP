@@ -45,8 +45,6 @@ constexpr auto promotion_type_convertor(long double x)
 }
 }
 
-namespace functors
-{
 PP_CIA has_implicit_conversion_to_arithmetic_type = [](concepts::type auto t)
 {
     return requires(PP_GT(t) x)
@@ -55,12 +53,11 @@ PP_CIA has_implicit_conversion_to_arithmetic_type = [](concepts::type auto t)
     };
 };
 
-PP_CIA promotion_type = decl_type_copy |
-                        [](auto x)
-{
-    return detail::promotion_type_convertor(x);
-} | construct_pack;
-}
-PP_FUNCTOR(has_implicit_conversion_to_arithmetic_type)
-PP_FUNCTOR(promotion_type)
+PP_CIA promotion_type =
+    compose(compose(decl_type_copy,
+                    [](auto x)
+                    {
+                        return detail::promotion_type_convertor(x);
+                    }),
+            construct_pack);
 }

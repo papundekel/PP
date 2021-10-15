@@ -1,22 +1,19 @@
 #pragma once
 #include "../apply_partially_first.hpp"
-#include "../functor.hpp"
 #include "../get_value.hpp"
 #include "../utility/move.hpp"
 #include "concept.hpp"
 
 namespace PP::view
 {
-namespace functors
-{
 PP_CIA fold =
     [](concepts::value auto left, auto&& f, auto init, concepts::view auto&& v)
 {
     if constexpr (PP_GV(left))
     {
-        auto i = begin(PP_F(v));
+        auto i = begin_(PP_F(v));
 
-        for (; i != end(PP_F(v)); ++i)
+        for (; i != end_(PP_F(v)); ++i)
             init = PP_F(f)(move(init), *i);
 
         return tuple::make(move(i), move(init));
@@ -37,8 +34,6 @@ PP_CIA fold =
         return tuple::make(move(i), move(init));
     }
 };
-}
-PP_FUNCTOR(fold)
 
 PP_CIA foldl = fold * value_true;
 PP_CIA foldr = fold * value_false;

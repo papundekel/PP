@@ -108,8 +108,8 @@ struct transform
 
 constexpr auto transform_view(concepts::view auto&& v, auto&& f)
 {
-    return transform_iterator(view::begin(PP_F(v)), PP_F(f)) ^
-           transform_iterator(view::end(PP_F(v)), PP_F(f));
+    return transform_iterator(view::begin_(PP_F(v)), PP_F(f)) ^
+           transform_iterator(view::end_(PP_F(v)), PP_F(f));
 }
 }
 
@@ -120,7 +120,7 @@ constexpr auto operator&(PP::concepts::iterator auto&& i, PP::transform<auto> t)
 
 constexpr auto operator||(PP::concepts::view auto&& v, PP::transform<auto> t)
 {
-    return PP::view::begin(PP_F(v)) & PP::move(t) ^ PP::view::end(PP_F(v));
+    return PP::view::begin_(PP_F(v)) & PP::move(t) ^ PP::view::end_(PP_F(v));
 }
 
 constexpr auto operator|(PP::concepts::view auto&& v, PP::transform<auto> t)

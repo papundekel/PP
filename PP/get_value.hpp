@@ -1,7 +1,6 @@
 #pragma once
 #include "decl_type.hpp"
 #include "declval_impl.hpp"
-#include "functor.hpp"
 #include "get_type.hpp"
 #include "overloaded.hpp"
 #include "remove_reference_impl.hpp"
@@ -39,10 +38,10 @@ PP_CIA get_type_value = overloaded(
         return (remove_reference_impl<PP_GT(t)>::value);
     });
 
-PP_CIA get_value = get_type_value | decl_type_copy;
+PP_CIA get_value = compose(get_type_value, decl_type_copy);
 }
 
-constexpr decltype(auto) operator*(PP::concepts::value auto v) noexcept
+constexpr decltype(auto) operator*(PP::concepts::value auto&& v) noexcept
 {
     return PP::get_value(v);
 }
@@ -61,77 +60,86 @@ constexpr decltype(auto) operator-(
 #define PP_CV_MEMBER(x, member) (::PP::value<PP_GV(x).member>)
 #define PP_GV_TYPE(x) PP_DT(PP_GV(x))
 
-constexpr auto operator==(PP::concepts::value auto x,
-                          PP::concepts::value auto y)
+constexpr auto operator==(PP::concepts::value auto&& x,
+                          PP::concepts::value auto&& y)
 {
     return PP::value<PP_GV(x) == PP_GV(y)>;
 }
-constexpr auto operator!=(PP::concepts::value auto x,
-                          PP::concepts::value auto y)
+constexpr auto operator!=(PP::concepts::value auto&& x,
+                          PP::concepts::value auto&& y)
 {
     return PP::value<PP_GV(x) != PP_GV(y)>;
 }
-constexpr auto operator<(PP::concepts::value auto x, PP::concepts::value auto y)
+constexpr auto operator<(PP::concepts::value auto&& x,
+                         PP::concepts::value auto&& y)
 {
     return PP::value<PP_GV(x) < PP_GV(y)>;
 }
-constexpr auto operator<=(PP::concepts::value auto x,
-                          PP::concepts::value auto y)
+constexpr auto operator<=(PP::concepts::value auto&& x,
+                          PP::concepts::value auto&& y)
 {
     return PP::value<PP_GV(x) <= PP_GV(y)>;
 }
-constexpr auto operator>(PP::concepts::value auto x, PP::concepts::value auto y)
+constexpr auto operator>(PP::concepts::value auto&& x,
+                         PP::concepts::value auto&& y)
 {
     return PP::value<(PP_GV(x) > PP_GV(y))>;
 }
-constexpr auto operator>=(PP::concepts::value auto x,
-                          PP::concepts::value auto y)
+constexpr auto operator>=(PP::concepts::value auto&& x,
+                          PP::concepts::value auto&& y)
 {
     return PP::value<(PP_GV(x) >= PP_GV(y))>;
 }
-constexpr auto operator+(PP::concepts::value auto x, PP::concepts::value auto y)
+constexpr auto operator+(PP::concepts::value auto&& x,
+                         PP::concepts::value auto&& y)
 {
     return PP::value<PP_GV(x) + PP_GV(y)>;
 }
-constexpr auto operator-(PP::concepts::value auto x, PP::concepts::value auto y)
+constexpr auto operator-(PP::concepts::value auto&& x,
+                         PP::concepts::value auto&& y)
 {
     return PP::value<PP_GV(x) - PP_GV(y)>;
 }
-constexpr auto operator*(PP::concepts::value auto x, PP::concepts::value auto y)
+constexpr auto operator*(PP::concepts::value auto&& x,
+                         PP::concepts::value auto&& y)
 {
     return PP::value<PP_GV(x) * PP_GV(y)>;
 }
-constexpr auto operator/(PP::concepts::value auto x, PP::concepts::value auto y)
+constexpr auto operator/(PP::concepts::value auto&& x,
+                         PP::concepts::value auto&& y)
 {
     return PP::value<PP_GV(x) / PP_GV(y)>;
 }
-constexpr auto operator%(PP::concepts::value auto x, PP::concepts::value auto y)
+constexpr auto operator%(PP::concepts::value auto&& x,
+                         PP::concepts::value auto&& y)
 {
     return PP::value<PP_GV(x) % PP_GV(y)>;
 }
-constexpr auto operator&(PP::concepts::value auto x, PP::concepts::value auto y)
+constexpr auto operator&(PP::concepts::value auto&& x,
+                         PP::concepts::value auto&& y)
 {
     return PP::value<PP_GV(x) & PP_GV(y)>;
 }
-constexpr auto operator|(PP::concepts::value auto x, PP::concepts::value auto y)
+constexpr auto operator|(PP::concepts::value auto&& x,
+                         PP::concepts::value auto&& y)
 {
     return PP::value<PP_GV(x) | PP_GV(y)>;
 }
-constexpr auto operator-(PP::concepts::value auto x)
+constexpr auto operator-(PP::concepts::value auto&& x)
 {
     return PP::value<-PP_GV(x)>;
 }
-constexpr auto operator!(PP::concepts::value auto x)
+constexpr auto operator!(PP::concepts::value auto&& x)
 {
     return PP::value<!PP_GV(x)>;
 }
-constexpr auto operator&&(PP::concepts::value auto x,
-                          PP::concepts::value auto y)
+constexpr auto operator&&(PP::concepts::value auto&& x,
+                          PP::concepts::value auto&& y)
 {
     return PP::value < PP_GV(x) && PP_GV(y) > ;
 }
-constexpr auto operator||(PP::concepts::value auto x,
-                          PP::concepts::value auto y)
+constexpr auto operator||(PP::concepts::value auto&& x,
+                          PP::concepts::value auto&& y)
 {
     return PP::value < PP_GV(x) || PP_GV(y) > ;
 }
@@ -148,12 +156,8 @@ constexpr auto operator<=(PP::concepts::type auto x,
 
 namespace PP
 {
-namespace functors
-{
-PP_CIA to_value_t = [](concepts::value auto x)
+PP_CIA to_value_t = [](concepts::value auto&& x)
 {
     return value<PP_GV(x)>;
 };
-}
-using functors::to_value_t;
 }

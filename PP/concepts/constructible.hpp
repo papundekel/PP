@@ -23,9 +23,7 @@ concept constructible_noexcept = requires
 };
 }
 
-namespace PP
-{
-namespace functors
+namespace PP::detail
 {
 PP_CIA is_constructible_pack_impl = [](concepts::value auto Noexcept,
                                        concepts::type auto t,
@@ -45,11 +43,12 @@ PP_CIA is_constructible_impl = [](concepts::value auto Noexcept,
 };
 }
 
-PP_CIA is_constructible_pack =
-    functors::is_constructible_pack_impl * value_false;
+namespace PP
+{
+PP_CIA is_constructible_pack = detail::is_constructible_pack_impl * value_false;
 PP_CIA is_constructible_noexcept_pack =
-    functors::is_constructible_pack_impl * value_true;
+    detail::is_constructible_pack_impl * value_true;
 
-PP_CIA is_constructible = functors::is_constructible_impl * value_false;
-PP_CIA is_constructible_noexcept = functors::is_constructible_impl * value_true;
+PP_CIA is_constructible = detail::is_constructible_impl * value_false;
+PP_CIA is_constructible_noexcept = detail::is_constructible_impl * value_true;
 }

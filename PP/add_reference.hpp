@@ -6,8 +6,6 @@
 
 namespace PP
 {
-namespace functors
-{
 PP_CIA add_reference = [](concepts::value auto ref, concepts::type auto t)
 {
     using T = PP_GT(t);
@@ -26,8 +24,6 @@ PP_CIA add_reference = [](concepts::value auto ref, concepts::type auto t)
     else
         return t;
 };
-}
-PP_FUNCTOR(add_reference)
 
 ///
 /// @brief Empty tag type used for adding a ref qualifier.
@@ -44,8 +40,8 @@ constexpr inline add_reference_tag_t<ref_qualifier::rvalue> add_rvalue_tag{};
 }
 
 template <PP::ref_qualifier ref>
-constexpr auto operator+(PP::concepts::type auto t,
+constexpr auto operator+(PP::concepts::type auto&& t,
                          PP::add_reference_tag_t<ref> tag) noexcept
 {
-    return PP::add_reference(tag, t);
+    return PP::add_reference(tag, PP_F(t));
 }

@@ -7,5 +7,6 @@
 
 namespace PP
 {
-PP_CIA get_reference_value_t = tuple::get_ * value_1 | decompose_reference;
+PP_CIA get_reference_value_t =
+    compose(tuple::get_ * value_1, decompose_reference);
 }

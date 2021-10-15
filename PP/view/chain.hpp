@@ -108,7 +108,7 @@ public:
 
 constexpr auto view_chain(concepts::view auto&& v)
 {
-    return view_chain_wrap(view::begin(PP_F(v)), view::end(PP_F(v)));
+    return view_chain_wrap(view::begin_(PP_F(v)), view::end_(PP_F(v)));
 }
 }
 
@@ -119,6 +119,8 @@ constexpr auto operator^(PP::view_chain_wrap<I, E> vc,
     // should return a simpler end iterator but any_view is broken and
     // cannot receive two different iterators
     return PP::view_chain_wrap(
-        PP::view_chain_iterator(vc.begin(), vc.end(), PP::view::begin(PP_F(v))),
-        PP::view_chain_iterator(vc.end(), vc.end(), PP::view::end(PP_F(v))));
+        PP::view_chain_iterator(vc.begin(),
+                                vc.end(),
+                                PP::view::begin_(PP_F(v))),
+        PP::view_chain_iterator(vc.end(), vc.end(), PP::view::end_(PP_F(v))));
 }

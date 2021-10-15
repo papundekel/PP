@@ -44,7 +44,7 @@ PP_CIA view_subsequence_if =
         PP_F(sub),
         PP_F(full));
 
-    if (sub_end == view::end(PP_F(sub)) && full_end == view::end(PP_F(full)))
+    if (sub_end == view::end_(PP_F(sub)) && full_end == view::end_(PP_F(full)))
     {
         if (may_be_proper)
             return subsequence_type::proper;

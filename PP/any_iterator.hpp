@@ -44,14 +44,10 @@ constexpr PP::iterator_category operator-(PP::iterator_category a)
 
 namespace PP
 {
-namespace functors
-{
 PP_CIA add_cv_reference = [](concepts::value auto cv, concepts::type auto t)
 {
     return add_reference(get_reference_value_t(t), add_cv(cv, !t));
 };
-}
-PP_FUNCTOR(add_cv_reference)
 
 namespace detail
 {

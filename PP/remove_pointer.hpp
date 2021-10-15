@@ -6,14 +6,14 @@
 
 namespace PP
 {
-PP_CIA remove_pointer = overloaded(
+PP_CIA remove_pointer = compose(overloaded(
                             []<typename T>(type_t<T*>)
                             {
                                 return type<T>;
                             },
-                            [](auto t)
+                            [](auto&& t)
                             {
                                 return t;
-                            }) |
-                        remove_cv;
+                            }),
+                        remove_cv);
 }

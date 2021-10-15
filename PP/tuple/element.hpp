@@ -2,7 +2,6 @@
 #include "../copy_cv.hpp"
 #include "../decl_type.hpp"
 #include "../declval.hpp"
-#include "../functor.hpp"
 #include "../get_value.hpp"
 #include "head_element.hpp"
 #include "recursive.hpp"

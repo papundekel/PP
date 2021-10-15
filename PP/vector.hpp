@@ -36,7 +36,7 @@ public:
     {}
     constexpr vector(auto&& allocator, concepts::view auto&& v)
         : block(PP_F(allocator), PP_F(v))
-        , count_(block.count())
+        , count_(movable_default_releaser_tag, block.count())
     {}
     explicit constexpr vector(size_t capacity) noexcept
         : vector(Allocator(), capacity)

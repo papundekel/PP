@@ -29,5 +29,5 @@ PP_CIA splitter = overloaded(
 PP_CIA split = splitter++;
 
 PP_CIA head = get_ * value_0;
-PP_CIA tail = get_ * value_1 | split;
+PP_CIA tail = compose(get_ * value_1, split);
 }

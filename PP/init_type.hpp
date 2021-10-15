@@ -1,6 +1,5 @@
 #pragma once
 #include "declval.hpp"
-#include "functor.hpp"
 #include "get_type.hpp"
 #include "type_t.hpp"
 #include "utility/forward.hpp"

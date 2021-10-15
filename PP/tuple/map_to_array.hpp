@@ -1,8 +1,6 @@
 #pragma once
 #include "../construct_pack.hpp"
 #include "../forward_wrap.hpp"
-#include "../functor.hpp"
-#include "../functor_or_wrap.hpp"
 #include "../operators.hpp"
 #include "forward_array.hpp"
 #include "make_array.hpp"
@@ -50,14 +48,12 @@ PP_CIA map_forward_array = [](auto&& map, concepts::tuple auto&& tuple)
 };
 }
 
-constexpr auto operator<(PP::concepts::functor_or_wrap auto&& f,
-                         PP::concepts::tuple auto&& t)
+constexpr auto operator<(auto&& f, PP::concepts::tuple auto&& t)
 {
     return PP::tuple::map_make_array(PP_UF(f), PP_F(t));
 }
 
-constexpr auto operator<<(PP::concepts::functor_or_wrap auto&& f,
-                          PP::concepts::tuple auto&& t) noexcept
+constexpr auto operator<<(auto&& f, PP::concepts::tuple auto&& t) noexcept
 {
     return PP::tuple::map_forward_array(PP_UF(f), PP_F(t));
 }

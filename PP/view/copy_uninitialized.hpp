@@ -20,5 +20,5 @@ PP_CIA copy_uninitialized_helper = [](auto&& to, auto&& from)
 namespace PP::view
 {
 PP_CIA copy_uninitialized =
-    for_each * detail::functors::copy_uninitialized_helper++ | zip_pack;
+    compose(for_each * detail::functors::copy_uninitialized_helper++, zip_pack);
 }

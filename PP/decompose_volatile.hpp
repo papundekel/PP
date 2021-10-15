@@ -9,7 +9,7 @@
 
 namespace PP
 {
-PP_CIA decompose_volatile =
+PP_CIA decompose_volatile = compose(
     overloaded(
         []<typename T>(type_t<volatile T>)
         {
@@ -19,6 +19,6 @@ PP_CIA decompose_volatile =
         []<typename T>(type_t<T>)
         {
             return make_decompose_pair(type<T>, PP::value<cv_qualifier::none>);
-        }) |
-    to_type_t;
+        }),
+    to_type_t);
 }

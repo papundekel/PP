@@ -12,9 +12,5 @@ concept array = bounded_array<T> || unbounded_array<T>;
 
 namespace PP
 {
-namespace functors
-{
 PP_CONCEPT_FUNCTOR1(array);
-}
-PP_FUNCTOR(is_array)
 }

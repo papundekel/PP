@@ -5,8 +5,6 @@
 
 namespace PP::tuple
 {
-namespace functors
-{
 PP_CIA prepend = [](auto&& head, concepts::tuple auto&& t)
 {
     return apply(
@@ -16,8 +14,6 @@ PP_CIA prepend = [](auto&& head, concepts::tuple auto&& t)
         },
         PP_F(t));
 };
-}
-PP_FUNCTOR(prepend)
 }
 
 constexpr auto operator+=(auto&& x, PP::concepts::tuple auto&& t) noexcept

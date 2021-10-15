@@ -19,7 +19,7 @@ public:
         : view::pair_pointer<const CharT>(begin, end)
     {}
     constexpr basic_string_view(concepts::view auto&& v) noexcept
-        : basic_string_view(view::begin(PP_F(v)), view::end(PP_F(v)))
+        : basic_string_view(view::begin_(PP_F(v)), view::end_(PP_F(v)))
     {}
     template <size_t N>
     constexpr basic_string_view(const CharT (&arr)[N]) noexcept

@@ -2,7 +2,6 @@
 #include <memory>
 
 #include "concepts/array.hpp"
-#include "functor.hpp"
 #include "get_type.hpp"
 
 namespace PP

@@ -35,7 +35,7 @@ PP_CIA to_array = [](concepts::type auto&& t, concepts::tuple auto&& tuple)
 };
 }
 
-constexpr auto operator&(PP::concepts::type auto t,
+constexpr auto operator&(PP::concepts::type auto&& t,
                          PP::concepts::tuple auto&& tuple)
 {
     return PP::tuple::to_array(t, PP_F(tuple));

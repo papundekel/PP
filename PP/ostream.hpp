@@ -36,5 +36,5 @@ constexpr PP::ostream& operator<<(PP::ostream& out,
 {
     char buffer[32];
     auto end = PP::to_chars(buffer, number);
-    return out << (PP::view::pair(PP::view::begin(buffer), end));
+    return out << (PP::view::pair(PP::view::begin_(buffer), end));
 }

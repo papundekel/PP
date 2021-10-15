@@ -7,5 +7,5 @@
 
 namespace PP
 {
-PP_CIA remove_volatile = tuple::get_ * value_0 | decompose_volatile;
+PP_CIA remove_volatile = compose(tuple::get_ * value_0, decompose_volatile);
 }

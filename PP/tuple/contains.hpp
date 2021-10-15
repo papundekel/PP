@@ -1,5 +1,4 @@
 #pragma once
-#include "../functor.hpp"
 #include "count.hpp"
 #include "find_dynamic.hpp"
 

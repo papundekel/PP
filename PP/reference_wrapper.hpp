@@ -73,8 +73,6 @@ reference_wrapper(T&&) -> reference_wrapper<T&&>;
 template <typename T>
 using clref_t = reference_wrapper<const T&>;
 
-namespace functors
-{
 PP_CIA unref = [](auto&& x) -> decltype(auto)
 {
     if constexpr (PP_DT(x)->Template == Template<reference_wrapper>)
@@ -83,11 +81,10 @@ PP_CIA unref = [](auto&& x) -> decltype(auto)
         return PP_F(x);
 };
 
-PP_CIA ref = [](auto&& x)
-{
-    return reference_wrapper(PP_F(x));
-} | unref;
-}
-PP_FUNCTOR(unref)
-PP_FUNCTOR(ref)
+PP_CIA ref = compose(
+    [](auto&& x)
+    {
+        return reference_wrapper(PP_F(x));
+    },
+    unref);
 }

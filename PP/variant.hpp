@@ -4,6 +4,7 @@
 #include "add_pointer.hpp"
 #include "alignment_of.hpp"
 #include "apply_partially.hpp"
+#include "call.hpp"
 #include "compose.hpp"
 #include "concepts/trivially_destructible.hpp"
 #include "construct_at_pack.hpp"

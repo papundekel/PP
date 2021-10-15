@@ -16,27 +16,21 @@
 
 namespace PP::tuple
 {
-namespace functors
-{
 PP_CIA zip = [](concepts::tuple auto&& tuples)
 {
-    if constexpr (all(neq * 0_z | type_count, types(PP_DT(tuples))))
+    if constexpr (all(compose(neq * 0_z, type_count), types(PP_DT(tuples))))
     {
         auto splits = split + PP_F(tuples);
 
-        return (maker | prepend)(get_ * value_0 + move(splits),
-                                 zip(get_ * value_1 + move(splits)));
+        return compose(maker, prepend)(get_ * value_0 + move(splits),
+                                       zip(get_ * value_1 + move(splits)));
     }
     else
         return tuple_empty{};
 };
-}
-PP_FUNCTOR(zip)
 
-PP_CIA zip_pack = zip | forward;
+PP_CIA zip_pack = compose(zip, forward);
 
-namespace functors
-{
 PP_CIA zip_with = [](auto&& f, concepts::tuple auto&& tuples)
 {
     return apply * forward_wrap(PP_F(f)) + zip(PP_F(tuples));
@@ -46,9 +40,6 @@ PP_CIA zip_with_pack = [](auto&& f, concepts::tuple auto&&... tuples)
 {
     return zip_with(PP_F(f), forward_as_tuple(PP_F(tuples)...));
 };
-}
-PP_FUNCTOR(zip_with)
-PP_FUNCTOR(zip_with_pack)
 }
 
 constexpr auto operator^(PP::concepts::tuple auto&& a,

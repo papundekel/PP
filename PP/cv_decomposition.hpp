@@ -3,7 +3,6 @@
 #include "concepts/pointer_to_member.hpp"
 #include "empty.hpp"
 #include "extent.hpp"
-#include "functor.hpp"
 #include "get_cv.hpp"
 #include "pointer_to_member_info.hpp"
 #include "remove_extent.hpp"

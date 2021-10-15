@@ -12,8 +12,6 @@
 
 namespace PP
 {
-namespace functors
-{
 PP_CIA arg_splitter = [](concepts::type auto delimiter_type,
                          concepts::tuple auto&& to_construct_types,
                          concepts::value auto i,
@@ -39,6 +37,4 @@ PP_CIA arg_splitter = [](concepts::type auto delimiter_type,
             };
         } +++(PP_F(to_construct_types) ^ move(splits)))[i]();
 };
-}
-PP_FUNCTOR(arg_splitter)
 }

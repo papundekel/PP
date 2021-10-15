@@ -28,9 +28,9 @@ public:
         : ptr(placeholder, PP_F(allocator), count)
     {}
     constexpr dynamic_block(auto&& allocator, concepts::view auto&& v)
-        : dynamic_block(PP_F(allocator), view_count(PP_F(v)))
+        : dynamic_block(PP_F(allocator), view::count(PP_F(v)))
     {
-        view_copy_uninitialized(*this, PP_F(v));
+        view::copy_uninitialized(*this, PP_F(v));
     }
 
     constexpr T* begin() noexcept

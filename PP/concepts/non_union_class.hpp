@@ -7,7 +7,7 @@
 
 namespace PP
 {
-PP_CIA is_non_union_class = is_class && !is_union;
+PP_CIA is_non_union_class = is_class && negate(is_union);
 
 PP_CONCEPT1(non_union_class)
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "macros/CIA.hpp"
 #include "macros/functor.hpp"
+#include "placeholder.hpp"
 #include "utility/forward.hpp"
 
 namespace PP
@@ -14,7 +15,7 @@ public:
     constexpr forward_wrap(const forward_wrap& other) noexcept
         : ref(PP_F(other.ref))
     {}
-    constexpr forward_wrap(T&& ref) noexcept
+    constexpr forward_wrap(placeholder_t, T&& ref) noexcept
         : ref(PP_F(ref))
     {}
 
@@ -28,16 +29,15 @@ public:
     }
 };
 template <typename T>
-forward_wrap(T&&) -> forward_wrap<T>;
+forward_wrap(placeholder_t, T&&) -> forward_wrap<T>;
 
-namespace functors
-{
+#define PP_FW(x) ::PP::forward_wrap(::PP::placeholder, PP_F(x))
+#define PP_FWL(x) x = PP_FW(x)
+
 PP_CIA wrap_forward = [](auto&& x)
 {
-    return forward_wrap(PP_F(x));
+    return PP_FW(x);
 };
-}
-PP_FUNCTOR(wrap_forward)
 
 constexpr auto&& unwrap_forward(auto&& x) noexcept
 {
@@ -49,6 +49,4 @@ constexpr auto&& unwrap_forward(const forward_wrap<T>& x) noexcept
     return x--;
 }
 
-#define PP_FW(x) ::PP::forward_wrap(PP_F(x))
-#define PP_FWL(x) x = PP_FW(x)
 }

@@ -32,7 +32,7 @@ struct decompose_dummy
 
 namespace PP
 {
-PP_CIA decompose =
+PP_CIA decompose = compose(
     overloaded(
         []<template <typename...> typename T, typename... Types>(
             type_t<T<Types...>>)
@@ -43,8 +43,8 @@ PP_CIA decompose =
         {
             return detail::decompose_pair(Template<detail::decompose_dummy>,
                                           type_tuple<>);
-        }) |
-    remove_cvref;
+        }),
+    remove_cvref);
 
 PP_CIA decompose_template = compose(
     [](auto p)

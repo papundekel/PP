@@ -20,5 +20,5 @@ PP_CIA move_uninitialized_helper = [](auto&& to, auto&& from)
 namespace PP::view
 {
 PP_CIA move_uninitialized =
-    for_each * detail::functors::move_uninitialized_helper++ | zip_pack;
+    compose(for_each * detail::functors::move_uninitialized_helper++, zip_pack);
 }

@@ -8,8 +8,6 @@
 
 namespace PP::view
 {
-namespace functors
-{
 PP_CIA first_equal_if =
     [](auto&& comparer, concepts::view auto&& a, concepts::view auto&& b)
 {
@@ -20,9 +18,6 @@ PP_CIA first_difference_if =
 {
     return find(negate(applier(PP_F(comparer))), zip_pack(PP_F(a), PP_F(b)));
 };
-}
-PP_FUNCTOR(first_equal_if)
-PP_FUNCTOR(first_difference_if)
 
 PP_CIA first_equal = first_equal_if * eql;
 PP_CIA first_difference = first_difference_if * eql;

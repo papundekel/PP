@@ -42,6 +42,6 @@ constexpr auto make_view_tuple(concepts::value auto count,
 constexpr auto make_view_tuple(concepts::value auto count,
                                concepts::view auto&& v) noexcept
 {
-    return make_view_tuple(count, view::begin(PP_F(v)));
+    return make_view_tuple(count, view::begin_(PP_F(v)));
 }
 }

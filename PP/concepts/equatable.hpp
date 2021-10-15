@@ -1,6 +1,5 @@
 #pragma once
 #include "../declval_impl.hpp"
-#include "../functor.hpp"
 #include "convertible_to.hpp"
 
 namespace PP::concepts

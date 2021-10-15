@@ -1,12 +1,9 @@
 #pragma once
-#include "../functor.hpp"
 #include "../get_value.hpp"
 #include "../type_t.hpp"
 #include "../utility/forward.hpp"
 
 namespace PP::tuple
-{
-namespace functors
 {
 PP_CIA get_0 = [](auto&& x, auto&&...) -> auto&&
 {
@@ -33,11 +30,4 @@ PP_CIA get_ =
 {
     return PP_F(t)[i];
 };
-}
-PP_FUNCTOR(get_0)
-PP_FUNCTOR(get_1)
-PP_FUNCTOR(get_2)
-PP_FUNCTOR(get_3)
-
-PP_FUNCTOR(get_)
 }

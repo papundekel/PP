@@ -6,16 +6,16 @@
 
 namespace PP
 {
-PP_CIA is_pointer = overloaded(
+PP_CIA is_pointer = compose(overloaded(
                         []<typename T>(type_t<T*>)
                         {
                             return true;
                         },
-                        [](auto)
+                        [](auto&&)
                         {
                             return false;
-                        }) |
-                    remove_cv;
+                        }),
+                    remove_cv);
 
 PP_CONCEPT1(pointer)
 }

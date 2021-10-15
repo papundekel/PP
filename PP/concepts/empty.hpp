@@ -1,7 +1,6 @@
 #pragma once
 #include "../apply_partially.hpp"
 #include "../apply_template.hpp"
-#include "../functor.hpp"
 #include "../get_type.hpp"
 #include "../macros/simple_concept.hpp"
 #include "../size_of.hpp"
@@ -17,8 +16,6 @@ struct empty_helper
     T t;
 };
 
-namespace functors
-{
 PP_CIA is_empty_helper = [](concepts::type auto member_t, concepts::type auto t)
 {
     if constexpr (is_non_union_class(PP_COPY_TYPE(t)))
@@ -27,8 +24,6 @@ PP_CIA is_empty_helper = [](concepts::type auto member_t, concepts::type auto t)
     else
         return false;
 };
-}
-PP_FUNCTOR(is_empty_helper)
 }
 
 namespace PP

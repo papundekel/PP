@@ -27,9 +27,9 @@ constexpr auto fold_combinator(concepts::value auto left,
         [f = PP_FW(wrap.f), i = wrap.i, PP_FWL(element)]() -> decltype(auto)
         {
             if constexpr (*PP_CV(left))
-                return f--(i(), element--);
+                return f(i(), element--);
             else
-                return f--(element--, i());
+                return f(element--, i());
         }};
 }
 
@@ -47,8 +47,6 @@ constexpr auto operator||(auto&& element, fold_wrapper<F, T> wrap)
 
 namespace PP::tuple
 {
-namespace functors
-{
 PP_CIA fold_init_pack =
     [](concepts::value auto&& left, auto&& f, auto&& i, auto&&... e)
 {
@@ -59,7 +57,7 @@ PP_CIA fold_init_pack =
         else
             return (e-- || ... || wrapper());
     }(
-               [PP_FWL(f), PP_FWL(i)]()
+               [PP_FWL(f), PP_FWL(i)]
                {
                    return detail::fold_wrapper{f--, i};
                })
@@ -80,13 +78,11 @@ PP_CIA fold_init = combine(
     },
     get_3);
 
-PP_CIA fold =
-    combine(fold_init, get_0, get_1, constant | wrap_forward | get_2, get_3);
-
-}
-PP_FUNCTOR(fold_init_pack)
-PP_FUNCTOR(fold_init)
-PP_FUNCTOR(fold)
+PP_CIA fold = combine(fold_init,
+                      get_0,
+                      get_1,
+                      compose(compose(constant, wrap_forward), get_2),
+                      get_3);
 
 PP_CIA foldl = fold * value_true;
 PP_CIA foldr = fold * value_false;

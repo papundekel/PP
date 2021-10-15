@@ -98,7 +98,7 @@ public:
     ///
     constexpr any_view_implementation(concepts::view auto&& v) requires(
         !PPany_view<decltype(v)>)
-        : any_view_implementation(view::begin(PP_F(v)), view::end(PP_F(v)))
+        : any_view_implementation(view::begin_(PP_F(v)), view::end_(PP_F(v)))
     {}
 
     ///
@@ -181,6 +181,7 @@ PP_CIA make_any_view = overloaded(
     },
     [](concepts::view auto&& v)
     {
-        return detail::make_any_view(view::begin(PP_F(v)), view::end(PP_F(v)));
+        return detail::make_any_view(view::begin_(PP_F(v)),
+                                     view::end_(PP_F(v)));
     });
 }

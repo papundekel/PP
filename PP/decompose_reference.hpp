@@ -8,7 +8,7 @@
 
 namespace PP
 {
-PP_CIA decompose_reference =
+PP_CIA decompose_reference = compose(
     overloaded(
         []<typename T>(type_t<T&&>)
         {
@@ -23,6 +23,6 @@ PP_CIA decompose_reference =
         []<typename T>(type_t<T>)
         {
             return make_decompose_pair(type<T>, PP::value<ref_qualifier::none>);
-        }) |
-    to_type_t;
+        }),
+    to_type_t);
 }

@@ -1,5 +1,4 @@
 #pragma once
-#include "../functor.hpp"
 
 namespace PP::detail
 {

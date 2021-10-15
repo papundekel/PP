@@ -5,5 +5,5 @@
 
 namespace PP
 {
-PP_CIA is_volatile = cv_is_volatile | get_value | get_volatile;
+PP_CIA is_volatile = compose(compose(cv_is_volatile, get_value), get_volatile);
 }

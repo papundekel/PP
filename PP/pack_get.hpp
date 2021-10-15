@@ -1,5 +1,4 @@
 #pragma once
-#include "functor.hpp"
 #include "get_value.hpp"
 
 namespace PP

@@ -11,7 +11,6 @@
 #include "../empty.hpp"
 #include "../empty_iterator.hpp"
 #include "../forward_wrap.hpp"
-#include "../functor.hpp"
 #include "../get_value.hpp"
 #include "../id.hpp"
 #include "../init_type.hpp"
@@ -36,7 +35,7 @@ class array_wrap_wrap : public forward_wrap<T>
 {
 public:
     constexpr array_wrap_wrap(T&& arg, Tag)
-        : forward_wrap<T>(PP_F(arg))
+        : forward_wrap<T>(placeholder, PP_F(arg))
     {}
 };
 template <typename T, typename Tag>
@@ -245,11 +244,11 @@ public:
 namespace PP::detail
 {
 template <typename T>
-concept array_concept = requires(T t)
+concept array_concept = requires
 {
     []<typename U, size_t C>(const array::container<U, C>&)
     {
-    }(t);
+    }(declval_impl<T>());
 };
 
 template <typename ResultType>
@@ -303,6 +302,8 @@ struct array_helper
 };
 }
 
+namespace PP::array
+{
 constexpr auto begin(PP::detail::array_concept auto&& a) noexcept
 {
     return PP::detail::array_helper::begin(PP_F(a));
@@ -310,6 +311,7 @@ constexpr auto begin(PP::detail::array_concept auto&& a) noexcept
 constexpr auto end(PP::detail::array_concept auto&& a) noexcept
 {
     return PP::detail::array_helper::end(PP_F(a));
+}
 }
 
 namespace PP::detail
@@ -334,8 +336,6 @@ PP_CIA construct = [](concepts::type auto&& t, auto tag, auto&&... args)
 
 namespace PP::detail
 {
-namespace functors
-{
 PP_CIA array_construct_helper = [](auto&& f, auto tag, auto&&... args)
 {
     return array::construct(
@@ -345,8 +345,6 @@ PP_CIA array_construct_helper = [](auto&& f, auto tag, auto&&... args)
         tag,
         PP_F(args)...);
 };
-}
-PP_FUNCTOR(array_construct_helper)
 }
 
 namespace PP::array

@@ -1,5 +1,4 @@
 #pragma once
-#include "functor.hpp"
 #include "get_value.hpp"
 #include "tuple/head_no_get.hpp"
 #include "tuple/recursive.hpp"

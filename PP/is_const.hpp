@@ -5,5 +5,5 @@
 
 namespace PP
 {
-PP_CIA is_const = cv_is_const | get_value | get_const;
+PP_CIA is_const = compose(compose(cv_is_const, get_value), get_const);
 }

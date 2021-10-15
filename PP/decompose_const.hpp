@@ -9,7 +9,7 @@
 
 namespace PP
 {
-PP_CIA decompose_const =
+PP_CIA decompose_const = compose(
     overloaded(
         []<typename T>(type_t<const T>)
         {
@@ -18,6 +18,6 @@ PP_CIA decompose_const =
         []<typename T>(type_t<T>)
         {
             return make_decompose_pair(type<T>, PP::value<cv_qualifier::none>);
-        }) |
-    to_type_t;
+        }),
+    to_type_t);
 }

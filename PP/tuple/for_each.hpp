@@ -7,8 +7,6 @@
 
 namespace PP::tuple
 {
-namespace functors
-{
 PP_CIA for_each_dir =
     [](concepts::value auto left, auto&& f, concepts::tuple auto&& t)
 {
@@ -22,8 +20,6 @@ PP_CIA for_each_dir =
         empty{},
         PP_F(t));
 };
-}
-PP_FUNCTOR(for_each_dir)
 
 PP_CIA for_each = for_each_dir * value_true;
 }
