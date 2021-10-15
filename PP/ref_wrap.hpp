@@ -66,10 +66,12 @@ PP_CIA unwrap_ref = [](auto&& x) -> auto&&
         return PP_F(x);
 };
 
-PP_CIA wrap_ref = compose([](auto&& x)
-{
-    return ref_wrap<decltype(x)>(PP_F(x));
-}, unwrap_ref);
+PP_CIA wrap_ref = compose(
+    [](auto&& x)
+    {
+        return ref_wrap<decltype(x)>(PP_F(x));
+    },
+    unwrap_ref);
 
 #define PP_REF_WRAP(x) ::PP::wrap_ref(PP_F(x))
 }

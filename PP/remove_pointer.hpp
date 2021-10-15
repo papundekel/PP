@@ -7,13 +7,13 @@
 namespace PP
 {
 PP_CIA remove_pointer = compose(overloaded(
-                            []<typename T>(type_t<T*>)
-                            {
-                                return type<T>;
-                            },
-                            [](auto&& t)
-                            {
-                                return t;
-                            }),
-                        remove_cv);
+                                    []<typename T>(type_t<T*>)
+                                    {
+                                        return type<T>;
+                                    },
+                                    [](auto&& t)
+                                    {
+                                        return t;
+                                    }),
+                                remove_cv);
 }
