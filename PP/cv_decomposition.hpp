@@ -54,7 +54,7 @@ PP_CIA get_cv_decomposition_element =
     return {*get_cv_value_t(t), get_cv_decomposition_type(t), extent(t)};
 };
 
-constexpr auto shed_pointer(concepts::type auto t)
+constexpr auto shed_pointer(concepts::type auto&& t)
 {
     constexpr auto T = PP_COPY_TYPE(t);
 
@@ -66,7 +66,7 @@ constexpr auto shed_pointer(concepts::type auto t)
         return remove_extent(T);
 }
 
-constexpr auto shed_pointers_helper(concepts::type auto t) noexcept
+constexpr auto shed_pointers_helper(concepts::type auto&& t) noexcept
 {
     constexpr auto T = PP_COPY_TYPE(t);
     constexpr auto shedded = shed_pointer(T);
@@ -77,9 +77,9 @@ constexpr auto shed_pointers_helper(concepts::type auto t) noexcept
         return make_singular_tuple(T);
 }
 
-PP_CIA shed_pointers = [](concepts::type auto t)
+PP_CIA shed_pointers = [](concepts::type auto&& t)
 {
-    return shed_pointers_helper(t);
+    return shed_pointers_helper(PP_F(t));
 };
 
 constexpr inline PP::functor array_tail_value(
@@ -92,8 +92,8 @@ constexpr inline PP::functor array_tail_value(
     return result;
     };
 
-PP_CIA cv_decomposition = array_tail_value |
+PP_CIA cv_decomposition = compose(compose(array_tail_value,
                           tuple::map_to_array * type<cv_decomposition_element> *
-                              get_cv_decomposition_element |
-                          shed_pointers;
+                              get_cv_decomposition_element), 
+                          shed_pointers);
 }

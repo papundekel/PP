@@ -50,7 +50,8 @@ class variant2
 
     static constexpr auto types = type_tuple<T...>;
     static constexpr auto max =
-        apply_partially(id_copy | der | max_default | tuple::map_make_array,
+        apply_partially(compose(compose(compose(id_copy, der), max_default),
+                                tuple::map_make_array),
                         value_1,
                         types);
 

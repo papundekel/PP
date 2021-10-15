@@ -6,7 +6,8 @@ namespace PP
 {
 namespace detail
 {
-static constexpr auto remove_all_extents_helper(concepts::type auto t) noexcept
+static constexpr auto remove_all_extents_helper(
+    concepts::type auto&& t) noexcept
 {
     constexpr auto T = PP_COPY_TYPE(t);
 
@@ -18,8 +19,10 @@ static constexpr auto remove_all_extents_helper(concepts::type auto t) noexcept
 }
 }
 
-PP_CIA remove_all_extents = [](auto t)
-{
-    return detail::remove_all_extents_helper(t);
-} | to_type_t;
+PP_CIA remove_all_extents = compose(
+    [](auto t)
+    {
+        return detail::remove_all_extents_helper(t);
+    },
+    to_type_t);
 }

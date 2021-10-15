@@ -7,14 +7,14 @@
 
 namespace PP
 {
-PP_CIA extent = make_overloaded_pack(
-                    []<typename T, size_t N>(type_t<T[N]>)
-                    {
-                        return N;
-                    },
-                    [](auto)
-                    {
-                        return 0_z;
-                    }) |
-                to_type_t;
+PP_CIA extent = compose(overloaded(
+                            []<typename T, size_t N>(type_t<T[N]>)
+                            {
+                                return N;
+                            },
+                            [](auto)
+                            {
+                                return 0_z;
+                            }),
+                        to_type_t);
 }
