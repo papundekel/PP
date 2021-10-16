@@ -9,7 +9,7 @@ void tuple_fold(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "10 10 10";
     //
-    out_run << PP::tuple::fold_init_pack(
+    out_run << PP::pack::fold_init(
                    PP::value_true,
                    [](int x, int y)
                    {

@@ -83,13 +83,13 @@ struct container
 {
     using detail::tuple_base<T...>::tuple_base;
 
-    constexpr auto&& operator[](concepts::value auto i) & noexcept;
-    constexpr auto&& operator[](concepts::value auto i) const& noexcept;
-    constexpr auto&& operator[](concepts::value auto i) && noexcept;
-    constexpr auto&& operator[](concepts::value auto i) const&& noexcept;
+    constexpr auto&& operator[](concepts::value auto&& i) & noexcept;
+    constexpr auto&& operator[](concepts::value auto&& i) const& noexcept;
+    constexpr auto&& operator[](concepts::value auto&& i) && noexcept;
+    constexpr auto&& operator[](concepts::value auto&& i) const&& noexcept;
 
-    constexpr auto element(concepts::value auto i) noexcept;
-    constexpr auto element(concepts::value auto i) const noexcept;
+    constexpr auto element(concepts::value auto&& i) noexcept;
+    constexpr auto element(concepts::value auto&& i) const noexcept;
 
     constexpr auto& operator=(concepts::tuple auto&& t)
     {
@@ -139,12 +139,12 @@ namespace PP::detail
 {
 struct tuple_helper
 {
-    static constexpr auto&& get(concepts::value auto i, auto&& t) noexcept
+    static constexpr auto&& get(concepts::value auto&& i, auto&& t) noexcept
     {
         auto& wrap = t.wrap_types[i](t);
         return copy_cvref(PP_DT(t), PP_DT(wrap.obj))(wrap.obj);
     }
-    static constexpr auto element(concepts::value auto i, auto& t) noexcept
+    static constexpr auto element(concepts::value auto&& i, auto& t) noexcept
     {
         return copy_cv(PP_DT(t), t.types[i]);
     }
@@ -153,42 +153,42 @@ struct tuple_helper
 
 template <typename... T>
 constexpr auto&& PP::tuple::container<T...>::operator[](
-    concepts::value auto i) & noexcept
+    concepts::value auto&& i) & noexcept
 {
     return detail::tuple_helper::get(i, *this);
 }
 
 template <typename... T>
 constexpr auto&& PP::tuple::container<T...>::operator[](
-    concepts::value auto i) && noexcept
+    concepts::value auto&& i) && noexcept
 {
     return detail::tuple_helper::get(i, move(*this));
 }
 
 template <typename... T>
 constexpr auto&& PP::tuple::container<T...>::operator[](
-    concepts::value auto i) const& noexcept
+    concepts::value auto&& i) const& noexcept
 {
     return detail::tuple_helper::get(i, *this);
 }
 
 template <typename... T>
 constexpr auto&& PP::tuple::container<T...>::operator[](
-    concepts::value auto i) const&& noexcept
+    concepts::value auto&& i) const&& noexcept
 {
     return detail::tuple_helper::get(i, move(*this));
 }
 
 template <typename... T>
 constexpr auto PP::tuple::container<T...>::element(
-    concepts::value auto i) noexcept
+    concepts::value auto&& i) noexcept
 {
     return detail::tuple_helper::element(i, *this);
 }
 
 template <typename... T>
 constexpr auto PP::tuple::container<T...>::element(
-    concepts::value auto i) const noexcept
+    concepts::value auto&& i) const noexcept
 {
     return detail::tuple_helper::element(i, *this);
 }

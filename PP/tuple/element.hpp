@@ -35,17 +35,17 @@ concept tuple_concept_element_recursive =
         } -> concepts::type;
 };
 
-constexpr auto tuple_element_helper(concepts::value auto i, auto&& t) requires
+constexpr auto tuple_element_helper(concepts::value auto&& i, auto&& t) requires
     tuple_concept_element_member<decltype(i), decltype(t)>
 {
     return PP_F(t).element(i);
 }
-constexpr auto tuple_element_helper(concepts::value auto i, auto&& t) requires
+constexpr auto tuple_element_helper(concepts::value auto&& i, auto&& t) requires
     tuple_concept_element_nonmember<decltype(i), decltype(t)>
 {
     return element_implementation(i, PP_F(t));
 }
-constexpr auto tuple_element_helper(concepts::value auto i, auto&& t) requires
+constexpr auto tuple_element_helper(concepts::value auto&& i, auto&& t) requires
     tuple_concept_element_recursive<decltype(i), decltype(t)>
 {
     return ::PP::tuple::recursive(tuple::head_element, i, PP_F(t));
@@ -55,14 +55,14 @@ constexpr auto tuple_element_helper(concepts::value auto i, auto&& t) requires
 namespace PP::tuple
 {
 PP_CIA element =
-    [](concepts::value auto i,
+    [](concepts::value auto&& i,
        auto&& t) requires detail::tuple_concept_element_recursive<decltype(i),
                                                                   decltype(t)>
 {
     return copy_cv(PP_DT(t), detail::tuple_element_helper(i, PP_F(t)));
 };
 
-PP_CIA type_element = [](concepts::value auto i, concepts::type auto t)
+PP_CIA type_element = [](concepts::value auto&& i, concepts::type auto&& t)
 {
     return PP_COPY_TYPE(element(i, declval(t)));
 };

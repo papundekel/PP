@@ -76,7 +76,7 @@ PP_CIA end_ = [](detail::view_concept_end_any auto&& v) -> decltype(auto)
 
 namespace PP::detail
 {
-PP_CIA view_type_begin_iterator_pure = [](concepts::type auto v)
+PP_CIA view_type_begin_iterator_pure = [](concepts::type auto&& v)
 {
     return PP_DT(view::begin_(declval(v)));
 };
@@ -123,7 +123,7 @@ constexpr bool is_empty(concepts::view auto&& v)
 
 namespace PP::view
 {
-PP_CIA type_begin_iterator = [](concepts::type auto v)
+PP_CIA type_begin_iterator = [](concepts::type auto&& v)
 {
     return detail::view_type_begin_iterator_pure(v);
 };
@@ -131,7 +131,7 @@ PP_CIA begin_iterator = [](concepts::view auto&& v)
 {
     return type_begin_iterator(PP_DT(v));
 };
-PP_CIA type_end_iterator = [](concepts::type auto v)
+PP_CIA type_end_iterator = [](concepts::type auto&& v)
 {
     return PP_DT(view::end_(declval(v)));
 };

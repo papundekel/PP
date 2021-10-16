@@ -9,7 +9,7 @@ T templated_return_dummy_function(type_t<T>);
 
 namespace PP
 {
-PP_CIA is_returnable = [](concepts::type auto t)
+PP_CIA is_returnable = [](concepts::type auto&& t)
 {
     return requires
     {

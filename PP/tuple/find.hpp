@@ -10,7 +10,7 @@ PP_CIA find = [](auto&& predicate, concepts::tuple auto&& tuple)
 {
     return PP_CV_MEMBER(
         foldl(
-            [PP_FWL(predicate)](concepts::value auto s, auto&& element)
+            [PP_FWL(predicate)](concepts::value auto&& s, auto&& element)
             {
                 constexpr auto state = PP_GV(s);
 

@@ -144,8 +144,8 @@ constexpr auto operator||(PP::concepts::value auto&& x,
     return PP::value < PP_GV(x) || PP_GV(y) > ;
 }
 
-constexpr auto operator<=(PP::concepts::type auto x,
-                          PP::concepts::type auto y) requires requires
+constexpr auto operator<=(PP::concepts::type auto&& x,
+                          PP::concepts::type auto&& y) requires requires
 {
     -x;
     -y;

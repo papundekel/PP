@@ -34,7 +34,7 @@ struct cv_decomposition_element
 };
 
 constexpr cv_decomposition_type get_cv_decomposition_type(
-    concepts::type auto t) noexcept
+    concepts::type auto&& t) noexcept
 {
     if (is_pointer(t))
         return cv_decomposition_type::pointer;
@@ -49,7 +49,7 @@ constexpr cv_decomposition_type get_cv_decomposition_type(
 }
 
 PP_CIA get_cv_decomposition_element =
-    [](concepts::type auto t) -> cv_decomposition_element
+    [](concepts::type auto&& t) -> cv_decomposition_element
 {
     return {*get_cv_value_t(t), get_cv_decomposition_type(t), extent(t)};
 };

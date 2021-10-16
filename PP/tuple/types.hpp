@@ -7,7 +7,7 @@
 
 namespace PP::tuple
 {
-PP_CIA types = [](concepts::type auto t)
+PP_CIA types = [](concepts::type auto&& t)
 {
     return apply_pack(make_type_tuple,
                       apply_partially(type_element, value_1, t),

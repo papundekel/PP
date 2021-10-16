@@ -45,7 +45,7 @@ constexpr auto promotion_type_convertor(long double x)
 }
 }
 
-PP_CIA has_implicit_conversion_to_arithmetic_type = [](concepts::type auto t)
+PP_CIA has_implicit_conversion_to_arithmetic_type = [](concepts::type auto&& t)
 {
     return requires(PP_GT(t) x)
     {

@@ -6,7 +6,7 @@
 
 namespace PP::detail
 {
-PP_CIA is_reference_helper = [](concepts::type auto t)
+PP_CIA is_reference_helper = [](concepts::type auto&& t)
 {
     return t + add_rvalue_tag == t;
 };

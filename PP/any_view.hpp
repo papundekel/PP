@@ -152,15 +152,15 @@ using any_view = any_view_implementation<value_t<Category>, T>;
 
 namespace detail
 {
-constexpr auto min_value_t(concepts::value auto a, concepts::value auto b)
+constexpr auto min_value_t(concepts::value auto&& a, concepts::value auto&& b)
 {
     if constexpr (PP_GV(a) <= PP_GV(b))
         return a;
     else
         return b;
 }
-constexpr auto min_iterator_category(concepts::type auto a,
-                                     concepts::type auto b)
+constexpr auto min_iterator_category(concepts::type auto&& a,
+                                     concepts::type auto&& b)
 {
     return min_value_t(get_iterator_category_value_t(a),
                        get_iterator_category_value_t(b));

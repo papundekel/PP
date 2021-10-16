@@ -7,7 +7,7 @@
 namespace PP::detail
 {
 constexpr decltype(auto) tuple_recursive(auto&& f,
-                                         concepts::value auto i,
+                                         concepts::value auto&& i,
                                          auto&& t)
 {
     if constexpr (*PP_CV(i) == 0)
@@ -20,7 +20,7 @@ constexpr decltype(auto) tuple_recursive(auto&& f,
 namespace PP::tuple
 {
 // clang-format off
-PP_CIA recursive = [](auto&& f, concepts::value auto i, auto&& t)
+PP_CIA recursive = [](auto&& f, concepts::value auto&& i, auto&& t)
     -> decltype(auto) requires requires { PP_F(f)(PP_F(t)); }
                             && ((PP_CV(i) < type_count_value_t(PP_DT(t))).value_f())
 	                  	    && (

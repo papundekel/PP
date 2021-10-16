@@ -16,7 +16,8 @@ struct empty_helper
     T t;
 };
 
-PP_CIA is_empty_helper = [](concepts::type auto member_t, concepts::type auto t)
+PP_CIA is_empty_helper =
+    [](concepts::type auto&& member_t, concepts::type auto&& t)
 {
     if constexpr (is_non_union_class(PP_COPY_TYPE(t)))
         return size_of(Template<empty_helper>(member_t, t)) ==

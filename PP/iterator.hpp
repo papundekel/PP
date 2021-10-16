@@ -174,12 +174,12 @@ concept sentinel = iterator<I> && equatable<I, S>;
 
 namespace PP
 {
-PP_CIA is_sentinel = [](concepts::type auto s, concepts::type auto i)
+PP_CIA is_sentinel = [](concepts::type auto&& s, concepts::type auto&& i)
 {
     return concepts::sentinel<PP_GT(s), PP_GT(i)>;
 };
 
-PP_CIA iterator_base = [](concepts::type auto i)
+PP_CIA iterator_base = [](concepts::type auto&& i)
 {
     return PP_DT(*declval(i));
 };

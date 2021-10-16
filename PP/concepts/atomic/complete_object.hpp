@@ -4,7 +4,7 @@
 
 namespace PP
 {
-PP_CIA is_complete_object = [](concepts::type auto t)
+PP_CIA is_complete_object = [](concepts::type auto&& t)
 {
     return requires
     {

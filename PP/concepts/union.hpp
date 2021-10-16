@@ -4,7 +4,7 @@
 
 namespace PP
 {
-PP_CIA is_union = [](concepts::type auto t)
+PP_CIA is_union = [](concepts::type auto&& t)
 {
     return __is_union(PP_GT(t));
 };

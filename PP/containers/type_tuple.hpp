@@ -29,7 +29,7 @@ struct type_tuple_t<Head, Rest...>
     {
         return type_tuple_t<Rest...>{};
     }
-    constexpr auto operator[](concepts::value auto i) const noexcept
+    constexpr auto operator[](concepts::value auto&& i) const noexcept
     {
         return tuple::recursive(tuple::head_no_get, i, *this);
     }

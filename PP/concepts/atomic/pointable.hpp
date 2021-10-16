@@ -4,7 +4,7 @@
 
 namespace PP
 {
-PP_CIA is_pointable = [](concepts::type auto t)
+PP_CIA is_pointable = [](concepts::type auto&& t)
 {
     return requires
     {

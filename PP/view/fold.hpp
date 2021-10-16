@@ -6,8 +6,10 @@
 
 namespace PP::view
 {
-PP_CIA fold =
-    [](concepts::value auto left, auto&& f, auto init, concepts::view auto&& v)
+PP_CIA fold = [](concepts::value auto&& left,
+                 auto&& f,
+                 auto init,
+                 concepts::view auto&& v)
 {
     if constexpr (PP_GV(left))
     {

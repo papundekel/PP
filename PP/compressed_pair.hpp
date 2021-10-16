@@ -35,8 +35,8 @@ struct compressed_pair_empty_second
     [[no_unique_address]] Empty second;
 };
 
-constexpr auto compressed_pair_dispatch_template(concepts::type auto first,
-                                                 concepts::type auto second)
+constexpr auto compressed_pair_dispatch_template(concepts::type auto&& first,
+                                                 concepts::type auto&& second)
 {
     if constexpr (is_empty(PP_COPY_TYPE(first)))
         return Template<compressed_pair_empty_first>;
@@ -45,8 +45,8 @@ constexpr auto compressed_pair_dispatch_template(concepts::type auto first,
     else
         return Template<compressed_pair_nonempty>;
 }
-constexpr auto compressed_pair_dispatch(concepts::type auto first,
-                                        concepts::type auto second)
+constexpr auto compressed_pair_dispatch(concepts::type auto&& first,
+                                        concepts::type auto&& second)
 {
     return compressed_pair_dispatch_template(first, second)(first, second);
 }

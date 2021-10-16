@@ -15,7 +15,7 @@ concept equatable = requires
 
 namespace PP
 {
-PP_CIA is_equatable = [](concepts::type auto a, concepts::type auto b)
+PP_CIA is_equatable = [](concepts::type auto&& a, concepts::type auto&& b)
 {
     return concepts::equatable<PP_GT(a), PP_GT(b)>;
 };

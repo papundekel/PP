@@ -15,9 +15,9 @@
 
 namespace PP
 {
-constexpr inline struct transform_iterator_in_place_delimiter_t
-{
-} transform_iterator_in_place_delimiter;
+// constexpr inline struct transform_iterator_in_place_delimiter_t
+// {
+// } transform_iterator_in_place_delimiter;
 
 template <typename BaseIterator, typename Transform>
 class transform_iterator
@@ -29,8 +29,7 @@ class transform_iterator
     compressed_pair<BaseIterator, Transform> iterator_transform;
 
 public:
-    constexpr transform_iterator(concepts::iterator auto&& iterator,
-                                 auto&& transform)
+    constexpr transform_iterator(auto&& iterator, auto&& transform)
         : iterator_transform(PP_F(iterator), PP_F(transform))
     {}
     // constexpr transform_iterator(in_place_tag_t, auto&&... args)
@@ -116,11 +115,6 @@ constexpr auto transform_view(concepts::view auto&& v, auto&& f)
 constexpr auto operator&(PP::concepts::iterator auto&& i, PP::transform<auto> t)
 {
     return PP::transform_iterator(PP_F(i), PP::move(t).functor);
-}
-
-constexpr auto operator||(PP::concepts::view auto&& v, PP::transform<auto> t)
-{
-    return PP::view::begin_(PP_F(v)) & PP::move(t) ^ PP::view::end_(PP_F(v));
 }
 
 constexpr auto operator|(PP::concepts::view auto&& v, PP::transform<auto> t)

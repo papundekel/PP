@@ -12,14 +12,14 @@ public:
     {
         return value_2;
     }
-    constexpr auto element(concepts::value auto i) const noexcept
+    constexpr auto element(concepts::value auto&& i) const noexcept
     {
         if constexpr (PP_GV(i) == 0)
             return type<type_t<T>>;
         else
             return type<value_t<V>>;
     }
-    constexpr auto operator[](concepts::value auto i) const noexcept
+    constexpr auto operator[](concepts::value auto&& i) const noexcept
     {
         if constexpr (PP_GV(i) == 0)
             return type<T>;

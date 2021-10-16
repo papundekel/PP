@@ -4,7 +4,7 @@
 
 namespace PP
 {
-PP_CIA wrap_reference = [](concepts::type auto t)
+PP_CIA wrap_reference = [](concepts::type auto&& t)
 {
     if constexpr (is_reference(PP_COPY_TYPE(t)))
         return type<reference_wrapper<PP_GT(t)>>;

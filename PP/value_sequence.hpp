@@ -19,7 +19,7 @@ constexpr auto value_sequence_add_one(value_sequence<I...>) noexcept
 
 template <auto... I>
 constexpr auto value_sequence_double(value_sequence<I...>,
-                                     concepts::value auto add_one) noexcept
+                                     concepts::value auto&& add_one) noexcept
 {
     auto doubled = value_sequence<I..., (sizeof...(I) + I)...>{};
 
@@ -29,7 +29,7 @@ constexpr auto value_sequence_double(value_sequence<I...>,
         return doubled;
 }
 
-constexpr auto value_sequence_make(concepts::value auto i)
+constexpr auto value_sequence_make(concepts::value auto&& i)
 {
     if constexpr (PP_GV(i) == 0)
         return value_sequence<>{};
@@ -41,7 +41,7 @@ constexpr auto value_sequence_make(concepts::value auto i)
 
 namespace PP
 {
-PP_CIA value_sequence_make = [](concepts::value auto i)
+PP_CIA value_sequence_make = [](concepts::value auto&& i)
 {
     return detail::value_sequence_make(i);
 };

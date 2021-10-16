@@ -23,7 +23,7 @@ PP_CIA get_3 = [](auto&&, auto&&, auto&&, auto&& x, auto&&...) -> auto&&
 };
 
 PP_CIA get_ =
-    [](concepts::value auto i, auto&& t) -> decltype(auto) requires requires
+    [](concepts::value auto&& i, auto&& t) -> decltype(auto) requires requires
 {
     PP_F(t)[i];
 }

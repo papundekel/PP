@@ -6,7 +6,7 @@
 
 namespace PP
 {
-PP_CIA add_reference = [](concepts::value auto ref, concepts::type auto t)
+PP_CIA add_reference = [](concepts::value auto&& ref, concepts::type auto&& t)
 {
     using T = PP_GT(t);
 

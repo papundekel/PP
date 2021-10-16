@@ -20,6 +20,10 @@ PP_CIA lte = [](auto&& x, auto&& y) -> decltype(auto)
 {
     return PP_F(x) <= PP_F(y);
 };
+PP_CIA twc = [](auto&& x, auto&& y) -> decltype(auto)
+{
+    return PP_F(x) <=> PP_F(y);
+};
 PP_CIA or_ = [](auto&& x, auto&& y) -> decltype(auto)
 {
     return PP_F(x) || PP_F(y);

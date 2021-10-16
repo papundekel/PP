@@ -16,7 +16,7 @@ public:
 };
 template <typename T>
 singular(placeholder_t, T) -> singular<T>;
-singular(placeholder_t, concepts::type auto t, auto&&) -> singular<PP_GT(t)>;
+singular(placeholder_t, concepts::type auto&& t, auto&&) -> singular<PP_GT(t)>;
 
 PP_CIA make_singular = [](auto&& x)
 {

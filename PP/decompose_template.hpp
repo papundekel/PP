@@ -60,7 +60,7 @@ PP_CIA decompose_types = compose(
     decompose);
 }
 
-constexpr auto operator*(PP::concepts::type auto t) noexcept
+constexpr auto operator*(PP::concepts::type auto&& t) noexcept
 {
     return PP::decompose(t);
 }

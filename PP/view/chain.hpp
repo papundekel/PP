@@ -1,17 +1,17 @@
 #pragma once
 #include "view.hpp"
 
-namespace PP
+namespace PP::view
 {
 template <typename I, typename E, typename J>
-class view_chain_iterator
+class chain_iterator
 {
     I i;
     E e;
     J j;
 
 public:
-    constexpr view_chain_iterator(const I& i, const E& e, const J& j)
+    constexpr chain_iterator(const I& i, const E& e, const J& j)
         : i(i)
         , e(e)
         , j(j)
@@ -65,7 +65,7 @@ public:
             return 0;
     }
 
-    constexpr bool operator==(const view_chain_iterator& other) const
+    constexpr bool operator==(const chain_iterator& other) const
     {
         return i == other.i && e == other.e && j == other.j;
     }
@@ -77,7 +77,7 @@ public:
             return j == other;
     }
 
-    constexpr ptrdiff_t operator-(const view_chain_iterator& other) const
+    constexpr ptrdiff_t operator-(const chain_iterator& other) const
     {
         if (e == other.e)
             return (i - other.i) + (j - other.j);
@@ -87,12 +87,12 @@ public:
 };
 
 template <typename I, typename E>
-class view_chain_wrap
+class chain_wrap
 {
     compressed_pair<I, E> pair;
 
 public:
-    constexpr view_chain_wrap(const I& i, const E& e)
+    constexpr chain_wrap(const I& i, const E& e)
         : pair(i, e)
     {}
 
@@ -106,9 +106,9 @@ public:
     }
 };
 
-constexpr auto view_chain(concepts::view auto&& v)
+constexpr auto chain(concepts::view auto&& v)
 {
-    return view_chain_wrap(view::begin_(PP_F(v)), view::end_(PP_F(v)));
+    return chain_wrap(begin_(PP_F(v)), end_(PP_F(v)));
 }
 }
 
@@ -118,9 +118,9 @@ constexpr auto operator^(PP::view_chain_wrap<I, E> vc,
 {
     // should return a simpler end iterator but any_view is broken and
     // cannot receive two different iterators
-    return PP::view_chain_wrap(
-        PP::view_chain_iterator(vc.begin(),
-                                vc.end(),
-                                PP::view::begin_(PP_F(v))),
-        PP::view_chain_iterator(vc.end(), vc.end(), PP::view::end_(PP_F(v))));
+    return PP::view::chain_wrap(
+        PP::view::chain_iterator(vc.begin(),
+                                 vc.end(),
+                                 PP::view::begin_(PP_F(v))),
+        PP::view::chain_iterator(vc.end(), vc.end(), PP::view::end_(PP_F(v))));
 }

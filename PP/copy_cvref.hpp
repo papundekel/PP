@@ -5,7 +5,7 @@
 
 namespace PP
 {
-PP_CIA copy_cvref = [](concepts::type auto from, concepts::type auto to)
+PP_CIA copy_cvref = [](concepts::type auto&& from, concepts::type auto&& to)
 {
     return copy_reference(from, copy_cv(!from, to));
 };

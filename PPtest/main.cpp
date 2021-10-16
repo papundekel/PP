@@ -72,24 +72,11 @@ int main()
                       << "key: |" << view_key << "|\n"
                       << "run: |" << view_run << "|\n"
                       << "------\n";
-
-            std::cout << view_key.size() << " " << view_run.size() << "\n";
-
-            auto i = std::begin(view_key);
-            auto j = std::begin(view_run);
-
-            for (; i != std::end(view_key) && j != std::end(view_run); ++i, ++j)
-            {
-                if (*i != *j)
-                    std::cout << "<" << (int)*i << "/" << (int)*j << ">";
-                else
-                    std::cout << *i;
-            }
-            std::cout << "\n";
         }
     }
 
-    std::cout << "Tests passed: " << count_passed << "/" << std::size(tests);
+    std::cout << "Tests passed: " << count_passed << "/" << std::size(tests)
+              << "\n";
 
     return count_passed == std::size(tests) ? 0 : 1;
 }

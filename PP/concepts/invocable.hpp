@@ -6,7 +6,7 @@
 namespace PP
 {
 PP_CIA is_invocable_pack =
-    [](concepts::type auto f, concepts::type auto... arg_types)
+    [](concepts::type auto&& f, concepts::type auto... arg_types)
 {
     return requires
     {
@@ -14,7 +14,8 @@ PP_CIA is_invocable_pack =
     };
 };
 
-PP_CIA is_invocable = [](concepts::type auto f, concepts::tuple auto arg_tuple)
+PP_CIA is_invocable =
+    [](concepts::type auto&& f, concepts::tuple auto arg_tuple)
 {
     return (is_invocable_pack * f)[arg_tuple];
 };

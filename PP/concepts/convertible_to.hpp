@@ -15,7 +15,8 @@ concept convertible_to = requires
 
 namespace PP
 {
-PP_CIA is_convertible_to = [](concepts::type auto from, concepts::type auto to)
+PP_CIA is_convertible_to =
+    [](concepts::type auto&& from, concepts::type auto&& to)
 {
     return concepts::convertible_to<PP_GT(from), PP_GT(to)>;
 };

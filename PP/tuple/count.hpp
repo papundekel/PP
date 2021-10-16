@@ -34,7 +34,7 @@ PP_CIA count_value_t = [](detail::tuple_concept_count_value_t_any auto&& t)
         return tuple_count_impl(PP_F(t));
 };
 
-PP_CIA type_count_value_t = [](concepts::type auto t)
+PP_CIA type_count_value_t = [](concepts::type auto&& t)
 {
     return PP_CV(count_value_t(declval(t)));
 };

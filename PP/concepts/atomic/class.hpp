@@ -4,7 +4,7 @@
 
 namespace PP
 {
-PP_CIA is_class = [](concepts::type auto t)
+PP_CIA is_class = [](concepts::type auto&& t)
 {
     return requires
     {

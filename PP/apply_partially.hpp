@@ -7,14 +7,14 @@
 
 namespace PP
 {
-PP_CIA apply_partially = [](auto&& f, concepts::value auto i, auto&& arg)
+PP_CIA apply_partially = [](auto&& f, concepts::value auto&& i, auto&& arg)
 {
     return [PP_FL(f), PP_FL(arg)](auto&&... other_args) -> decltype(auto)
     {
         return apply_pack(
             unwrap_forward(f),
             [&arg, args = tuple::forward(PP_F(other_args)...)](
-                concepts::value auto current_i) -> decltype(auto)
+                concepts::value auto&& current_i) -> decltype(auto)
             {
                 constexpr auto CI = PP_CV(current_i);
                 constexpr auto I = PP_CV(i);

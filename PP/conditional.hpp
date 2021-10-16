@@ -5,7 +5,7 @@
 
 namespace PP
 {
-PP_CIA conditional = [](concepts::value auto condition,
+PP_CIA conditional = [](concepts::value auto&& condition,
                         auto&& true_value,
                         auto&& false_value) -> decltype(auto)
 {

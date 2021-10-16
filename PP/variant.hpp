@@ -35,7 +35,7 @@ public:
         : v(PP_F(x))
     {}
 
-    constexpr bool holds_alternative(concepts::type auto t) const noexcept
+    constexpr bool holds_alternative(concepts::type auto&& t) const noexcept
     {
         return std::holds_alternative<wrap_ref_t<PP_GT(t)>>(v);
     }
@@ -63,13 +63,13 @@ class variant2
     size_t index;
     alignas(max(alignment_of)) char buffer[max(size_of)];
 
-    static constexpr size_t get_type_index(concepts::type auto t) noexcept
+    static constexpr size_t get_type_index(concepts::type auto&& t) noexcept
     {
         return tuple::find(type_eql * t, types);
     }
 
 public:
-    constexpr variant2(concepts::type auto t, auto&&... args)
+    constexpr variant2(concepts::type auto&& t, auto&&... args)
         : index(0)
         , buffer()
     {
@@ -83,7 +83,7 @@ public:
                           PP_F(args)...);
     }
 
-    constexpr bool holds_alternative(concepts::type auto t) const noexcept
+    constexpr bool holds_alternative(concepts::type auto&& t) const noexcept
     {
         return *get_type_index(t) == index;
     }

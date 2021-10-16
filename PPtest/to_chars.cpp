@@ -16,6 +16,8 @@ void to_chars(std::ostream& out_key, std::ostream& out_run)
     char buff[32];
     buff[31] = 0;
 
-    out_run << PP::to_chars(PP::view::pair(std::begin(buff) , std::end(buff) - 1), a);
+    out_run << PP::to_chars(
+        PP::view::pair(std::begin(buff), std::end(buff) - 1),
+        a);
 }
 }

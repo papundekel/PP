@@ -4,7 +4,7 @@
 
 namespace PP
 {
-PP_CIA is_referencable = [](concepts::type auto t)
+PP_CIA is_referencable = [](concepts::type auto&& t)
 {
     return requires
     {

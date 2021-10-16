@@ -1,12 +1,12 @@
 #pragma once
-#include "view/subsequence.hpp"
+#include "subsequence.hpp"
 
-namespace PP
+namespace PP::view
 {
-PP_CIA view_subsequence_compare_if =
+PP_CIA subsequence_compare_if =
     [](auto&& comparer, concepts::view auto&& a, concepts::view auto&& b)
 {
-    auto a_b = view_subsequence_if(PP_F(comparer), PP_F(a), PP_F(b));
+    auto a_b = subsequence_if(PP_F(comparer), PP_F(a), PP_F(b));
     switch (a_b)
     {
         case PP::subsequence_type::proper:
@@ -16,7 +16,7 @@ PP_CIA view_subsequence_compare_if =
         default:
             [[fallthrough]];
         case PP::subsequence_type::none:
-            auto b_a = view_subsequence_if(PP_F(comparer), PP_F(b), PP_F(a));
+            auto b_a = subsequence_if(PP_F(comparer), PP_F(b), PP_F(a));
             switch (b_a)
             {
                 case PP::subsequence_type::proper:
@@ -31,5 +31,5 @@ PP_CIA view_subsequence_compare_if =
     }
 };
 
-PP_CIA view_subsequence_compare = view_subsequence_compare_if * eql;
+PP_CIA subsequence_compare = subsequence_compare_if * eql;
 }

@@ -6,7 +6,7 @@
 
 namespace PP
 {
-PP_CIA add_cv = [](concepts::value auto cv, concepts::type auto t)
+PP_CIA add_cv = [](concepts::value auto&& cv, concepts::type auto&& t)
 {
     constexpr auto CV = *PP_CV(cv);
 

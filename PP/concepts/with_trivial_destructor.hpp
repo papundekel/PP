@@ -4,7 +4,7 @@
 
 namespace PP
 {
-PP_CIA has_trivial_destructor = [](concepts::type auto t)
+PP_CIA has_trivial_destructor = [](concepts::type auto&& t)
 {
     return __has_trivial_destructor(PP_GT(t));
 };

@@ -12,9 +12,9 @@
 
 namespace PP
 {
-PP_CIA arg_splitter = [](concepts::type auto delimiter_type,
+PP_CIA arg_splitter = [](concepts::type auto&& delimiter_type,
                          concepts::tuple auto&& to_construct_types,
-                         concepts::value auto i,
+                         concepts::value auto&& i,
                          auto&&... args)
 {
     auto splits = tuple::splits(
@@ -29,7 +29,7 @@ PP_CIA arg_splitter = [](concepts::type auto delimiter_type,
                   "arg_splitter: bad arg delimiter count");
 
     return (
-        [](concepts::type auto to_construct_type, concepts::tuple auto args)
+        [](concepts::type auto&& to_construct_type, concepts::tuple auto args)
         {
             return [t = move(to_construct_type), as = move(args)]()
             {

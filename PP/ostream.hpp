@@ -3,6 +3,7 @@
 
 #include "concepts/integer.hpp"
 #include "to_chars.hpp"
+#include "view/shift.hpp"
 
 namespace PP
 {
@@ -36,9 +37,9 @@ constexpr auto& operator<<(PP::ostream_basic<Char>& out,
 
 template <typename Char, size_t N>
 constexpr auto& operator<<(PP::ostream_basic<Char>& out,
-                           const Char(&arr)[N]) noexcept
+                           const Char (&arr)[N]) noexcept
 {
-    return out << PP::view::pair(PP::view::begin_(arr), PP::view::end_(arr) - 1);
+    return out << (arr << PP::view::shift(1));
 }
 
 template <typename Char>

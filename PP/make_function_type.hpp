@@ -10,11 +10,11 @@ namespace PP
 namespace detail
 {
 template <typename... Parameters>
-constexpr auto make_function_type_helper(concepts::type auto return_type,
+constexpr auto make_function_type_helper(concepts::type auto&& return_type,
                                          type_tuple_t<Parameters...>,
-                                         concepts::value auto N,
-                                         concepts::value auto C,
-                                         concepts::value auto R)
+                                         concepts::value auto&& N,
+                                         concepts::value auto&& C,
+                                         concepts::value auto&& R)
 {
     using Return = PP_GT(return_type);
 
@@ -96,11 +96,11 @@ constexpr auto make_function_type_helper(concepts::type auto return_type,
     }
 }
 
-PP_CIA make_function_type_impl = [](concepts::type auto return_type,
+PP_CIA make_function_type_impl = [](concepts::type auto&& return_type,
                                     concepts::tuple auto parameter_types,
-                                    concepts::value auto Noexcept,
-                                    concepts::value auto cv,
-                                    concepts::value auto ref)
+                                    concepts::value auto&& Noexcept,
+                                    concepts::value auto&& cv,
+                                    concepts::value auto&& ref)
 {
     return make_function_type_helper(return_type,
                                      make_type_tuple[parameter_types],
@@ -109,10 +109,10 @@ PP_CIA make_function_type_impl = [](concepts::type auto return_type,
                                      ref);
 };
 
-PP_CIA make_function_type_from_type = [](concepts::type auto t,
-                                         concepts::value auto Noexcept,
-                                         concepts::value auto cv,
-                                         concepts::value auto ref)
+PP_CIA make_function_type_from_type = [](concepts::type auto&& t,
+                                         concepts::value auto&& Noexcept,
+                                         concepts::value auto&& cv,
+                                         concepts::value auto&& ref)
 {
     auto info = get_function_info(t);
     return make_function_type_impl(info.return_type,
@@ -123,7 +123,7 @@ PP_CIA make_function_type_from_type = [](concepts::type auto t,
 };
 
 PP_CIA make_function_type_from_type_nocvref =
-    [](concepts::type auto t, concepts::value auto Noexcept)
+    [](concepts::type auto&& t, concepts::value auto&& Noexcept)
 {
     return make_function_type_from_type(t,
                                         Noexcept,
@@ -136,7 +136,7 @@ PP_CIA make_function_type = make_overloaded_pack(
     detail::make_function_type_impl,
     detail::make_function_type_from_type,
     detail::make_function_type_from_type_nocvref,
-    [](concepts::value auto info)
+    [](concepts::value auto&& info)
     {
     constexpr auto INFO = PP_CV(info);
 

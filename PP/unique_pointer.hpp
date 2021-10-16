@@ -146,26 +146,26 @@ constexpr auto make_unique_pointer_template(auto tag)
 constexpr auto make_unique_pointer_get_maker_helper(auto tag)
 {
     if constexpr (PP_DT(tag) == type<unique_tag_new_t>)
-        return [](concepts::type auto t, auto&&... args)
+        return [](concepts::type auto&& t, auto&&... args)
         {
             return PP_GT(t)::create(PP_F(args)...);
         };
     else
-        return [](concepts::type auto t, auto&&... args)
+        return [](concepts::type auto&& t, auto&&... args)
         {
             return t(PP_F(args)...);
         };
 }
 constexpr auto make_unique_pointer_get_maker(auto tag)
 {
-    return [tag](concepts::type auto t, auto&&... args)
+    return [tag](concepts::type auto&& t, auto&&... args)
     {
         return make_unique_pointer_get_maker_helper(
             tag)(make_unique_pointer_template(tag)(t), PP_F(args)...);
     };
 }
 constexpr auto make_unique_pointer_helper(auto&& maker,
-                                          concepts::type auto t,
+                                          concepts::type auto&& t,
                                           auto&&... args)
 {
     auto p = PP_F(maker)(t, PP_F(args)...);
@@ -174,7 +174,7 @@ constexpr auto make_unique_pointer_helper(auto&& maker,
 }
 
 constexpr auto make_unique_pointer(auto tag,
-                                   concepts::type auto t,
+                                   concepts::type auto&& t,
                                    auto&&... args)
 {
     return detail::make_unique_pointer_helper(

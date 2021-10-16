@@ -178,28 +178,28 @@ public:
     /// @param i The @ref PP::concepts::value index.
     /// @return The reference to the array element at index @p i.
     ///
-    constexpr auto&& operator[](concepts::value auto i) &
+    constexpr auto&& operator[](concepts::value auto&& i) &
     {
         return (*this)[*i];
     }
     ///
     /// @see operator[]()
     ///
-    constexpr auto&& operator[](concepts::value auto i) const&
+    constexpr auto&& operator[](concepts::value auto&& i) const&
     {
         return (*this)[*i];
     }
     ///
     /// @see operator[]()
     ///
-    constexpr auto&& operator[](concepts::value auto i) &&
+    constexpr auto&& operator[](concepts::value auto&& i) &&
     {
         return move(*this)[*i];
     }
     ///
     /// @see operator[]()
     ///
-    constexpr auto&& operator[](concepts::value auto i) const&&
+    constexpr auto&& operator[](concepts::value auto&& i) const&&
     {
         return move(*this)[*i];
     }
@@ -279,7 +279,7 @@ struct array_iterator
     }
 };
 template <typename T>
-array_iterator(T* p, concepts::type auto t) -> array_iterator<T, PP_GT(t)>;
+array_iterator(T* p, concepts::type auto&& t) -> array_iterator<T, PP_GT(t)>;
 
 struct array_helper
 {

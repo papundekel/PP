@@ -9,7 +9,7 @@
 
 namespace PP::detail
 {
-constexpr auto tuple_first_element_or(concepts::type auto t,
+constexpr auto tuple_first_element_or(concepts::type auto&& t,
                                       concepts::tuple auto&& tuple)
 {
     if constexpr (type_count(PP_DT(tuple)) != 0)
@@ -18,7 +18,7 @@ constexpr auto tuple_first_element_or(concepts::type auto t,
         return t;
 }
 
-constexpr auto tuple_to_array_helper(concepts::type auto t,
+constexpr auto tuple_to_array_helper(concepts::type auto&& t,
                                      concepts::tuple auto&& tuple)
 {
     return conditional(value<PP_COPY_TYPE(t) == type_void>,

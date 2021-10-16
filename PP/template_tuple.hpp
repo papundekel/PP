@@ -26,7 +26,7 @@ struct template_tuple_t<T, Templates...>
     {
         return template_tuple_t<Templates...>{};
     }
-    constexpr auto operator[](concepts::value auto i) const noexcept
+    constexpr auto operator[](concepts::value auto&& i) const noexcept
     {
         return tuple::recursive(tuple::head_no_get, i, *this);
     }

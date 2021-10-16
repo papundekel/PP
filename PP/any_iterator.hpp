@@ -44,7 +44,7 @@ constexpr PP::iterator_category operator-(PP::iterator_category a)
 
 namespace PP
 {
-PP_CIA add_cv_reference = [](concepts::value auto cv, concepts::type auto t)
+PP_CIA add_cv_reference = [](concepts::value auto&& cv, concepts::type auto&& t)
 {
     return add_reference(get_reference_value_t(t), add_cv(cv, !t));
 };
@@ -57,7 +57,7 @@ struct any_iterator_cant_copy_construct
     {}
 };
 
-PP_CIA remove_cvref_if_constructible = [](concepts::type auto t)
+PP_CIA remove_cvref_if_constructible = [](concepts::type auto&& t)
 {
     constexpr auto T = PP_COPY_TYPE(t);
 
@@ -217,8 +217,8 @@ public:
 };
 
 constexpr auto any_iterator_copy_as(const auto& any_it,
-                                    concepts::value auto category,
-                                    concepts::type auto t)
+                                    concepts::value auto&& category,
+                                    concepts::type auto&& t)
 {
     constexpr auto from_t = PP_COPY_TYPE(any_it.get_type());
 
@@ -451,8 +451,8 @@ class any_iterator_wrapper
     static constexpr auto Category = -type<CategoryT>;
     static constexpr auto C = -type<CT>;
 
-    constexpr auto copy(concepts::value auto category,
-                        concepts::type auto t) const
+    constexpr auto copy(concepts::value auto&& category,
+                        concepts::type auto&& t) const
     {
         return make_unique_pointer(
             any_iterator_unique_pointer_type{},
@@ -1020,7 +1020,7 @@ public:
 
 namespace detail
 {
-constexpr auto get_iterator_category_value_t(concepts::type auto i)
+constexpr auto get_iterator_category_value_t(concepts::type auto&& i)
 {
     constexpr auto I = PP_COPY_TYPE(i);
 
@@ -1033,8 +1033,8 @@ constexpr auto get_iterator_category_value_t(concepts::type auto i)
 }
 
 constexpr auto make_any_iterator_implementation_type(
-    concepts::value auto category,
-    concepts::type auto dereference_type)
+    concepts::value auto&& category,
+    concepts::type auto&& dereference_type)
 {
     auto category_type = PP_DT(to_value_t(category));
 
@@ -1043,9 +1043,9 @@ constexpr auto make_any_iterator_implementation_type(
                                                  dereference_type);
 }
 constexpr auto make_any_iterator_wrapper_type(
-    concepts::value auto category,
-    concepts::type auto dereference_type,
-    concepts::type auto iterator_type,
+    concepts::value auto&& category,
+    concepts::type auto&& dereference_type,
+    concepts::type auto&& iterator_type,
     concepts::tuple auto compatible_iterators)
 {
     auto category_type = PP_DT(to_value_t(category));
@@ -1057,7 +1057,7 @@ constexpr auto make_any_iterator_wrapper_type(
 
 constexpr auto make_any_iterator_pointer(
     concepts::iterator auto i,
-    concepts::type auto dereference_type,
+    concepts::type auto&& dereference_type,
     concepts::tuple auto compatible_iterators)
 {
     auto iterator_type = PP_DT(i);

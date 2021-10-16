@@ -1,19 +1,22 @@
 #pragma once
-#include "fold.hpp"
-#include "split.hpp"
+#include "../apply_partially_first.hpp"
+#include "../combine.hpp"
+#include "../pack/fold.hpp"
+#include "apply.hpp"
+#include "count.hpp"
 
 namespace PP::tuple
 {
-PP_CIA fold1 = [](concepts::value auto left, auto&& f, concepts::tuple auto&& t)
-{
-    static_assert(type_count(PP_DT(t)), "tuple::fold1: empty tuple");
+PP_CIA fold1 = combine(
+    apply,
+    [](auto&& left, auto&& f, auto&& t)
+    {
+        static_assert(type_count(PP_DT(t)) == 0, "tuple::fold1: empty tuple");
 
-    auto [head, tail] = split(PP_F(t));
-
-    return fold(left, PP_F(f), PP_F(head), move(tail));
-};
+        return apply_partially_first(pack::fold, PP_F(left), PP_F(f));
+    },
+    get_2);
 
 PP_CIA foldl1 = fold1 * value_true;
-
 PP_CIA foldr1 = fold1 * value_false;
 }
