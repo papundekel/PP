@@ -10,7 +10,7 @@ public:
     constexpr singular(placeholder_t, auto&& value)
         : iterate_tuple<value_t<1>, T>(placeholder, PP_F(value))
     {}
-    constexpr singular(placeholder_t, concepts::type auto, auto&& value)
+    constexpr singular(placeholder_t, concepts::type auto&&, auto&& value)
         : singular(placeholder, PP_F(value))
     {}
 };

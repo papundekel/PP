@@ -1,9 +1,10 @@
 #pragma once
-#include "get_type.hpp"
+#include "utility/forward.hpp"
+#include "macros/CIA.hpp"
 
 namespace PP
 {
-PP_CIA id_forward = [](auto&& x) -> decltype(auto)
+PP_CIA id_forward = [](auto&& x) -> auto&&
 {
     return PP_F(x);
 };

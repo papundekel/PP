@@ -10,9 +10,3 @@ PP_CIA construct_pack = [](concepts::type auto&& t,
     return PP_GT(t)(PP_F(args)...);
 };
 }
-
-template <typename T>
-constexpr decltype(auto) PP::type_t<T>::operator()(auto&&... args) const
-{
-    return construct_pack(*this, PP_F(args)...);
-}

@@ -1,6 +1,8 @@
 #pragma once
+#include "id.hpp"
 #include "macros/CIA.hpp"
 #include "macros/functor.hpp"
+#include "overloaded.hpp"
 #include "placeholder.hpp"
 #include "utility/forward.hpp"
 
@@ -19,7 +21,7 @@ public:
         : ref(PP_F(ref))
     {}
 
-    constexpr decltype(auto) operator--(int) const noexcept
+    constexpr auto&& operator--(int) const noexcept
     {
         return PP_F(ref);
     }
@@ -39,14 +41,10 @@ PP_CIA wrap_forward = [](auto&& x)
     return PP_FW(x);
 };
 
-constexpr auto&& unwrap_forward(auto&& x) noexcept
-{
-    return PP_F(x);
-}
-template <typename T>
-constexpr auto&& unwrap_forward(const forward_wrap<T>& x) noexcept
+PP_CIA unwrap_forward_pure = []<typename T>(const forward_wrap<T>& x) -> auto&&
 {
     return x--;
-}
+};
 
+PP_CIA unwrap_forward = overloaded(unwrap_forward_pure, id_forward);
 }

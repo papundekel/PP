@@ -111,9 +111,9 @@ PP_CIA construct = [](concepts::tuple auto&& types,
     auto t = Template<container>[PP_F(types)];
 
     if constexpr (PP_GV(in_place))
-        return t(PP::in_place, PP_F(args)...);
+        return construct_pack(t, PP::in_place, PP_F(args)...);
     else
-        return t(PP::placeholder, PP_F(args)...);
+        return construct_pack(t, PP::placeholder, PP_F(args)...);
 };
 }
 
@@ -141,8 +141,8 @@ struct tuple_helper
 {
     static constexpr auto&& get(concepts::value auto&& i, auto&& t) noexcept
     {
-        auto& wrap = t.wrap_types[i](t);
-        return copy_cvref(PP_DT(t), PP_DT(wrap.obj))(wrap.obj);
+        auto& wrap = construct_pack(t.wrap_types[i], t);
+        return construct_pack(copy_cvref(PP_DT(t), PP_DT(wrap.obj)), wrap.obj);
     }
     static constexpr auto element(concepts::value auto&& i, auto& t) noexcept
     {

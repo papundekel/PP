@@ -1,20 +1,9 @@
 #pragma once
-#include "arrow_operator_wrapper.hpp"
 #include "compose.hpp"
 #include "containers/type_tuple.hpp"
 #include "remove_cvref.hpp"
 #include "template_t.hpp"
 #include "type_t.hpp"
-
-template <typename T>
-constexpr auto PP::type_t<T>::operator->() const noexcept
-{
-    return make_arrow_operator_wrapper(
-        [this]()
-        {
-            return **this;
-        });
-}
 
 namespace PP::detail
 {
