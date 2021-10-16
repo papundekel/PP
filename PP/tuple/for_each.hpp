@@ -8,10 +8,10 @@
 namespace PP::tuple
 {
 PP_CIA for_each_dir =
-    [](concepts::value auto left, auto&& f, concepts::tuple auto&& t)
+    [](concepts::value auto&& left, auto&& f, concepts::tuple auto&& t)
 {
     fold(
-        left,
+        PP_F(left),
         [PP_FWL(f)](empty, auto&& element)
         {
             f(PP_F(element));

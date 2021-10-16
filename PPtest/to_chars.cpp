@@ -1,18 +1,21 @@
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
 
 #include "PP/to_chars.hpp"
 
 namespace PPtest
 {
-void to_chars()
+void to_chars(std::ostream& out_key, std::ostream& out_run)
 {
-    char buff[100];
-    buff[99] = 0;
+    std::srand(std::time(nullptr));
+    int a = std::rand();
 
-    int a = 25;
+    out_key << a;
+    //
+    char buff[32];
+    buff[31] = 0;
 
-    auto b = PP::to_chars(PP::view::pair(buff + 0, buff + 99), a);
-
-    std::cout << "should be: " << a << ", is: " << b << '\n';
+    out_run << PP::to_chars(PP::view::pair(std::begin(buff) , std::end(buff) - 1), a);
 }
 }

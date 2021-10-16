@@ -4,9 +4,11 @@
 
 namespace PPtest
 {
-void add_const()
+void add_const(std::ostream& out_key, std::ostream& out_run)
 {
-    std::cout << std::boolalpha
-              << (PP::type<const int> == PP::add_const(PP::type<int>)) << '\n';
+    out_key << "true";
+    //
+    out_run << std::boolalpha
+            << (PP::type<const int> == PP::add_const(PP::type<int>));
 }
 }

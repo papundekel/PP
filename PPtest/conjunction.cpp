@@ -15,16 +15,14 @@ bool is_positive(int a)
     return a > 0;
 }
 }
-void conjunction()
+void conjunction(std::ostream& out_key, std::ostream& out_run)
 {
+    out_key << "false false false true false true";
+    //
     auto combined = PP::conjunction(is_even, is_positive);
 
-    std::cout << std::boolalpha
-              << combined(-1) << ' '
-              << combined( 0) << ' '
-              << combined( 1) << ' '
-              << combined( 2) << ' '
-              << combined( 3) << ' '
-              << combined( 4) << '\n';
+    out_run << std::boolalpha << combined(-1) << ' ' << combined(0) << ' '
+            << combined(1) << ' ' << combined(2) << ' ' << combined(3) << ' '
+            << combined(4);
 }
 }

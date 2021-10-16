@@ -25,8 +25,7 @@ PP_CIA zip_if = [](auto&& predicate, auto&& f, concepts::tuple auto&& views)
         if (cond)
             tuple::apply(PP_F(f), move(dereferenced));
 
-        tuple::for_each(value_true,
-                        applier(
+        tuple::for_each(applier(
                             [](bool step, auto& i)
                             {
                                 if (step)

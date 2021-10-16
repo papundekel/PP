@@ -12,7 +12,8 @@ add_executable(PPtest
 "tuple_apply.cpp"
 "tuple_concat.cpp"
 "tuple_fold.cpp"
-"cout.cpp"
+"ostream_std.cpp"
+"view_subsequence.cpp"
 )
 target_compile_features(PPtest PUBLIC cxx_std_20)
 target_include_directories(PPtest PUBLIC "${CMAKE_CURRENT_LIST_DIR}/..")

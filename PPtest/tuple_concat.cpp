@@ -5,8 +5,10 @@
 
 namespace PPtest
 {
-void tuple_concat()
+void tuple_concat(std::ostream& out_key, std::ostream& out_run)
 {
+    out_key << "5 6";
+    //
     int a = 1;
     int b = 2;
 
@@ -16,6 +18,6 @@ void tuple_concat()
     concatenated[PP::value_0] = 5;
     concatenated[PP::value_1] = 6;
 
-    std::cout << a << ' ' << b << '\n';
+    out_run << a << ' ' << b;
 }
 }
