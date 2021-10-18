@@ -21,7 +21,7 @@ constexpr auto tuple_first_element_or(concepts::type auto&& t,
 constexpr auto tuple_to_array_helper(concepts::type auto&& t,
                                      concepts::tuple auto&& tuple)
 {
-    return conditional(value<PP_COPY_TYPE(t) == type_void>,
+    return conditional(value<PP_CT(t) == type_void>,
                        tuple_first_element_or(type_char, PP_F(tuple)),
                        t);
 }

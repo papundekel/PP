@@ -1,11 +1,16 @@
-#include <iostream>
+#include "PPtest.hpp"
 
 #include "PP/containers/tuple.hpp"
 #include "PP/tuple/concat.hpp"
 
+#include <iostream>
+
 namespace PPtest
 {
-void tuple_concat(std::ostream& out_key, std::ostream& out_run)
+template<> std::string_view test_function_name<8>() { return __FILE__; }
+
+template<>
+void test_function<8>(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "5 6";
     //

@@ -1,6 +1,8 @@
-#include <iostream>
+#include "PPtest.hpp"
 
 #include "PP/view/subsequence.hpp"
+
+#include <iostream>
 
 namespace PPtest
 {
@@ -13,7 +15,10 @@ auto f(auto& sub)
     return (int)PP::view::subsequence(sub, arr);
 }
 }
-void view_subsequence(std::ostream& out_key, std::ostream& out_run)
+template<> std::string_view test_function_name<11>() { return __FILE__; }
+
+template<>
+void test_function<11>(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "0 0 1 2";
     //

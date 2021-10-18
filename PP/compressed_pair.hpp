@@ -38,9 +38,9 @@ struct compressed_pair_empty_second
 constexpr auto compressed_pair_dispatch_template(concepts::type auto&& first,
                                                  concepts::type auto&& second)
 {
-    if constexpr (is_empty(PP_COPY_TYPE(first)))
+    if constexpr (is_empty(PP_CT(first)))
         return Template<compressed_pair_empty_first>;
-    else if constexpr (is_empty(PP_COPY_TYPE(second)))
+    else if constexpr (is_empty(PP_CT(second)))
         return Template<compressed_pair_empty_second>;
     else
         return Template<compressed_pair_nonempty>;

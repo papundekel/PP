@@ -45,7 +45,7 @@ struct empty_iterator
 
     constexpr operator auto() const
     {
-        return (add_pointer <<= type<T>)(nullptr);
+        return construct_pack(add_pointer(type<T>), nullptr);
     }
 };
 }

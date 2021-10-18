@@ -54,10 +54,10 @@ PP_CIA has_implicit_conversion_to_arithmetic_type = [](concepts::type auto&& t)
 };
 
 PP_CIA promotion_type =
-    compose(compose(decl_type_copy,
+    compose_many(decl_type_copy,
                     [](auto x)
                     {
                         return detail::promotion_type_convertor(x);
-                    }),
+                    },
             construct_pack);
 }

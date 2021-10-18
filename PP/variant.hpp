@@ -50,14 +50,14 @@ class variant2
 
     static constexpr auto types = type_tuple<T...>;
     static constexpr auto max =
-        apply_partially(compose(compose(compose(id_copy, der), max_default),
+        apply_partially(compose_many(compose(id_copy, der, max_default),
                                 tuple::map_make_array),
                         value_1,
                         types);
 
     static constexpr auto type_eql = [](auto t, auto u)
     {
-        return value<PP_COPY_TYPE(t) == PP_COPY_TYPE(u)>;
+        return value<PP_CT(t) == PP_CT(u)>;
     };
 
     size_t index;
@@ -124,7 +124,7 @@ struct visit_helper
                         [](auto&& variant, auto&... buffers) -> decltype(auto)
                     {
                         return PP_F(variant)(
-                            reinterpret__cast(PP_COPY_TYPE(types), buffers)...);
+                            reinterpret__cast(PP_CT(types), buffers)...);
                     };
                 }) +
             tuple::cartesian_product_pack(variants.types...);

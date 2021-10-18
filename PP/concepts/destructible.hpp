@@ -8,7 +8,7 @@ namespace PP
 {
 PP_CIA is_destructible = [](concepts::type auto&& t)
 {
-    constexpr auto T = PP_COPY_TYPE(t);
+    constexpr auto T = PP_CT(t);
 
     if constexpr (is_reference(T))
         return true;

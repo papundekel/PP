@@ -20,7 +20,7 @@ PP_CIA arg_splitter = [](concepts::type auto&& delimiter_type,
     auto splits = tuple::splits(
         [delimiter_type](auto&& arg)
         {
-            return value<~PP_DT(arg) == PP_COPY_TYPE(delimiter_type)>;
+            return value<~PP_DT(arg) == PP_CT(delimiter_type)>;
         },
         forward_as_tuple(PP_F(args)...));
 

@@ -6,7 +6,7 @@ namespace PP::detail
 {
 PP_CIA add_pointer_helper = [](concepts::type auto&& t) -> decltype(auto)
 {
-    if constexpr (is_pointable(PP_COPY_TYPE(t)))
+    if constexpr (is_pointable(PP_CT(t)))
         return type<PP_GT(t)*>;
     else
         return t;

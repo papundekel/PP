@@ -1,10 +1,14 @@
-#include <iostream>
-
 #include "PP/add_const.hpp"
+#include "PPtest.hpp"
+
+#include <iostream>
 
 namespace PPtest
 {
-void add_const(std::ostream& out_key, std::ostream& out_run)
+template<> std::string_view test_function_name<0>() { return __FILE__; }
+
+template<>
+void test_function<0>(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "true";
     //

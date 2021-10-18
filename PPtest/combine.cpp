@@ -1,10 +1,14 @@
-#include <iostream>
-
 #include "PP/combine.hpp"
+#include "PPtest.hpp"
+
+#include <iostream>
 
 namespace PPtest
 {
-void combine(std::ostream& out_key, std::ostream& out_run)
+template<> std::string_view test_function_name<1>() { return __FILE__; }
+
+template<>
+void test_function<1>(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "false false false true false true";
     //

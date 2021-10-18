@@ -24,7 +24,7 @@ PP_CIA get_type = [](concepts::type auto&& t)
 };
 
 #define PP_GT(x) ::PP::get_type_t<decltype(x)>
-#define PP_COPY_TYPE(x) (::PP::type<PP_GT(x)>)
+#define PP_CT(x) (::PP::type<PP_GT(x)>)
 
 PP_CIA to_type_t = compose(get_type, decl_type_copy);
 }

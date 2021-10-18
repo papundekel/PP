@@ -1,11 +1,16 @@
-#include <iostream>
+#include "PPtest.hpp"
 
 #include "PP/containers/tuple.hpp"
 #include "PP/tuple/fold.hpp"
 
+#include <iostream>
+
 namespace PPtest
 {
-void tuple_fold(std::ostream& out_key, std::ostream& out_run)
+template<> std::string_view test_function_name<9>() { return __FILE__; }
+
+template<>
+void test_function<9>(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "10 10 10";
     //

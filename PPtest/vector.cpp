@@ -1,19 +1,63 @@
-#include <iostream>
+#include "PPtest.hpp"
 
 #include "PP/vector.hpp"
 
+#include <iostream>
+#include <vector>
+#include <ctime>
+
 namespace PPtest
 {
-void vector(std::ostream& out_key, std::ostream& out_run)
+namespace
 {
-    out_key << "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, ";
+    void f(std::ostream& out, auto& v)
+    {
+        for (int e : v)
+            out << e << ", ";
+    }
+
+    int destructor_count;
+
+    struct noisy
+    {
+        int val;
+
+        operator int() const
+        {
+            return val;
+        }
+
+        ~noisy()
+        {
+            ++destructor_count;
+        }
+    };
+}
+
+template<> std::string_view test_function_name<10>() { return __FILE__; }
+
+template<>
+void test_function<10>(std::ostream& out_key, std::ostream& out_run)
+{
+    std::vector<int> v_key;
+    PP::vector<noisy> v_run;
+
+    int capacity = v_run.capacity();
+
+    std::srand(std::time(nullptr));
+
+    for (int i = 0; i != capacity + 1; ++i)
+        v_key.push_back(std::rand());
+    
+    f(out_key, v_key);
+    out_key << capacity;
     //
-    PP::vector<int> v;
+    destructor_count = 0;
 
-    for (int i = 0; i != 17; ++i)
-        v.push_back(i);
+    for (const auto& e : v_key)
+        v_run.push_back(e);
 
-    for (const auto& e : v)
-        out_run << e << ", ";
+    f(out_run, v_run);
+    out_run << destructor_count;
 }
 }

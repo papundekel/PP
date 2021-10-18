@@ -1,6 +1,7 @@
-#include <iostream>
-
 #include "PP/conjunction.hpp"
+#include "PPtest.hpp"
+
+#include <iostream>
 
 namespace PPtest
 {
@@ -15,7 +16,10 @@ bool is_positive(int a)
     return a > 0;
 }
 }
-void conjunction(std::ostream& out_key, std::ostream& out_run)
+template<> std::string_view test_function_name<2>() { return __FILE__; }
+
+template<>
+void test_function<2>(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "false false false true false true";
     //

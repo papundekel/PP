@@ -1,11 +1,16 @@
-#include <iostream>
+#include "PPtest.hpp"
 
 #include "PP/containers/tuple.hpp"
 #include "PP/tuple/any.hpp"
 
+#include <iostream>
+
 namespace PPtest
 {
-void tuple_any(std::ostream& out_key, std::ostream& out_run)
+template<> std::string_view test_function_name<6>() { return __FILE__; }
+
+template<>
+void test_function<6>(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "1 2 true";
     //

@@ -1,23 +1,8 @@
+#include "PPtest.hpp"
+
 #include <iostream>
 #include <sstream>
-
-namespace PPtest
-{
-using test_function_type = void(std::ostream& out_key, std::ostream& out_run);
-
-test_function_type zip_unbounded;
-test_function_type vector;
-test_function_type to_chars;
-test_function_type conjunction;
-test_function_type combine;
-test_function_type add_const;
-test_function_type tuple_any;
-test_function_type tuple_apply;
-test_function_type tuple_concat;
-test_function_type tuple_fold;
-test_function_type ostream_std;
-test_function_type view_subsequence;
-}
+#include <tuple>
 
 namespace
 {
@@ -27,26 +12,36 @@ auto& print_many(char c, std::size_t count)
         std::cout << c;
     return std::cout;
 }
+
+std::string_view clean_name(std::string_view name)
+{
+    name.remove_suffix(4);
+
+    std::string_view test_dir_name = "/PPtest/";
+
+    return name.substr(name.rfind(test_dir_name) + test_dir_name.length());
+}
+
+template <std::size_t... I>
+void fill_tests(auto& pairs, std::index_sequence<I...>)
+{
+    ((pairs[I].first = PPtest::test_function<I>,
+      pairs[I].second = clean_name(PPtest::test_function_name<I>())),
+     ...);
+}
 }
 
 int main()
 {
-    std::pair<PPtest::test_function_type&, const char*> tests[] = {
-        {PPtest::zip_unbounded, "zip_unbounded"},
-        {PPtest::vector, "vector"},
-        {PPtest::to_chars, "to_chars"},
-        {PPtest::combine, "combine"},
-        {PPtest::conjunction, "conjunction"},
-        {PPtest::add_const, "add_const"},
-        {PPtest::tuple_any, "tuple_any"},
-        {PPtest::tuple_apply, "tuple_apply"},
-        {PPtest::tuple_concat, "tuple_concat"},
-        {PPtest::tuple_fold, "tuple_fold"},
-        {PPtest::ostream_std, "ostream_std"},
-        {PPtest::view_subsequence, "view_subsequence"},
-    };
+    using namespace PPtest;
 
-    std::size_t count_passed = 0;
+    constexpr auto test_count = 13z;
+
+    std::pair<test_function_type*, std::string_view> tests[test_count];
+
+    fill_tests(tests, std::make_index_sequence<test_count>{});
+
+    auto count_passed = 0z;
 
     for (auto [function, name] : tests)
     {

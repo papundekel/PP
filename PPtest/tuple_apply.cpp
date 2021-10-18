@@ -1,11 +1,16 @@
-#include <iostream>
+#include "PPtest.hpp"
 
 #include "PP/containers/tuple.hpp"
 #include "PP/tuple/apply.hpp"
 
+#include <iostream>
+
 namespace PPtest
 {
-void tuple_apply(std::ostream& out_key, std::ostream& out_run)
+template<> std::string_view test_function_name<7>() { return __FILE__; }
+
+template<>
+void test_function<7>(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "1 2 3";
     //

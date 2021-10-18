@@ -59,7 +59,7 @@ struct any_iterator_cant_copy_construct
 
 PP_CIA remove_cvref_if_constructible = [](concepts::type auto&& t)
 {
-    constexpr auto T = PP_COPY_TYPE(t);
+    constexpr auto T = PP_CT(t);
 
     if constexpr (is_constructible_pack(remove_cvref(T), T))
         return remove_cvref(T);
@@ -220,7 +220,7 @@ constexpr auto any_iterator_copy_as(const auto& any_it,
                                     concepts::value auto&& category,
                                     concepts::type auto&& t)
 {
-    constexpr auto from_t = PP_COPY_TYPE(any_it.get_type());
+    constexpr auto from_t = PP_CT(any_it.get_type());
 
     const any_iterator_base_base<PP_GV(category), PP_GT(from_t)>& i = any_it;
 
@@ -1022,7 +1022,7 @@ namespace detail
 {
 constexpr auto get_iterator_category_value_t(concepts::type auto&& i)
 {
-    constexpr auto I = PP_COPY_TYPE(i);
+    constexpr auto I = PP_CT(i);
 
     if constexpr (is_iterator_ra(I))
         return value<iterator_category::ra>;

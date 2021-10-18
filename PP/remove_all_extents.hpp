@@ -9,7 +9,7 @@ namespace detail
 static constexpr auto remove_all_extents_helper(
     concepts::type auto&& t) noexcept
 {
-    constexpr auto T = PP_COPY_TYPE(t);
+    constexpr auto T = PP_CT(t);
 
     constexpr auto removed_extent = remove_extent(T);
     if constexpr (removed_extent == T)

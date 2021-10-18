@@ -64,6 +64,6 @@ PP_CIA element =
 
 PP_CIA type_element = [](concepts::value auto&& i, concepts::type auto&& t)
 {
-    return PP_COPY_TYPE(element(i, declval(t)));
+    return PP_CT(element(i, declval(t)));
 };
 }

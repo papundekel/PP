@@ -1,12 +1,17 @@
+#include "PPtest.hpp"
+
+#include "PP/to_chars.hpp"
+
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 
-#include "PP/to_chars.hpp"
-
 namespace PPtest
 {
-void to_chars(std::ostream& out_key, std::ostream& out_run)
+template<> std::string_view test_function_name<5>() { return __FILE__; }
+
+template<>
+void test_function<5>(std::ostream& out_key, std::ostream& out_run)
 {
     std::srand(std::time(nullptr));
     int a = std::rand();
