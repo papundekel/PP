@@ -1,0 +1,15 @@
+name: actions
+on: [push]
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: job
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Hello world action step
+        uses: ./
+        id: hello
+      - name: Get the output time
+        run: echo "The time was asd"
