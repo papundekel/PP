@@ -4,8 +4,7 @@
 
 namespace PP::view
 {
-struct shift
-{
+struct shift {
     size_t value;
 };
 }

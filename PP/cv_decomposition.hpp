@@ -26,8 +26,7 @@ enum class cv_decomposition_type
     none
 };
 
-struct cv_decomposition_element
-{
+struct cv_decomposition_element {
     cv_qualifier cv;
     cv_decomposition_type type;
     size_t extent;

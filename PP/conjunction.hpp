@@ -1,14 +1,9 @@
 #pragma once
-#include "apply_partially_first.hpp"
-#include "combine.hpp"
-#include "operators.hpp"
+#include "combine_meta_c.hpp"
+#include "pack/combinator_and_l.hpp"
 
 namespace PP
 {
-PP_CIA conjunction = combine * an_;
-}
-
-constexpr auto operator&&(auto&& f, auto&& g)
-{
-    return PP::conjunction(PP_F(f), PP_F(g));
+// conjunction(f...)(a...) = true && ... && f(a...)
+PP_CIA conjunction = combine_meta_c(pack::combinator_and_l);
 }

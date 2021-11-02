@@ -1,6 +1,6 @@
 #pragma once
-#include "utility/forward.hpp"
 #include "macros/CIA.hpp"
+#include "utility/forward.hpp"
 
 namespace PP
 {

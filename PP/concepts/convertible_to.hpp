@@ -7,9 +7,7 @@ namespace PP::concepts
 template <typename From, typename To>
 concept convertible_to = requires
 {
-    [](To)
-    {
-    }(declval_impl<From>());
+    [](To) {}(declval_impl<From>());
 };
 }
 

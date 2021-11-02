@@ -22,10 +22,8 @@ constexpr auto make_function_type_helper(concepts::type auto&& return_type,
     constexpr cv_qualifier cv = PP_GV(C);
     constexpr ref_qualifier ref = PP_GV(R);
 
-    if constexpr (!Noexcept)
-    {
-        if constexpr (ref == ref_qualifier::none)
-        {
+    if constexpr (!Noexcept) {
+        if constexpr (ref == ref_qualifier::none) {
             if constexpr (cv == cv_qualifier::none)
                 return type<Return(Parameters...)>;
             else if constexpr (cv == cv_qualifier::Const)
@@ -35,8 +33,7 @@ constexpr auto make_function_type_helper(concepts::type auto&& return_type,
             else
                 return type<Return(Parameters...) const volatile>;
         }
-        else if constexpr (ref == ref_qualifier::lvalue)
-        {
+        else if constexpr (ref == ref_qualifier::lvalue) {
             if constexpr (cv == cv_qualifier::none)
                 return type<Return(Parameters...)&>;
             else if constexpr (cv == cv_qualifier::Const)
@@ -46,8 +43,7 @@ constexpr auto make_function_type_helper(concepts::type auto&& return_type,
             else
                 return type<Return(Parameters...) const volatile&>;
         }
-        else
-        {
+        else {
             if constexpr (cv == cv_qualifier::none)
                 return type<Return(Parameters...) &&>;
             else if constexpr (cv == cv_qualifier::Const)
@@ -58,10 +54,8 @@ constexpr auto make_function_type_helper(concepts::type auto&& return_type,
                 return type<Return(Parameters...) const volatile&&>;
         }
     }
-    else
-    {
-        if constexpr (ref == ref_qualifier::none)
-        {
+    else {
+        if constexpr (ref == ref_qualifier::none) {
             if constexpr (cv == cv_qualifier::none)
                 return type<Return(Parameters...) noexcept>;
             else if constexpr (cv == cv_qualifier::Const)
@@ -71,8 +65,7 @@ constexpr auto make_function_type_helper(concepts::type auto&& return_type,
             else
                 return type<Return(Parameters...) const volatile noexcept>;
         }
-        else if constexpr (ref == ref_qualifier::lvalue)
-        {
+        else if constexpr (ref == ref_qualifier::lvalue) {
             if constexpr (cv == cv_qualifier::none)
                 return type<Return(Parameters...)& noexcept>;
             else if constexpr (cv == cv_qualifier::Const)
@@ -82,8 +75,7 @@ constexpr auto make_function_type_helper(concepts::type auto&& return_type,
             else
                 return type<Return(Parameters...) const volatile& noexcept>;
         }
-        else
-        {
+        else {
             if constexpr (cv == cv_qualifier::none)
                 return type<Return(Parameters...)&& noexcept>;
             else if constexpr (cv == cv_qualifier::Const)

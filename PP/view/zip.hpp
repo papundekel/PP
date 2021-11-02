@@ -1,11 +1,11 @@
 #pragma once
 #include "../applier.hpp"
-#include "../apply_partially.hpp"
 #include "../concepts/same_except_cvref.hpp"
 #include "../construct_pack.hpp"
 #include "../containers/tuple.hpp"
 #include "../containers/tuple_std.hpp"
 #include "../operators.hpp"
+#include "../partial.hpp"
 #include "../tuple/all.hpp"
 #include "../tuple/any.hpp"
 #include "../tuple/for_each.hpp"
@@ -44,7 +44,7 @@ public:
     constexpr auto advance(ptrdiff_t offset)
     {
         if constexpr ((concepts::iterator_ra<Iterators> && ...))
-            tuple::for_each(apply_partially(pas, value_1, offset), *this);
+            tuple::for_each(partial(pas, value_1, offset), *this);
         else
             return 0;
     }

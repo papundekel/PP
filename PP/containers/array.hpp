@@ -1,7 +1,4 @@
 #pragma once
-#include <memory>
-
-#include "../apply_template.hpp"
 #include "../apply_transform.hpp"
 #include "../concepts/reference.hpp"
 #include "../conditional.hpp"
@@ -14,6 +11,7 @@
 #include "../get_value.hpp"
 #include "../id.hpp"
 #include "../init_type.hpp"
+#include "../pack/apply_template.hpp"
 #include "../remove_cvref.hpp"
 #include "../remove_pointer.hpp"
 #include "../size_t.hpp"
@@ -21,6 +19,8 @@
 #include "../tuple/map.hpp"
 #include "../value_t.hpp"
 #include "tuple.hpp"
+
+#include <memory>
 
 namespace PP::array
 {
@@ -246,14 +246,12 @@ namespace PP::detail
 template <typename T>
 concept array_concept = requires
 {
-    []<typename U, size_t C>(const array::container<U, C>&)
-    {
+    []<typename U, size_t C>(const array::container<U, C>&) {
     }(declval_impl<T>());
 };
 
 template <typename ResultType>
-struct array_iterator_transform
-{
+struct array_iterator_transform {
     constexpr auto&& operator()(auto&& wrap) const
     {
         return ResultType(wrap.obj);
@@ -262,8 +260,7 @@ struct array_iterator_transform
 
 template <typename T, typename ResultType>
 struct array_iterator
-    : public transform_iterator<T*, array_iterator_transform<ResultType>>
-{
+    : public transform_iterator<T*, array_iterator_transform<ResultType>> {
     using base = transform_iterator<T*, array_iterator_transform<ResultType>>;
 
     constexpr array_iterator(T* p) noexcept
@@ -281,8 +278,7 @@ struct array_iterator
 template <typename T>
 array_iterator(T* p, concepts::type auto&& t) -> array_iterator<T, PP_GT(t)>;
 
-struct array_helper
-{
+struct array_helper {
     static constexpr auto begin(auto&& a) noexcept
     {
         constexpr auto array_type = PP_DT(a);

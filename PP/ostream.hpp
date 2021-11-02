@@ -1,9 +1,9 @@
 #pragma once
-#include <iosfwd>
-
 #include "concepts/integer.hpp"
 #include "to_chars.hpp"
 #include "view/shift.hpp"
+
+#include <iosfwd>
 
 namespace PP
 {

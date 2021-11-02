@@ -1,10 +1,10 @@
 #pragma once
-#include "../apply_partially_first.hpp"
+#include "../containers/tuple.hpp"
 #include "../containers/tuple_std.hpp"
 #include "../operators.hpp"
 #include "../pack/any.hpp"
+#include "../partial_.hpp"
 #include "concept.hpp"
-#include "../containers/tuple.hpp"
 
 #include <compare>
 
@@ -34,8 +34,7 @@ PP_CIA lower_bound_if =
     auto right_edge_comparison =
         detail::default_construct_ordering(PP_DT(PP_F(comparer)(*begin, val)));
 
-    while (count > 0)
-    {
+    while (count > 0) {
         auto step = count / 2;
 
         auto i = begin;
@@ -43,13 +42,11 @@ PP_CIA lower_bound_if =
 
         auto comparison = PP_F(comparer)(*i, val);
 
-        if (comparison < 0)
-        {
+        if (comparison < 0) {
             begin = ++i;
             count -= step + 1;
         }
-        else
-        {
+        else {
             right_edge_comparison = comparison;
             count = step;
         }

@@ -7,8 +7,7 @@
 namespace PP
 {
 template <typename T>
-struct empty_iterator
-{
+struct empty_iterator {
     constexpr auto& operator++() noexcept
     {
         return *this;

@@ -1,7 +1,5 @@
 #pragma once
 #include "../add_const.hpp"
-#include "../apply_partially_first.hpp"
-#include "../apply_template.hpp"
 #include "../construct_pack.hpp"
 #include "../copy_cvref.hpp"
 #include "../decay.hpp"
@@ -9,7 +7,9 @@
 #include "../get_value.hpp"
 #include "../id.hpp"
 #include "../init_type.hpp"
+#include "../partial_.hpp"
 #include "../placeholder.hpp"
+#include "../tuple/apply_template.hpp"
 #include "../tuple/concept.hpp"
 #include "../utility/move.hpp"
 #include "../value_sequence.hpp"
@@ -78,9 +78,7 @@ using tuple_base =
 namespace PP::tuple
 {
 template <typename... T>
-struct container
-    : public detail::tuple_base<T...>
-{
+struct container : public detail::tuple_base<T...> {
     using detail::tuple_base<T...>::tuple_base;
 
     constexpr auto&& operator[](concepts::value auto&& i) & noexcept;
@@ -110,10 +108,15 @@ PP_CIA construct = [](concepts::tuple auto&& types,
 {
     auto t = Template<container>[PP_F(types)];
 
+    auto constructor = [t, ... PP_FWL(args)](auto tag)
+    {
+        return construct_pack(t, PP::in_place, args--...);
+    };
+
     if constexpr (PP_GV(in_place))
-        return construct_pack(t, PP::in_place, PP_F(args)...);
+        return constructor(in_place);
     else
-        return construct_pack(t, PP::placeholder, PP_F(args)...);
+        return constructor(placeholder);
 };
 }
 
@@ -137,8 +140,7 @@ PP_CIA init = detail::tuple_construct_helper * init_type * value_true;
 
 namespace PP::detail
 {
-struct tuple_helper
-{
+struct tuple_helper {
     static constexpr auto&& get(concepts::value auto&& i, auto&& t) noexcept
     {
         auto& wrap = construct_pack(t.wrap_types[i], t);

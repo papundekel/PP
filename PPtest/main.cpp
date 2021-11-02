@@ -6,9 +6,9 @@
 
 namespace
 {
-auto& print_many(char c, std::size_t count)
+auto& print_many(auto c, std::size_t count)
 {
-    for (auto i = 0z; i != count; ++i)
+    for (auto i = 0uz; i != count; ++i)
         std::cout << c;
     return std::cout;
 }
@@ -33,18 +33,14 @@ void fill_tests(auto& pairs, std::index_sequence<I...>)
 
 int main()
 {
-    using namespace PPtest;
+    std::pair<PPtest::test_function_type*, std::string_view>
+        tests[TEST_COUNT - 1];
 
-    constexpr auto test_count = 13z;
+    fill_tests(tests, std::make_index_sequence<std::size(tests)>{});
 
-    std::pair<test_function_type*, std::string_view> tests[test_count];
+    auto count_passed = 0uz;
 
-    fill_tests(tests, std::make_index_sequence<test_count>{});
-
-    auto count_passed = 0z;
-
-    for (auto [function, name] : tests)
-    {
+    for (auto [function, name] : tests) {
         std::cout << name << ": ";
 
         std::stringstream out_key;
@@ -55,13 +51,11 @@ int main()
         auto view_key = out_key.view();
         auto view_run = out_run.view();
 
-        if (view_key == view_run)
-        {
+        if (view_key == view_run) {
             std::cout << "passed\n";
             ++count_passed;
         }
-        else
-        {
+        else {
             std::cout << "failed\n"
                       << "------\n"
                       << "key: |" << view_key << "|\n"

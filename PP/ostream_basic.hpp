@@ -1,8 +1,8 @@
 #pragma once
-#include <ostream>
-
 #include "ostream.hpp"
 #include "view.hpp"
+
+#include <ostream>
 
 namespace PP::detail
 {

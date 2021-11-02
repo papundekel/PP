@@ -6,8 +6,7 @@
 namespace PP::detail
 {
 template <typename F, typename I>
-struct fold_wrapper
-{
+struct fold_wrapper {
     F&& f;
     I i;
 };
@@ -23,9 +22,9 @@ constexpr auto fold_combinator(concepts::value auto&& left,
         [f = PP_FW(wrap.f), i = wrap.i, PP_FWL(element)]() -> decltype(auto)
         {
             if constexpr (*PP_CV(left))
-                return f(i(), element--);
+                return f--(i(), element--);
             else
-                return f(element--, i());
+                return f--(element--, i());
         }};
 }
 
@@ -43,22 +42,26 @@ constexpr auto operator||(auto&& element, fold_wrapper<F, T> wrap)
 
 namespace PP::pack
 {
-PP_CIA fold_init = [](concepts::value auto&& left,
-                      auto&& f,
-                      auto&& i,
-                      auto&&... e) -> decltype(auto)
+PP_CIA fold_init = [](concepts::value auto&& left, auto&& f, auto&& i)
 {
-    return [&left, ... PP_FWL(e)](auto wrapper)
+    return [PP_FL(left), PP_FL(f), PP_FL(i)](auto&&... e) -> decltype(auto)
     {
-        if constexpr (PP_GV(left))
-            return (wrapper() || ... || e--);
-        else
-            return (e-- || ... || wrapper());
-    }(
-               [PP_FWL(f), PP_FWL(i)]
-               {
-                   return detail::fold_wrapper{f--, i};
-               })
-        .i();
+        return [left = make_fw(left), ... PP_FWL(e)](auto wrapper)
+        {
+            if constexpr (PP_GV(left--))
+                return (wrapper() || ... || e--);
+            else
+                return (e-- || ... || wrapper());
+        }(
+                   [f = make_fw(f), i = make_fw(i)]
+                   {
+                       return detail::fold_wrapper{f--,
+                                                   [i]() -> decltype(auto)
+                                                   {
+                                                       return i--();
+                                                   }};
+                   })
+            .i();
+    };
 };
 }

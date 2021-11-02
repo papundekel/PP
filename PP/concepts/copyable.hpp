@@ -10,9 +10,7 @@ namespace concepts
 template <typename T>
 concept copyable = requires
 {
-    [](auto)
-    {
-    }(declval_impl<T>());
+    [](auto) {}(declval_impl<T>());
 };
 }
 }

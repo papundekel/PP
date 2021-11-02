@@ -1,5 +1,4 @@
 #pragma once
-#include "apply_template.hpp"
 #include "apply_transform.hpp"
 //#include "arg_splitter.hpp"
 #include "arrow_operator_wrapper.hpp"
@@ -100,8 +99,7 @@ transform_iterator(I&& i, T&& t)
     -> transform_iterator<PP_GT(~type<I>), PP_GT(~type<T>)>;
 
 template <typename Functor>
-struct transform
-{
+struct transform {
     Functor functor;
 };
 

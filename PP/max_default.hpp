@@ -1,7 +1,7 @@
 #pragma once
-#include "apply_partially_first.hpp"
 #include "max.hpp"
 #include "operators.hpp"
+#include "partial_.hpp"
 
 namespace PP
 {

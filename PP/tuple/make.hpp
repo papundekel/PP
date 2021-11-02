@@ -1,7 +1,7 @@
 #pragma once
 #include "../applier.hpp"
-#include "../apply_partially_first.hpp"
 #include "../containers/tuple.hpp"
+#include "../partial_.hpp"
 #include "concept.hpp"
 
 namespace PP::tuple

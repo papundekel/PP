@@ -57,8 +57,7 @@ public:
         , block_d(move(other).block_d)
         , count_(other.count_)
     {
-        if (uses_static_block())
-        {
+        if (uses_static_block()) {
             view_move_uninitialized(*this, other);
             other.destroy_all();
         }
@@ -86,8 +85,7 @@ public:
     {
         auto c = capacity();
 
-        if (count_ == c)
-        {
+        if (count_ == c) {
             auto new_block_d = block_d.spawn_new(c != 0 ? 2 * c : 2);
 
             view_move_uninitialized(new_block_d, *this);

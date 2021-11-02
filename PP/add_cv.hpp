@@ -26,9 +26,7 @@ PP_CIA add_cv = [](concepts::value auto&& cv, concepts::type auto&& t)
 /// @tparam cv The cv qualifier to add.
 ///
 template <cv_qualifier cv>
-struct add_cv_tag_t
-    : public value_t<cv>
-{};
+struct add_cv_tag_t : public value_t<cv> {};
 
 constexpr inline add_cv_tag_t<cv_qualifier::Const> add_const_tag = {};
 constexpr inline add_cv_tag_t<cv_qualifier::Volatile> add_volatile_tag = {};

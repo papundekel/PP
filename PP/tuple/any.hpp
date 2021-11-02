@@ -1,15 +1,15 @@
 #pragma once
-#include "../apply_partially_first.hpp"
 #include "../combine.hpp"
 #include "../compose.hpp"
 #include "../pack/any.hpp"
+#include "../pack/get.hpp"
+#include "../partial_.hpp"
 #include "apply.hpp"
-#include "get.hpp"
 
 namespace PP::tuple
 {
 PP_CIA any =
-    combine(apply, compose(apply_partially_first* pack::any, get_0), get_1);
+    combine(apply, compose(partial_first* pack::any, pack::get_0), pack::get_1);
 }
 
 constexpr decltype(auto) operator||(auto&& f, PP::concepts::tuple auto&& tuple)

@@ -1,8 +1,8 @@
 #pragma once
-#include "../apply_partially.hpp"
-#include "../apply_template.hpp"
 #include "../get_type.hpp"
 #include "../macros/simple_concept.hpp"
+#include "../pack/apply_template.hpp"
+#include "../partial.hpp"
 #include "../size_of.hpp"
 #include "../template_t.hpp"
 #include "non_union_class.hpp"
@@ -10,9 +10,7 @@
 namespace PP::detail
 {
 template <typename T, typename Base>
-struct empty_helper
-    : public Base
-{
+struct empty_helper : public Base {
     T t;
 };
 

@@ -1,8 +1,8 @@
 #pragma once
-#include "../apply_partially_first.hpp"
 #include "../compose.hpp"
 #include "../empty.hpp"
 #include "../forward_wrap.hpp"
+#include "../partial_.hpp"
 #include "fold.hpp"
 
 namespace PP::tuple

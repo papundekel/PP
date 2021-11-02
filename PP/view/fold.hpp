@@ -1,6 +1,6 @@
 #pragma once
-#include "../apply_partially_first.hpp"
 #include "../get_value.hpp"
+#include "../partial_.hpp"
 #include "../utility/move.hpp"
 #include "concept.hpp"
 
@@ -11,8 +11,7 @@ PP_CIA fold = [](concepts::value auto&& left,
                  auto init,
                  concepts::view auto&& v)
 {
-    if constexpr (PP_GV(left))
-    {
+    if constexpr (PP_GV(left)) {
         auto i = begin_(PP_F(v));
 
         for (; i != end_(PP_F(v)); ++i)
@@ -20,14 +19,11 @@ PP_CIA fold = [](concepts::value auto&& left,
 
         return tuple::make(move(i), move(init));
     }
-    else
-    {
+    else {
         auto [begin, i] = begin_end(PP_F(v));
 
-        if (begin != i)
-        {
-            do
-            {
+        if (begin != i) {
+            do {
                 --i;
                 init = PP_F(f)(*i, move(init));
             } while (i != begin);

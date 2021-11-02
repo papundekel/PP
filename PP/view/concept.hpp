@@ -1,6 +1,4 @@
 #pragma once
-#include <bit>
-
 #include "../apply_transform.hpp"
 #include "../call.hpp"
 #include "../concepts/array.hpp"
@@ -9,6 +7,8 @@
 #include "../iterator.hpp"
 #include "../remove_reference.hpp"
 #include "../size_t.hpp"
+
+#include <bit>
 
 namespace PP::detail
 {
@@ -146,9 +146,7 @@ PP_CIA type_base = compose(iterator_base, type_begin_iterator);
 namespace PP::detail
 {
 template <typename T>
-struct initializer_list_wrapper
-    : public std::initializer_list<T>
-{};
+struct initializer_list_wrapper : public std::initializer_list<T> {};
 template <typename T>
 constexpr auto wrap_initializer_list(const std::initializer_list<T>& l)
 {

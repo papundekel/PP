@@ -4,8 +4,7 @@
 namespace PP::view
 {
 template <typename T>
-struct empty
-{
+struct empty {
     constexpr empty_iterator<T> begin() const noexcept
     {
         return {};

@@ -1,11 +1,11 @@
 #pragma once
-#include <initializer_list>
-
 #include "../compressed_pair.hpp"
 #include "../concepts/same_except_cvref.hpp"
 #include "../ptrdiff_t.hpp"
 #include "concept.hpp"
 #include "unbounded.hpp"
+
+#include <initializer_list>
 
 namespace PP::view
 {

@@ -5,8 +5,7 @@
 namespace PP
 {
 template <size_t count>
-struct constant_string
-{
+struct constant_string {
     char chars[count];
 
     constexpr constant_string(const char (&string)[count + 1]) noexcept

@@ -1,11 +1,11 @@
 #pragma once
-#include <initializer_list>
-
 #include "any_iterator.hpp"
 #include "containers/singular.hpp"
 #include "containers/tuple_std.hpp"
 #include "view/concept.hpp"
 #include "view/empty.hpp"
+
+#include <initializer_list>
 
 namespace PP
 {

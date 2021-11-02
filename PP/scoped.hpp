@@ -12,8 +12,7 @@ namespace PP
 // constexpr inline struct scoped_in_place_delimiter_t {}
 // scoped_in_place_delimiter;
 
-constexpr inline struct scoped_default_destructor_tag_t
-{
+constexpr inline struct scoped_default_destructor_tag_t {
 } scoped_default_destructor_tag;
 
 template <typename T, typename Destructor>
@@ -105,8 +104,7 @@ public:
     template <typename U, typename D>
     constexpr scoped& operator=(const scoped<U, D>& other)
     {
-        if (this != &other)
-        {
+        if (this != &other) {
             destroy();
             pair.first = other.pair.first;
             pair.second = other.pair.second;
@@ -117,8 +115,7 @@ public:
     template <typename U, typename D>
     constexpr scoped& operator=(scoped<U, D>&& other)
     {
-        if (this != &other)
-        {
+        if (this != &other) {
             destroy();
             pair.first = move(other).pair.first;
             pair.second = move(other).pair.second;

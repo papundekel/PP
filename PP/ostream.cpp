@@ -1,6 +1,6 @@
-#include <iostream>
-
 #include "ostream_std.hpp"
+
+#include <iostream>
 
 namespace PP
 {

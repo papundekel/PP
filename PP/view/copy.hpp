@@ -1,8 +1,8 @@
 #pragma once
 #include "../applier.hpp"
-#include "../apply_partially_first.hpp"
 #include "../compose.hpp"
 #include "../operators.hpp"
+#include "../partial_.hpp"
 #include "for_each.hpp"
 #include "zip.hpp"
 

@@ -15,21 +15,18 @@ namespace detail
 // if the transform is a capture-less lambda or other empty functor
 
 template <typename First, typename Second>
-struct compressed_pair_nonempty
-{
+struct compressed_pair_nonempty {
     First first;
     Second second;
 };
 template <typename Empty, typename Second>
-struct compressed_pair_empty_first
-{
+struct compressed_pair_empty_first {
     [[no_unique_address]] Empty first;
 
     Second second;
 };
 template <typename First, typename Empty>
-struct compressed_pair_empty_second
-{
+struct compressed_pair_empty_second {
     First first;
 
     [[no_unique_address]] Empty second;

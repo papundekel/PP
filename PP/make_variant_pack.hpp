@@ -1,8 +1,8 @@
 #pragma once
-#include <variant>
-
 #include "construct_pack.hpp"
 #include "make_in_place_index.hpp"
+
+#include <variant>
 
 namespace PP
 {

@@ -3,6 +3,5 @@
 namespace PP
 {
 template <typename T>
-struct overload_tag
-{};
+struct overload_tag {};
 }

@@ -1,0 +1,13 @@
+#pragma once
+#include "../combine_c.hpp"
+#include "../compose.hpp"
+#include "../partial_c.hpp"
+#include "get.hpp"
+#include "map_c.hpp"
+
+namespace PP::pack
+{
+// map_cc(packer, map)(args1...)(args2...) = packer(args1...)(map(args2)...)
+PP_CIA map_cc =
+    combine_c(compose)(compose(partial_last_c(map_c), get_1), get_0);
+}

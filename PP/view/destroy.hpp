@@ -1,6 +1,6 @@
 #pragma once
-#include "../apply_partially_first.hpp"
 #include "../get_type.hpp"
+#include "../partial_.hpp"
 #include "for_each.hpp"
 
 namespace PP::detail::functors

@@ -12,8 +12,7 @@ constexpr auto to_chars(concepts::view auto&& v, auto value) noexcept
     if (begin == end)
         return begin;
 
-    if (value == 0 && begin != end)
-    {
+    if (value == 0 && begin != end) {
         *begin = '0';
         return ++begin;
     }
@@ -24,27 +23,22 @@ constexpr auto to_chars(concepts::view auto&& v, auto value) noexcept
 
     constexpr bool signed_type = decltype(value)(-1) < decltype(value)(0);
 
-    if constexpr (signed_type)
-    {
-        if (value < 0)
-        {
+    if constexpr (signed_type) {
+        if (value < 0) {
             was_negative = true;
             value = -value;
         }
     }
 
-    while (i != begin && value != 0)
-    {
+    while (i != begin && value != 0) {
         auto digit = value % 10;
         value /= 10;
         --i;
         *i = char('0' + digit);
     }
 
-    if constexpr (signed_type)
-    {
-        if (was_negative && i != begin)
-        {
+    if constexpr (signed_type) {
+        if (was_negative && i != begin) {
             --i;
             *i = '-';
         }

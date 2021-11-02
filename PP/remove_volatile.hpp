@@ -1,7 +1,7 @@
 #pragma once
-#include "apply_partially_first.hpp"
 #include "compose.hpp"
 #include "decompose_volatile.hpp"
+#include "partial_.hpp"
 #include "tuple/get.hpp"
 #include "value_t.hpp"
 

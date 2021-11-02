@@ -6,10 +6,10 @@
 namespace PP::tuple
 {
 PP_CIA fold = combine(fold_init,
-                      get_0,
-                      get_1,
-                      compose_many(constant, wrap_forward, get_2),
-                      get_3);
+                      pack::get_0,
+                      pack::get_1,
+                      compose_many(constant, wrap_forward, pack::get_2),
+                      pack::get_3);
 
 PP_CIA foldl = fold * value_true;
 PP_CIA foldr = fold * value_false;

@@ -1,13 +1,13 @@
 #pragma once
 #include "apply_pack.hpp"
-#include "apply_partially_first.hpp"
 #include "containers/tuple.hpp"
 #include "get_value.hpp"
+#include "partial_.hpp"
 #include "utility/move.hpp"
 
 namespace PP
 {
-PP_CIA apply_partially = [](auto&& f, concepts::value auto&& i, auto&& arg)
+PP_CIA partial = [](auto&& f, concepts::value auto&& i, auto&& arg)
 {
     return [PP_FL(f), PP_FL(arg)](auto&&... other_args) -> decltype(auto)
     {

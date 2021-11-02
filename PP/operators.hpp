@@ -60,8 +60,4 @@ PP_CIA neg = [](auto&& x) -> decltype(auto)
 {
     return !PP_F(x);
 };
-PP_CIA cal = [](auto&& f, auto&&... args) -> decltype(auto)
-{
-    return PP_F(f)(PP_F(args)...);
-};
 }

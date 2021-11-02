@@ -1,6 +1,6 @@
 #pragma once
-#include "../apply_partially_first.hpp"
 #include "../operators.hpp"
+#include "../partial_.hpp"
 #include "concat.hpp"
 #include "count.hpp"
 #include "iterate.hpp"
@@ -13,8 +13,7 @@ namespace PP::tuple
 PP_CIA cartesian_product = [](concepts::tuple auto&& tuples)
 {
     if constexpr (type_count(PP_DT(tuples)) != 0 &&
-                  all(compose(neq * 0_z, type_count), types(PP_DT(tuples))))
-    {
+                  all(compose(neq * 0_z, type_count), types(PP_DT(tuples)))) {
         auto [head_tuples, tail_tuples] = split(PP_F(tuples));
 
         return concats(zip_with_pack(

@@ -1,9 +1,11 @@
 #pragma once
-#include "../apply_partially_first.hpp"
 #include "../combine.hpp"
 #include "../constant.hpp"
 #include "../construct_pack.hpp"
 #include "../operators.hpp"
+#include "../pack/get.hpp"
+#include "../pack/select.hpp"
+#include "../partial_.hpp"
 #include "empty.hpp"
 #include "fold.hpp"
 #include "make.hpp"
@@ -12,20 +14,16 @@
 
 namespace PP::tuple
 {
-PP_CIA concat = combine(
-    apply_pack,
-    constant(forward),
-    apply_partially_first(apply_partially_first,
-                          [](auto&& l, auto&& r, auto&& i) -> decltype(auto)
-                          {
-                              auto lc = count_value_t(PP_F(l));
+PP_CIA concat_pack = combine([](concepts::tuple auto&&, auto&&...) {},
+                             apply,
+                             pack::select_0*(partial_last* forward),
+                             pack::get_0);
 
-                              if constexpr (PP_GV(i) < PP_GV(lc))
-                                  return PP_F(l)[PP_F(i)];
-                              else
-                                  return PP_F(r)[PP_F(i) - lc];
-                          }),
-    compose_many(value_sequence_make, pls++, map_pack* count_value_t));
+PP_CIA concat =
+    combine_constrained([](concepts::tuple auto&&, concepts::tuple auto&&) {},
+                        apply,
+                        partial_first* concat_pack,
+                        pack::get_1);
 
 PP_CIA concats =
     combine(foldl, constant(concat), constant(tuple_empty{}), id_forward);

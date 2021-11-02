@@ -1,6 +1,4 @@
 #pragma once
-#include <memory>
-
 #include "add_reference.hpp"
 #include "apply_transform.hpp"
 #include "concepts/convertible_to.hpp"
@@ -10,6 +8,8 @@
 #include "get_value.hpp"
 #include "placeholder.hpp"
 #include "remove_reference.hpp"
+
+#include <memory>
 
 namespace PP::detail
 {

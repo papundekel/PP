@@ -1,20 +1,20 @@
 #pragma once
-#include <variant>
-
 #include "add_pointer.hpp"
 #include "alignment_of.hpp"
-#include "apply_partially.hpp"
 #include "call.hpp"
 #include "compose.hpp"
 #include "concepts/trivially_destructible.hpp"
 #include "construct_at_pack.hpp"
 #include "max_default.hpp"
 #include "operators.hpp"
+#include "partial.hpp"
 #include "ref_wrap.hpp"
 #include "reinterpret_cast.hpp"
 #include "size_of.hpp"
 #include "tuple/find.hpp"
 #include "tuple/map_to_array.hpp"
+
+#include <variant>
 
 namespace PP
 {
@@ -49,11 +49,10 @@ class variant2
     friend detail::visit_helper;
 
     static constexpr auto types = type_tuple<T...>;
-    static constexpr auto max =
-        apply_partially(compose_many(compose(id_copy, der, max_default),
-                                tuple::map_make_array),
-                        value_1,
-                        types);
+    static constexpr auto max = partial(
+        compose_many(compose(id_copy, der, max_default), tuple::map_make_array),
+        value_1,
+        types);
 
     static constexpr auto type_eql = [](auto t, auto u)
     {
@@ -101,8 +100,7 @@ public:
 
 namespace detail
 {
-struct visit_helper
-{
+struct visit_helper {
     template <typename V, typename R, typename... T>
     using functor = R (*)(V, T...);
 

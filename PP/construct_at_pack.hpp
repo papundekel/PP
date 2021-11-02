@@ -1,7 +1,7 @@
 #pragma once
-#include <memory>
-
 #include "get_type.hpp"
+
+#include <memory>
 
 namespace PP
 {

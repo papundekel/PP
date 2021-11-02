@@ -1,7 +1,7 @@
 #pragma once
 #include "../apply_pack.hpp"
-#include "../apply_partially.hpp"
 #include "../containers/type_tuple.hpp"
+#include "../partial.hpp"
 #include "get_element.hpp"
 #include "value_sequence_for.hpp"
 
@@ -10,7 +10,7 @@ namespace PP::tuple
 PP_CIA type_get_types = [](concepts::type auto&& t)
 {
     return apply_pack(make_type_tuple,
-                      apply_partially(type_get_element, value_1, t),
+                      partial(type_get_element, value_1, t),
                       type_value_sequence_for(t));
 };
 PP_CIA get_types = [](concepts::tuple auto&& t)

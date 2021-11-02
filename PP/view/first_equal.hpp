@@ -1,8 +1,8 @@
 #pragma once
 #include "../applier.hpp"
-#include "../apply_partially_first.hpp"
 #include "../negate.hpp"
 #include "../operators.hpp"
+#include "../partial_.hpp"
 #include "find.hpp"
 #include "zip.hpp"
 

@@ -3,7 +3,5 @@
 
 namespace PP
 {
-PP_CIA noop = [](auto&&...)
-{
-};
+PP_CIA noop = [](auto&&...) {};
 }

@@ -1,8 +1,8 @@
 #pragma once
-#include "../apply_partially.hpp"
 #include "../conditional.hpp"
 #include "../declval.hpp"
 #include "../get_type.hpp"
+#include "../partial.hpp"
 #include "../tuple/apply.hpp"
 #include "../value_t.hpp"
 

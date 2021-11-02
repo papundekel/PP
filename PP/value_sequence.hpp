@@ -5,8 +5,7 @@
 namespace PP
 {
 template <auto... I>
-struct value_sequence
-{};
+struct value_sequence {};
 }
 
 namespace PP::detail

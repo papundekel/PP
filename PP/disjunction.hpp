@@ -1,14 +1,9 @@
 #pragma once
-#include "apply_partially_first.hpp"
-#include "combine.hpp"
-#include "operators.hpp"
+#include "combine_meta_c.hpp"
+#include "pack/combinator_or_l.hpp"
 
 namespace PP
 {
-PP_CIA disjunction = combine * or_;
-}
-
-constexpr auto operator||(auto&& f, auto&& g)
-{
-    return PP::disjunction(PP_F(f), PP_F(g));
+// disjunction(f...)(a...) = false || ... || f(a...)
+PP_CIA disjunction = combine_meta_c(pack::combinator_or_l);
 }

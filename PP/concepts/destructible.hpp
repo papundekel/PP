@@ -12,8 +12,7 @@ PP_CIA is_destructible = [](concepts::type auto&& t)
 
     if constexpr (is_reference(T))
         return true;
-    else if constexpr (is_complete_object(T))
-    {
+    else if constexpr (is_complete_object(T)) {
         using U = PP_GT(T);
         return requires
         {

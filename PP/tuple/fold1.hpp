@@ -1,7 +1,7 @@
 #pragma once
-#include "../apply_partially_first.hpp"
 #include "../combine.hpp"
 #include "../pack/fold.hpp"
+#include "../partial_.hpp"
 #include "apply.hpp"
 #include "count.hpp"
 
@@ -13,7 +13,7 @@ PP_CIA fold1 = combine(
     {
         static_assert(type_count(PP_DT(t)) == 0, "tuple::fold1: empty tuple");
 
-        return apply_partially_first(pack::fold, PP_F(left), PP_F(f));
+        return partial_first(pack::fold, PP_F(left), PP_F(f));
     },
     get_2);
 

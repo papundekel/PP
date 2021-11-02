@@ -1,13 +1,12 @@
 #pragma once
-#include "apply_template_pack.hpp"
 #include "construct_at_pack.hpp"
 #include "construct_pack.hpp"
+#include "pack/apply_template.hpp"
 #include "static_block.hpp"
 
 namespace PP
 {
-constexpr inline struct nullopt_t
-{
+constexpr inline struct nullopt_t {
 } nullopt{};
 
 template <typename T>

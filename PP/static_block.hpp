@@ -1,16 +1,15 @@
 #pragma once
+#include "size_t.hpp"
+
 #include <memory>
 #include <type_traits>
-
-#include "size_t.hpp"
 
 namespace PP
 {
 template <typename T, size_t Count>
 class static_block
 {
-    union
-    {
+    union {
         alignas(T) char buffer[Count * sizeof(T)];
         T* constexpr_ptr;
     };
@@ -21,8 +20,7 @@ public:
         : buffer()
         , constant_created(false)
     {
-        if (std::is_constant_evaluated())
-        {
+        if (std::is_constant_evaluated()) {
             constexpr_ptr = std::allocator<T>().allocate(Count);
             constant_created = true;
         }

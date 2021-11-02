@@ -1,10 +1,10 @@
 #pragma once
-#include <iosfwd>
-
 #include "size_t.hpp"
 #include "view/equal.hpp"
 #include "view/pair.hpp"
 #include "view/shift.hpp"
+
+#include <iosfwd>
 
 namespace PP
 {

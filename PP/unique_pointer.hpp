@@ -1,7 +1,7 @@
 #pragma once
 #include "always_false.hpp"
-#include "apply_template.hpp"
 #include "movable.hpp"
+#include "pack/apply_template.hpp"
 #include "placeholder.hpp"
 #include "pointer_allocate.hpp"
 #include "pointer_new.hpp"
@@ -16,8 +16,7 @@ namespace PP
 {
 namespace detail
 {
-struct unique_pointer_deleter
-{
+struct unique_pointer_deleter {
     constexpr void operator()(auto& wrapped_ptr) const
     {
         auto& ptr = wrapped_ptr[tags::o];
@@ -118,14 +117,11 @@ public:
     }
 };
 
-constexpr inline struct unique_tag_new_t
-{
+constexpr inline struct unique_tag_new_t {
 } unique_tag_new;
-constexpr inline struct unique_tag_new_array_t
-{
+constexpr inline struct unique_tag_new_array_t {
 } unique_tag_new_array;
-constexpr inline struct unique_tag_allocate_t
-{
+constexpr inline struct unique_tag_allocate_t {
 } unique_tag_allocate;
 
 namespace detail
