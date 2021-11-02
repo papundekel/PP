@@ -2,6 +2,8 @@
 
 cd /PP
 
+pacman -Syyy
+
 pacman -S gcc cmake ninja
 
 cmake -DCMAKE_BUILD_TYPE:STRING=Release -H. -B./build -G Ninja
