@@ -1,10 +1,8 @@
 #!/bin/bash
 
+pacman --noconfirm -Syyy gcc cmake ninja
+
 cd /PP
-
-pacman --noconfirm -Syyy
-
-pacman --noconfirm -S gcc cmake ninja
 
 cmake -DCMAKE_BUILD_TYPE:STRING=Release -H. -B./build -G Ninja
 
