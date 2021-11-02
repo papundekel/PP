@@ -1,5 +1,5 @@
 FROM archlinux:latest
 
-COPY entrypoint.sh /entrypoint.sh
+COPY . /PP
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/PP/entrypoint.sh"]
