@@ -1,5 +1,7 @@
 FROM archlinux:latest
 
+RUN pacman --noconfirm -Syyy gcc cmake ninja
+
 COPY . /PP
 
-ENTRYPOINT ["/PP/entrypoint.sh"]
+ENTRYPOINT ["/PP/docker.sh"]

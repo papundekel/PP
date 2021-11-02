@@ -1,8 +1,6 @@
 #!/bin/bash
 
-pacman --noconfirm -Syyy gcc cmake ninja
-
-cd /PP
+cd $( cd "$(dirname "${BASH_SOURCE[0]}")"; pwd -P )
 
 cmake -DCMAKE_BUILD_TYPE:STRING=Release -H. -B./build -G Ninja
 
