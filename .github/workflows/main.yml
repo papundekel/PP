@@ -1,5 +1,7 @@
 name: Testing
-on: [push]
+on:
+  - push
+  - workflow_dispatch
 
 jobs:
   hello_world_job:
@@ -7,8 +9,7 @@ jobs:
     name: job
     steps:
       - name: ArchDocker
-        uses: Petkr/PParchdocker@e0d060b181fa82e9b03d0d8add04c55fa168d11c
+        uses: Petkr/PParchdocker@latest
         with:
-          #repo: Petkr/PP
           script_name: build.sh
           packages: gcc cmake ninja
