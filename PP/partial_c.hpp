@@ -23,6 +23,6 @@ PP_CIA partial_c = [](auto&& f)
     };
 };
 
-PP_CIA partial_first_c = call_reorder(compose(call_reorder, partial_c))();
+PP_CIA partial_first_c = call_reorder(compose(call_reorder, partial_c));
 PP_CIA partial_last_c = call_reorder(partial_c)();
 }
