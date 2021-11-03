@@ -1,4 +1,4 @@
-name: actions
+name: Testing
 on: [push]
 
 jobs:
@@ -8,6 +8,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Hello world action step
-        uses: ./
-        id: hello
+      - name: ArchDocker
+        uses: Petkr/PParchdocker@v1.0.0
+        with:
+          script_and_packages:
+            - build.sh
+            - gcc
+            - cmake
+            - ninja
