@@ -15,7 +15,7 @@ std::string_view test_function_name<4>()
 template <>
 void test_function<4>(std::ostream& out_key, std::ostream& out_run)
 {
-    out_key << "12";
+    out_key << "1";
     //
     out_run << PP::pack::map_c(
         [](auto... a)
