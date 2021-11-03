@@ -9,7 +9,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: ArchDocker
-        uses: Petkr/PParchdocker@v1.0.0
+        uses: Petkr/PParchdocker@7d5dba5954112c611955c2454da151b7767c8a92
         with:
           script_name: build.sh
           packages: gcc cmake ninja
