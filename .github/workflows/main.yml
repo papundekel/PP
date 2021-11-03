@@ -6,10 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     name: job
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: ArchDocker
-        uses: Petkr/PParchdocker@00cc05c251984bea67b2a88063281d92cf704cc0
+        uses: Petkr/PParchdocker@e0d060b181fa82e9b03d0d8add04c55fa168d11c
         with:
+          #repo: Petkr/PP
           script_name: build.sh
           packages: gcc cmake ninja
