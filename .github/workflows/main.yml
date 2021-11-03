@@ -11,5 +11,3 @@ jobs:
       - name: Hello world action step
         uses: ./
         id: hello
-      - name: Get the output time
-        run: echo "The time was asd"
