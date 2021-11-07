@@ -12,5 +12,5 @@ jobs:
         uses: Petkr/PParchdocker@latest
         with:
           repo_url: https://github.com/Petkr/PP.git
-          script_name: build.sh
+          script_name: test.sh
           packages: gcc cmake ninja
