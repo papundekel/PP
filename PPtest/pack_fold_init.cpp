@@ -7,13 +7,13 @@
 namespace PPtest
 {
 template <>
-std::string_view test_function_name<5>()
+std::string_view test_function_name<3>()
 {
     return __FILE__;
 }
 
 template <>
-void test_function<5>(std::ostream& out_key, std::ostream& out_run)
+void test_function<3>(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "0-1-3-6-10-15-5-4-3-2-1-15/112";
     //

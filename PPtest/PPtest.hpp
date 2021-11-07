@@ -45,4 +45,12 @@ struct lambda
         return lam(val, std::forward<decltype(args)>(args)...);
     }
 };
+
+struct counter
+{
+    int& x;
+
+    counter(int& x) noexcept;
+    counter(const counter& n) noexcept;
+};
 }

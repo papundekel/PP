@@ -9,9 +9,7 @@ PP_CIA constant = [](auto&& c)
 {
     return [PP_FL(c)](auto&&...) -> decltype(auto)
     {
-        return overloaded(unwrap_forward_wrap_pure,
-                          unwrap_forward_wrap_wrap_pure,
-                          id_copy)(c);
+        return overloaded(unforward_pure, id_copy)(c);
     };
 };
 }

@@ -23,7 +23,7 @@ PP_CIA combine_constrained = [](auto&& constraint,
     // clang-format on
     {
         if constexpr (PP_GV(pack_offset) == -1)
-            return unwrap_forward(c)(unwrap_forward(f)(PP_F(args)...)...);
+            return unforward(c)(unforward(f)(PP_F(args)...)...);
         else
             return pack::remove_first(
                 pack_offset,

@@ -1,54 +1,45 @@
 #pragma once
+#include "get_value.hpp"
 #include "id.hpp"
 #include "macros/CIA.hpp"
 #include "macros/functor.hpp"
 #include "overloaded.hpp"
 #include "placeholder.hpp"
+#include "size_t.hpp"
 #include "utility/forward.hpp"
 
 namespace PP
 {
-template <typename T>
+template <size_t D, typename T>
 class forward_wrap
 {
     T&& ref;
 
-public:
-    constexpr forward_wrap(const forward_wrap& other) noexcept
-        : ref(PP_F(other.ref))
-    {}
-    constexpr forward_wrap(placeholder_t, T&& ref) noexcept
-        : ref(PP_F(ref))
-    {}
-
-    constexpr auto&& operator--(int) const noexcept
+    constexpr auto&& get() const noexcept
     {
         return PP_F(ref);
     }
-};
-template <typename T>
-forward_wrap(placeholder_t, T&&) -> forward_wrap<T>;
-
-template <typename T>
-class forward_wrap_wrap
-{
-    T wrap;
 
 public:
-    constexpr forward_wrap_wrap(const forward_wrap_wrap& other) noexcept
-        : wrap(other.wrap)
+    constexpr forward_wrap(const forward_wrap& other) noexcept
+        : ref(other.get())
     {}
-    constexpr forward_wrap_wrap(placeholder_t, T wrap) noexcept
-        : wrap(wrap)
+    constexpr forward_wrap(auto&&, T&& ref) noexcept
+        : ref(PP_F(ref))
     {}
 
-    constexpr auto operator--(int) const noexcept
+    constexpr decltype(auto) operator--(int) const noexcept
     {
-        return wrap;
+        if constexpr (D == 0)
+            return get();
+        else
+            return forward_wrap<D - 1, T>(0, get());
     }
 };
+template <typename T>
+forward_wrap(concepts::value auto&& d, T&&) -> forward_wrap<PP_GV(d), T>;
 
-#define PP_FW(x) ::PP::forward_wrap(::PP::placeholder, PP_F(x))
+#define PP_FW(x) ::PP::forward_wrap(::PP::value_0, PP_F(x))
 #define PP_FWL(x) x = PP_FW(x)
 
 PP_CIA wrap_forward = [](auto&& x)
@@ -56,29 +47,23 @@ PP_CIA wrap_forward = [](auto&& x)
     return PP_FW(x);
 };
 
-#define PP_FWW(x) ::PP::forward_wrap_wrap(::PP::placeholder, PP_FW(x))
-
-PP_CIA wrap_wrap_forward = [](auto&& x)
-{
-    return PP_FWW(x);
-};
-
-PP_CIA unwrap_forward_wrap_pure = []<typename T>(forward_wrap<T> x) -> auto&&
+PP_CIA unforward_pure =
+    []<size_t D, typename T>(forward_wrap<D, T> x) -> decltype(auto)
 {
     return x--;
 };
 
-PP_CIA unwrap_forward_wrap_wrap_pure = []<typename T>(forward_wrap_wrap<T> x)
-{
-    return x--;
-};
+PP_CIA unforward = overloaded(unforward_pure, id_forward);
 
-PP_CIA unwrap_forward = overloaded(unwrap_forward_wrap_pure,
-                                   unwrap_forward_wrap_wrap_pure,
-                                   id_forward);
+#define PP_UL(x) x = ::PP::unforward(x)
 
 PP_CIA make_fw = [](auto&& x)
 {
-    return wrap_forward(unwrap_forward(PP_F(x)));
+    return ::PP::forward_wrap(value_0, unforward(PP_F(x)));
+};
+
+PP_CIA make_fw_d = [](concepts::value auto&& depth, auto&& x)
+{
+    return ::PP::forward_wrap(PP_F(depth), unforward(PP_F(x)));
 };
 }

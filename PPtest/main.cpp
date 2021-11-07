@@ -34,9 +34,16 @@ void fill_tests(auto& pairs, std::index_sequence<I...>)
 int main()
 {
     std::pair<PPtest::test_function_type*, std::string_view>
-        tests[TEST_COUNT - 1];
+        tests[TEST_COUNT - 2];
 
     fill_tests(tests, std::make_index_sequence<std::size(tests)>{});
+
+    std::sort(std::begin(tests),
+              std::end(tests),
+              [](auto& a, auto& b)
+              {
+                  return a.second < b.second;
+              });
 
     auto count_passed = 0uz;
 

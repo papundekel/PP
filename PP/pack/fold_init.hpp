@@ -43,6 +43,8 @@ constexpr auto operator||(auto&& element, fold_wrapper<F, T> wrap)
 
 namespace PP::pack
 {
+// fold_init(value_true , f, i)(e#0 ... e#n) = f(...f(i(), e#0), ...), e#n)
+// fold_init(value_false, f, i)(e#0 ... e#n) = f(e#0, ... f(e#n, i()) ... )
 PP_CIA fold_init = [](concepts::value auto&& left, auto&& f, auto&& i)
 {
     return [PP_FL(left), PP_FL(f), PP_FL(i)](auto&&... e) -> decltype(auto)

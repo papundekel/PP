@@ -1,6 +1,5 @@
 #pragma once
-#include "compose.hpp"
-#include "decl_type.hpp"
+#include "macros/CIA.hpp"
 #include "remove_reference_impl.hpp"
 #include "type_t.hpp"
 
@@ -25,6 +24,4 @@ PP_CIA get_type = [](concepts::type auto&& t)
 
 #define PP_GT(x) ::PP::get_type_t<decltype(x)>
 #define PP_CT(x) (::PP::type<PP_GT(x)>)
-
-PP_CIA to_type_t = compose(get_type, decl_type_copy);
 }

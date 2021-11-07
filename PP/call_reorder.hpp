@@ -8,9 +8,9 @@ PP_CIA call_reorder = [](auto&& f)
 {
     return [PP_FL(f)](auto&&... second)
     {
-        return [f, ... PP_FL(second)](auto&&... first) -> decltype(auto)
+        return [PP_UL(f), ... PP_FL(second)](auto&&... first) -> decltype(auto)
         {
-            return unwrap_forward(f)(PP_F(first)...)(unwrap_forward(second)...);
+            return unforward(f)(PP_F(first)...)(unforward(second)...);
         };
     };
 };

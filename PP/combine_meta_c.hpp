@@ -8,10 +8,10 @@ PP_CIA combine_meta_c = [](auto&& c)
 {
     return [PP_FL(c)](auto&&... f)
     {
-        return [c, ... PP_FL(f)](auto&&... args) -> decltype(auto)
+        return [PP_UL(c), ... PP_FL(f)](auto&&... args) -> decltype(auto)
         {
-            return unwrap_forward(c)(
-                partial_first_c(make_fw(f))(PP_FW(args)...)...);
+            return unforward(c)(
+                partial_first_c(make_fw_d(value_2, f))(PP_FW(args)...)...);
         };
     };
 };

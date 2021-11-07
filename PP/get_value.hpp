@@ -11,7 +11,7 @@ namespace PP::detail
 template <typename T>
 concept has_value_f = requires
 {
-    declval_impl<T>().value_f();
+    remove_reference_impl<T>::value_f();
 };
 template <typename T>
 concept has_value = !has_value_f<T> && requires
@@ -38,12 +38,15 @@ PP_CIA get_type_value = overloaded(
         return (remove_reference_impl<PP_GT(t)>::value);
     });
 
-PP_CIA get_value = compose(get_type_value, decl_type_copy);
+PP_CIA get_value = [](concepts::value auto&& v) -> decltype(auto)
+{
+    return get_type_value(PP_DT(v));
+};
 }
 
 constexpr decltype(auto) operator*(PP::concepts::value auto&& v) noexcept
 {
-    return PP::get_value(v);
+    return PP::get_value(PP_F(v));
 }
 
 constexpr decltype(auto) operator-(
