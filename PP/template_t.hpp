@@ -3,7 +3,8 @@
 namespace PP
 {
 template <template <typename...> typename Template>
-struct template_t {
+struct template_t
+{
     constexpr auto operator[](auto&& types) const noexcept;
     constexpr auto operator()(auto&&... types) const noexcept;
 };

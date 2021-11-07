@@ -251,7 +251,8 @@ concept array_concept = requires
 };
 
 template <typename ResultType>
-struct array_iterator_transform {
+struct array_iterator_transform
+{
     constexpr auto&& operator()(auto&& wrap) const
     {
         return ResultType(wrap.obj);
@@ -260,7 +261,8 @@ struct array_iterator_transform {
 
 template <typename T, typename ResultType>
 struct array_iterator
-    : public transform_iterator<T*, array_iterator_transform<ResultType>> {
+    : public transform_iterator<T*, array_iterator_transform<ResultType>>
+{
     using base = transform_iterator<T*, array_iterator_transform<ResultType>>;
 
     constexpr array_iterator(T* p) noexcept
@@ -278,7 +280,8 @@ struct array_iterator
 template <typename T>
 array_iterator(T* p, concepts::type auto&& t) -> array_iterator<T, PP_GT(t)>;
 
-struct array_helper {
+struct array_helper
+{
     static constexpr auto begin(auto&& a) noexcept
     {
         constexpr auto array_type = PP_DT(a);

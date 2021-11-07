@@ -18,7 +18,8 @@ namespace PP::tuple
 {
 PP_CIA zip = [](concepts::tuple auto&& tuples)
 {
-    if constexpr (all(compose(neq * 0_z, type_count), types(PP_DT(tuples)))) {
+    if constexpr (all(compose(neq * 0_z, type_count), types(PP_DT(tuples))))
+    {
         auto splits = split + PP_F(tuples);
 
         return compose(maker, prepend)(get_ * value_0 + move(splits),

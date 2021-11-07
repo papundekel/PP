@@ -2,4 +2,5 @@
 
 namespace PP
 {
-constexpr inline struct unsupported_t { } unsupported; }
+constexpr inline struct unsupported_t
+{ } unsupported; }

@@ -3,5 +3,6 @@
 namespace PP::detail
 {
 template <typename T>
-struct templated_dummy {};
+struct templated_dummy
+{};
 }

@@ -99,7 +99,8 @@ transform_iterator(I&& i, T&& t)
     -> transform_iterator<PP_GT(~type<I>), PP_GT(~type<T>)>;
 
 template <typename Functor>
-struct transform {
+struct transform
+{
     Functor functor;
 };
 

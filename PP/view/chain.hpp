@@ -28,7 +28,8 @@ public:
     constexpr decltype(auto) operator[](ptrdiff_t offset) const
     {
         if constexpr (PP::concepts::iterator_ra<I> &&
-                      PP::concepts::iterator_ra<J>) {
+                      PP::concepts::iterator_ra<J>)
+        {
             if (i != e)
                 return i[offset];
             else
@@ -47,13 +48,16 @@ public:
     constexpr auto advance(ptrdiff_t offset)
     {
         if constexpr (PP::concepts::iterator_ra<I> &&
-                      PP::concepts::iterator_ra<J>) {
+                      PP::concepts::iterator_ra<J>)
+        {
             auto first_sequence_diff = e - i;
-            if (first_sequence_diff < offset) {
+            if (first_sequence_diff < offset)
+            {
                 i += first_sequence_diff;
                 j += offset - first_sequence_diff;
             }
-            else {
+            else
+            {
                 i += offset;
             }
         }

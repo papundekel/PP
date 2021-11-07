@@ -100,7 +100,8 @@ public:
 
 namespace detail
 {
-struct visit_helper {
+struct visit_helper
+{
     template <typename V, typename R, typename... T>
     using functor = R (*)(V, T...);
 

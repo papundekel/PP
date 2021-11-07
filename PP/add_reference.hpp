@@ -12,7 +12,8 @@ PP_CIA add_reference = [](concepts::value auto&& ref, concepts::type auto&& t)
 
     constexpr auto REF = *PP_CV(ref);
 
-    if constexpr (is_referencable(type<T>)) {
+    if constexpr (is_referencable(type<T>))
+    {
         if constexpr (REF == ref_qualifier::lvalue)
             return type<T&>;
         else if constexpr (REF == ref_qualifier::rvalue)
@@ -30,7 +31,8 @@ PP_CIA add_reference = [](concepts::value auto&& ref, concepts::type auto&& t)
 /// @tparam ref The ref qualifier to add.
 ///
 template <ref_qualifier ref>
-struct add_reference_tag_t : public value_t<ref> {};
+struct add_reference_tag_t : public value_t<ref>
+{};
 
 constexpr inline add_reference_tag_t<ref_qualifier::lvalue> add_lvalue_tag{};
 constexpr inline add_reference_tag_t<ref_qualifier::rvalue> add_rvalue_tag{};

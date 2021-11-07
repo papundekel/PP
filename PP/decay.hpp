@@ -5,7 +5,8 @@
 namespace PP::detail
 {
 template <typename T>
-struct decay_helper : type_t<T> {
+struct decay_helper : type_t<T>
+{
     decay_helper() = default;
     decay_helper(auto&&);
 };

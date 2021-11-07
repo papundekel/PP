@@ -73,7 +73,8 @@ public:
     {
         auto c = capacity();
 
-        if (count() == c) {
+        if (count() == c)
+        {
             auto new_block = block.spawn_new(c != 0 ? 2 * c : 2);
 
             view::move_uninitialized(new_block, *this);

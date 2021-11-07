@@ -10,7 +10,8 @@
 namespace PP::detail
 {
 template <typename T, typename Base>
-struct empty_helper : public Base {
+struct empty_helper : public Base
+{
     T t;
 };
 

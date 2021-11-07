@@ -6,7 +6,8 @@
 namespace PP::detail
 {
 template <typename F, typename I>
-struct fold_wrapper {
+struct fold_wrapper
+{
     F&& f;
     I i;
 };

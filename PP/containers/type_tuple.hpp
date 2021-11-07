@@ -8,9 +8,11 @@
 namespace PP
 {
 template <typename...>
-struct type_tuple_t {};
+struct type_tuple_t
+{};
 template <typename Head, typename... Rest>
-struct type_tuple_t<Head, Rest...> {
+struct type_tuple_t<Head, Rest...>
+{
     type_tuple_t() = default;
     constexpr type_tuple_t(auto, auto...) noexcept
     {}

@@ -4,7 +4,8 @@
 namespace PP
 {
 template <typename T>
-struct type_t {
+struct type_t
+{
     using type = T;
 
     type_t() = default;

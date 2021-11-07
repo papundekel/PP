@@ -7,7 +7,8 @@ PP_CIA subsequence_compare_if =
     [](auto&& comparer, concepts::view auto&& a, concepts::view auto&& b)
 {
     auto a_b = subsequence_if(PP_F(comparer), PP_F(a), PP_F(b));
-    switch (a_b) {
+    switch (a_b)
+    {
         case PP::subsequence_type::proper:
             return std::partial_ordering::less;
         case PP::subsequence_type::equal:
@@ -16,7 +17,8 @@ PP_CIA subsequence_compare_if =
             [[fallthrough]];
         case PP::subsequence_type::none:
             auto b_a = subsequence_if(PP_F(comparer), PP_F(b), PP_F(a));
-            switch (b_a) {
+            switch (b_a)
+            {
                 case PP::subsequence_type::proper:
                     return std::partial_ordering::greater;
                 case PP::subsequence_type::equal:

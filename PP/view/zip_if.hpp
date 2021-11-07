@@ -15,7 +15,8 @@ PP_CIA zip_if = [](auto&& predicate, auto&& f, concepts::tuple auto&& views)
     auto begin_ends = view::begin_end + PP_F(views);
     auto is = tuple::get_ * value_0 + begin_ends;
 
-    while (neq++ && begin_ends) {
+    while (neq++ && begin_ends)
+    {
         auto dereferenced = der + is;
 
         auto [cond, do_step] =

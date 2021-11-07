@@ -13,7 +13,8 @@ template <int I>
 std::string_view test_function_name();
 
 template <typename T>
-struct uncopiable {
+struct uncopiable
+{
     T val;
 
     uncopiable(T val)
@@ -29,7 +30,8 @@ struct uncopiable {
 };
 
 template <typename L, typename T>
-struct lambda {
+struct lambda
+{
     L lam;
     T val;
 

@@ -40,7 +40,8 @@ constexpr auto& operator+=(PP::detail::has_step_or_advance auto& t,
 {
     if constexpr (PP::detail::has_advance<decltype(t)>)
         t.advance(offset);
-    else {
+    else
+    {
         for (PP::ptrdiff_t i = 0; i != offset; ++i)
             t.step();
     }
@@ -52,7 +53,8 @@ constexpr auto& operator-=(PP::detail::has_step_back_or_advance auto& t,
 {
     if constexpr (PP::detail::has_advance<decltype(t)>)
         t.advance(-offset);
-    else {
+    else
+    {
         for (PP::ptrdiff_t i = 0; i != offset; ++i)
             t.step_back();
     }

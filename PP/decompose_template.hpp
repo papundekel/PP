@@ -8,13 +8,15 @@
 namespace PP::detail
 {
 template <template <typename...> typename T, typename... Types>
-struct decompose_pair {
+struct decompose_pair
+{
     template_t<T> Template;
     type_tuple_t<Types...> types;
 };
 
 template <typename T>
-struct decompose_dummy {};
+struct decompose_dummy
+{};
 }
 
 namespace PP

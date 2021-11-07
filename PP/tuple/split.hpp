@@ -9,7 +9,8 @@
 
 namespace PP::tuple
 {
-struct splitter_empty_tuple {};
+struct splitter_empty_tuple
+{};
 
 PP_CIA splitter = overloaded(
     [](auto&& head, auto&&... tail)

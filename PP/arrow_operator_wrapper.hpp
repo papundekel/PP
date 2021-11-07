@@ -3,7 +3,8 @@
 namespace PP
 {
 template <typename T>
-struct arrow_operator_wrapper {
+struct arrow_operator_wrapper
+{
     T obj;
 
     constexpr auto operator->() const

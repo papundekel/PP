@@ -78,7 +78,8 @@ using tuple_base =
 namespace PP::tuple
 {
 template <typename... T>
-struct container : public detail::tuple_base<T...> {
+struct container : public detail::tuple_base<T...>
+{
     using detail::tuple_base<T...>::tuple_base;
 
     constexpr auto&& operator[](concepts::value auto&& i) & noexcept;
@@ -140,7 +141,8 @@ PP_CIA init = detail::tuple_construct_helper * init_type * value_true;
 
 namespace PP::detail
 {
-struct tuple_helper {
+struct tuple_helper
+{
     static constexpr auto&& get(concepts::value auto&& i, auto&& t) noexcept
     {
         auto& wrap = construct_pack(t.wrap_types[i], t);

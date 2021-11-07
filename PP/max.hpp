@@ -14,7 +14,8 @@ PP_CIA max = [](auto&& comparer, concepts::view auto&& v)
 
     ++begin;
 
-    for (; begin != end; ++begin) {
+    for (; begin != end; ++begin)
+    {
         if (PP_F(comparer)(*max_i, *begin))
             max_i = begin;
     }

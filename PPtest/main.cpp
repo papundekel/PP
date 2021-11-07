@@ -40,7 +40,8 @@ int main()
 
     auto count_passed = 0uz;
 
-    for (auto [function, name] : tests) {
+    for (auto [function, name] : tests)
+    {
         std::cout << name << ": ";
 
         std::stringstream out_key;
@@ -51,11 +52,13 @@ int main()
         auto view_key = out_key.view();
         auto view_run = out_run.view();
 
-        if (view_key == view_run) {
+        if (view_key == view_run)
+        {
             std::cout << "passed\n";
             ++count_passed;
         }
-        else {
+        else
+        {
             std::cout << "failed\n"
                       << "------\n"
                       << "key: |" << view_key << "|\n"

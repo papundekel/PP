@@ -20,7 +20,8 @@ public:
         : buffer()
         , constant_created(false)
     {
-        if (std::is_constant_evaluated()) {
+        if (std::is_constant_evaluated())
+        {
             constexpr_ptr = std::allocator<T>().allocate(Count);
             constant_created = true;
         }

@@ -7,9 +7,11 @@
 namespace PP
 {
 template <auto...>
-struct value_tuple_t {};
+struct value_tuple_t
+{};
 template <auto Head, auto... Rest>
-struct value_tuple_t<Head, Rest...> {
+struct value_tuple_t<Head, Rest...>
+{
     value_tuple_t() = default;
     constexpr value_tuple_t(value_t<Head>, value_t<Rest>...) noexcept
     {}

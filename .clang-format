@@ -12,9 +12,11 @@ AllowShortLambdasOnASingleLine: Empty
 NamespaceIndentation: None
 BreakBeforeBraces: Custom
 BraceWrapping:
+  AfterControlStatement: true
   AfterClass: true
   AfterFunction: true
   AfterNamespace: true
+  AfterStruct: true
   BeforeLambdaBody: true
   BeforeElse: true
   SplitEmptyFunction: false

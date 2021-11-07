@@ -51,7 +51,8 @@ PP_CIA add_cv_reference = [](concepts::value auto&& cv, concepts::type auto&& t)
 
 namespace detail
 {
-struct any_iterator_cant_copy_construct {
+struct any_iterator_cant_copy_construct
+{
     constexpr any_iterator_cant_copy_construct(auto&&) noexcept
     {}
 };
@@ -396,7 +397,8 @@ constexpr auto invoke_on_first_valid(auto&& f, auto def, const auto& other)
 
     if constexpr (sizeof...(OtherIterators) == 0)
         return def;
-    else {
+    else
+    {
         if (ptr)
             return PP_F(f)(ptr);
         else

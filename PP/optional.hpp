@@ -6,7 +6,8 @@
 
 namespace PP
 {
-constexpr inline struct nullopt_t {
+constexpr inline struct nullopt_t
+{
 } nullopt{};
 
 template <typename T>

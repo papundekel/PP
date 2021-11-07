@@ -7,11 +7,13 @@
 namespace PP
 {
 template <template <typename...> typename...>
-struct template_tuple_t {};
+struct template_tuple_t
+{};
 template <template <typename...> typename T,
           template <typename...>
           typename... Templates>
-struct template_tuple_t<T, Templates...> {
+struct template_tuple_t<T, Templates...>
+{
     constexpr auto head() const noexcept
     {
         return Template<T>;

@@ -15,26 +15,30 @@
 
 namespace PP
 {
-struct default_releaser {
+struct default_releaser
+{
     template <typename T>
     constexpr auto operator()(T& x)
     {
         return exchange(x, T());
     }
 };
-struct zero_releaser {
+struct zero_releaser
+{
     constexpr auto operator()(auto& x)
     {
         return exchange(x, 0);
     }
 };
-struct nullptr_releaser {
+struct nullptr_releaser
+{
     constexpr auto operator()(auto& x)
     {
         return PP::exchange(x, nullptr);
     }
 };
-struct move_releaser {
+struct move_releaser
+{
     constexpr auto operator()(auto& x)
     {
         return move(x);
@@ -44,7 +48,8 @@ struct move_releaser {
 // constexpr inline struct movable_in_place_delimiter_t {}
 // movable_in_place_delimiter;
 
-constexpr inline struct movable_default_releaser_tag_t {
+constexpr inline struct movable_default_releaser_tag_t
+{
 } movable_default_releaser_tag;
 
 template <typename T, typename Releaser = move_releaser>
@@ -93,7 +98,8 @@ public:
 
     constexpr movable& operator=(movable&& other)
     {
-        if (this != &other) {
+        if (this != &other)
+        {
             pair.first = other.release();
             pair.second = move(other).pair.second;
         }

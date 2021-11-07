@@ -86,7 +86,8 @@ public:
 
     constexpr void push_back(auto&&... args)
     {
-        if (count() == Capacity) {
+        if (count() == Capacity)
+        {
             if constexpr (!looping)
                 std::terminate();
             else
@@ -99,11 +100,13 @@ public:
 
     constexpr void pop_back() noexcept
     {
-        if (!empty()) {
+        if (!empty())
+        {
             --count_;
             destroy_at(end());
         }
-        else {
+        else
+        {
             if constexpr (!looping)
                 std::terminate();
         }

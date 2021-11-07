@@ -34,7 +34,8 @@ PP_CIA subsequence_if =
         PP_F(sub),
         PP_F(full));
 
-    if (sub_end == end_(PP_F(sub))) {
+    if (sub_end == end_(PP_F(sub)))
+    {
         if (may_be_proper)
             return subsequence_type::proper;
         else
