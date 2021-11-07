@@ -11,6 +11,6 @@ jobs:
       - name: ArchDocker
         uses: Petkr/PParchdocker@latest
         with:
-          repo_name: https://github.com/Petkr/PP.git
+          repo_url: https://github.com/Petkr/PP.git
           script_name: build.sh
           packages: gcc cmake ninja
