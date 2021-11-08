@@ -1,10 +1,10 @@
-#include "PPtest.hpp"
+#include "test.hpp"
 
 #include "PP/add_const.hpp"
 
 #include <iostream>
 
-namespace PPtest
+namespace test
 {
 template <>
 std::string_view test_function_name<2>()

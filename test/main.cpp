@@ -1,4 +1,4 @@
-#include "PPtest.hpp"
+#include "test.hpp"
 
 #include <iostream>
 #include <sstream>
@@ -17,7 +17,7 @@ std::string_view clean_name(std::string_view name)
 {
     name.remove_suffix(4);
 
-    std::string_view test_dir_name = "/PPtest/";
+    std::string_view test_dir_name = "/test/";
 
     return name.substr(name.rfind(test_dir_name) + test_dir_name.length());
 }
@@ -25,15 +25,15 @@ std::string_view clean_name(std::string_view name)
 template <std::size_t... I>
 void fill_tests(auto& pairs, std::index_sequence<I...>)
 {
-    ((pairs[I].first = PPtest::test_function<I>,
-      pairs[I].second = clean_name(PPtest::test_function_name<I>())),
+    ((pairs[I].first = test::test_function<I>,
+      pairs[I].second = clean_name(test::test_function_name<I>())),
      ...);
 }
 }
 
 int main()
 {
-    std::pair<PPtest::test_function_type*, std::string_view>
+    std::pair<test::test_function_type*, std::string_view>
         tests[TEST_COUNT - 2];
 
     fill_tests(tests, std::make_index_sequence<std::size(tests)>{});

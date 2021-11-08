@@ -2,7 +2,7 @@
 #include <iosfwd>
 #include <string_view>
 
-namespace PPtest
+namespace test
 {
 using test_function_type = void(std::ostream& out_key, std::ostream& out_run);
 

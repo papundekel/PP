@@ -12,8 +12,8 @@ endif()
 project(PP)
 
 add_subdirectory(PP)
-add_subdirectory(PPtest)
+add_subdirectory(test)
 
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/PPdevel/")
-add_subdirectory(PPdevel)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/devel/")
+add_subdirectory(devel)
 endif()

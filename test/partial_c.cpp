@@ -1,10 +1,10 @@
-#include "PPtest.hpp"
+#include "test.hpp"
 
 #include "PP/partial_c.hpp"
 
 #include <iostream>
 
-namespace PPtest
+namespace test
 {
 template <>
 std::string_view test_function_name<0>()

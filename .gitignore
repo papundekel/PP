@@ -3,6 +3,6 @@ build/
 
 CMakeSettings.json
 
-PPtest_inactive/
+test_inactive/
 
-PPdevel/
+devel/
