@@ -59,19 +59,17 @@ PP_CIA backward = overloaded(
 
 namespace PP
 {
-PP_CIA forward =
-    overloaded(detail::forward,
-               [](auto&& x)
-               {
-                   return detail::forward(value_1, PP_F(x));
-               });
+PP_CIA forward = overloaded(detail::forward,
+                            [](auto&& x)
+                            {
+                                return detail::forward(value_1, PP_F(x));
+                            });
 
-PP_CIA backward =
-    overloaded(detail::backward,
-               [](auto&& x) -> decltype(auto)
-               {
-                   return detail::backward(value_1, PP_F(x));
-               });
+PP_CIA backward = overloaded(detail::backward,
+                             [](auto&& x) -> decltype(auto)
+                             {
+                                 return detail::backward(value_1, PP_F(x));
+                             });
 
 #define PP_FW(x) ::PP::forward(PP_F(x))
 #define PP_FWL(x) x = PP_FW(x)

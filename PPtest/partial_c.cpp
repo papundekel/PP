@@ -40,8 +40,8 @@ void test_function<0>(std::ostream& out_key, std::ostream& out_run)
 
     print();
 
-    PP::partial_c([&out_run](auto&& a, auto&& b, auto&& c) {})(
-        counter{a})(counter{b})(counter{c});
+    PP::partial_c([&out_run](auto&& a, auto&& b, auto&& c) {})(counter{a})(
+        counter{b})(counter{c});
 
     print();
 }
