@@ -12,7 +12,7 @@ PP_CIA partial = [](auto&& f, concepts::value auto&& i, auto&& arg)
     return [PP_FL(f), PP_FL(arg)](auto&&... other_args) -> decltype(auto)
     {
         return apply_pack(
-            unforward(f),
+            backward(f),
             [&arg, args = tuple::forward(PP_F(other_args)...)](
                 concepts::value auto&& current_i) -> decltype(auto)
             {
@@ -20,7 +20,7 @@ PP_CIA partial = [](auto&& f, concepts::value auto&& i, auto&& arg)
                 constexpr auto I = PP_CV(i);
 
                 if constexpr (CI == I)
-                    return unforward(arg);
+                    return backward(arg);
                 else if constexpr (CI < I)
                     return move(args)[current_i];
                 else

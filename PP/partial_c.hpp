@@ -16,23 +16,18 @@ PP_CIA partial_c = [](auto&& f)
             return [PP_UL(f), ... PP_UL(first), ... PP_FL(last)](
                        auto&&... args) -> decltype(auto)
             {
-                return unforward(
-                    f)(unforward(first)..., PP_F(args)..., unforward(last)...);
+                return backward(
+                    f)(backward(first)..., PP_F(args)..., backward(last)...);
             };
         };
     };
 };
 
-PP_CIA partial_first_c =
-
-[](auto&& f)
+PP_CIA partial_first_c = [](auto&& f)
 {
     return [PP_FL(f)](auto&&... first)
     {
-        return [PP_UL(f), ... PP_FL(first)](auto&&... args) -> decltype(auto)
-            {
-                return unforward(f)(unforward(first)..., PP_F(args)...);
-            };
+        return partial_c(backward(f))(forward(value_1, PP_F(first))...)();
     };
 };
 

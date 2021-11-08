@@ -11,11 +11,11 @@ PP_CIA compose = [](auto&& f, auto&& g)
     return [PP_FL(f), PP_FL(g)](auto&&... args) -> decltype(auto)
                requires requires
                {
-                   ::PP::unforward(PP_F(f))(
-                       ::PP::unforward(PP_F(g))(PP_F(args)...));
+                   ::PP::backward(PP_F(f))(
+                       ::PP::backward(PP_F(g))(PP_F(args)...));
                }
            {
-               return unforward(f)(unforward(g)(PP_F(args)...));
+               return backward(f)(backward(g)(PP_F(args)...));
            };
     // clang-format on
 };

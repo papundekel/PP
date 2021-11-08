@@ -49,14 +49,14 @@ PP_CIA fold_init = [](concepts::value auto&& left, auto&& f, auto&& i)
 {
     return [PP_FL(left), PP_FL(f), PP_FL(i)](auto&&... e) -> decltype(auto)
     {
-        return [left = make_fw(left), ... PP_FWL(e)](auto wrapper)
+        return [left = forward(left), ... PP_FWL(e)](auto wrapper)
         {
             if constexpr (PP_GV(left--))
                 return (wrapper() || ... || e--);
             else
                 return (e-- || ... || wrapper());
         }(
-                   [f = make_fw(f), i = make_fw(i)]
+                   [f = forward(f), i = forward(i)]
                    {
                        return detail::fold_wrapper{f--,
                                                    [i]() -> decltype(auto)

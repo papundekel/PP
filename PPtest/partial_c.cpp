@@ -33,8 +33,8 @@ void test_function<0>(std::ostream& out_key, std::ostream& out_run)
             b = 2;
             c = 3;
         });
-    auto y = x(PP::forward_wrap(PP::value_1, a));
-    auto z = y(PP::forward_wrap(PP::value_0, c));
+    auto y = x(PP::forward(PP::value_2, a));
+    auto z = y(PP::forward(c));
 
     z(b);
 
