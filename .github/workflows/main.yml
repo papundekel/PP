@@ -18,7 +18,13 @@ jobs:
           push: false
           tags: arch-test:latest
           build-args: |
-                      PACKAGES=gcc cmake ninja clang                 
+                      PACKAGES=gcc cmake ninja clang
+      - name: Move existing build directory
+        uses: addnab/docker-run-action@v3
+        with:
+          image: arch-test:latest
+          options: -v ${{ github.workspace }}:/workspace
+          run: mv /workspace/build /workspace/.build 2> /dev/null || true
       - name: CMake
         uses: addnab/docker-run-action@v3
         with:
@@ -37,3 +43,9 @@ jobs:
           image: arch-test:latest
           options: -v ${{ github.workspace }}:/workspace
           run: ctest --test-dir /workspace/build/ -C Release -T test --output-on-failure
+      - name: Move build directory back
+        uses: addnab/docker-run-action@v3
+        with:
+          image: arch-test:latest
+          options: -v ${{ github.workspace }}:/workspace
+          run: rm -r /workspace/build; mv /workspace/.build /workspace/build 2> /dev/null || true
