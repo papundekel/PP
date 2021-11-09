@@ -18,7 +18,7 @@ jobs:
           push: false
           tags: arch-test:latest
           build-args: |
-                      PACKAGES=gcc cmake ninja clang
+                      PACKAGES=gcc cmake ninja clang                 
       - name: CMake
         uses: addnab/docker-run-action@v3
         with:
@@ -36,6 +36,4 @@ jobs:
         with:
           image: arch-test:latest
           options: -v ${{ github.workspace }}:/workspace
-          run: |
-               cd /workspace/build/
-               ctest -C Release -T test --output-on-failure
+          run: ctest --test-dir /workspace/build/ -C Release -T test --output-on-failure
