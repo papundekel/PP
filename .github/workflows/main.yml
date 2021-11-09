@@ -20,7 +20,7 @@ jobs:
         with:
           image: arch-test:latest
           options: -v ${{ github.workspace }}:/workspace
-          run: cmake -DCMAKE_BUILD_TYPE:STRING=Release -S /workspace/ -B /workspace/build/ -G Ninja
+          run: ls /workspace; echo xxx; ls /github; echo xxx; ls /github/workspace; echo xxx; cmake -DCMAKE_BUILD_TYPE:STRING=Release -S /workspace/ -B /workspace/build/ -G Ninja
       - name: Build tests
         uses: addnab/docker-run-action@v3
         with:
