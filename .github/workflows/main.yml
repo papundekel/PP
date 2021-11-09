@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     name: job
     steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
       - name: Build Docker
         uses: docker/build-push-action@v2
         with:
@@ -20,7 +22,7 @@ jobs:
         with:
           image: arch-test:latest
           options: -v ${{ github.workspace }}:/workspace
-          run: ls / -R; cmake -DCMAKE_BUILD_TYPE:STRING=Release -S /workspace/ -B /workspace/build/ -G Ninja
+          run: cmake -DCMAKE_BUILD_TYPE:STRING=Release -S /workspace/ -B /workspace/build/ -G Ninja
       - name: Build tests
         uses: addnab/docker-run-action@v3
         with:
@@ -32,4 +34,6 @@ jobs:
         with:
           image: arch-test:latest
           options: -v ${{ github.workspace }}:/workspace
-          run: cd /workspace/build/; ctest -C Release -T test --output-on-failure
+          run: |
+               cd /workspace/build/
+               ctest -C Release -T test --output-on-failure
