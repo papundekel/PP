@@ -2,7 +2,7 @@
 
 cd $( cd "$(dirname "${BASH_SOURCE[0]}")"; pwd -P )
 
-CONF="RELEASE"
+CONF="Release"
 DIR="./build"
 
 ./build.sh "$DIR" "$CONF" PP-test
