@@ -10,7 +10,9 @@ target_include_directories(PP-test PUBLIC "${CMAKE_CURRENT_LIST_DIR}/..")
 target_compile_definitions(PP-test PUBLIC TEST_COUNT=${test_sources_length})
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-set_target_properties(PP-test PROPERTIES COMPILE_FLAGS "-ftemplate-backtrace-limit=0 -fconcepts-diagnostics-depth=5")
+    set_target_properties(PP-test PROPERTIES COMPILE_FLAGS "-ftemplate-backtrace-limit=0 -fconcepts-diagnostics-depth=5")
 endif()
 
 target_link_libraries(PP-test PP)
+
+PPstyle(PP-test)
