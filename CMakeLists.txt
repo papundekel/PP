@@ -15,5 +15,5 @@ add_subdirectory(PP)
 add_subdirectory(test)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/devel/")
-add_subdirectory(devel)
+	add_subdirectory(devel)
 endif()
