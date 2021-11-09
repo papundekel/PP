@@ -4,9 +4,32 @@ on:
   - workflow_dispatch
 
 jobs:
-  hello_world_job:
+  job:
     runs-on: ubuntu-latest
     name: job
     steps:
       - name: Build Docker
         uses: docker/build-push-action@v2
+        with:
+          push: false
+          tags: arch-test:latest
+          build-args: |
+                      PACKAGES=gcc cmake ninja clang
+      - name: CMake
+        uses: addnab/docker-run-action@v3
+        with:
+          image: arch-test:latest
+          options: -v ${{ github.workspace }}:/workspace
+          run: cmake -DCMAKE_BUILD_TYPE:STRING=Release -H /workspace/ -B /workspace/build/ -G Ninja
+      - name: Build tests
+        uses: addnab/docker-run-action@v3
+        with:
+          image: arch-test:latest
+          options: -v ${{ github.workspace }}:/workspace
+          run: cmake --build /workspace/build/ --config Release --target PP-test -j 10 --
+      - name: Run tests
+        uses: addnab/docker-run-action@v3
+        with:
+          image: arch-test:latest
+          options: -v ${{ github.workspace }}:/workspace
+          run: cd /workspace/build/; ctest -C Release -T test --output-on-failure
