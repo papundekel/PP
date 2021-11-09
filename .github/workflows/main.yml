@@ -13,4 +13,4 @@ jobs:
         with:
           repo_url: https://github.com/Petkr/PP.git
           script_name: test.sh
-          packages: gcc cmake ninja
+          packages: gcc cmake ninja clang
