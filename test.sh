@@ -2,6 +2,10 @@
 
 cd $( cd "$(dirname "${BASH_SOURCE[0]}")"; pwd -P )
 
-./build.sh
+CONF="RELEASE"
+DIR="./build"
 
-./build/test/PP-test
+./build.sh "$DIR" "$CONF" PP-test
+
+cd "$DIR"
+ctest -C "$CONF" -T test --output-on-failure

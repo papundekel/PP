@@ -15,4 +15,6 @@ endif()
 
 target_link_libraries(PP-test PP)
 
+add_test(NAME PP-test COMMAND PP-test)
+
 PPstyle(PP-test)

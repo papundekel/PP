@@ -8,9 +8,5 @@ jobs:
     runs-on: ubuntu-latest
     name: job
     steps:
-      - name: ArchDocker
-        uses: Petkr/PParchdocker@latest
-        with:
-          repo_url: https://github.com/Petkr/PP.git
-          script_name: test.sh
-          packages: gcc cmake ninja clang
+      - name: Build Docker
+        uses: docker/build-push-action@v2

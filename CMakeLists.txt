@@ -11,9 +11,10 @@ endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/PPstyle")
 
-include(PPstyle)
-
 project(PP)
+
+include(PPstyle)
+include(CTest)
 
 add_subdirectory(PP)
 add_subdirectory(test)
