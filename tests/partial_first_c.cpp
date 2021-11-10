@@ -1,19 +1,10 @@
-#include "test.hpp"
+#include "PPtest/counter.hpp"
 
 #include "PP/partial_c.hpp"
 
 #include <iostream>
 
-namespace test
-{
-template <>
-std::string_view test_function_name<1>()
-{
-    return __FILE__;
-}
-
-template <>
-void test_function<1>(std::ostream& out_key, std::ostream& out_run)
+void test(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "12,10,";
     //
@@ -37,9 +28,8 @@ void test_function<1>(std::ostream& out_key, std::ostream& out_run)
 
     print();
 
-    PP::partial_first_c([&out_run](auto&& a, auto&& b) {})(counter{a})(
-        counter{b});
+    PP::partial_first_c([&out_run](auto&& a, auto&& b) {})(PPtest::counter{a})(
+        PPtest::counter{b});
 
     print();
-}
 }

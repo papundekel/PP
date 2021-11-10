@@ -1,19 +1,8 @@
-#include "test.hpp"
-
 #include "PP/call_reorder.hpp"
 
 #include <iostream>
 
-namespace test
-{
-template <>
-std::string_view test_function_name<5>()
-{
-    return __FILE__;
-}
-
-template <>
-void test_function<5>(std::ostream& out_key, std::ostream& out_run)
+void test(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "12";
     //
@@ -33,5 +22,4 @@ void test_function<5>(std::ostream& out_key, std::ostream& out_run)
     y(a);
 
     out_run << a << b;
-}
 }

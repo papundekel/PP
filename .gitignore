@@ -4,5 +4,5 @@ install/
 
 CMakeSettings.json
 
-test_inactive/
+tests_inactive/
 devel/

@@ -1,19 +1,10 @@
-#include "test.hpp"
+#include "PPtest/uncopiable.hpp"
 
 #include "PP/pack/fold_init.hpp"
 
 #include <iostream>
 
-namespace test
-{
-template <>
-std::string_view test_function_name<3>()
-{
-    return __FILE__;
-}
-
-template <>
-void test_function<3>(std::ostream& out_key, std::ostream& out_run)
+void test(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "0-1-3-6-10-15-5-4-3-2-1-15/112";
     //
@@ -21,10 +12,11 @@ void test_function<3>(std::ostream& out_key, std::ostream& out_run)
     {
         return PP::pack::fold_init(
                    dir,
-                   [&out_run](uncopiable<int> a, uncopiable<int> b)
+                   [&out_run](PPtest::uncopiable<int> a,
+                              PPtest::uncopiable<int> b)
                    {
                        out_run << a.val << "-";
-                       return uncopiable(a.val + b.val);
+                       return PPtest::uncopiable(a.val + b.val);
                    },
                    []
                    {
@@ -53,5 +45,4 @@ void test_function<3>(std::ostream& out_key, std::ostream& out_run)
 
     g(PP::value_true) = 2;
     out_run << a << b << c;
-}
 }
