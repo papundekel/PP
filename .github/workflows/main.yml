@@ -36,7 +36,7 @@ jobs:
         with:
           image: arch-test:latest
           options: -v ${{ github.workspace }}:/workspace
-          run: cmake --build /workspace/build/ --config Release --target PP-test -j 10 --
+          run: cmake --build /workspace/build/ --config Release --target PP-tests -j 10 --
       - name: Run tests
         uses: addnab/docker-run-action@v3
         with:
