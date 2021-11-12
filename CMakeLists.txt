@@ -30,3 +30,6 @@ add_subdirectory(tests)
 if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/devel/")
 	add_subdirectory(devel)
 endif()
+
+set(CPACK_GENERATOR "TGZ")
+include(CPack)
