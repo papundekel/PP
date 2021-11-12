@@ -1,0 +1,10 @@
+name: Publish
+
+on: 
+  push:
+    tags:
+      - '*'
+
+jobs:
+  Publish:
+    uses: Petkr/PPactions/.github/workflows/release.yml@v1

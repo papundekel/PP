@@ -1,8 +1,9 @@
 .vscode/
-build/
+out*/
 install/
+vendor/
+devel/
 
 CMakeSettings.json
 
 tests_inactive/
-devel/
