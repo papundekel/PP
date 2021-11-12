@@ -1,9 +1,10 @@
 name: Publish
 
-on: 
+on:
   push:
     tags:
       - '*'
+  workflow_dispatch:
 
 jobs:
   Publish:
