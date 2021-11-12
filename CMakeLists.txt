@@ -9,17 +9,18 @@ add_compile_options(
 )
 endif()
 
-project(PP VERSION "0.1.0")
+project(PP VERSION "0.1.1")
 
 include(GNUInstallDirs)
 include(CTest)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/vendor/${CMAKE_INSTALL_DATADIR}/cmake")
 
-file(DOWNLOAD "https://github.com/Petkr/PPstyle/releases/download/1.0.11/PPstyle-1.0.11-Linux.tar.gz" "PPstyle")
-file(DOWNLOAD "https://github.com/Petkr/PPtest/releases/download/1.0.2/PPtest-1.0.2-Linux.tar.gz"  "PPtest")
-file(ARCHIVE_EXTRACT INPUT "PPstyle" DESTINATION "${CMAKE_CURRENT_LIST_DIR}/vendor")
-file(ARCHIVE_EXTRACT INPUT "PPtest"  DESTINATION "${CMAKE_CURRENT_LIST_DIR}/vendor")
+file(DOWNLOAD "https://github.com/Petkr/PPstyle/releases/download/1.0.11/PPstyle-1.0.11-Linux.tar.gz" "PPstyle.tar.gz")
+file(DOWNLOAD "https://github.com/Petkr/PPtest/releases/download/1.0.2/PPtest-1.0.2-Linux.tar.gz"     "PPtest.tar.gz")
+file(ARCHIVE_EXTRACT INPUT "PPstyle.tar.gz" DESTINATION "${CMAKE_CURRENT_LIST_DIR}/vendor")
+file(ARCHIVE_EXTRACT INPUT "PPtest.tar.gz"  DESTINATION "${CMAKE_CURRENT_LIST_DIR}/vendor")
+file(REMOVE "PPstyle.tar.gz" "PPtest.tar.gz")
 
 include(PPstyle)
 include(PPtest)
