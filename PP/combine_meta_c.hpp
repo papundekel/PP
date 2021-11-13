@@ -1,5 +1,5 @@
 #pragma once
-#include "partial_c.hpp"
+#include "partial_first_c.hpp"
 
 namespace PP
 {
@@ -10,8 +10,8 @@ PP_CIA combine_meta_c = [](auto&& c)
     {
         return [PP_UL(c), ... PP_FL(f)](auto&&... args) -> decltype(auto)
         {
-            return backward(c)(
-                partial_first_c(make_fw_d(value_3, f))(PP_FW(args)...)...);
+            return backward(c)(partial_first_c(forward(value_2, backward(f)))(
+                PP_FW(args)...)...);
         };
     };
 };

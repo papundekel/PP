@@ -10,7 +10,7 @@ PP_CIA call_reorder = [](auto&& f)
     {
         return [PP_UL(f), ... PP_FL(second)](auto&&... first) -> decltype(auto)
         {
-            return backward(f)(PP_F(first)...)(backward(second)...);
+            return backward(f)(PP_FW(first)...)(backward(second)...);
         };
     };
 };

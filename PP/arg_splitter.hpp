@@ -35,6 +35,6 @@ PP_CIA arg_splitter = [](concepts::type auto&& delimiter_type,
             {
                 return (construct_pack * t)[move(as)];
             };
-        } +++(PP_F(to_construct_types) ^ move(splits)))[i]();
+        } ++ +(PP_F(to_construct_types) ^ move(splits)))[i]();
 };
 }

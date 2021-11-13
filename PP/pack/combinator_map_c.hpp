@@ -1,6 +1,7 @@
 #pragma once
 #include "../combine_c.hpp"
 #include "../compose.hpp"
+#include "../partial_first_c.hpp"
 #include "get.hpp"
 #include "map_c.hpp"
 

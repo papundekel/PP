@@ -24,8 +24,7 @@ namespace PP
 PP_CIA decompose = compose(
     overloaded(
         []<template <typename...> typename T, typename... Types>(
-            type_t<T<Types...>>)
-        {
+            type_t<T<Types...>>) {
             return detail::decompose_pair(Template<T>, type_tuple<Types...>);
         },
         [](auto&&)

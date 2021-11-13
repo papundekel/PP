@@ -1,5 +1,5 @@
 #pragma once
-#include "partial_c.hpp"
+#include "partial_first_c.hpp"
 #include "tuple/apply.hpp"
 
 namespace PP

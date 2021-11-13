@@ -6,6 +6,12 @@ add_library("PP" SHARED
 #"ostream.cpp"
 )
 
+target_pedantic_errors("PP")
+
+file(GLOB PP-headers "*.hpp")
+
+target_sources("PP" PUBLIC ${PP-headers})
+
 target_compile_features("PP" INTERFACE cxx_std_20)
 
 if (CMAKE_COMPILER_IS_GNUCXX)

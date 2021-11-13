@@ -1,35 +1,36 @@
 #include "PPtest/counter.hpp"
 
-#include "PP/partial_c.hpp"
+#include "PP/partial_first_c.hpp"
 
 #include <iostream>
 
 void test(std::ostream& out_key, std::ostream& out_run)
 {
-    out_key << "12,10,";
+    out_key << "210,110,010,";
     //
-    int a = 0;
-    int b = 0;
+    int a, b, c;
+    a = b = c = 0;
 
-    auto print = [&out_run, &a, &b]()
+    auto print = [&]()
     {
-        out_run << a << b << ",";
+        out_run << a << b << c << ",";
     };
 
-    auto x = PP::partial_first_c(
-        [](int& a, int& b)
-        {
-            a = 1;
-            b = 2;
-        });
-    auto y = x(PP::forward(a));
-
-    y(b);
+    PP::partial_first_c([x = PPtest::counter(a)](auto&&, auto&&) {})(
+        PPtest::counter(b))(PPtest::counter(c));
 
     print();
 
-    PP::partial_first_c([&out_run](auto&& a, auto&& b) {})(PPtest::counter{a})(
-        PPtest::counter{b});
+    auto f = [x = PPtest::counter(a)](auto&&, auto&&) {};
+
+    PP::partial_first_c(PP::forward(f))(PPtest::counter(b))(PPtest::counter(c));
+
+    print();
+
+    auto g = [x = PPtest::counter(a)](auto&&, auto&&) {};
+
+    PP::partial_first_c(PP::forward(PP::value_2, g))(PPtest::counter(b))(
+        PPtest::counter(c));
 
     print();
 }

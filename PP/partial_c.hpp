@@ -1,8 +1,5 @@
 #pragma once
-#include "call_reorder.hpp"
-#include "compose.hpp"
 #include "forward_wrap.hpp"
-#include "pack/map_c.hpp"
 
 namespace PP
 {
@@ -22,14 +19,4 @@ PP_CIA partial_c = [](auto&& f)
         };
     };
 };
-
-PP_CIA partial_first_c = [](auto&& f)
-{
-    return [PP_FL(f)](auto&&... first)
-    {
-        return partial_c(backward(f))(forward(value_1, PP_F(first))...)();
-    };
-};
-
-PP_CIA partial_last_c = call_reorder(partial_c)();
 }

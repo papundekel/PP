@@ -154,7 +154,7 @@ public:
     ///
     constexpr any_iterator_unique_pointer<-Category,
                                           detail::any_iterator_const_type<T>>
-        copy_const(CategoryTPrev) const override final
+    copy_const(CategoryTPrev) const override final
     {
         return copy_const(CategoryT{});
     }
@@ -164,7 +164,7 @@ public:
     ///
     constexpr any_iterator_unique_pointer<-Category,
                                           detail::any_iterator_value_type<T>>
-        copy_value(CategoryTPrev) const override final
+    copy_value(CategoryTPrev) const override final
     {
         return copy_value(CategoryT{});
     }

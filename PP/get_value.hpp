@@ -29,12 +29,10 @@ concept value = detail::has_value_f<T> || detail::has_value<T>;
 namespace PP
 {
 PP_CIA get_type_value = overloaded(
-    [](auto&& t) -> decltype(auto) requires detail::has_value_f<PP_GT(t)>
-    {
+    [](auto&& t) -> decltype(auto) requires detail::has_value_f<PP_GT(t)> {
         return remove_reference_impl<PP_GT(t)>::value_f();
     },
-    [](auto&& t) -> decltype(auto) requires detail::has_value<PP_GT(t)>
-    {
+    [](auto&& t) -> decltype(auto) requires detail::has_value<PP_GT(t)> {
         return (remove_reference_impl<PP_GT(t)>::value);
     });
 

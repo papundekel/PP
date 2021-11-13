@@ -6,20 +6,18 @@ void test(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "12";
     //
-    int a = 0;
-    int b = 0;
+    int a, b;
+    a = b = 0;
 
-    auto x = PP::call_reorder(
-        [](auto& x)
+    PP::call_reorder(
+        [](auto&& x)
         {
-            return [&x](auto& y)
+            return [PP_FL(x)](auto& y)
             {
-                x = 1;
+                PP::backward(x) = 1;
                 y = 2;
             };
-        });
-    auto y = x(PP::forward(b));
-    y(a);
+        })(PP::forward(b))(a);
 
     out_run << a << b;
 }

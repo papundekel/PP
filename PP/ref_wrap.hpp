@@ -57,10 +57,7 @@ using wrap_ref_t = PP_GT(conditional(value<is_reference(type<T>)>,
 
 PP_CIA unwrap_ref = [](auto&& x) -> auto&&
 {
-    if constexpr (requires
-                  {
-                      x.ref_wrap_impl_tag;
-                  })
+    if constexpr (requires { x.ref_wrap_impl_tag; })
         return x.get();
     else
         return PP_F(x);
