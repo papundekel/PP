@@ -1,9 +1,9 @@
 #pragma once
-#include "../compose.hpp"
-#include "../decl_type.hpp"
-#include "../declval.hpp"
-#include "../declval_impl.hpp"
-#include "../get_value.hpp"
+#include <PP/compose.hpp>
+#include <PP/decl_type.hpp>
+#include <PP/declval.hpp>
+#include <PP/declval_impl.hpp>
+#include <PP/get_value.hpp>
 
 namespace PP::detail
 {

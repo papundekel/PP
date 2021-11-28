@@ -1,9 +1,9 @@
 #pragma once
-#include "../containers/array.hpp"
-#include "../containers/tuple_std.hpp"
-#include "../noop.hpp"
-#include "../operators.hpp"
-#include "zip_if.hpp"
+#include <PP/containers/array.hpp>
+#include <PP/containers/tuple_std.hpp>
+#include <PP/noop.hpp>
+#include <PP/operators.hpp>
+#include <PP/zip_if.hpp>
 
 namespace PP::view
 {

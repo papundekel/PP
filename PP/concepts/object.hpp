@@ -1,7 +1,7 @@
 #pragma once
-#include "../get_type.hpp"
-#include "complete_object.hpp"
-#include "unbounded_array.hpp"
+#include <PP/get_type.hpp>
+#include <PP/complete_object.hpp>
+#include <PP/concepts/unbounded_array.hpp>
 
 namespace PP::concepts
 {

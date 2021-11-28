@@ -1,8 +1,8 @@
 #pragma once
-#include "../get_type.hpp"
-#include "atomic/class.hpp"
-#include "non_union_class.hpp"
-#include "union.hpp"
+#include <PP/get_type.hpp>
+#include <PP/concepts/atomic/class.hpp>
+#include <PP/concepts/non_union_class.hpp>
+#include <PP/concepts/union.hpp>
 
 namespace PP::concepts
 {

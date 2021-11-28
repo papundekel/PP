@@ -1,7 +1,7 @@
 #pragma once
-#include "../applier.hpp"
-#include "../containers/array.hpp"
-#include "concept.hpp"
+#include <PP/applier.hpp>
+#include <PP/containers/array.hpp>
+#include <PP/tuple/concept.hpp>
 
 namespace PP::tuple
 {

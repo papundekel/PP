@@ -1,8 +1,8 @@
 #pragma once
-#include "../../add_reference.hpp"
-#include "../../conjunction.hpp"
-#include "../same.hpp"
-#include "referencable.hpp"
+#include <PP/add_reference.hpp>
+#include <PP/conjunction.hpp>
+#include <PP/same.hpp>
+#include <PP/concepts/atomic/referencable.hpp>
 
 namespace PP::detail
 {

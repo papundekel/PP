@@ -1,7 +1,7 @@
 #pragma once
-#include "../get_type.hpp"
-#include "function_cvref.hpp"
-#include "function_pure.hpp"
+#include <PP/get_type.hpp>
+#include <PP/function_cvref.hpp>
+#include <PP/function_pure.hpp>
 
 namespace PP
 {

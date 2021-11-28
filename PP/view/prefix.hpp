@@ -1,5 +1,5 @@
 #pragma once
-#include "first_equal.hpp"
+#include <PP/view/first_equal.hpp>
 
 namespace PP::view
 {

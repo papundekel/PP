@@ -1,7 +1,7 @@
 #pragma once
-#include "../negate.hpp"
-#include "atomic/user_defined.hpp"
-#include "class.hpp"
+#include <PP/negate.hpp>
+#include <PP/atomic/user_defined.hpp>
+#include <PP/class.hpp>
 
 namespace PP
 {

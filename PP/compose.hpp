@@ -1,7 +1,7 @@
 #pragma once
-#include "declval_impl.hpp"
-#include "forward_wrap.hpp"
-#include "macros/CIA.hpp"
+#include <PP/declval_impl.hpp>
+#include <PP/forward_wrap.hpp>
+#include <PP/macros/CIA.hpp>
 
 namespace PP
 {

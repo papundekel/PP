@@ -1,12 +1,12 @@
 #pragma once
-#include "../declval.hpp"
-#include "../get_type.hpp"
-#include "../macros/simple_concept.hpp"
-#include "../value_t.hpp"
-#include "count.hpp"
-#include "element.hpp"
-#include "get.hpp"
-#include "value_sequence_for.hpp"
+#include <PP/declval.hpp>
+#include <PP/get_type.hpp>
+#include <PP/macros/simple_concept.hpp>
+#include <PP/value_t.hpp>
+#include <PP/tuple/count.hpp>
+#include <PP/tuple/element.hpp>
+#include <PP/tuple/get.hpp>
+#include <PP/tuple/value_sequence_for.hpp>
 
 namespace PP::detail
 {

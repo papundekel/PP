@@ -1,10 +1,10 @@
 #pragma once
-#include "../compose.hpp"
-#include "../operators.hpp"
-#include "../partial.hpp"
-#include "../tuple.hpp"
-#include "apply.hpp"
-#include "fold.hpp"
+#include <PP/compose.hpp>
+#include <PP/operators.hpp>
+#include <PP/partial.hpp>
+#include <PP/tuple/concept.hpp>
+#include <PP/tuple/apply.hpp>
+#include <PP/tuple/fold.hpp>
 
 namespace PP::tuple
 {

@@ -1,10 +1,10 @@
 #pragma once
-#include "../containers/tuple.hpp"
-#include "../containers/tuple_std.hpp"
-#include "../operators.hpp"
-#include "../pack/any.hpp"
-#include "../partial_.hpp"
-#include "concept.hpp"
+#include <PP/containers/tuple.hpp>
+#include <PP/containers/tuple_std.hpp>
+#include <PP/operators.hpp>
+#include <PP/pack/any.hpp>
+#include <PP/partial_.hpp>
+#include <PP/view/concept.hpp>
 
 #include <compare>
 

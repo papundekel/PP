@@ -1,5 +1,5 @@
 #pragma once
-#include "subsequence.hpp"
+#include <PP/subsequence.hpp>
 
 namespace PP::view
 {

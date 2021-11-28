@@ -1,8 +1,8 @@
 #pragma once
-#include "../get_value.hpp"
-#include "../value_t_static_cast.hpp"
-#include "count.hpp"
-#include "pred.hpp"
+#include <PP/get_value.hpp>
+#include <PP/value_t_static_cast.hpp>
+#include <PP/tuple/count.hpp>
+#include <PP/tuple/pred.hpp>
 
 namespace PP::detail
 {

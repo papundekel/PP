@@ -1,7 +1,7 @@
 #pragma once
-#include "atomic/complete_object.hpp"
-#include "bounded_array.hpp"
-#include "non_array_object.hpp"
+#include <PP/atomic/complete_object.hpp>
+#include <PP/concepts/bounded_array.hpp>
+#include <PP/non_array_object.hpp>
 
 namespace PP::concepts
 {

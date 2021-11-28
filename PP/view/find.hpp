@@ -1,5 +1,5 @@
 #pragma once
-#include "concept.hpp"
+#include <PP/view/concept.hpp>
 
 namespace PP
 {

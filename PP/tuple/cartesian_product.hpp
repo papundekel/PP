@@ -1,12 +1,12 @@
 #pragma once
-#include "../operators.hpp"
-#include "../partial_.hpp"
-#include "concat.hpp"
-#include "count.hpp"
-#include "iterate.hpp"
-#include "singular.hpp"
-#include "tuple.hpp"
-#include "zip_with.hpp"
+#include <PP/operators.hpp>
+#include <PP/partial_.hpp>
+#include <PP/concat.hpp>
+#include <PP/tuple/count.hpp>
+#include <PP/iterate.hpp>
+#include <PP/singular.hpp>
+#include <PP/tuple/concept.hpp>
+#include <PP/zip_with.hpp>
 
 namespace PP::tuple
 {

@@ -1,6 +1,6 @@
 #pragma once
-#include "../get_type.hpp"
-#include "../macros/simple_concept.hpp"
+#include <PP/get_type.hpp>
+#include <PP/macros/simple_concept.hpp>
 
 namespace PP
 {

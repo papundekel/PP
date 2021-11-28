@@ -1,8 +1,8 @@
 #pragma once
-#include "../get_type.hpp"
-#include "../macros/simple_concept.hpp"
-#include "bounded_array.hpp"
-#include "unbounded_array.hpp"
+#include <PP/get_type.hpp>
+#include <PP/macros/simple_concept.hpp>
+#include <PP/concepts/bounded_array.hpp>
+#include <PP/concepts/unbounded_array.hpp>
 
 namespace PP::concepts
 {

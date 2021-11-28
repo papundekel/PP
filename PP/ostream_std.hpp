@@ -1,5 +1,5 @@
 #pragma once
-#include "ostream.hpp"
+#include <PP/ostream.hpp>
 
 namespace PP
 {

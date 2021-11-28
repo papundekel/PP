@@ -1,11 +1,11 @@
 #pragma once
-#include "../get_type.hpp"
-#include "../macros/simple_concept.hpp"
-#include "../pack/apply_template.hpp"
-#include "../partial.hpp"
-#include "../size_of.hpp"
-#include "../template_t.hpp"
-#include "non_union_class.hpp"
+#include <PP/get_type.hpp>
+#include <PP/macros/simple_concept.hpp>
+#include <PP/pack/apply_template.hpp>
+#include <PP/partial.hpp>
+#include <PP/size_of.hpp>
+#include <PP/template_t.hpp>
+#include <PP/concepts/non_union_class.hpp>
 
 namespace PP::detail
 {

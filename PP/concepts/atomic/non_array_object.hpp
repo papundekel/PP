@@ -1,7 +1,7 @@
 #pragma once
-#include "../../conjunction.hpp"
-#include "complete_object.hpp"
-#include "returnable.hpp"
+#include <PP/conjunction.hpp>
+#include <PP/concepts/atomic/complete_object.hpp>
+#include <PP/concepts/atomic/returnable.hpp>
 
 namespace PP
 {

@@ -1,11 +1,11 @@
 #pragma once
-#include "forward_wrap.hpp"
-#include "macros/CIA.hpp"
-#include "macros/functor.hpp"
-#include "noop.hpp"
-#include "pack/remove_first.hpp"
-#include "partial_.hpp"
-#include "utility/forward.hpp"
+#include <PP/forward_wrap.hpp>
+#include <PP/macros/CIA.hpp>
+#include <PP/macros/functor.hpp>
+#include <PP/noop.hpp>
+#include <PP/pack/remove_first.hpp>
+#include <PP/partial_.hpp>
+#include <PP/utility/forward.hpp>
 
 namespace PP
 {

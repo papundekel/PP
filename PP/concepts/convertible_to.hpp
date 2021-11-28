@@ -1,6 +1,6 @@
 #pragma once
-#include "../declval_impl.hpp"
-#include "../get_type.hpp"
+#include <PP/declval_impl.hpp>
+#include <PP/get_type.hpp>
 
 namespace PP::concepts
 {

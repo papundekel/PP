@@ -1,13 +1,13 @@
 #pragma once
-#include "../containers/tuple.hpp"
-#include "../forward_wrap.hpp"
-#include "../get_value.hpp"
-#include "../type_t.hpp"
-#include "empty.hpp"
-#include "fold.hpp"
-#include "make.hpp"
-#include "prepend.hpp"
-#include "zip_indices.hpp"
+#include <PP/containers/tuple.hpp>
+#include <PP/forward_wrap.hpp>
+#include <PP/get_value.hpp>
+#include <PP/type_t.hpp>
+#include <PP/empty.hpp>
+#include <PP/tuple/fold.hpp>
+#include <PP/tuple/make.hpp>
+#include <PP/tuple/prepend.hpp>
+#include <PP/zip_indices.hpp>
 
 namespace PP::tuple
 {

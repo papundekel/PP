@@ -1,18 +1,18 @@
 #pragma once
-#include "../forward_wrap.hpp"
-#include "../operators.hpp"
-#include "../partial_.hpp"
-#include "all.hpp"
-#include "apply.hpp"
-#include "concept.hpp"
-#include "count.hpp"
-#include "empty.hpp"
-#include "get.hpp"
-#include "make.hpp"
-#include "map.hpp"
-#include "prepend.hpp"
-#include "split.hpp"
-#include "types.hpp"
+#include <PP/forward_wrap.hpp>
+#include <PP/operators.hpp>
+#include <PP/partial_.hpp>
+#include <PP/tuple/all.hpp>
+#include <PP/tuple/apply.hpp>
+#include <PP/tuple/concept.hpp>
+#include <PP/tuple/count.hpp>
+#include <PP/empty.hpp>
+#include <PP/tuple/get.hpp>
+#include <PP/tuple/make.hpp>
+#include <PP/tuple/map.hpp>
+#include <PP/tuple/prepend.hpp>
+#include <PP/tuple/split.hpp>
+#include <PP/tuple/types.hpp>
 
 namespace PP::tuple
 {

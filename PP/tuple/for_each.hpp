@@ -1,9 +1,9 @@
 #pragma once
-#include "../compose.hpp"
-#include "../empty.hpp"
-#include "../forward_wrap.hpp"
-#include "../partial_.hpp"
-#include "fold.hpp"
+#include <PP/compose.hpp>
+#include <PP/empty.hpp>
+#include <PP/forward_wrap.hpp>
+#include <PP/partial_.hpp>
+#include <PP/tuple/fold.hpp>
 
 namespace PP::tuple
 {

@@ -1,9 +1,9 @@
 #pragma once
-#include "../compose_many.hpp"
-#include "../get_reference.hpp"
-#include "../macros/simple_concept.hpp"
-#include "../operators.hpp"
-#include "../partial.hpp"
+#include <PP/compose_many.hpp>
+#include <PP/get_reference.hpp>
+#include <PP/macros/simple_concept.hpp>
+#include <PP/operators.hpp>
+#include <PP/partial.hpp>
 
 namespace PP
 {

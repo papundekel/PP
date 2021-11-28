@@ -1,7 +1,7 @@
 #pragma once
-#include "../get_type.hpp"
-#include "class.hpp"
-#include "enum.hpp"
+#include <PP/get_type.hpp>
+#include <PP/class.hpp>
+#include <PP/enum.hpp>
 
 namespace PP
 {

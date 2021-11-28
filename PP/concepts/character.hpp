@@ -1,5 +1,5 @@
 #pragma once
-#include "fundamental_types.hpp"
+#include <PP/fundamental_types.hpp>
 
 namespace PP
 {

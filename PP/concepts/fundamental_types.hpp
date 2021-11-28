@@ -1,6 +1,6 @@
 #pragma once
-#include "../macros/simple_concept.hpp"
-#include "same_except_cv.hpp"
+#include <PP/macros/simple_concept.hpp>
+#include <PP/concepts/same_except_cv.hpp>
 
 namespace PP
 {

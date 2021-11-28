@@ -1,10 +1,10 @@
 #pragma once
-#include "../conditional.hpp"
-#include "../declval.hpp"
-#include "../get_type.hpp"
-#include "../partial.hpp"
-#include "../tuple/apply.hpp"
-#include "../value_t.hpp"
+#include <PP/conditional.hpp>
+#include <PP/declval.hpp>
+#include <PP/get_type.hpp>
+#include <PP/partial.hpp>
+#include <PP/tuple/apply.hpp>
+#include <PP/value_t.hpp>
 
 namespace PP::concepts
 {

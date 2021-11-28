@@ -1,6 +1,6 @@
 #pragma once
-#include "get_type.hpp"
-#include "to_type_t.hpp"
+#include <PP/get_type.hpp>
+#include <PP/to_type_t.hpp>
 
 constexpr auto operator==(PP::concepts::type auto&& t,
                           PP::concepts::type auto&& u) noexcept

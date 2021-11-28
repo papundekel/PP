@@ -1,8 +1,8 @@
 #pragma once
-#include "../macros/simple_concept.hpp"
-#include "../negate.hpp"
-#include "atomic/pointable.hpp"
-#include "reference.hpp"
+#include <PP/macros/simple_concept.hpp>
+#include <PP/negate.hpp>
+#include <PP/atomic/pointable.hpp>
+#include <PP/reference.hpp>
 
 namespace PP
 {

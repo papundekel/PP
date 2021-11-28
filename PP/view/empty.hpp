@@ -1,5 +1,5 @@
 #pragma once
-#include "../empty_iterator.hpp"
+#include <PP/empty_iterator.hpp>
 
 namespace PP::view
 {

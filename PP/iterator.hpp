@@ -1,9 +1,9 @@
 #pragma once
-#include "concepts/equatable.hpp"
-#include "concepts/fundamental_types.hpp"
-#include "concepts/non_void.hpp"
-#include "concepts/same.hpp"
-#include "ptrdiff_t.hpp"
+#include <PP/concepts/equatable.hpp>
+#include <PP/concepts/fundamental_types.hpp>
+#include <PP/concepts/non_void.hpp>
+#include <PP/concepts/same.hpp>
+#include <PP/ptrdiff_t.hpp>
 
 namespace PP::detail
 {

@@ -1,6 +1,6 @@
 #pragma once
-#include "../declval_impl.hpp"
-#include "convertible_to.hpp"
+#include <PP/declval_impl.hpp>
+#include <PP/concepts/convertible_to.hpp>
 
 namespace PP::concepts
 {

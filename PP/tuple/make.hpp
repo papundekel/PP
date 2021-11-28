@@ -1,8 +1,8 @@
 #pragma once
-#include "../applier.hpp"
-#include "../containers/tuple.hpp"
-#include "../partial_.hpp"
-#include "concept.hpp"
+#include <PP/applier.hpp>
+#include <PP/containers/tuple.hpp>
+#include <PP/partial_.hpp>
+#include <PP/tuple/concept.hpp>
 
 namespace PP::tuple
 {

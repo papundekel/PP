@@ -1,40 +1,22 @@
 cmake_minimum_required(VERSION 3.20)
 
-function(download_package _url)
-    cmake_path(GET _url FILENAME _filename)
+project(PP VERSION "0.1.3")
 
-    file(DOWNLOAD "${URL}" "${_filename}")
-    file(ARCHIVE_EXTRACT INPUT "${_filename}" DESTINATION "${CMAKE_CURRENT_LIST_DIR}/vendor")
-    file(REMOVE "${_filename}")
-endfunction()
-
-function(target_pedantic_errors _target)
-	if(CMAKE_COMPILER_IS_GNUCXX)
-		target_compile_options(${_target}
-			PUBLIC -Wall -Wextra -pedantic -Werror
-		)
-	endif()
-endfunction()
-
-project(PP VERSION "0.1.2")
-
-include(GNUInstallDirs)
+file(DOWNLOAD "https://raw.githubusercontent.com/Petkr/PPcmake/main/PPcmake.cmake" "${CMAKE_BINARY_DIR}/PPcmake.cmake")
+include("${CMAKE_BINARY_DIR}/PPcmake.cmake")
 include(CTest)
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/vendor/${CMAKE_INSTALL_DATADIR}/cmake")
+PPcmake_package("github.com" "Petkr" "PPcmake" "1.0.1")
+include(PPcmake)
 
-download_package("https://github.com/Petkr/PPstyle/releases/download/1.0.12/PPstyle-1.0.12-Linux.tar.gz")
-download_package("https://github.com/Petkr/PPtest/releases/download/1.0.2/PPtest-1.0.2-Linux.tar.gz")
-
+PPcmake_package("github.com" "Petkr" "PPstyle" "1.0.12")
 include(PPstyle)
+
+PPcmake_package("github.com" "Petkr" "PPtest" "1.0.2")
 include(PPtest)
 
-add_subdirectory(PP)
-add_subdirectory(tests)
+PPcmake_add_subdirectory(PP)
+PPcmake_add_subdirectory(tests)
+PPcmake_add_subdirectory(devel)
 
-if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/devel/")
-	add_subdirectory(devel)
-endif()
-
-set(CPACK_GENERATOR "TGZ")
-include(CPack)
+PPcmake_cpack()

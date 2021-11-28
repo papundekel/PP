@@ -6,11 +6,13 @@ add_library("PP" SHARED
 #"ostream.cpp"
 )
 
-target_pedantic_errors("PP")
+target_include_directories("PP" PUBLIC "${CMAKE_CURRENT_LIST_DIR}/../")
 
-file(GLOB PP-headers "*.hpp")
+PPcmake_target_pedantic_errors("PP")
 
-target_sources("PP" PUBLIC ${PP-headers})
+file(GLOB PP_headers "*.hpp")
+
+target_sources("PP" PUBLIC ${PP_headers})
 
 target_compile_features("PP" INTERFACE cxx_std_20)
 

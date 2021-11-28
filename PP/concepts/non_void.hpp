@@ -1,5 +1,5 @@
 #pragma once
-#include "same_except_cv.hpp"
+#include <PP/concepts/same_except_cv.hpp>
 
 namespace PP::concepts
 {

@@ -1,7 +1,7 @@
 #pragma once
-#include "../partial_first_c.hpp"
-#include "combinator_and_l.hpp"
-#include "combinator_map_c.hpp"
+#include <PP/partial_first_c.hpp>
+#include <PP/pack/combinator_and_l.hpp>
+#include <PP/pack/combinator_map_c.hpp>
 
 namespace PP::pack
 {

@@ -1,6 +1,6 @@
 #pragma once
-#include "id.hpp"
-#include "view.hpp"
+#include <PP/id.hpp>
+#include <PP/view/concept.hpp>
 
 #include <utility>
 

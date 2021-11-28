@@ -1,8 +1,8 @@
 #pragma once
-#include "../get_type.hpp"
-#include "../macros/functor.hpp"
-#include "../template_t.hpp"
-#include "../type_t.hpp"
+#include <PP/get_type.hpp>
+#include <PP/macros/functor.hpp>
+#include <PP/template_t.hpp>
+#include <PP/type_t.hpp>
 
 namespace PP::pack
 {

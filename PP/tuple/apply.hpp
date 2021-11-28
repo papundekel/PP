@@ -1,11 +1,9 @@
 #pragma once
-#include "../apply_pack.hpp"
-#include "../utility/forward.hpp"
-#include "../value_t.hpp"
-#include "concept.hpp"
-#include "count.hpp"
-#include "get.hpp"
-#include "value_sequence_for.hpp"
+#include <PP/apply_pack.hpp>
+#include <PP/utility/forward.hpp>
+#include <PP/value_t.hpp>
+#include <PP/tuple/concept.hpp>
+#include <PP/tuple/value_sequence_for.hpp>
 
 namespace PP::tuple
 {

@@ -1,7 +1,7 @@
 #pragma once
-#include "call_reorder.hpp"
-#include "compose.hpp"
-#include "partial_c.hpp"
+#include <PP/call_reorder.hpp>
+#include <PP/compose.hpp>
+#include <PP/partial_c.hpp>
 
 namespace PP
 {

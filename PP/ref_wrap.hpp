@@ -1,9 +1,9 @@
 #pragma once
-#include "add_reference.hpp"
-#include "apply_transform.hpp"
-#include "concepts/reference.hpp"
-#include "conditional.hpp"
-#include "decompose_template.hpp"
+#include <PP/add_reference.hpp>
+#include <PP/apply_transform.hpp>
+#include <PP/concepts/reference.hpp>
+#include <PP/conditional.hpp>
+#include <PP/decompose_template.hpp>
 
 namespace PP
 {

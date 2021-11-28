@@ -1,10 +1,10 @@
 #pragma once
-#include "../forward_wrap.hpp"
-#include "../get_value.hpp"
-#include "empty.hpp"
-#include "fold.hpp"
-#include "make.hpp"
-#include "prepend.hpp"
+#include <PP/forward_wrap.hpp>
+#include <PP/get_value.hpp>
+#include <PP/empty.hpp>
+#include <PP/tuple/fold.hpp>
+#include <PP/tuple/make.hpp>
+#include <PP/tuple/prepend.hpp>
 
 namespace PP::tuple
 {

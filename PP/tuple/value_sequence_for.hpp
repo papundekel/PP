@@ -1,8 +1,8 @@
 #pragma once
-#include "../compose.hpp"
-#include "../macros/CIA.hpp"
-#include "../value_sequence.hpp"
-#include "count.hpp"
+#include <PP/compose.hpp>
+#include <PP/macros/CIA.hpp>
+#include <PP/value_sequence.hpp>
+#include <PP/tuple/count.hpp>
 
 namespace PP::tuple
 {

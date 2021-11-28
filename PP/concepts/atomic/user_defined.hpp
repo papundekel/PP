@@ -1,9 +1,9 @@
 #pragma once
-#include "../../negate.hpp"
-#include "../non_void_fundamental.hpp"
-#include "../pointer.hpp"
-#include "../pointer_to_member.hpp"
-#include "non_array_object.hpp"
+#include <PP/negate.hpp>
+#include <PP/non_void_fundamental.hpp>
+#include <PP/pointer.hpp>
+#include <PP/pointer_to_member.hpp>
+#include <PP/non_array_object.hpp>
 
 namespace PP
 {

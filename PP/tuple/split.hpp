@@ -1,11 +1,11 @@
 #pragma once
-#include "../applier.hpp"
-#include "../compose.hpp"
-#include "../containers/tuple.hpp"
-#include "../overloaded.hpp"
-#include "../partial_.hpp"
-#include "apply.hpp"
-#include "get.hpp"
+#include <PP/applier.hpp>
+#include <PP/compose.hpp>
+#include <PP/containers/tuple.hpp>
+#include <PP/overloaded.hpp>
+#include <PP/partial_.hpp>
+#include <PP/tuple/apply.hpp>
+#include <PP/tuple/get.hpp>
 
 namespace PP::tuple
 {

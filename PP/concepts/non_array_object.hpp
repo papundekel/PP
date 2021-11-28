@@ -1,10 +1,10 @@
 #pragma once
-#include "atomic/non_array_object.hpp"
+#include <PP/atomic/non_array_object.hpp>
 
-#include "non_void_fundamental.hpp"
-#include "pointer.hpp"
-#include "pointer_to_member.hpp"
-#include "user_defined.hpp"
+#include <PP/non_void_fundamental.hpp>
+#include <PP/pointer.hpp>
+#include <PP/pointer_to_member.hpp>
+#include <PP/user_defined.hpp>
 
 namespace PP::concepts
 {

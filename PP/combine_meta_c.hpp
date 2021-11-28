@@ -1,5 +1,5 @@
 #pragma once
-#include "partial_first_c.hpp"
+#include <PP/partial_first_c.hpp>
 
 namespace PP
 {

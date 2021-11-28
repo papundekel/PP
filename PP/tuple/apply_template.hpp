@@ -1,13 +1,13 @@
 #pragma once
-#include "../combine.hpp"
-#include "../compose.hpp"
-#include "../get_type.hpp"
-#include "../get_value.hpp"
-#include "../pack/apply_template.hpp"
-#include "../pack/get.hpp"
-#include "../partial_.hpp"
-#include "apply.hpp"
-#include "concept.hpp"
+#include <PP/combine.hpp>
+#include <PP/compose.hpp>
+#include <PP/get_type.hpp>
+#include <PP/get_value.hpp>
+#include <PP/pack/apply_template.hpp>
+#include <PP/pack/get.hpp>
+#include <PP/partial_.hpp>
+#include <PP/tuple/apply.hpp>
+#include <PP/tuple/concept.hpp>
 
 namespace PP::tuple
 {

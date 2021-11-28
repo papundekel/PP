@@ -2,8 +2,6 @@
 
 #include "PP/pack/fold_init.hpp"
 
-#include <iostream>
-
 void test(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "0-1-3-6-10-15-5-4-3-2-1-15/112";

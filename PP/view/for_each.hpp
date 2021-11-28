@@ -1,6 +1,6 @@
 #pragma once
-#include "../empty.hpp"
-#include "fold.hpp"
+#include <PP/empty.hpp>
+#include <PP/view/fold.hpp>
 
 namespace PP::view
 {

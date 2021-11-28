@@ -1,8 +1,8 @@
 #pragma once
-#include "size_t.hpp"
-#include "view/equal.hpp"
-#include "view/pair.hpp"
-#include "view/shift.hpp"
+#include <PP/size_t.hpp>
+#include <PP/view/equal.hpp>
+#include <PP/view/pair.hpp>
+#include <PP/view/shift.hpp>
 
 #include <iosfwd>
 

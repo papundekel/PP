@@ -1,6 +1,6 @@
 #pragma once
-#include "../../get_type.hpp"
-#include "../../templated_dummy.hpp"
+#include <PP/get_type.hpp>
+#include <PP/templated_dummy.hpp>
 
 namespace PP
 {

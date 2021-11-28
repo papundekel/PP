@@ -1,7 +1,7 @@
 #pragma once
-#include "combine_meta_c.hpp"
-#include "compose.hpp"
-#include "pack/combinator_f_c.hpp"
+#include <PP/combine_meta_c.hpp>
+#include <PP/compose.hpp>
+#include <PP/pack/combinator_f_c.hpp>
 
 namespace PP
 {

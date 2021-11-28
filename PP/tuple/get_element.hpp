@@ -1,7 +1,7 @@
 #pragma once
-#include "../declval.hpp"
-#include "../get_value.hpp"
-#include "concept.hpp"
+#include <PP/declval.hpp>
+#include <PP/get_value.hpp>
+#include <PP/tuple/concept.hpp>
 
 namespace PP::tuple
 {

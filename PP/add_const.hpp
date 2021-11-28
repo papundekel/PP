@@ -1,6 +1,6 @@
 #pragma once
-#include "pack/apply_template.hpp"
-#include "template_t.hpp"
+#include <PP/pack/apply_template.hpp>
+#include <PP/template_t.hpp>
 
 namespace PP::detail
 {

@@ -1,7 +1,7 @@
 #pragma once
-#include "../declval.hpp"
-#include "../partial.hpp"
-#include "../tuple/apply.hpp"
+#include <PP/declval.hpp>
+#include <PP/partial.hpp>
+#include <PP/tuple/apply.hpp>
 
 namespace PP
 {

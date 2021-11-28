@@ -1,9 +1,9 @@
 #pragma once
-#include "../compose_apply.hpp"
-#include "../containers/tuple.hpp"
-#include "../generator_tuple.hpp"
-#include "count.hpp"
-#include "zip_with.hpp"
+#include <PP/compose_apply.hpp>
+#include <PP/containers/tuple.hpp>
+#include <PP/generator_tuple.hpp>
+#include <PP/tuple/count.hpp>
+#include <PP/zip_with.hpp>
 
 namespace PP::tuple
 {

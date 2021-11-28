@@ -1,11 +1,11 @@
 #pragma once
-#include "../construct_pack.hpp"
-#include "../forward_wrap.hpp"
-#include "../operators.hpp"
-#include "forward_array.hpp"
-#include "make_array.hpp"
-#include "map.hpp"
-#include "to_array.hpp"
+#include <PP/construct_pack.hpp>
+#include <PP/forward_wrap.hpp>
+#include <PP/operators.hpp>
+#include <PP/forward_array.hpp>
+#include <PP/make_array.hpp>
+#include <PP/tuple/map.hpp>
+#include <PP/to_array.hpp>
 
 namespace PP::detail
 {

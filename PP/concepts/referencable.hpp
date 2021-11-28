@@ -1,6 +1,6 @@
 #pragma once
-#include "function_pure.hpp"
-#include "object.hpp"
+#include <PP/function_pure.hpp>
+#include <PP/object.hpp>
 
 namespace PP::concepts
 {

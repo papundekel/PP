@@ -1,7 +1,7 @@
 #pragma once
-#include "concept.hpp"
-#include "count.hpp"
-#include "zip_with.hpp"
+#include <PP/tuple/concept.hpp>
+#include <PP/tuple/count.hpp>
+#include <PP/tuple/zip_with.hpp>
 
 constexpr auto operator==(const PP::concepts::tuple auto& a,
                           const PP::concepts::tuple auto& b)

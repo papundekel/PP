@@ -1,16 +1,16 @@
 #pragma once
-#include "../combine.hpp"
-#include "../constant.hpp"
-#include "../construct_pack.hpp"
-#include "../operators.hpp"
-#include "../pack/get.hpp"
-#include "../pack/select.hpp"
-#include "../partial_.hpp"
-#include "empty.hpp"
-#include "fold.hpp"
-#include "make.hpp"
-#include "map.hpp"
-#include "prepend.hpp"
+#include <PP/combine.hpp>
+#include <PP/constant.hpp>
+#include <PP/construct_pack.hpp>
+#include <PP/operators.hpp>
+#include <PP/pack/get.hpp>
+#include <PP/pack/select.hpp>
+#include <PP/partial_.hpp>
+#include <PP/empty.hpp>
+#include <PP/tuple/fold.hpp>
+#include <PP/tuple/make.hpp>
+#include <PP/tuple/map.hpp>
+#include <PP/tuple/prepend.hpp>
 
 namespace PP::tuple
 {

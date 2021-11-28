@@ -1,9 +1,9 @@
 #pragma once
-#include "../containers/array.hpp"
-#include "../move_assign.hpp"
-#include "../value_t.hpp"
-#include "pair.hpp"
-#include "zip_if.hpp"
+#include <PP/containers/array.hpp>
+#include <PP/move_assign.hpp>
+#include <PP/value_t.hpp>
+#include <PP/view/pair.hpp>
+#include <PP/zip_if.hpp>
 
 namespace PP::view
 {

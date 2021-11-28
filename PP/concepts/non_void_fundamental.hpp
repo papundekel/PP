@@ -1,7 +1,7 @@
 #pragma once
-#include "../macros/simple_concept.hpp"
-#include "arithmetic.hpp"
-#include "fundamental_types.hpp"
+#include <PP/macros/simple_concept.hpp>
+#include <PP/arithmetic.hpp>
+#include <PP/fundamental_types.hpp>
 
 namespace PP::concepts
 {

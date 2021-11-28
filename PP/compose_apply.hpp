@@ -1,6 +1,6 @@
 #pragma once
-#include "applier.hpp"
-#include "compose.hpp"
+#include <PP/applier.hpp>
+#include <PP/compose.hpp>
 
 namespace PP
 {

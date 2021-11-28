@@ -1,12 +1,12 @@
 #pragma once
-#include "../combine.hpp"
-#include "../containers/tuple.hpp"
-#include "../declval.hpp"
-#include "../forward_wrap.hpp"
-#include "../operators.hpp"
-#include "../pack/map.hpp"
-#include "../partial_.hpp"
-#include "apply.hpp"
+#include <PP/combine.hpp>
+#include <PP/containers/tuple.hpp>
+#include <PP/declval.hpp>
+#include <PP/forward_wrap.hpp>
+#include <PP/operators.hpp>
+#include <PP/pack/map_c.hpp>
+#include <PP/partial_.hpp>
+#include <PP/tuple/apply.hpp>
 
 namespace PP::tuple
 {

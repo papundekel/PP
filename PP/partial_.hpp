@@ -1,6 +1,6 @@
 #pragma once
-#include "get_value.hpp"
-#include "partial_c.hpp"
+#include <PP/get_value.hpp>
+#include <PP/partial_c.hpp>
 
 namespace PP
 {

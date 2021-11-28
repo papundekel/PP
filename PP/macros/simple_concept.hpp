@@ -1,5 +1,5 @@
 #pragma once
-#include "../get_type.hpp"
+#include <PP/get_type.hpp>
 
 #define PP_CONCEPT0(concept_name, functor_name_full)                           \
     namespace concepts                                                         \

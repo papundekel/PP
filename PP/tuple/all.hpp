@@ -1,10 +1,10 @@
 #pragma once
-#include "../combine.hpp"
-#include "../compose.hpp"
-#include "../pack/all_c.hpp"
-#include "../pack/get.hpp"
-#include "../partial_.hpp"
-#include "apply.hpp"
+#include <PP/combine.hpp>
+#include <PP/compose.hpp>
+#include <PP/pack/all_c.hpp>
+#include <PP/pack/get.hpp>
+#include <PP/partial_.hpp>
+#include <PP/tuple/apply.hpp>
 
 namespace PP::tuple
 {

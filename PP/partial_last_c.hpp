@@ -1,6 +1,6 @@
 #pragma once
-#include "call_reorder.hpp"
-#include "partial_c.hpp"
+#include <PP/call_reorder.hpp>
+#include <PP/partial_c.hpp>
 
 namespace PP
 {

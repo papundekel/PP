@@ -1,9 +1,9 @@
 #pragma once
-#include "../combine.hpp"
-#include "../pack/fold.hpp"
-#include "../partial_.hpp"
-#include "apply.hpp"
-#include "count.hpp"
+#include <PP/combine.hpp>
+#include <PP/pack/fold.hpp>
+#include <PP/partial_.hpp>
+#include <PP/tuple/apply.hpp>
+#include <PP/tuple/count.hpp>
 
 namespace PP::tuple
 {

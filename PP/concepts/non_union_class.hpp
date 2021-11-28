@@ -1,9 +1,9 @@
 #pragma once
-#include "../conjunction.hpp"
-#include "../get_type.hpp"
-#include "../negate.hpp"
-#include "atomic/class.hpp"
-#include "union.hpp"
+#include <PP/conjunction.hpp>
+#include <PP/get_type.hpp>
+#include <PP/negate.hpp>
+#include <PP/concepts/atomic/class.hpp>
+#include <PP/concepts/union.hpp>
 
 namespace PP
 {

@@ -1,12 +1,12 @@
 #pragma once
-#include "../containers/tuple.hpp"
-#include "../operators.hpp"
-#include "../tuple/for_each.hpp"
-#include "../tuple/make.hpp"
-#include "../tuple/map.hpp"
-#include "../tuple/zip_with.hpp"
-#include "../utility/move.hpp"
-#include "concept.hpp"
+#include <PP/containers/tuple.hpp>
+#include <PP/operators.hpp>
+#include <PP/tuple/for_each.hpp>
+#include <PP/tuple/make.hpp>
+#include <PP/tuple/map.hpp>
+#include <PP/tuple/zip_with.hpp>
+#include <PP/utility/move.hpp>
+#include <PP/view/concept.hpp>
 
 namespace PP::view
 {

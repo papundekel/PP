@@ -1,8 +1,8 @@
 #pragma once
-#include "../get_value.hpp"
-#include "../partial_.hpp"
-#include "../utility/move.hpp"
-#include "concept.hpp"
+#include <PP/get_value.hpp>
+#include <PP/partial_.hpp>
+#include <PP/utility/move.hpp>
+#include <PP/view/concept.hpp>
 
 namespace PP::view
 {

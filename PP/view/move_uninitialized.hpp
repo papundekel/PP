@@ -1,11 +1,11 @@
 #pragma once
-#include "../applier.hpp"
-#include "../construct_at_pack.hpp"
-#include "../operators.hpp"
-#include "../partial_.hpp"
-#include "../utility/move.hpp"
-#include "for_each.hpp"
-#include "zip.hpp"
+#include <PP/applier.hpp>
+#include <PP/construct_at_pack.hpp>
+#include <PP/operators.hpp>
+#include <PP/partial_.hpp>
+#include <PP/utility/move.hpp>
+#include <PP/view/for_each.hpp>
+#include <PP/view/zip.hpp>
 
 #include <memory>
 

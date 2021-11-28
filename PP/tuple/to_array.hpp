@@ -1,11 +1,11 @@
 #pragma once
-#include "../conditional.hpp"
-#include "../containers/array.hpp"
-#include "../get_type.hpp"
-#include "apply.hpp"
-#include "concept.hpp"
-#include "count.hpp"
-#include "element.hpp"
+#include <PP/conditional.hpp>
+#include <PP/containers/array.hpp>
+#include <PP/get_type.hpp>
+#include <PP/tuple/apply.hpp>
+#include <PP/tuple/concept.hpp>
+#include <PP/tuple/count.hpp>
+#include <PP/tuple/element.hpp>
 
 namespace PP::detail
 {

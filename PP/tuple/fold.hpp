@@ -1,7 +1,7 @@
 #pragma once
-#include "../combine.hpp"
-#include "../compose_many.hpp"
-#include "fold_init.hpp"
+#include <PP/combine.hpp>
+#include <PP/compose_many.hpp>
+#include <PP/tuple/fold_init.hpp>
 
 namespace PP::tuple
 {

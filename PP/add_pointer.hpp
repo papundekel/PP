@@ -1,6 +1,6 @@
 #pragma once
-#include "concepts/pointable.hpp"
-#include "remove_reference.hpp"
+#include <PP/concepts/pointable.hpp>
+#include <PP/remove_reference.hpp>
 
 namespace PP::detail
 {

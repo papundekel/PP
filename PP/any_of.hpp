@@ -1,5 +1,5 @@
 #pragma once
-#include "view.hpp"
+#include <PP/view/concept.hpp>
 
 #include <utility>
 

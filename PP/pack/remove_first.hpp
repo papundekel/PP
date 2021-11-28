@@ -1,6 +1,6 @@
 #pragma once
-#include "../get_value.hpp"
-#include "../size_t.hpp"
+#include <PP/get_value.hpp>
+#include <PP/size_t.hpp>
 
 namespace PP::pack
 {

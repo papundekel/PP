@@ -1,7 +1,7 @@
 #pragma once
-#include "../operators.hpp"
-#include "first_equal.hpp"
-#include "zip_iterator_std.hpp"
+#include <PP/operators.hpp>
+#include <PP/view/first_equal.hpp>
+#include <PP/view/zip_iterator_std.hpp>
 
 namespace PP
 {

@@ -1,9 +1,9 @@
 #pragma once
-#include "../apply_pack.hpp"
-#include "../containers/type_tuple.hpp"
-#include "../partial.hpp"
-#include "element.hpp"
-#include "value_sequence_for.hpp"
+#include <PP/apply_pack.hpp>
+#include <PP/containers/type_tuple.hpp>
+#include <PP/partial.hpp>
+#include <PP/tuple/element.hpp>
+#include <PP/tuple/value_sequence_for.hpp>
 
 namespace PP::tuple
 {

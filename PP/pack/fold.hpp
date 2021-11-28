@@ -1,9 +1,9 @@
 #pragma once
-#include "../combine_c.hpp"
-#include "../constant.hpp"
-#include "../partial_.hpp"
-#include "fold_init.hpp"
-#include "get.hpp"
+#include <PP/combine_c.hpp>
+#include <PP/constant.hpp>
+#include <PP/partial_.hpp>
+#include <PP/pack/fold_init.hpp>
+#include <PP/pack/get.hpp>
 
 namespace PP::pack
 {

@@ -1,5 +1,5 @@
 #pragma once
-#include "../declval.hpp"
+#include <PP/declval.hpp>
 
 namespace PP::detail
 {

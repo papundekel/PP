@@ -1,7 +1,7 @@
 #pragma once
-#include "../get_type.hpp"
-#include "../partial_.hpp"
-#include "for_each.hpp"
+#include <PP/get_type.hpp>
+#include <PP/partial_.hpp>
+#include <PP/view/for_each.hpp>
 
 namespace PP::detail::functors
 {

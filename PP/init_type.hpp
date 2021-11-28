@@ -1,8 +1,8 @@
 #pragma once
-#include "declval.hpp"
-#include "get_type.hpp"
-#include "type_t.hpp"
-#include "utility/forward.hpp"
+#include <PP/declval.hpp>
+#include <PP/get_type.hpp>
+#include <PP/type_t.hpp>
+#include <PP/utility/forward.hpp>
 
 namespace PP
 {

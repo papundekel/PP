@@ -1,7 +1,7 @@
 #pragma once
-#include "../forward_wrap.hpp"
-#include "../macros/CIA.hpp"
-#include "../utility/forward.hpp"
+#include <PP/forward_wrap.hpp>
+#include <PP/macros/CIA.hpp>
+#include <PP/utility/forward.hpp>
 
 namespace PP::pack
 {

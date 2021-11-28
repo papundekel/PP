@@ -1,7 +1,7 @@
 #pragma once
-#include "../forward_wrap.hpp"
-#include "../get_value.hpp"
-#include "../macros/CIA.hpp"
+#include <PP/forward_wrap.hpp>
+#include <PP/get_value.hpp>
+#include <PP/macros/CIA.hpp>
 
 namespace PP::detail
 {

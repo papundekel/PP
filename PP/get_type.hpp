@@ -1,7 +1,7 @@
 #pragma once
-#include "macros/CIA.hpp"
-#include "remove_reference_impl.hpp"
-#include "type_t.hpp"
+#include <PP/macros/CIA.hpp>
+#include <PP/remove_reference_impl.hpp>
+#include <PP/type_t.hpp>
 
 namespace PP::concepts
 {

@@ -1,6 +1,6 @@
 #pragma once
-#include "concepts/empty.hpp"
-#include "template_t.hpp"
+#include <PP/concepts/empty.hpp>
+#include <PP/template_t.hpp>
 
 namespace PP
 {

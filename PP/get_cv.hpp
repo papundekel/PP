@@ -1,9 +1,9 @@
 #pragma once
-#include "compose.hpp"
-#include "decompose_cv.hpp"
-#include "partial_.hpp"
-#include "tuple/get.hpp"
-#include "value_t.hpp"
+#include <PP/compose.hpp>
+#include <PP/decompose_cv.hpp>
+#include <PP/partial_.hpp>
+#include <PP/tuple/get.hpp>
+#include <PP/value_t.hpp>
 
 namespace PP
 {

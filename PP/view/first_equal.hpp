@@ -1,10 +1,10 @@
 #pragma once
-#include "../applier.hpp"
-#include "../negate.hpp"
-#include "../operators.hpp"
-#include "../partial_.hpp"
-#include "find.hpp"
-#include "zip.hpp"
+#include <PP/applier.hpp>
+#include <PP/negate.hpp>
+#include <PP/operators.hpp>
+#include <PP/partial_.hpp>
+#include <PP/find.hpp>
+#include <PP/view/zip.hpp>
 
 namespace PP::view
 {

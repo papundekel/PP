@@ -1,6 +1,6 @@
 #pragma once
-#include "declval_impl.hpp"
-#include "type_t.hpp"
+#include <PP/declval_impl.hpp>
+#include <PP/type_t.hpp>
 
 namespace PP::detail
 {

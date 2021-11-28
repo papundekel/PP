@@ -1,11 +1,11 @@
 #pragma once
-#include "../apply_template.hpp"
-#include "../make_variant_pack.hpp"
-#include "../wrap_reference.hpp"
-#include "concept.hpp"
-#include "get_types.hpp"
-#include "map_to_array.hpp"
-#include "zip_indices.hpp"
+#include <PP/apply_template.hpp>
+#include <PP/make_variant_pack.hpp>
+#include <PP/wrap_reference.hpp>
+#include <PP/tuple/concept.hpp>
+#include <PP/get_types.hpp>
+#include <PP/map_to_array.hpp>
+#include <PP/zip_indices.hpp>
 
 namespace PP::tuple
 {

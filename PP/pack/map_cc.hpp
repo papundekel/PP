@@ -1,9 +1,9 @@
 #pragma once
-#include "../combine_c.hpp"
-#include "../compose.hpp"
-#include "../partial_c.hpp"
-#include "get.hpp"
-#include "map_c.hpp"
+#include <PP/combine_c.hpp>
+#include <PP/compose.hpp>
+#include <PP/partial_c.hpp>
+#include <PP/pack/get.hpp>
+#include <PP/pack/map_c.hpp>
 
 namespace PP::pack
 {

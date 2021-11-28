@@ -1,7 +1,7 @@
 #pragma once
-#include "compose.hpp"
-#include "decl_type.hpp"
-#include "get_type.hpp"
+#include <PP/compose.hpp>
+#include <PP/decl_type.hpp>
+#include <PP/get_type.hpp>
 
 namespace PP
 {

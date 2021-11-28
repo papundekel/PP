@@ -1,7 +1,7 @@
 #pragma once
-#include "../containers/tuple.hpp"
-#include "../utility/forward.hpp"
-#include "apply.hpp"
+#include <PP/containers/tuple.hpp>
+#include <PP/utility/forward.hpp>
+#include <PP/tuple/apply.hpp>
 
 namespace PP::tuple
 {

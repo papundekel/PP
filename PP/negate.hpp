@@ -1,7 +1,7 @@
 #pragma once
-#include "compose.hpp"
-#include "operators.hpp"
-#include "partial_.hpp"
+#include <PP/compose.hpp>
+#include <PP/operators.hpp>
+#include <PP/partial_.hpp>
 
 namespace PP
 {

@@ -1,7 +1,7 @@
 #pragma once
-#include "compose.hpp"
-#include "get_const.hpp"
-#include "get_value.hpp"
+#include <PP/compose.hpp>
+#include <PP/get_const.hpp>
+#include <PP/get_value.hpp>
 
 namespace PP
 {

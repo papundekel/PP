@@ -1,6 +1,6 @@
 #pragma once
-#include "ostream.hpp"
-#include "view.hpp"
+#include <PP/ostream.hpp>
+#include <PP/view/concept.hpp>
 
 #include <ostream>
 

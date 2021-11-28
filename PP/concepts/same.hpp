@@ -1,5 +1,5 @@
 #pragma once
-#include "../type_t.hpp"
+#include <PP/type_t.hpp>
 
 namespace PP::concepts
 {

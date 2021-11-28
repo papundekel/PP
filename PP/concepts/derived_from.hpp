@@ -1,7 +1,7 @@
 #pragma once
-#include "../get_type.hpp"
-#include "class.hpp"
-#include "convertible_to.hpp"
+#include <PP/get_type.hpp>
+#include <PP/class.hpp>
+#include <PP/concepts/convertible_to.hpp>
 
 namespace PP
 {

@@ -1,7 +1,7 @@
 #pragma once
-#include "../pack/fold.hpp"
-#include "../partial_.hpp"
-#include "apply.hpp"
+#include <PP/pack/fold.hpp>
+#include <PP/partial_.hpp>
+#include <PP/tuple/apply.hpp>
 
 namespace PP::tuple
 {

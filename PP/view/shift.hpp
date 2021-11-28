@@ -1,6 +1,6 @@
 #pragma once
-#include "../size_t.hpp"
-#include "pair.hpp"
+#include <PP/size_t.hpp>
+#include <PP/view/pair.hpp>
 
 namespace PP::view
 {

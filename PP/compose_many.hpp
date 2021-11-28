@@ -1,7 +1,7 @@
 #pragma once
-#include "compose.hpp"
-#include "pack/fold.hpp"
-#include "partial_first_c.hpp"
+#include <PP/compose.hpp>
+#include <PP/pack/fold.hpp>
+#include <PP/partial_first_c.hpp>
 
 namespace PP
 {

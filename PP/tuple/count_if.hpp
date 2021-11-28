@@ -1,6 +1,6 @@
 #pragma once
-#include "../size_t.hpp"
-#include "fold.hpp"
+#include <PP/size_t.hpp>
+#include <PP/tuple/fold.hpp>
 
 namespace PP::tuple
 {

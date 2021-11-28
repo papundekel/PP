@@ -1,9 +1,7 @@
 #pragma once
-#include "same.hpp"
+#include <PP/concepts/same.hpp>
 
-namespace PP
-{
-namespace concepts
+namespace PP::concepts
 {
 template <typename T, typename U>
 concept same_except_cv = same<T, U> || same<T, const U> ||
@@ -12,5 +10,4 @@ concept same_except_cv = same<T, U> || same<T, const U> ||
 template <typename T, typename U>
 concept different_except_cv = different<T, U> && different<T, const U> &&
     different<T, volatile U> && different<T, const volatile U>;
-}
 }

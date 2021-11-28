@@ -2,8 +2,6 @@
 
 #include "PP/partial_c.hpp"
 
-#include <iostream>
-
 void test(std::ostream& out_key, std::ostream& out_run)
 {
     out_key << "3210,";

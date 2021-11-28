@@ -1,6 +1,6 @@
 #pragma once
-#include "floating_point.hpp"
-#include "integral.hpp"
+#include <PP/floating_point.hpp>
+#include <PP/integral.hpp>
 
 namespace PP::concepts
 {

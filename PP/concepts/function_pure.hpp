@@ -1,7 +1,7 @@
 #pragma once
-#include "../negate.hpp"
-#include "atomic/referencable.hpp"
-#include "object.hpp"
+#include <PP/negate.hpp>
+#include <PP/atomic/referencable.hpp>
+#include <PP/object.hpp>
 
 namespace PP
 {

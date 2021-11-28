@@ -1,6 +1,6 @@
 #pragma once
-#include "macros/CIA.hpp"
-#include "type_t.hpp"
+#include <PP/macros/CIA.hpp>
+#include <PP/type_t.hpp>
 
 namespace PP
 {

@@ -1,8 +1,8 @@
 #pragma once
-#include "../declval.hpp"
-#include "complete_object.hpp"
-#include "function.hpp"
-#include "reference.hpp"
+#include <PP/declval.hpp>
+#include <PP/complete_object.hpp>
+#include <PP/function.hpp>
+#include <PP/reference.hpp>
 
 namespace PP
 {

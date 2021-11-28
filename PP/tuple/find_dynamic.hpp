@@ -1,8 +1,8 @@
 #pragma once
-#include "../size_t.hpp"
-#include "../utility/move.hpp"
-#include "find_index_state.hpp"
-#include "fold.hpp"
+#include <PP/size_t.hpp>
+#include <PP/utility/move.hpp>
+#include <PP/find_index_state.hpp>
+#include <PP/tuple/fold.hpp>
 
 namespace PP::tuple
 {

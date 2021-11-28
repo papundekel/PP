@@ -1,8 +1,8 @@
 #pragma once
-#include "../compose.hpp"
-#include "../get_type.hpp"
-#include "../overloaded.hpp"
-#include "../remove_cv.hpp"
+#include <PP/compose.hpp>
+#include <PP/get_type.hpp>
+#include <PP/overloaded.hpp>
+#include <PP/remove_cv.hpp>
 
 namespace PP
 {
