@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(PP VERSION "0.1.3")
+project(PP VERSION "0.1.4")
 
 file(DOWNLOAD "https://raw.githubusercontent.com/Petkr/PPcmake/main/PPcmake.cmake" "${CMAKE_BINARY_DIR}/PPcmake.cmake")
 include("${CMAKE_BINARY_DIR}/PPcmake.cmake")
