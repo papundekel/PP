@@ -9,7 +9,7 @@ include(CTest)
 PPcmake_package("github.com" "Petkr" "PPcmake" "1.0.2")
 include(PPcmake)
 
-PPcmake_package("github.com" "Petkr" "PPstyle" "1.0.12")
+PPcmake_package("github.com" "Petkr" "PPstyle" "1.0.14")
 include(PPstyle)
 
 PPcmake_package("github.com" "Petkr" "PPtest" "1.0.2")
